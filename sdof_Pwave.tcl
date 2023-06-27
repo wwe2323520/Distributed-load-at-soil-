@@ -37,7 +37,7 @@ for { set a 0} {$a < $n} {incr a} {
 }
 
 # ----------given input force (node 1,2) and "Bottom Stress B.C"---------------------#
-set filePath u1.txt
+set filePath fp.txt
 timeSeries Path 702 -dt 0.0001 -filePath $filePath;                                     #10(m)/100=0.1(s); 0.1/100 cell=0.001(s); 0.001/10 steps=0.0001(s)
 
 pattern Plain 703 702 {
