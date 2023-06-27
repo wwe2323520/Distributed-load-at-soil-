@@ -24,7 +24,7 @@ for {set i 0} {$i <[expr $n+1]} {incr i} {      ;#node 3~202 same Disp
     equalDOF  [expr 2*$i+1] [expr 2*$i+2] 1 2;
 }
 #========================== Force Input: Sin(Wst) TimeSeries =============================#
-set filePath u1.txt
+set filePath fp.txt
 timeSeries Path 702 -dt 1e-4 -filePath $filePath;       #10(m)/100=0.1(s); 0.1/100 cell=0.001(s); 0.001/10 steps=0.0001(s)
 pattern Plain 703 702 {
     load 1 1 0;                                             # like "normal vector direction"
