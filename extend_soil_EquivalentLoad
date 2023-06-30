@@ -51,8 +51,8 @@ element elasticBeamColumn 608 711 712  $A  $E1 $Iz 1 ;#
 element elasticBeamColumn 609 712 713  $A  $E1 $Iz 1 ;# 
 element elasticBeamColumn 610 713 714  $A  $E1 $Iz 1 ;# -release 3
 
-# equalDOF 708 709 1 2
-# equalDOF 713 714 1 2
+equalDOF 708 709 1 2
+equalDOF 713 714 1 2
 
 for {set l 0} {$l < 7} {incr l} {
     equalDOF [expr 708+$l] [expr 1+$l] 1 2
@@ -63,13 +63,13 @@ set filePath fp.txt
 timeSeries Path 702 -dt 0.0001 -filePath $filePath;                                     #10(m)/100=0.1(s); 0.1/100 cell=0.001(s); 0.001/10 steps=0.0001(s)
 set p [expr (2.0/7.0)]
 pattern Plain 703 702 {
-    load 1 0 $p
-    load 2 0 $p
-    load 3 0 $p
-    load 4 0 $p
-    load 5 0 $p
-    load 6 0 $p
-    load 7 0 $p
+    load 708 0 $p 0
+    load 709 0 $p 0
+    load 710 0 $p 0
+    load 711 0 $p 0
+    load 712 0 $p 0
+    load 713 0 $p 0
+    load 714 0 $p 0
     # eleLoad -ele 605 -type -beamUniform [expr (20.0/6.0)] 0
     # eleLoad -ele 606 -type -beamUniform [expr (20.0/6.0)] 0
     # eleLoad -ele 607 -type -beamUniform [expr (20.0/6.0)] 0
