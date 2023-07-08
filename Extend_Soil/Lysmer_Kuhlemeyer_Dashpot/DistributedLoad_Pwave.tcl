@@ -134,8 +134,9 @@ puts "Finished creating all dashpot boundary conditions and equalDOF..."
 set rho 2020   ;# kg/m3 
 set Vp 100     ;# m/s 
 set sizeX 0.1  ;# m
-set mC  [expr $rho*$Vp*$sizeX]  ;# N (newton)
-uniaxialMaterial Viscous 4000 $mC 1
+set mp  [expr $rho*$Vp*$sizeX]  ;# N (newton)
+
+uniaxialMaterial Viscous 4000 $mp 1
 #----------- dashpot elements ------------------
 element zeroLength 5000 716 715 -mat 4000 -dir 2
 element zeroLength 5001 718 717 -mat 4000 -dir 2
