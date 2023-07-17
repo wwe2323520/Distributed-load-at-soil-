@@ -16,7 +16,7 @@ block2D $nx $ny $e1 $n1 quad "1 PlaneStrain 2000" {
 } 
 # print -node 603
 # print -ele 500
-# ------------------ B.C(left/right equal)--tie side / use dashpot in side ------------------------
+# ============ B.C(left/right equal)--tie side B.C ->　use dashpot in side to replace tie B.C ===================
 set n 100
 # for {set i 0} {$i < [expr $n+1]} {incr i} { 
 #     #---- Only Left and Right node have same disp x,y----------
@@ -77,7 +77,6 @@ for {set j 0} {$j < 6} {incr j} {
     node [expr 607+$j] [expr 0.1*$j] 0.0
     fix [expr 607+$j] 0 0 1
 }
-
 # ------------------ elastic BeamColumn element ------------------------
 set A [expr 0.1*1]
 set E1 1e+05;                      # bigger much harder(1e+05) / smaller much softer (1e-06)
