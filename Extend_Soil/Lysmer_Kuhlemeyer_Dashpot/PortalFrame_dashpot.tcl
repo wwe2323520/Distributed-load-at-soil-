@@ -34,15 +34,15 @@ for {set r 0} {$r < $n+1} {incr r} {
     node [expr 626+2*$r] 0.0 [expr 0.1*$r]
     node [expr 627+2*$r] 0.0 [expr 0.1*$r]
 
-    fix [expr 626+2*$r] 1 0 1  ;# y dir dashpot　
-    # fix [expr 626+2*$r] 0 1 1  ;# x dir dashpot　
+    # fix [expr 626+2*$r] 1 0 1  ;# y dir dashpot　
+    fix [expr 626+2*$r] 0 1 1  ;# x dir dashpot　
     fix [expr 627+2*$r] 1 1 1
 # ------------- right side dashpot node (828,829~1028,1029)/B.C-----------------
     node [expr 828+2*$r] 0.5 [expr 0.1*$r]
     node [expr 829+2*$r] 0.5 [expr 0.1*$r]
 
-    fix [expr 828+2*$r] 1 0 1  ;# P wave - y dir dashpot　
-    # fix [expr 828+2*$r] 0 1 1  ;# S wave - x-dir dashpot 
+    # fix [expr 828+2*$r] 1 0 1  ;# P wave - y dir dashpot　
+    fix [expr 828+2*$r] 0 1 1  ;# S wave - x-dir dashpot 
     fix [expr 829+2*$r] 1 1 1
 
 # ------------- different dir dashpot ---------------------------------------
@@ -62,9 +62,9 @@ for {set r 0} {$r < $n+1} {incr r} {
 # ------ connect dashpot with SOIL Layer :Vs with x dir / Vp with y-dir --------------
 for {set r 0} {$r < $n+1} {incr r} {  
 # ---------- left side equal (y-dir) ----------------------
-    equalDOF [expr 6*$r+1] [expr 626+2*$r] 2
+    equalDOF [expr 6*$r+1] [expr 626+2*$r] 1
 # ---------- right side equal (y-dir)----------------------
-    equalDOF [expr 6*$r+6] [expr 828+2*$r] 2
+    equalDOF [expr 6*$r+6] [expr 828+2*$r] 1
 
 # # ---------- left side equal (x-dir) ----------------------
 #     equalDOF [expr 6*$r+1] [expr 1030+2*$r] 1
@@ -85,9 +85,9 @@ uniaxialMaterial Viscous 4001 $ms 1   ;# S wave
 #----------- side dashpot elements: Vs with x dir / Vp with y-dir------------------
 for {set q 0} {$q < $n+1} {incr q} {  
 # -------------- right dashpot (ele 5000~5100)--P wave(mp) -----------------
-    element zeroLength [expr 5000+$q] [expr 627+2*$q] [expr 626+2*$q] -mat 4000 -dir 2
+    element zeroLength [expr 5000+$q] [expr 627+2*$q] [expr 626+2*$q] -mat 4001 -dir 1
 # -------------- left dashpot (ele 5101~5201)--P wave(mp) -----------------
-    element zeroLength [expr 5101+$q] [expr 829+2*$q] [expr 828+2*$q] -mat 4000 -dir 2
+    element zeroLength [expr 5101+$q] [expr 829+2*$q] [expr 828+2*$q] -mat 4001 -dir 1
 
 # # -------------- right dashpot (ele 5202~5302)--S wave(ms) -----------------
 #     element zeroLength [expr 5202+$q] [expr 1031+2*$q] [expr 1030+2*$q] -mat 4001 -dir 1
@@ -133,7 +133,7 @@ set HBeam 0.01
 set BBeam 0.01
 #---------------------- calculated parameters ------------------------------------------
 set PCol [expr $Weight/2]; 		# nodal dead-load weight per column
-set Mass [expr $PCol/$g];		# nodal mass = 20 kg
+set Mass [expr $PCol/$g];		# total nodal mass = 20 kg => Mass = 9.989 Kg
 # set MCol [expr 1./12.*($Weight/$LBeam)*pow($LBeam,2)];	# beam-end moment due to distributed load.
 #--------- calculated geometry parameters ---------------------
 set ACol [expr $BCol*$HCol];					# cross-sectional area
@@ -148,14 +148,14 @@ node 1033 0.3 10.2          ;# 0.4 10.1
 
 #----------- B.C --------------
 fix 1030 1 1 1
-fix 1031 1 0 1
+fix 1031 0 1 1
 fix 1032 0 0 1
 fix 1033 0 0 1
 
-mass 1030 0 $Mass  0.0
-mass 1031 0 $Mass  0.0
-mass 1032 0 $Mass  0.0
-mass 1033 0 $Mass  0.0
+mass 1030 $Mass $Mass  0.0
+mass 1031 $Mass $Mass  0.0
+mass 1032 $Mass $Mass  0.0
+mass 1033 $Mass $Mass  0.0
 
 # define geometric transformation: performs a linear geometric transformation of beam stiffness and resisting force from the basic system to the global-coordinate system
 set ColTransfTag 1; 			# associate a tag to column transformation
@@ -174,6 +174,7 @@ element elasticBeamColumn 613 1032 1033 $ABeam $Ec $IzBeam  $BeamTransfTag   ;# 
 # ======== EqualDOF Structure connect Soil ===================================
 equalDOF 603 1030 1 2
 equalDOF 604 1031 1 2
+puts "Potram Frame has been Build"
 
 #=============== Apply Dashpot at the bot to absorb the wave form the top ================
 # --- node 613.614 to 623.624 have the same coordinate -----
@@ -230,10 +231,10 @@ element zeroLength 5410 624 623 -mat 4000 -dir 2
 puts "Finished creating dashpot material and element..."
 
 # ----------given input force (node 1,2) and "Bottom Stress B.C"---------------------#
-set filePath fp.txt   ;# fp.txt/ fs.txt
+set filePath fs.txt   ;# fp.txt/ fs.txt
 timeSeries Path 702 -dt 0.0001 -filePath $filePath;                                     #10(m)/100=0.1(s); 0.1/100 cell=0.001(s); 0.001/10 steps=0.0001(s)
 set p [expr (2.0/6.0)]
-set Stress 20.0
+set Stress 20  ;#20.0
 
 pattern Plain 703 702 {
 #-------------  S wave -------------------------
@@ -243,11 +244,11 @@ pattern Plain 703 702 {
     # load 610 $p 0 0
     # load 611 $p 0 0
     # load 612 $p 0 0
-    # eleLoad -ele 505 -type -beamUniform 0 [expr ($Stress/5.0)] 0
-    # eleLoad -ele 506 -type -beamUniform 0 [expr ($Stress/5.0)] 0
-    # eleLoad -ele 507 -type -beamUniform 0 [expr ($Stress/5.0)] 0
-    # eleLoad -ele 508 -type -beamUniform 0 [expr ($Stress/5.0)] 0
-    # eleLoad -ele 509 -type -beamUniform 0 [expr ($Stress/5.0)] 0
+    eleLoad -ele 505 -type -beamUniform 0 [expr ($Stress/5.0)] 0
+    eleLoad -ele 506 -type -beamUniform 0 [expr ($Stress/5.0)] 0
+    eleLoad -ele 507 -type -beamUniform 0 [expr ($Stress/5.0)] 0
+    eleLoad -ele 508 -type -beamUniform 0 [expr ($Stress/5.0)] 0
+    eleLoad -ele 509 -type -beamUniform 0 [expr ($Stress/5.0)] 0
 
 #-------------  P wave ------------------------- 
     # load 607 0 $p 0
@@ -256,11 +257,11 @@ pattern Plain 703 702 {
     # load 610 0 $p 0
     # load 611 0 $p 0
     # load 612 0 $p 0
-    eleLoad -ele 505 -type -beamUniform [expr ($Stress/5.0)] 0
-    eleLoad -ele 506 -type -beamUniform [expr ($Stress/5.0)] 0
-    eleLoad -ele 507 -type -beamUniform [expr ($Stress/5.0)] 0
-    eleLoad -ele 508 -type -beamUniform [expr ($Stress/5.0)] 0
-    eleLoad -ele 509 -type -beamUniform [expr ($Stress/5.0)] 0
+    # eleLoad -ele 505 -type -beamUniform [expr ($Stress/5.0)] 0
+    # eleLoad -ele 506 -type -beamUniform [expr ($Stress/5.0)] 0
+    # eleLoad -ele 507 -type -beamUniform [expr ($Stress/5.0)] 0
+    # eleLoad -ele 508 -type -beamUniform [expr ($Stress/5.0)] 0
+    # eleLoad -ele 509 -type -beamUniform [expr ($Stress/5.0)] 0
 }
 puts "finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)" 
 
@@ -297,20 +298,20 @@ recorder Node -file "extend_soil/velocity/node3_vel.out" -time -node 3 -dof 1 2 
 recorder Node -file "extend_soil/velocity/node303_vel.out" -time -node 303 -dof 1 2 3 vel;
 recorder Node -file "extend_soil/velocity/node603_vel.out" -time -node 603 -dof 1 2 3 vel;
 
-# # ---------- Structure stress/velocity -----------------------
-# # recorder Element -file "extend_soil/stress/Column1_stress.out" -time -ele 611 globalForce
-# # recorder Element -file "extend_soil/stress/Column2_stress.out" -time -ele 612 globalForce
-# # recorder Element -file "extend_soil/stress/Beam_stress.out" -time -ele 613 globalForce
+# ---------- Structure stress/velocity -----------------------
+recorder Element -file "extend_soil/stress/Column1_stress.out" -time -ele 611 globalForce
+recorder Element -file "extend_soil/stress/Column2_stress.out" -time -ele 612 globalForce
+recorder Element -file "extend_soil/stress/Beam_stress.out" -time -ele 613 globalForce
 
-# # recorder Node -file "extend_soil/velocity/node715_vel.out" -time -node 715 -dof 1 2 3 vel;
-# # recorder Node -file "extend_soil/velocity/node716_vel.out" -time -node 716 -dof 1 2 3 vel;
-# # recorder Node -file "extend_soil/velocity/node717_vel.out" -time -node 717 -dof 1 2 3 vel;
-# # recorder Node -file "extend_soil/velocity/node718_vel.out" -time -node 718 -dof 1 2 3 vel;
+recorder Node -file "extend_soil/velocity/node1030_vel.out" -time -node 1030 -dof 1 2 3 vel;
+recorder Node -file "extend_soil/velocity/node1031_vel.out" -time -node 1031 -dof 1 2 3 vel;
+recorder Node -file "extend_soil/velocity/node1032_vel.out" -time -node 1032 -dof 1 2 3 vel;
+recorder Node -file "extend_soil/velocity/node1033_vel.out" -time -node 1033 -dof 1 2 3 vel;
 
 # ============= recorder MPCO HDF5 ====================
 # recorder mpco "extend_soil/MPCO/allele" -E material.stress force localforce -N velocity ;#
 # recorder mpco "extend_soil/MPCO/Pwave_dahpot" -E material.stress force localforce -N velocity displacement ;#
-# recorder mpco "extend_soil/MPCO/Pwave_sideBC" -E material.stress force localforce -N velocity displacement ;#
+# recorder mpco "extend_soil/MPCO/Swave_sideBC" -E material.stress force localforce -N velocity displacement ;#
 
 #dynamic analysis
 constraints Transformation
