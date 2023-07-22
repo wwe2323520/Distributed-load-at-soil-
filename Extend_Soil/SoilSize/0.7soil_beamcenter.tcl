@@ -32,6 +32,7 @@ model BasicBuilder -ndm 2 -ndf 3
 #------- node 810~824 -------------------
 for {set j 0} {$j < 15} {incr j} {
     node [expr 810+$j] [expr 0.0+0.05*$j] 0.0
+    mass [expr 810+$j] 1 1 1
     fix [expr 810+$j] 0 0 1
 }
 
