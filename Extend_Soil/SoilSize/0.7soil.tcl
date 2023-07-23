@@ -32,18 +32,18 @@ model BasicBuilder -ndm 2 -ndf 3
 for {set j 0} {$j < $nx+1} {incr j} {
     node [expr 810+$j] [expr 0.1*$j] 0.0
     mass [expr 810+$j] 1 1 1
-    # fix [expr 810+$j] 0 0 1
+    fix [expr 810+$j] 0 0 1
 }
 # --------  simple beam setting -----------------
-for {set j 0} {$j < 4} {incr j} {
-    fix [expr 2*$j+810] 1 1 1     ;# even: pin support
-    fix [expr 2*$j+811] 0 1 1     ;# odd : roller support
-}
+# for {set j 0} {$j < 4} {incr j} {
+#     fix [expr 2*$j+810] 1 1 1     ;# even: pin support
+#     fix [expr 2*$j+811] 0 1 1     ;# odd : roller support
+# }
 
-for {set j 0} {$j < 7} {incr j} {
-    equalDOF 810 [expr 811+$j] 1 2
-    # puts "810 ,[expr 811+$j]"
-}
+# for {set j 0} {$j < 7} {incr j} {
+#     equalDOF 810 [expr 811+$j] 1 2
+#     # puts "810 ,[expr 811+$j]"
+# }
 
 # ------------------ elastic BeamColumn element ------------------------
 set A [expr 0.1*1]
@@ -59,7 +59,8 @@ element elasticBeamColumn 705 814 815  $A  $E1 $Iz 1 ;#
 element elasticBeamColumn 706 815 816  $A  $E1 $Iz 1 ;# 
 element elasticBeamColumn 707 816 817  $A  $E1 $Iz 1 ;# 
 # ------------------- Beam equalDOF: same x,y disp --------------------
-# equalDOF 810 817 1 2
+equalDOF 810 817 1 2
+
 #---------- Bottom Beam and Soil connect ------------------------
 for {set l 0} {$l < $nx+1} {incr l} {
     equalDOF [expr 810+$l] [expr 1+$l] 1 2
@@ -67,7 +68,7 @@ for {set l 0} {$l < $nx+1} {incr l} {
 
 # ================= Apply Distributed Load at Beam element ==========================
 # ----------given input force (node 1,2) and "Bottom Stress B.C"---------------------#
-set filePath fp.txt   ;# fp.txt/ fs.txt
+set filePath fs.txt   ;# fp.txt/ fs.txt
 timeSeries Path 702 -dt 0.0001 -filePath $filePath;        #10(m)/100=0.1(s); 0.1/100 cell=0.001(s); 0.001/10 steps=0.0001(s)
 
 set p [expr (2.0/($nx+1))]
@@ -83,13 +84,13 @@ pattern Plain 703 702 {
     # load 815 $p 0 0
     # load 816 $p 0 0
     # load 817 $p 0 0
-    # eleLoad -ele 701 -type -beamUniform 0 [expr ($Stress/7.0)] 0
-    # eleLoad -ele 702 -type -beamUniform 0 [expr ($Stress/7.0)] 0
-    # eleLoad -ele 703 -type -beamUniform 0 [expr ($Stress/7.0)] 0
-    # eleLoad -ele 704 -type -beamUniform 0 [expr ($Stress/7.0)] 0
-    # eleLoad -ele 705 -type -beamUniform 0 [expr ($Stress/7.0)] 0
-    # eleLoad -ele 706 -type -beamUniform 0 [expr ($Stress/7.0)] 0
-    # eleLoad -ele 707 -type -beamUniform 0 [expr ($Stress/7.0)] 0
+    eleLoad -ele 701 -type -beamUniform 0 20 0
+    eleLoad -ele 702 -type -beamUniform 0 20 0
+    eleLoad -ele 703 -type -beamUniform 0 20 0
+    eleLoad -ele 704 -type -beamUniform 0 20 0
+    eleLoad -ele 705 -type -beamUniform 0 20 0
+    eleLoad -ele 706 -type -beamUniform 0 20 0
+    eleLoad -ele 707 -type -beamUniform 0 20 0
 
 #-------------  P wave ------------------------- 
     # load 810 0 $p 0
@@ -101,13 +102,13 @@ pattern Plain 703 702 {
     # load 816 0 $p 0
     # load 817 0 $p 0
     
-    eleLoad -ele 701 -type -beamUniform  [expr ($Stress/7.0)] 0
-    eleLoad -ele 702 -type -beamUniform  [expr ($Stress/7.0)] 0
-    eleLoad -ele 703 -type -beamUniform  [expr ($Stress/7.0)] 0
-    eleLoad -ele 704 -type -beamUniform  [expr ($Stress/7.0)] 0
-    eleLoad -ele 705 -type -beamUniform  [expr ($Stress/7.0)] 0
-    eleLoad -ele 706 -type -beamUniform  [expr ($Stress/7.0)] 0
-    eleLoad -ele 707 -type -beamUniform0 [expr ($Stress/7.0)] 0
+    # eleLoad -ele 701 -type -beamUniform  20 0
+    # eleLoad -ele 702 -type -beamUniform  20 0
+    # eleLoad -ele 703 -type -beamUniform  20 0
+    # eleLoad -ele 704 -type -beamUniform  20 0
+    # eleLoad -ele 705 -type -beamUniform  20 0
+    # eleLoad -ele 706 -type -beamUniform  20 0
+    # eleLoad -ele 707 -type -beamUniform0 20 0
 }
 puts "finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)" 
 
@@ -164,3 +165,5 @@ integrator Newmark 0.5 0.25
 analysis Transient
 analyze 8000 0.0001; #total time: 0.8s
 puts "finish analyze:0 ~ 0.8s"
+
+print -ele 701 702 703 704 705 706 707
