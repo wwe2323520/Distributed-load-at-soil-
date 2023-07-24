@@ -186,14 +186,14 @@ uniaxialMaterial Viscous 4003 $B_Cms 1   ;# S wave: Center node
 #----------- dashpot elements: Vs with x dir / Vp with y-dir------------------
 set xdir 1
 set ydir 2
-# # ---- traction dashpot element ---(left and right)
-# element zeroLength 20000 10304 10303 -mat 4001 -dir $xdir
-# element zeroLength 20100 10504 10503 -mat 4001 -dir $xdir
-# # ---- Normal dashpot element ---(left and right)
-# element zeroLength 20101 10506 10505 -mat 4000 -dir $ydir
-# element zeroLength 20201 10706 10705 -mat 4000 -dir $ydir
+# ---- traction dashpot element ---(left and right)
+element zeroLength 20000 10304 10303 -mat 4001 -dir $xdir
+element zeroLength 20100 10504 10503 -mat 4001 -dir $xdir
+# ---- Normal dashpot element ---(left and right)
+element zeroLength 20101 10506 10505 -mat 4000 -dir $ydir
+element zeroLength 20201 10706 10705 -mat 4000 -dir $ydir
 
-for {set m 0} {$m < $nx+1} {incr m} {
+for {set m 1} {$m < $nx} {incr m} {
 # -------------- traction dashpot element(ele 20001~20099) -----------------------
     element zeroLength [expr 20000+$m] [expr 10304+2*$m] [expr 10303+2*$m] -mat 4003 -dir $xdir
     # puts "[expr 20000+$m] ,[expr 10304+2*$m] ,[expr 10303+2*$m]"
