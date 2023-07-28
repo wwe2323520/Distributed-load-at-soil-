@@ -21,13 +21,17 @@ ny = 100
 e1 = 1
 n1 = 1
 eleArgs = [1, 'PlaneStrain', 2000]
-points = [1, 0.0, 0.0, 2, 0.7,0.0, 3, 0.7,10.0, 4, 0.0,10.0]
+points = [1, 0.0, 0.0, 
+          2, 0.7, 0.0, 
+          3, 0.7, 10.0, 
+          4, 0.0, 10.0]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # -------- Soil B.C ---------------
 for i in range(ny+1):
-    equalDOF(8*i+1,8*i+8,1,2)
-    
+    fix(8*i+1,1,0)
+    fix(8*i+8,1,0)
+    # equalDOF(8*i+1,8*i+8,1,2)
 # ============== Build Beam element (810~817) (ele 701~707) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
 for j in range(nx+1):
