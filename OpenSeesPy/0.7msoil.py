@@ -7,8 +7,13 @@ Created on Tue Jun 27 11:02:11 2023
 from openseespy.opensees import *
 import opsvis as ops
 import matplotlib.pyplot as plt
+import time
 
 wipe()
+# -------- Start calculaate time -----------------
+start = time.time()
+print("The time used to execute this is given below")
+
 model('basic', '-ndm', 2, '-ndf' , 2)
 
 E = 15005714.286
@@ -29,8 +34,12 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # -------- Soil B.C ---------------
 for i in range(ny+1):
-    fix(8*i+1,1,0)
-    fix(8*i+8,1,0)
+# ------- Pwave -----------
+    # fix(8*i+1,1,0)
+    # fix(8*i+8,1,0)
+# ------- S wave ------------
+    fix(8*i+1,0,1)
+    fix(8*i+8,0,1)
     # equalDOF(8*i+1,8*i+8,1,2)
 # ============== Build Beam element (810~817) (ele 701~707) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
@@ -54,20 +63,28 @@ for k in range(nx+1):
     equalDOF(810+k,1+k,1,2)
     
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-eleLoad('-ele', 701, '-type','-beamUniform',20,0)
-eleLoad('-ele', 702, '-type','-beamUniform',20,0)
-eleLoad('-ele', 703, '-type','-beamUniform',20,0)
-eleLoad('-ele', 704, '-type','-beamUniform',20,0)
-eleLoad('-ele', 705, '-type','-beamUniform',20,0)
-eleLoad('-ele', 706, '-type','-beamUniform',20,0)
-eleLoad('-ele', 707, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 701, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 702, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 703, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 704, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 705, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 706, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 707, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
+eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
 
 # load(1, 0, 1)
 # load(2, 0, 1) 
@@ -113,8 +130,6 @@ analyze(8000,1e-4)
 print("finish analyze:0 ~ 0.8s")
 
 printModel('-ele', 701,702,703,704,705,707)
-
-
-
-
-
+# --------- end to calculate time -------------
+end = time.time()
+print(end - start)
