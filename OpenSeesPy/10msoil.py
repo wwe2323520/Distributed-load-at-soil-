@@ -55,18 +55,18 @@ for k in range(nx+1):
     equalDOF(10202+k,1+k,1,2)
 
 #------------- Load Pattern ----------------------------
-# timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
-timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-# for m in range(nx):
-#     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+for m in range(nx):
+    eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-for m in range(nx):
-    eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+# for m in range(nx):
+#     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
 # load(1, 0, 1)
 # load(2, 0, 1) 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
