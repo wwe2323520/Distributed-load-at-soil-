@@ -7,8 +7,13 @@ Created on Tue Jun 27 11:02:11 2023
 from openseespy.opensees import *
 import opsvis as ops
 import matplotlib.pyplot as plt
+import time
 
 wipe()
+# -------- Start calculaate time -----------------
+start = time.time()
+print("The time used to execute this is given below")
+
 model('basic', '-ndm', 2, '-ndf' , 2)
 
 E = 15005714.286
@@ -29,8 +34,12 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # -------- Soil B.C (node 1~10201)---------------
 for i in range(ny+1):
-    fix(101*i+1,  1,0)
-    fix(101*i+101,1,0)
+# ------- P wave -----------
+    # fix(101*i+1,  1,0)
+    # fix(101*i+101,1,0)
+# ------- S wave -----------
+    fix(101*i+1,  0,1)
+    fix(101*i+101,0,1)
     # equalDOF(101*i+1,101*i+101,1,2)
     
 # ============== Build Beam element (10202~10302) (ele 10001~10100) =========================
@@ -55,18 +64,18 @@ for k in range(nx+1):
     equalDOF(10202+k,1+k,1,2)
 
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
-# timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-for m in range(nx):
-    eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+# for m in range(nx):
+#     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-# for m in range(nx):
-#     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+for m in range(nx):
+    eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
 # load(1, 0, 1)
 # load(2, 0, 1) 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
@@ -111,8 +120,6 @@ analyze(8000,1e-4)
 print("finish analyze:0 ~ 0.8s")
 
 # printModel('-ele', 701,702,703,704,705,707)
-
-
-
-
-
+# --------- end to calculate time -------------
+end = time.time()
+print(end - start)
