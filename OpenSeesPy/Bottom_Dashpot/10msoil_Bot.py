@@ -122,7 +122,7 @@ for q in range(1,nx):
     element('zeroLength',20000+q, 10304+2*q,10303+2*q, '-mat',4003,'-dir',xdir)
 
 # -------- Normal dashpot element: Vp with y dir (ele 20102~20200) ------------------
-    element('zeroLength',20101+q, 10506+2*q,10505+2*q, '-mat',4002,'-dir',xdir)
+    element('zeroLength',20101+q, 10506+2*q,10505+2*q, '-mat',4002,'-dir',ydir)
 
 print("Finished creating dashpot material and element...")
 #------------- Load Pattern ----------------------------
