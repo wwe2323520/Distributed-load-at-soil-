@@ -168,8 +168,8 @@ def draw_structure_vel(title_name,vel1,vel2,vel3,vel4,label1,label2,label3,label
     plt.yticks(fontsize = 15)
     plt.grid(True)   
 
-plt_axis1 = 3  # Stress yaxis   
-plt_axis2 = 1  # Velocity yaxis
+plt_axis1 = 2  # Stress yaxis   
+plt_axis2 = 2  # Velocity yaxis
 
 # plt_axis3 = 1  # Structure Stress
 # plt_axis4 = 1  # Structure Vel
