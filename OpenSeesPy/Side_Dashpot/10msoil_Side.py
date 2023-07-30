@@ -187,19 +187,19 @@ uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
 
 # =============== Right and Left NODE :different dashpot element==================
 #  ----------- Left side Normal: S wave ----------
-# element('zeroLength',20202, 10708, 10707, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
-# element('zeroLength',20302, 10908, 10907, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
+element('zeroLength',20202, 10708, 10707, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
+element('zeroLength',20302, 10908, 10907, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
 # #  ----------- Left side Traction: P wave ----------
-# element('zeroLength',20303, 10910, 10909, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
-# element('zeroLength',20403, 11110, 11109, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
+element('zeroLength',20303, 10910, 10909, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
+element('zeroLength',20403, 11110, 11109, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
 
 #  ----------- Right side Normal: S wave ----------
-# element('zeroLength',20404, 11112, 11111, '-mat',4004,'-dir',xdir)  # node 101:  -> Smp
-# element('zeroLength',20504, 11312, 11311, '-mat',4004,'-dir',xdir)  # node 10201:  -> Smp
+element('zeroLength',20404, 11112, 11111, '-mat',4004,'-dir',xdir)  # node 101:  -> Smp
+element('zeroLength',20504, 11312, 11311, '-mat',4004,'-dir',xdir)  # node 10201:  -> Smp
 
 # #  ----------- Right side Traction: P wave ----------
-# element('zeroLength',20505, 11314, 11313, '-mat',4005,'-dir',ydir)  # node 101 -> Sms
-# element('zeroLength',20605, 11514, 11513, '-mat',4005,'-dir',ydir)  # node 10201 -> Sms
+element('zeroLength',20505, 11314, 11313, '-mat',4005,'-dir',ydir)  # node 101 -> Sms
+element('zeroLength',20605, 11514, 11513, '-mat',4005,'-dir',ydir)  # node 10201 -> Sms
 
 for w in range(1,ny): #1,ny  
 #----------- Left side Normal Dashpot: (ele 20203~20301)---------- -> Smp
@@ -215,18 +215,18 @@ for w in range(1,ny): #1,ny
 print("Finished creating Side dashpot material and element...")
 
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-for m in range(nx):
-    eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+# for m in range(nx):
+#     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-# for m in range(nx):
-#     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+for m in range(nx):
+    eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
 # load(1, 0, 1)
 # load(2, 0, 1) 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
