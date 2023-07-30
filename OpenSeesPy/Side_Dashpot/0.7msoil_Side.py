@@ -184,15 +184,15 @@ for l in range(ny+1):
 for l in range(ny+1):
 # ========= Left Side =============
 # --------------Normal dashpot: for S wave------------------
-    equalDOF(1+8*l, 850+2*l, 1,2)  # x dir
+    equalDOF(1+8*l, 850+2*l, 1)  # x dir
 # --------------Traction dashpot: for P wave------------------
-    equalDOF(1+8*l, 1052+2*l, 1,2)  # y dir
+    equalDOF(1+8*l, 1052+2*l, 2)  # y dir
 
 # ========= Right Side =============
 # --------------Normal dashpot: for S wave------------------
-    equalDOF(8+8*l, 1254+2*l, 1,2)  # x dir
+    equalDOF(8+8*l, 1254+2*l, 1)  # x dir
 # --------------Traction dashpot: for P wave------------------
-    equalDOF(8+8*l, 1456+2*l, 1,2)  # y dir
+    equalDOF(8+8*l, 1456+2*l, 1)  # y dir
 
 print("Finished creating all Side dashpot boundary conditions and equalDOF...")
 # ------------- Side dashpot material -----------------------
