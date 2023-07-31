@@ -221,9 +221,10 @@ timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# ------------- P wave -----------------------------
+# ------------- Top Force to modify Structure reflection ----------
 load(10151,0,-1)
 load(10153,0,-1)
+# ------------- P wave -----------------------------
 # for m in range(nx):
 #     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 # ------------- S wave -----------------------------
