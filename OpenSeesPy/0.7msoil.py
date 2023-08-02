@@ -32,9 +32,14 @@ points = [1, 0.0, 0.0,
           4, 0.0, 10.0]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
-# -------- Soil B.C ---------------
+# -------- Soil B.C  ---------------
+# ======== P wave =============
 for i in range(1,ny+1):
-    equalDOF(8*i+1,8*i+8,1)
+    equalDOF(8*i+1,8*i+8,1,2)
+
+# ======== S wave =============
+# for i in range(ny+1):
+#     equalDOF(8*i+1,8*i+8,1,2)
 
 # ============== Build Beam element (810~817) (ele 701~707) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
