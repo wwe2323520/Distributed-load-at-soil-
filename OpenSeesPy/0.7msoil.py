@@ -34,26 +34,8 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # -------- Soil B.C ---------------
 for i in range(1,ny+1):
-    equalDOF(8*i+1,8*i+8,1,2)
-# # S WAVE
-# fix(1,0,1)
-# fix(2,0,1)
-# fix(3,0,1)
-# fix(4,0,1)
-# fix(5,0,1)
-# fix(6,0,1)
-# fix(7,0,1)
-# fix(8,0,1)
+    equalDOF(8*i+1,8*i+8,1)
 
-# P WAVE
-fix(1,1,0)
-fix(2,1,0)
-fix(3,1,0)
-fix(4,1,0)
-fix(5,1,0)
-fix(6,1,0)
-fix(7,1,0)
-fix(8,1,0)
 # ============== Build Beam element (810~817) (ele 701~707) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
 for j in range(nx+1):
@@ -64,7 +46,7 @@ for j in range(nx+1):
 
 # ------------- Beam parameter -----------------
 A = 0.1*1
-E1 = 1e-06
+E1 = 1e+20
 Iz = (0.1*0.1*0.1)/12
 geomTransf('Linear', 1)
 
@@ -74,7 +56,7 @@ for k in range(nx):
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
     equalDOF(810+k,1+k,1,2)
-    
+
 #------------- Load Pattern ----------------------------
 timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
 # timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
@@ -99,11 +81,9 @@ eleLoad('-ele', 707, '-type','-beamUniform',20,0)
 # eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
 # eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
 
-# load(1, 0, 1)
-# load(2, 0, 1) 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
-# printModel('-ele',700)
+# # printModel('-ele',700)
 # #-------------- Recorder --------------------------------
 # recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
 # recorder('Element', '-file', 'ele501.out', '-time', '-ele',501, 'globalForce')
@@ -132,6 +112,7 @@ recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,
 recorder('Node', '-file', 'Velocity/node408.out', '-time', '-node',408,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
 
+# ============= Dynamic Analysis =============================================
 system("UmfPack")
 numberer("RCM")
 constraints("Transformation")
@@ -143,6 +124,6 @@ analyze(8000,1e-4)
 print("finish analyze:0 ~ 0.8s")
 
 printModel('-ele', 701,702,703,704,705,707)
-# --------- end to calculate time -------------
-end = time.time()
-print(end - start)
+# # --------- end to calculate time -------------
+# end = time.time()
+# print(end - start)
