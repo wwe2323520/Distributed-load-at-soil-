@@ -74,25 +74,13 @@ for l in range(nx+1):
     fix(835+2*l, 1, 1, 1)      # fixed end to let soil fix
 
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
-# --------------traction dashpot: for S wave------------------
-equalDOF(810,818,1)
-equalDOF(811,820,1)
-equalDOF(812,822,1)
-equalDOF(813,824,1)
-equalDOF(814,826,1)
-equalDOF(815,828,1)
-equalDOF(816,830,1)
-equalDOF(817,832,1)
 
+for k in range(nx+1):
+# --------------traction dashpot: for S wave------------------
+    equalDOF(1+k,818+2*k,1,2)
 # --------------Normal dashpot: for P wave------------------
-equalDOF(810,834,2)
-equalDOF(811,836,2)
-equalDOF(812,838,2)
-equalDOF(813,840,2)
-equalDOF(814,842,2)
-equalDOF(815,844,2)
-equalDOF(816,846,2)
-equalDOF(817,848,2)
+    equalDOF(1+k,834+2*k,1,2)
+
 
 print("Finished creating all dashpot boundary conditions and equalDOF...")
 # ------------------- ZeroLength to Build dashpot: Material ----------------------------------
@@ -141,28 +129,28 @@ element('zeroLength',816,849,848, '-mat',4000,'-dir',ydir)  # node 8: Left side
 
 print("Finished creating dashpot material and element...")
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-eleLoad('-ele', 701, '-type','-beamUniform',20,0)
-eleLoad('-ele', 702, '-type','-beamUniform',20,0)
-eleLoad('-ele', 703, '-type','-beamUniform',20,0)
-eleLoad('-ele', 704, '-type','-beamUniform',20,0)
-eleLoad('-ele', 705, '-type','-beamUniform',20,0)
-eleLoad('-ele', 706, '-type','-beamUniform',20,0)
-eleLoad('-ele', 707, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 701, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 702, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 703, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 704, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 705, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 706, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 707, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-# eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
