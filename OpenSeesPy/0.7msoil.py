@@ -32,15 +32,6 @@ points = [1, 0.0, 0.0,
           4, 0.0, 10.0]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
-# -------- Soil B.C  ---------------
-# ======== P wave =============
-for i in range(1,ny+1):
-    equalDOF(8*i+1,8*i+8,1,2)
-
-# ======== S wave =============
-# for i in range(ny+1):
-#     equalDOF(8*i+1,8*i+8,1,2)
-
 # ============== Build Beam element (810~817) (ele 701~707) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
 for j in range(nx+1):
@@ -50,17 +41,23 @@ for j in range(nx+1):
     fix(810+j,0,0,1)
 
 # ------------- Beam parameter -----------------
-A = 0.1*1
-E1 = 1e+20
+A = 0.1*1 #1e-4 0.1*1
+E1 = 1e+20 #1e+20/ 1e-5
 Iz = (0.1*0.1*0.1)/12
 geomTransf('Linear', 1)
 
 for k in range(nx):
     element('elasticBeamColumn', 701+k, 810+k, 811+k, A,E1,Iz, 1, '-release', 3)
 
+
+# =========== Soil B.C  ======================
+for i in range(ny+1):
+    equalDOF(8*i+1,8*i+8,1,2)
+
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
-    equalDOF(810+k,1+k,1,2)
+    equalDOF(1+k,810+k,1,2)
+
 
 #------------- Load Pattern ----------------------------
 timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
@@ -78,13 +75,13 @@ eleLoad('-ele', 706, '-type','-beamUniform',20,0)
 eleLoad('-ele', 707, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-# eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
@@ -100,6 +97,10 @@ recorder('Element', '-file', 'Stress/ele694.out', '-time', '-ele',694, 'material
 recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node401.out', '-time', '-node',401,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node801.out', '-time', '-node',801,'-dof',1,2,3,'vel')
+
+recorder('Node', '-file', 'Disp/node1.out', '-time', '-node',1,'-dof',1,2,3,'disp')
+# recorder('Node', '-file', 'Disp/node401.out', '-time', '-node',401,'-dof',1,2,3,'disp')
+# recorder('Node', '-file', 'Disp/node801.out', '-time', '-node',801,'-dof',1,2,3,'disp')
 # ------------- Center column -------------
 recorder('Element', '-file', 'Stress/ele4.out', '-time', '-ele',4, 'material ',1,'stresses')
 recorder('Element', '-file', 'Stress/ele354.out', '-time', '-ele',354, 'material ',1,'stresses')
@@ -117,6 +118,14 @@ recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,
 recorder('Node', '-file', 'Velocity/node408.out', '-time', '-node',408,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
 
+recorder('Node', '-file', 'Disp/node8.out', '-time', '-node',8,'-dof',1,2,3,'disp')
+# recorder('Node', '-file', 'Disp/node408.out', '-time', '-node',408,'-dof',1,2,3,'disp')
+# recorder('Node', '-file', 'Disp/node808.out', '-time', '-node',808,'-dof',1,2,3,'disp')
+
+# ============ Disp recorder(second layse) =========================
+recorder('Node', '-file', 'Disp/node9.out', '-time', '-node',9,'-dof',1,2,3,'disp')
+recorder('Node', '-file', 'Disp/node16.out', '-time', '-node',16,'-dof',1,2,3,'disp')
+
 # ============= Dynamic Analysis =============================================
 system("UmfPack")
 numberer("RCM")
@@ -128,7 +137,8 @@ analysis("Transient")
 analyze(8000,1e-4)
 print("finish analyze:0 ~ 0.8s")
 
-printModel('-ele', 701,702,703,704,705,707)
-# # --------- end to calculate time -------------
-# end = time.time()
-# print(end - start)
+# printModel('-ele', 701,702,703,704,705,707)
+# printModel('-node', 810, 811, 812, 813, 814, 815, 816, 817)
+# --------- end to calculate time -------------
+end = time.time()
+print(end - start)
