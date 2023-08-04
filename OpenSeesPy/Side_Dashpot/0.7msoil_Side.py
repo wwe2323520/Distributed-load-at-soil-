@@ -34,12 +34,6 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # # -------- Soil B.C ---------------
 # for i in range(ny+1):
-# # ------- Pwave -----------
-#     fix(8*i+1,1,0)
-#     fix(8*i+8,1,0)
-# # ------- S wave ------------
-#     # fix(8*i+1,0,1)
-#     # fix(8*i+8,0,1)
 #     # equalDOF(8*i+1,8*i+8,1,2)
 
 # ============== Build Beam element (810~817) (ele 701~707) =========================
@@ -61,7 +55,7 @@ for k in range(nx):
 
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
-    equalDOF(810+k,1+k,1,2)
+    equalDOF(1+k,810+k,1,2)
 
 # ============================ Beam element dashpot =============================== #
 for l in range(nx+1):
@@ -80,25 +74,11 @@ for l in range(nx+1):
     fix(835+2*l, 1, 1, 1)      # fixed end to let soil fix
 
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
+for k in range(nx+1):
 # --------------traction dashpot: for S wave------------------
-equalDOF(810,818,1)
-equalDOF(811,820,1)
-equalDOF(812,822,1)
-equalDOF(813,824,1)
-equalDOF(814,826,1)
-equalDOF(815,828,1)
-equalDOF(816,830,1)
-equalDOF(817,832,1)
-
+    equalDOF(1+k,818+2*k,1,2)
 # --------------Normal dashpot: for P wave------------------
-equalDOF(810,834,2)
-equalDOF(811,836,2)
-equalDOF(812,838,2)
-equalDOF(813,840,2)
-equalDOF(814,842,2)
-equalDOF(815,844,2)
-equalDOF(816,846,2)
-equalDOF(817,848,2)
+    equalDOF(1+k,834+2*k,1,2)
 
 print("Finished creating all Bottom dashpot boundary conditions and equalDOF...")
 # ------------------- ZeroLength to Build dashpot: Material ----------------------------------
@@ -237,28 +217,32 @@ for w in range(1,ny): #1,ny
 print("Finished creating Side dashpot material and element...")
 
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+# timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
+
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
+# # load(803,0,-1)
+# load(805,0,-2)
 # ------------- P wave -----------------------------
-eleLoad('-ele', 701, '-type','-beamUniform',20,0)
-eleLoad('-ele', 702, '-type','-beamUniform',20,0)
-eleLoad('-ele', 703, '-type','-beamUniform',20,0)
-eleLoad('-ele', 704, '-type','-beamUniform',20,0)
-eleLoad('-ele', 705, '-type','-beamUniform',20,0)
-eleLoad('-ele', 706, '-type','-beamUniform',20,0)
-eleLoad('-ele', 707, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 701, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 702, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 703, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 704, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 705, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 706, '-type','-beamUniform',20,0)
+# eleLoad('-ele', 707, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-# eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
+eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
 
 # load(1, 0, 1)
 # load(2, 0, 1) 
