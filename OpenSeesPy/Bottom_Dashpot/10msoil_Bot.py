@@ -34,13 +34,7 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # -------- Soil B.C (node 1~10201)---------------
 for i in range(ny+1):
-# ------- P wave -----------
-    # fix(101*i+1,  1,0)
-    # fix(101*i+101,1,0)
-# ------- S wave -----------
-    fix(101*i+1,  0,1)
-    fix(101*i+101,0,1)
-    # equalDOF(101*i+1,101*i+101,1,2)
+    equalDOF(101*i+1,101*i+101,1,2)
     
 # ============== Build Beam element (10202~10302) (ele 10001~10100) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
@@ -61,7 +55,7 @@ for k in range(nx):
 
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
-    equalDOF(10202+k,1+k,1,2)
+    equalDOF(1+k,10202+k,1,2)
 
 # ============================ Beam element dashpot =============================== #
 for l in range(nx+1):
@@ -126,20 +120,19 @@ for q in range(1,nx):
 
 print("Finished creating dashpot material and element...")
 #------------- Load Pattern ----------------------------
-# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-# for m in range(nx):
-#     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+for m in range(nx):
+    eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-for m in range(nx):
-    eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
-# load(1, 0, 1)
-# load(2, 0, 1) 
+# for m in range(nx):
+#     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
 # printModel('-ele',700)
