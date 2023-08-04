@@ -72,7 +72,7 @@ ele694 = rdnumpy(file3)
 vel1 = rdnumpy(file4)
 vel401 = rdnumpy(file5)
 vel801 = rdnumpy(file6)
-#----------------------------- Right column file -----------------------------------
+#----------------------------- Center column file -----------------------------------
 ele4 = rdnumpy(file7)
 ele354 = rdnumpy(file8)
 ele697 = rdnumpy(file9)
@@ -80,7 +80,7 @@ ele697 = rdnumpy(file9)
 vel4 = rdnumpy(file10)
 vel404 = rdnumpy(file11)
 vel804 = rdnumpy(file12)
-#----------------------------- Center column file -----------------------------------
+#----------------------------- Right column file -----------------------------------
 ele7 = rdnumpy(file13)
 ele357 = rdnumpy(file14)
 ele700 = rdnumpy(file15)
