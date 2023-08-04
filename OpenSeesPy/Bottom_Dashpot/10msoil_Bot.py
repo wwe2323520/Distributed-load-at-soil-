@@ -76,9 +76,9 @@ for l in range(nx+1):
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
 for l in range(nx+1):
 # --------------traction dashpot: for S wave------------------
-    equalDOF(10202+l, 10303+2*l, 1)
+    equalDOF(1+l, 10303+2*l, 1)
 # --------------Normal dashpot: for P wave------------------
-    equalDOF(10202+l, 10505+2*l, 2)
+    equalDOF(1+l, 10505+2*l, 2)
 
 print("Finished creating all dashpot boundary conditions and equalDOF...")
 
@@ -120,18 +120,18 @@ for q in range(1,nx):
 
 print("Finished creating dashpot material and element...")
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
 # ------------- P wave -----------------------------
-for m in range(nx):
-    eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+# for m in range(nx):
+#     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
-# for m in range(nx):
-#     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+for m in range(nx):
+    eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
