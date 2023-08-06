@@ -118,8 +118,8 @@ for q in range(1,nx): #1,nx
 print("Finished creating dashpot material and element...")
 
 #------------- Load Pattern ----------------------------
-timeSeries('Path',702, '-filePath','fp.txt','-dt',1e-4)
-# timeSeries('Path',702, '-filePath','fs.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
