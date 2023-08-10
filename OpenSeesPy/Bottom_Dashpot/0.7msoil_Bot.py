@@ -77,9 +77,9 @@ for l in range(nx+1):
 
 for k in range(nx+1):
 # --------------traction dashpot: for S wave------------------
-    equalDOF(1+k,818+2*k,1,2)
+    equalDOF(1+k,818+2*k,1)
 # --------------Normal dashpot: for P wave------------------
-    equalDOF(1+k,834+2*k,1,2)
+    equalDOF(1+k,834+2*k,2)
 
 
 print("Finished creating all dashpot boundary conditions and equalDOF...")
