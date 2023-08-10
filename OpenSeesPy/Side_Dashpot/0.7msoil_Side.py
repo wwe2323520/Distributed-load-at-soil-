@@ -76,9 +76,9 @@ for l in range(nx+1):
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
 for k in range(nx+1):
 # --------------traction dashpot: for S wave------------------
-    equalDOF(1+k,818+2*k,1,2)
+    equalDOF(1+k,818+2*k,1)
 # --------------Normal dashpot: for P wave------------------
-    equalDOF(1+k,834+2*k,1,2)
+    equalDOF(1+k,834+2*k,2)
 
 print("Finished creating all Bottom dashpot boundary conditions and equalDOF...")
 # ------------------- ZeroLength to Build dashpot: Material ----------------------------------
