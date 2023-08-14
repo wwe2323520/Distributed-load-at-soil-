@@ -257,9 +257,9 @@ for g in range(100):
 
 # ---------- For S wave : y direction ---------------------
 # ---------- Distributed at Left Side Beam ----------------------
-    eleLoad('-ele',1221+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
+    eleLoad('-ele',1221+g, '-type', '-beamUniform',0,-20,0)  # for local axes Wy
 # ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',1321+g, '-type', '-beamUniform',20,0)   # for local axes Wy
+    eleLoad('-ele',1321+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wy
     
 
 print("finish SideBeam Force InputFile Apply")
