@@ -227,13 +227,17 @@ for j in range(ny):
 
 # --------- Side Beam and Soil BC -----------------
 for j in range(101):
-    equalDOF(1+101*j,11515+j,1,2)
-    equalDOF(101+101*j,11616+j,1,2)
+    equalDOF(1+101*j, 11515+j,1,2)
+    equalDOF(101+101*j, 11616+j,1,2)
 
 # ------------ Side Load Pattern ------------------------------
 for g in range(100):
 # ------- timeSeries ID: 800~899 ----------------------
-    timeSeries('Path',800+g, '-filePath',f'column_txt_files/ele{1+g}.txt','-dt',1e-4)
+# ---------- No change sigmax to sigma y --------------------
+    # timeSeries('Path',800+g, '-filePath',f'column_txt_files/ele{1+g}.txt','-dt',1e-4)
+
+# ---------- change sigmax to sigma y --------------------
+    timeSeries('Path',800+g, '-filePath',f'Sigma_y/ele{1+g}.txt','-dt',1e-4)
     pattern('Plain',804+g, 800+g)
 # # ---------- For S wave : X direction ---------------------
 # # ---------- Distributed at Left Side Beam ----------------------
