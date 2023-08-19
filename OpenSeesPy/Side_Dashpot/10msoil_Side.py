@@ -61,7 +61,7 @@ for k in range(nx):
 
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
-    equalDOF(10202+k,1+k,1,2)
+    equalDOF(1+k,10202+k,1,2)
 
 # ============================ Beam element dashpot =============================== #
 for l in range(nx+1):
