@@ -61,7 +61,7 @@ for k in range(nx):
 
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
-    equalDOF(10202+k,1+k,1,2)
+    equalDOF(1+k,10202+k,1,2)
 
 # ============================ Beam element dashpot =============================== #
 for l in range(nx+1):
@@ -82,9 +82,9 @@ for l in range(nx+1):
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
 for l in range(nx+1):
 # --------------traction dashpot: for S wave------------------
-    equalDOF(10202+l, 10303+2*l, 1)
+    equalDOF(1+l, 10303+2*l, 1)
 # --------------Normal dashpot: for P wave------------------
-    equalDOF(10202+l, 10505+2*l, 2)
+    equalDOF(1+l, 10505+2*l, 2)
 
 print("Finished creating all Bottom dashpot boundary conditions and equalDOF...")
 
