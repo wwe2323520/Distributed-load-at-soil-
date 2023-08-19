@@ -5,10 +5,8 @@ Created on Tue Jun 27 11:02:11 2023
 @author: User
 """
 from openseespy.opensees import *
-import opsvis as ops
 import matplotlib.pyplot as plt
 import time
-import os 
 
 wipe()
 # -------- Start calculaate time -----------------
@@ -35,8 +33,8 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # # -------- Soil B.C (node 1~10201)---------------
 # for i in range(ny+1):
-#     # equalDOF(101*i+1,101*i+101,1,2)
-    
+#     equalDOF(101*i+1,101*i+101,1,2)
+
 # ============== Build Beam element (10202~10302) (ele 10001~10100) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
 for j in range(nx+1):
@@ -44,10 +42,9 @@ for j in range(nx+1):
     mass(10202+j,1,1,1)
 # -------- fix rotate dof ------------
     fix(10202+j,0,0,1)
-
 # ------------- Beam parameter -----------------
 A = 0.1*1
-E1 = 1e+20   #1e-06 (M/EI)
+E1 = 1e-06   #1e-06 (M/EI); 1e+20
 Iz = (0.1*0.1*0.1)/12
 geomTransf('Linear', 1)
 
@@ -58,7 +55,7 @@ for k in range(nx):
 for k in range(nx+1):
     equalDOF(1+k,10202+k,1,2)
 
-# ============================ Beam element dashpot =============================== #
+# ============================Bottom dashpot =============================== #
 for l in range(nx+1):
 # ------------- traction dashpot (node 10303,10304~ 10503,10504)-> for S wave------------
     node(10303+2*l, 0.1*l, 0.0)
@@ -66,7 +63,6 @@ for l in range(nx+1):
 # ---------- dashpot dir: Vs -> x dir ---------------------     
     fix(10303+2*l, 0, 1, 1)      # x dir dashpot　
     fix(10304+2*l, 1, 1, 1)      # fixed end to let soil fix
-
 # ------------- Normal dashpot (node 10505,10506~ 10705,10706)-> for P wave ------------
     node(10505+2*l, 0.1*l, 0.0)
     node(10506+2*l, 0.1*l, 0.0)
@@ -130,6 +126,7 @@ for o in range(ny+1):
 
     fix(10707+2*o, 0 ,1 ,1)
     fix(10708+2*o, 1 ,1 ,1)
+
 # --------- Traction dashpot (node 10909,10910~ 11109,11110)-> for P wave------------
     node(10909+2*o, 0.0, 0.1*o)
     node(10910+2*o, 0.0, 0.1*o)
@@ -184,7 +181,7 @@ uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
 #  ----------- Left side Normal: S wave ----------
 element('zeroLength',20202, 10708, 10707, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
 element('zeroLength',20302, 10908, 10907, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
-#  ----------- Left side Traction: P wave ----------
+# #  ----------- Left side Traction: P wave ----------
 element('zeroLength',20303, 10910, 10909, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
 element('zeroLength',20403, 11110, 11109, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
 
@@ -192,7 +189,7 @@ element('zeroLength',20403, 11110, 11109, '-mat',4005,'-dir',ydir)  # node 801 -
 element('zeroLength',20404, 11112, 11111, '-mat',4004,'-dir',xdir)  # node 101:  -> Smp
 element('zeroLength',20504, 11312, 11311, '-mat',4004,'-dir',xdir)  # node 10201:  -> Smp
 
-#  ----------- Right side Traction: P wave ----------
+# #  ----------- Right side Traction: P wave ----------
 element('zeroLength',20505, 11314, 11313, '-mat',4005,'-dir',ydir)  # node 101 -> Sms
 element('zeroLength',20605, 11514, 11513, '-mat',4005,'-dir',ydir)  # node 10201 -> Sms
 
@@ -214,10 +211,10 @@ for i in range(ny+1):
 # ----- Left Side: 11515~11615 -----------------
     node(11515+i, 0.0, 0.1*i)
     fix(11515+i, 0,0,1)
+
 # ----- Right Side: 11616~ 11716 -----------------
     node(11616+i, 10.0,0.1*i)
     fix(11616+i,0,0,1)
-
 # ------------  Beam Element: 20606 ~ 20705 / 20706 ~ 20805 ------------------
 for j in range(ny):
 # ----- Left Side Beam:20606 ~ 20705 -----------------
@@ -232,45 +229,42 @@ for j in range(101):
 
 # ------------ Side Load Pattern ------------------------------
 for g in range(100):
-# ------- timeSeries ID: 800~899 ----------------------
-# ---------- No change sigmax to sigma y --------------------
-    # timeSeries('Path',800+g, '-filePath',f'column_txt_files/ele{1+g}.txt','-dt',1e-4)
-
-# ---------- change sigmax to sigma y --------------------
-    timeSeries('Path',800+g, '-filePath',f'Sigma_y/ele{1+g}.txt','-dt',1e-4)
-    pattern('Plain',804+g, 800+g)
-# # ---------- For S wave : X direction ---------------------
-# # ---------- Distributed at Left Side Beam ----------------------
-#     eleLoad('-ele',20606+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
-# # ---------- Distributed at Right Side Beam ----------------------
-#     eleLoad('-ele',20706+g, '-type', '-beamUniform',20,0)   # for local axes Wy
-
-# ---------- For P wave : y direction ---------------------
+# ------- timeSeries ID: 800~899 ---------------------
+    timeSeries('Path',800+g, '-filePath',f'Sideforce_x/ele{1+g}.txt','-dt',1e-4)
+    pattern('Plain',804+g, 800+g) ;# 804~903
+# ----------x direction : Sideforce ---------------------
 # ---------- Distributed at Left Side Beam ----------------------
-    eleLoad('-ele',20606+g, '-type', '-beamUniform',0,-20,0)  # for local axes Wy
+    eleLoad('-ele',20606+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
 # ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',20706+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wy
-    
+    eleLoad('-ele',20706+g, '-type', '-beamUniform',20,0)   # for local axes Wy
+
+for g in range(100):
+# ------- timeSeries ID: 900~999 ----------------------
+    timeSeries('Path',900+g, '-filePath',f'Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+    pattern('Plain',904+g, 900+g) ;#  904~1003
+# ---------- y direction : Sideforce ---------------------
+# ---------- Distributed at Left Side Beam ----------------------
+    eleLoad('-ele',20606+g, '-type', '-beamUniform',0,20,0)  # for local axes Wy
+# ---------- Distributed at Right Side Beam ----------------------
+    eleLoad('-ele',20706+g, '-type', '-beamUniform',0,20,0)   # for local axes Wy
+
 print("finish SideBeam Force InputFile Apply")
 
-# 10151 10153
 #------------- Load Pattern ----------------------------
 timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 # timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
-# timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
-
 timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# load(10151,0,-1)
-# load(10152,0,-1)
 # ------------- P wave -----------------------------
 for m in range(nx):
     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+
 # ------------- S wave -----------------------------
 # for m in range(nx):
 #     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
-
+# load(1, 0, 1)
+# load(2, 0, 1) 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
 
@@ -301,12 +295,6 @@ recorder('Element', '-file', 'Stress/ele10000.out', '-time', '-ele',10000, 'mate
 recorder('Node', '-file', 'Velocity/node101.out', '-time', '-node',101,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node5151.out', '-time', '-node',5151,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node10201.out', '-time', '-node',10201,'-dof',1,2,3,'vel')
-
-# # ================= Create an output directory ===================
-# filename = 'Soil10m_Side_Swave'
-# if not os.path.exists(filename):
-#     os.makedirs(filename)
-# recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
 
 system("UmfPack")
 numberer("RCM")
