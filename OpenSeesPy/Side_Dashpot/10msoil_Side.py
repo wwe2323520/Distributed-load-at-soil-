@@ -5,7 +5,6 @@ Created on Tue Jun 27 11:02:11 2023
 @author: User
 """
 from openseespy.opensees import *
-import opsvis as ops
 import matplotlib.pyplot as plt
 import time
 
@@ -34,14 +33,8 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # # -------- Soil B.C (node 1~10201)---------------
 # for i in range(ny+1):
-# # ------- P wave -----------
-#     fix(101*i+1,  1,0)
-#     fix(101*i+101,1,0)
-# # ------- S wave -----------
-#     # fix(101*i+1,  0,1)
-#     # fix(101*i+101,0,1)
-#     # equalDOF(101*i+1,101*i+101,1,2)
-    
+#     equalDOF(101*i+1,101*i+101,1,2)
+
 # ============== Build Beam element (10202~10302) (ele 10001~10100) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
 for j in range(nx+1):
@@ -49,10 +42,9 @@ for j in range(nx+1):
     mass(10202+j,1,1,1)
 # -------- fix rotate dof ------------
     fix(10202+j,0,0,1)
-
 # ------------- Beam parameter -----------------
 A = 0.1*1
-E1 = 1e+20   #1e-06 (M/EI)
+E1 = 1e-06   #1e-06 (M/EI); 1e+20
 Iz = (0.1*0.1*0.1)/12
 geomTransf('Linear', 1)
 
@@ -63,7 +55,7 @@ for k in range(nx):
 for k in range(nx+1):
     equalDOF(1+k,10202+k,1,2)
 
-# ============================ Beam element dashpot =============================== #
+# ============================Bottom dashpot =============================== #
 for l in range(nx+1):
 # ------------- traction dashpot (node 10303,10304~ 10503,10504)-> for S wave------------
     node(10303+2*l, 0.1*l, 0.0)
@@ -71,7 +63,6 @@ for l in range(nx+1):
 # ---------- dashpot dir: Vs -> x dir ---------------------     
     fix(10303+2*l, 0, 1, 1)      # x dir dashpot　
     fix(10304+2*l, 1, 1, 1)      # fixed end to let soil fix
-
 # ------------- Normal dashpot (node 10505,10506~ 10705,10706)-> for P wave ------------
     node(10505+2*l, 0.1*l, 0.0)
     node(10506+2*l, 0.1*l, 0.0)
@@ -82,9 +73,9 @@ for l in range(nx+1):
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
 for l in range(nx+1):
 # --------------traction dashpot: for S wave------------------
-    equalDOF(10202+l, 10303+2*l, 1)
+    equalDOF(1+l, 10303+2*l, 1)
 # --------------Normal dashpot: for P wave------------------
-    equalDOF(10202+l, 10505+2*l, 2)
+    equalDOF(1+l, 10505+2*l, 2)
 
 print("Finished creating all Bottom dashpot boundary conditions and equalDOF...")
 
@@ -135,6 +126,7 @@ for o in range(ny+1):
 
     fix(10707+2*o, 0 ,1 ,1)
     fix(10708+2*o, 1 ,1 ,1)
+
 # --------- Traction dashpot (node 10909,10910~ 11109,11110)-> for P wave------------
     node(10909+2*o, 0.0, 0.1*o)
     node(10910+2*o, 0.0, 0.1*o)
@@ -214,63 +206,63 @@ for w in range(1,ny): #1,ny
 
 print("Finished creating Side dashpot material and element...")
 
-#------------- Load Pattern ----------------------------
-# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
-timeSeries('Linear',705)
+# #------------- Load Pattern ----------------------------
+# # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+# timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
+# timeSeries('Linear',705)
 
-pattern('Plain',703, 702)
-# ------------- P wave -----------------------------
+# pattern('Plain',703, 702)
+# # ------------- P wave -----------------------------
+# # for m in range(nx):
+# #     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
+
+# # ------------- S wave -----------------------------
 # for m in range(nx):
-#     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
-
-# ------------- S wave -----------------------------
-for m in range(nx):
-    eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
-# load(1, 0, 1)
-# load(2, 0, 1) 
-print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
+#     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+# # load(1, 0, 1)
+# # load(2, 0, 1) 
+# print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
 
-# #-------------- Recorder --------------------------------
-# recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
-# recorder('Element', '-file', 'ele501.out', '-time', '-ele',501, 'globalForce')
-# ------------- left column -------------
-recorder('Element', '-file', 'Stress/ele1.out', '-time', '-ele',1, 'material ',1,'stresses')
-recorder('Element', '-file', 'Stress/ele5001.out', '-time', '-ele',5001, 'material ',1,'stresses')
-recorder('Element', '-file', 'Stress/ele9901.out', '-time', '-ele',9901, 'material ',1,'stresses')
+# # #-------------- Recorder --------------------------------
+# # recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
+# # recorder('Element', '-file', 'ele501.out', '-time', '-ele',501, 'globalForce')
+# # ------------- left column -------------
+# recorder('Element', '-file', 'Stress/ele1.out', '-time', '-ele',1, 'material ',1,'stresses')
+# recorder('Element', '-file', 'Stress/ele5001.out', '-time', '-ele',5001, 'material ',1,'stresses')
+# recorder('Element', '-file', 'Stress/ele9901.out', '-time', '-ele',9901, 'material ',1,'stresses')
 
-recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
-recorder('Node', '-file', 'Velocity/node5051.out', '-time', '-node',5051,'-dof',1,2,3,'vel')
-recorder('Node', '-file', 'Velocity/node10101.out', '-time', '-node',10101,'-dof',1,2,3,'vel')
-# ------------- Center column -------------
-recorder('Element', '-file', 'Stress/ele51.out', '-time', '-ele',51, 'material ',1,'stresses')
-recorder('Element', '-file', 'Stress/ele5051.out', '-time', '-ele',5051, 'material ',1,'stresses')
-recorder('Element', '-file', 'Stress/ele9951.out', '-time', '-ele',9951, 'material ',1,'stresses')
+# recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node5051.out', '-time', '-node',5051,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node10101.out', '-time', '-node',10101,'-dof',1,2,3,'vel')
+# # ------------- Center column -------------
+# recorder('Element', '-file', 'Stress/ele51.out', '-time', '-ele',51, 'material ',1,'stresses')
+# recorder('Element', '-file', 'Stress/ele5051.out', '-time', '-ele',5051, 'material ',1,'stresses')
+# recorder('Element', '-file', 'Stress/ele9951.out', '-time', '-ele',9951, 'material ',1,'stresses')
 
-recorder('Node', '-file', 'Velocity/node51.out', '-time', '-node',51,'-dof',1,2,3,'vel')
-recorder('Node', '-file', 'Velocity/node5101.out', '-time', '-node',5101,'-dof',1,2,3,'vel')
-recorder('Node', '-file', 'Velocity/node10151.out', '-time', '-node',10151,'-dof',1,2,3,'vel')
-# ------------- Right column -------------
-recorder('Element', '-file', 'Stress/ele100.out', '-time', '-ele',100, 'material ',1,'stresses')
-recorder('Element', '-file', 'Stress/ele5100.out', '-time', '-ele',5100, 'material ',1,'stresses')
-recorder('Element', '-file', 'Stress/ele10000.out', '-time', '-ele',10000, 'material ',1,'stresses')
+# recorder('Node', '-file', 'Velocity/node51.out', '-time', '-node',51,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node5101.out', '-time', '-node',5101,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node10151.out', '-time', '-node',10151,'-dof',1,2,3,'vel')
+# # ------------- Right column -------------
+# recorder('Element', '-file', 'Stress/ele100.out', '-time', '-ele',100, 'material ',1,'stresses')
+# recorder('Element', '-file', 'Stress/ele5100.out', '-time', '-ele',5100, 'material ',1,'stresses')
+# recorder('Element', '-file', 'Stress/ele10000.out', '-time', '-ele',10000, 'material ',1,'stresses')
 
-recorder('Node', '-file', 'Velocity/node101.out', '-time', '-node',101,'-dof',1,2,3,'vel')
-recorder('Node', '-file', 'Velocity/node5151.out', '-time', '-node',5151,'-dof',1,2,3,'vel')
-recorder('Node', '-file', 'Velocity/node10201.out', '-time', '-node',10201,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node101.out', '-time', '-node',101,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node5151.out', '-time', '-node',5151,'-dof',1,2,3,'vel')
+# recorder('Node', '-file', 'Velocity/node10201.out', '-time', '-node',10201,'-dof',1,2,3,'vel')
 
-system("UmfPack")
-numberer("RCM")
-constraints("Transformation")
-integrator("Newmark", 0.5, 0.25)
-algorithm("Newton")
-test('EnergyIncr',1e-8, 200)
-analysis("Transient")
-analyze(8000,1e-4)
-print("finish analyze:0 ~ 0.8s")
+# system("UmfPack")
+# numberer("RCM")
+# constraints("Transformation")
+# integrator("Newmark", 0.5, 0.25)
+# algorithm("Newton")
+# test('EnergyIncr',1e-8, 200)
+# analysis("Transient")
+# analyze(8000,1e-4)
+# print("finish analyze:0 ~ 0.8s")
 
-# printModel('-ele', 701,702,703,704,705,707)
-# --------- end to calculate time -------------
-end = time.time()
-print(end - start)
+# # printModel('-ele', 701,702,703,704,705,707)
+# # --------- end to calculate time -------------
+# end = time.time()
+# print(end - start)
