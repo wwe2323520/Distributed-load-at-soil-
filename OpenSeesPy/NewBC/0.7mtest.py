@@ -41,7 +41,7 @@ block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 # # -------- Soil B.C ---------------
 # for i in range(ny+1):
-#     # equalDOF(8*i+1,8*i+8,1,2)
+#     equalDOF(8*i+1,8*i+8,1,2)
 
 # ============== Build Beam element (810~817) (ele 701~707) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
@@ -243,51 +243,52 @@ for j in range(101):
     equalDOF(1+8*j,1658+j,1,2)
     equalDOF(8+8*j,1759+j,1,2)
 # output_file = f"ele{col + 1}.txt"
-# ============================== P wave =================================
-# ------------ Side Load Pattern ------------------------------
-for g in range(100):
-# ------- timeSeries ID: 800~899 (global x force) ----------------------
-    timeSeries('Path',800+g, '-filePath',f'P_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
-    pattern('Plain',804+g, 800+g)
-# ---------- x direction : Sideforce ---------------------
-# ---------- Distributed at Left Side Beam ----------------------
-    eleLoad('-ele',1221+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
-# ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',1321+g, '-type', '-beamUniform',20,0)   # for local axes Wy
 
-for g in range(100):
-# ------- timeSeries ID: 900~999 (global y force)----------------------
-# ---------- y direction : Sideforce --------------------
-    timeSeries('Path',900+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
-    pattern('Plain',904+g, 900+g)
-# ---------- For P wave : y direction ---------------------
-# ---------- Distributed at Left Side Beam ----------------------
-    eleLoad('-ele',1221+g, '-type', '-beamUniform',0,20,0)  # for local axes Wx
-# ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',1321+g, '-type', '-beamUniform',0,20,0)   # for local axes Wx
-    
-# # ============================== S wave ======================================
+# # ============================== P wave =================================
 # # ------------ Side Load Pattern ------------------------------
 # for g in range(100):
-# # ------- timeSeries ID: 800~899 ----------------------
-#     timeSeries('Path',800+g, '-filePath',f'S_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
+# # ------- timeSeries ID: 800~899 (global x force) ----------------------
+#     timeSeries('Path',800+g, '-filePath',f'P_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
 #     pattern('Plain',804+g, 800+g)
 # # ---------- x direction : Sideforce ---------------------
 # # ---------- Distributed at Left Side Beam ----------------------
-#     eleLoad('-ele',1221+g, '-type', '-beamUniform',-20,0)  # for local axes Wy -
+#     eleLoad('-ele',1221+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
 # # ---------- Distributed at Right Side Beam ----------------------
-#     eleLoad('-ele',1321+g, '-type', '-beamUniform',+20,0)   # for local axes Wy +
+#     eleLoad('-ele',1321+g, '-type', '-beamUniform',20,0)   # for local axes Wy
 
 # for g in range(100):
-# # ------- timeSeries ID: 900~999 ----------------------
+# # ------- timeSeries ID: 900~999 (global y force)----------------------
 # # ---------- y direction : Sideforce --------------------
-#     timeSeries('Path',900+g, '-filePath',f'S_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+#     timeSeries('Path',900+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
 #     pattern('Plain',904+g, 900+g)
 # # ---------- For P wave : y direction ---------------------
 # # ---------- Distributed at Left Side Beam ----------------------
-#     eleLoad('-ele',1221+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx 
+#     eleLoad('-ele',1221+g, '-type', '-beamUniform',0,20,0)  # for local axes Wx
 # # ---------- Distributed at Right Side Beam ----------------------
-#     eleLoad('-ele',1321+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx
+#     eleLoad('-ele',1321+g, '-type', '-beamUniform',0,20,0)   # for local axes Wx
+    
+# ============================== S wave ======================================
+# ------------ Side Load Pattern ------------------------------
+for g in range(100):
+# ------- timeSeries ID: 800~899 ----------------------
+    timeSeries('Path',800+g, '-filePath',f'S_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
+    pattern('Plain',804+g, 800+g)
+# ---------- x direction : Sideforce ---------------------
+# ---------- Distributed at Left Side Beam ----------------------
+    eleLoad('-ele',1221+g, '-type', '-beamUniform',-20,0)  # for local axes Wy -
+# ---------- Distributed at Right Side Beam ----------------------
+    eleLoad('-ele',1321+g, '-type', '-beamUniform',+20,0)   # for local axes Wy +
+
+for g in range(100):
+# ------- timeSeries ID: 900~999 ----------------------
+# ---------- y direction : Sideforce --------------------
+    timeSeries('Path',900+g, '-filePath',f'S_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+    pattern('Plain',904+g, 900+g)
+# ---------- For P wave : y direction ---------------------
+# ---------- Distributed at Left Side Beam ----------------------
+    eleLoad('-ele',1221+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
+# ---------- Distributed at Right Side Beam ----------------------
+    eleLoad('-ele',1321+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
 print("finish SideBeam Force InputFile Apply")
 
 #------------- Load Pattern ----------------------------
