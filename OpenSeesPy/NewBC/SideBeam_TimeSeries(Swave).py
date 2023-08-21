@@ -46,12 +46,13 @@ eleSize = np.arange(0.0, 10, 0.1)
 
 for i in range(100):
     Cs_id[i] = round((eleSize[i]/cs)*10000,0)
-    
+
+Tstep = 1870
 for k in range(len(time)):
 # ------- For S wave ------------------------------------
     if k <= 1870:
         SVel_FF[k] = np.sin(ws*time[k])/(-rho*cs*A)
-        
+eta_s = rho*cs
 eta_p = rho*cp
 for i in range(100):
     csid = int(Cs_id[i])
@@ -60,6 +61,10 @@ for i in range(100):
         if j <= 1870:
             Sideforce_X[csid+j,i] = -eta_p*SVel_FF[j]*A ;#-
             Sideforce_Y[csid+j,i] = +np.sin(ws*time[j])  ;#+
+        if j >=Tstep and j < 2*Tstep:
+            Sideforce_X[csid+j,99-i] = -eta_p*SVel_FF[j-Tstep]*A ;#-
+            Sideforce_Y[csid+j,99-i] = -np.sin(ws*time[j])  ;#+
+            
 
 num_f = 100
 force_id = np.empty(num_f, dtype=object)
@@ -83,7 +88,7 @@ for h in range(100):    #101
 
 plt.grid(True)   
 plt.legend(loc='upper right',fontsize=10, ncol=5)
-plt.xlim(0,0.3)
+plt.xlim(0,0.7)
 plt.xticks(fontsize = 15)
 plt.yticks(fontsize = 15)
 
