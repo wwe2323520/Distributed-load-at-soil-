@@ -57,12 +57,11 @@ for i in range(100):#100
         if j <= 1000:
             Sideforce_y[10*i+j,i] = -eta_s*PVel_FF[j]*A
             Sideforce_x[10*i+j,i] = (nu/(1-nu))*np.sin(wp*time[j])
-        if j >= 1000 and j <= 2000:
-            # Sideforce_y[10*i+j,99-i] = -eta_s*PVel_FF[j-step]*A #-
-            # Sideforce_x[10*i+j,99-i] = -(nu/(1-nu))*np.sin(wp*time[j-step])
             
-            Sideforce_y[10*i+j,i] = +eta_s*PVel_FF[j-step]*A #-
-            Sideforce_x[10*i+j,i] = -(nu/(1-nu))*np.sin(wp*time[j-step])
+        if j >= 1000 and j <= 2000:
+            Sideforce_y[10*i+j,99-i] = -eta_s*PVel_FF[j-step]*A #-
+            Sideforce_x[10*i+j,99-i] = -(nu/(1-nu))*np.sin(wp*time[j-step]) #+
+        
 num_f = 100
 force_id = np.empty(num_f, dtype=object)
 for b in range(num_f):
