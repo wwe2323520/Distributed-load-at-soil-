@@ -76,6 +76,9 @@ E = (cp*cp)*rho*(1+nu)*(1-2*nu)/(1-nu)
 G = E/(2*(1+nu))
 
 cs = (G/rho)**(0.5) #m/s
+
+ForceX_Cofficient = (nu/(1-nu))
+ForceY_Cofficient = (cs/cp)
 for g in [i for i in range(100)]: #Nele
     to = int(10*g+5)
     for t in range(len(total_time)):
@@ -83,20 +86,17 @@ for g in [i for i in range(100)]: #Nele
             # wave1[to+t,g] += XIn[to+t,g]
             # wave1[to+t,g] = (wave1[to+t,g] + XIn[to+t,g])  # original wave transport
 # ----- Pwave sigma xx --------------------------
-            # PSideforce_x[to+t,g] = (nu/(1-nu))*(PSideforce_x[to+t,g] + XIn[to+t,g])
-            PSideforce_x[to+t,g] = PSideforce_x[to+t,g]+((nu/(1-nu))* XIn[to+t,g])
+            PSideforce_x[to+t,g] = PSideforce_x[to+t,g] + (ForceX_Cofficient *XIn[to+t,g])
 # ----- Pwave eta_S*(Vy) --------------------------            
-            # PSideforce_y[to+t,g] = +(cs/cp)*(PSideforce_y[to+t,g] + XIn[to+t,g])
-            PSideforce_y[to+t,g] = PSideforce_y[to+t,g] +((cs/cp)* XIn[to+t,g])
+            PSideforce_y[to+t,g] = PSideforce_y[to+t,g] + (ForceY_Cofficient *XIn[to+t,g])
+    
         if t >= 1000 and t < 2000:
             # wave1[to+t,99-g] += XOut[t-to,99-g]
             # wave1[to+t,99-g] = wave1[to+t,99-g] + XOut[t-to,99-g]   # original wave transport
 # ----- Pwave sigma xx --------------------------
-            # PSideforce_x[to+t,99-g] = (nu/(1-nu))*(PSideforce_x[to+t,99-g] - XOut[t-to,99-g])
-            PSideforce_x[to+t,99-g] = PSideforce_x[to+t,99-g]+(-(nu/(1-nu))*XOut[t-to,99-g])
+            PSideforce_x[to+t,99-g] = PSideforce_x[to+t,99-g] + (-ForceX_Cofficient *XOut[t-to,99-g])
 # ----- Pwave eta_S*(Vy) --------------------------            
-            # PSideforce_y[to+t,99-g] = +(cs/cp)*(PSideforce_y[to+t,99-g] + XOut[t-to,99-g])
-            PSideforce_y[to+t,99-g] = PSideforce_y[to+t,99-g] +((cs/cp)* XOut[t-to,99-g])
+            PSideforce_y[to+t,99-g] = PSideforce_y[to+t,99-g] + (ForceY_Cofficient *XOut[t-to,99-g])
             
             
             
@@ -127,7 +127,8 @@ for col in range(num_cols):
 # ------- wave put into the timeSeries ---------------   
 plt.figure()
 # plt.title('Wave Transport',fontsize = 18)   
-plt.title(r'SideForce $\sigma_{xx}$',fontsize = 18)         
+# plt.title(r'SideForce $\sigma_{xx}$',fontsize = 18)         
+plt.title(r'SideForce $\eta_{s}v_y$',fontsize = 18)   
 plt.xlabel("tns(s)",fontsize=18)
 # ----- Pwave sigma xx --------------------------
 # plt.plot(total_time,PSideforce_x[:,0],label ='Ele 1', marker='o', markevery=100)
