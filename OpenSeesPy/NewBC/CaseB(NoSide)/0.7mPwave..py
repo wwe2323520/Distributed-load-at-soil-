@@ -64,7 +64,7 @@ for k in range(nx):
 for k in range(nx+1):
     equalDOF(1+k,810+k,1,2)
 
-# ============================Bottom Beam element dashpot =============================== #
+# ============================ Beam element dashpot =============================== #
 for l in range(nx+1):
 # ------------- traction dashpot (node 818,819~ 832,833)-> for S wave------------
     node(818+2*l, 0.1*l, 0.0)
@@ -134,6 +134,7 @@ element('zeroLength',816,849,848, '-mat',4000,'-dir',ydir)  # node 8: Left side
 
 print("Finished creating Bottom dashpot material and element...")
 
+
 # # ============== Soil Left and Right "Side" Dashpot =====================================
 # for l in range(ny+1):
 # # ========= Left Side =============
@@ -165,7 +166,7 @@ print("Finished creating Bottom dashpot material and element...")
 # # ---------- dashpot dir: Vp -> y dir ---------------------     
 #     fix(1456+2*l, 1, 0, 1)      # y dir dashpot　
 #     fix(1457+2*l, 1, 1, 1)      # fixed end to let soil fix
-
+    
 # # ------ connect dashpot with Soil side layer :Vs with x dir / Vp with y-dir --------------
 # for l in range(ny+1):
 # # ========= Left Side =============
@@ -230,7 +231,6 @@ for i in range(ny+1):
 # ----- Right Side: 1759~1859 -----------------
     node(1759+i,0.7,0.1*i)
     fix(1759+i,0,0,1)
-
 # ------------  Beam Element: 1221 ~ 1320 / 1321 ~ 1420 ------------------
 for j in range(ny):
 # ----- Left Side Beam:1221 ~ 1320 -----------------
@@ -242,7 +242,6 @@ for j in range(ny):
 for j in range(101):
     equalDOF(1+8*j,1658+j,1,2)
     equalDOF(8+8*j,1759+j,1,2)
-
 # output_file = f"ele{col + 1}.txt"
 
 # ============================== P wave =================================
@@ -257,16 +256,16 @@ for g in range(100):
 # ---------- Distributed at Right Side Beam ----------------------
     eleLoad('-ele',1321+g, '-type', '-beamUniform',20,0)   # for local axes Wy
 
-for g in range(100):
-# ------- timeSeries ID: 900~999 (global y force)----------------------
-# ---------- y direction : Sideforce --------------------
-    timeSeries('Path',900+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
-    pattern('Plain',904+g, 900+g)
-# ---------- For P wave : y direction ---------------------
-# ---------- Distributed at Left Side Beam ----------------------
-    eleLoad('-ele',1221+g, '-type', '-beamUniform',0,20,0)  # for local axes Wx
-# ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',1321+g, '-type', '-beamUniform',0,20,0)   # for local axes Wx
+# for g in range(100):
+# # ------- timeSeries ID: 900~999 (global y force)----------------------
+# # ---------- y direction : Sideforce --------------------
+#     timeSeries('Path',900+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+#     pattern('Plain',904+g, 900+g)
+# # ---------- For P wave : y direction ---------------------
+# # ---------- Distributed at Left Side Beam ----------------------
+#     eleLoad('-ele',1221+g, '-type', '-beamUniform',0,20,0)  # for local axes Wx
+# # ---------- Distributed at Right Side Beam ----------------------
+#     eleLoad('-ele',1321+g, '-type', '-beamUniform',0,20,0)   # for local axes Wx
     
 # # ============================== S wave ======================================
 # # ------------ Side Load Pattern ------------------------------
@@ -300,7 +299,7 @@ timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 # timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# load(803,0,-1)
+# # load(803,0,-1)
 # load(805,0,-2)
 # ------------- P wave -----------------------------
 eleLoad('-ele', 701, '-type','-beamUniform',20,0)
@@ -352,6 +351,12 @@ recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,
 recorder('Node', '-file', 'Velocity/node408.out', '-time', '-node',408,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
 
+# # ================= Create an output directory ===================
+# filename = 'soil0.7m_SideFoece_Swave'
+# if not os.path.exists(filename):
+#     os.makedirs(filename)
+# recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
+
 system("UmfPack")
 numberer("RCM")
 constraints("Transformation")
@@ -362,7 +367,7 @@ analysis("Transient")
 analyze(8000,1e-4)
 print("finish analyze:0 ~ 0.8s")
 
-# # printModel('-ele', 701,702,703,704,705,707)
+# printModel('-ele', 701,702,703,704,705,707)
 # --------- end to calculate time -------------
 end = time.time()
 print(end - start)
