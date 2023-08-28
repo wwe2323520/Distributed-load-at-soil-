@@ -64,7 +64,7 @@ for k in range(nx):
 for k in range(nx+1):
     equalDOF(1+k,810+k,1,2)
 
-# ============================Bottom Beam element dashpot =============================== #
+# ============================ Beam element dashpot =============================== #
 for l in range(nx+1):
 # ------------- traction dashpot (node 818,819~ 832,833)-> for S wave------------
     node(818+2*l, 0.1*l, 0.0)
@@ -134,6 +134,7 @@ element('zeroLength',816,849,848, '-mat',4000,'-dir',ydir)  # node 8: Left side
 
 print("Finished creating Bottom dashpot material and element...")
 
+
 # # ============== Soil Left and Right "Side" Dashpot =====================================
 # for l in range(ny+1):
 # # ========= Left Side =============
@@ -165,7 +166,7 @@ print("Finished creating Bottom dashpot material and element...")
 # # ---------- dashpot dir: Vp -> y dir ---------------------     
 #     fix(1456+2*l, 1, 0, 1)      # y dir dashpot　
 #     fix(1457+2*l, 1, 1, 1)      # fixed end to let soil fix
-
+    
 # # ------ connect dashpot with Soil side layer :Vs with x dir / Vp with y-dir --------------
 # for l in range(ny+1):
 # # ========= Left Side =============
@@ -230,7 +231,6 @@ for i in range(ny+1):
 # ----- Right Side: 1759~1859 -----------------
     node(1759+i,0.7,0.1*i)
     fix(1759+i,0,0,1)
-
 # ------------  Beam Element: 1221 ~ 1320 / 1321 ~ 1420 ------------------
 for j in range(ny):
 # ----- Left Side Beam:1221 ~ 1320 -----------------
@@ -242,7 +242,6 @@ for j in range(ny):
 for j in range(101):
     equalDOF(1+8*j,1658+j,1,2)
     equalDOF(8+8*j,1759+j,1,2)
-
 # output_file = f"ele{col + 1}.txt"
 
 # # ============================== P wave =================================
@@ -300,7 +299,7 @@ timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
 # timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# load(803,0,-1)
+# # load(803,0,-1)
 # load(805,0,-2)
 # # ------------- P wave -----------------------------
 # eleLoad('-ele', 701, '-type','-beamUniform',20,0)
@@ -327,33 +326,33 @@ print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 #-------------- Recorder --------------------------------
 # recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
 # recorder('Element', '-file', 'ele501.out', '-time', '-ele',501, 'globalForce')
-# # ------------- left column -------------
-# recorder('Element', '-file', 'Stress/ele1.out', '-time', '-ele',1, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele351.out', '-time', '-ele',351, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele694.out', '-time', '-ele',694, 'material ',1,'stresses')
+# ------------- left column -------------
+recorder('Element', '-file', 'Stress/ele1.out', '-time', '-ele',1, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele351.out', '-time', '-ele',351, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele694.out', '-time', '-ele',694, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node401.out', '-time', '-node',401,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node801.out', '-time', '-node',801,'-dof',1,2,3,'vel')
-# # ------------- Center column -------------
-# recorder('Element', '-file', 'Stress/ele4.out', '-time', '-ele',4, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele354.out', '-time', '-ele',354, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele697.out', '-time', '-ele',697, 'material ',1,'stresses')
+recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node401.out', '-time', '-node',401,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node801.out', '-time', '-node',801,'-dof',1,2,3,'vel')
+# ------------- Center column -------------
+recorder('Element', '-file', 'Stress/ele4.out', '-time', '-ele',4, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele354.out', '-time', '-ele',354, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele697.out', '-time', '-ele',697, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node4.out', '-time', '-node',4,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node404.out', '-time', '-node',404,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node804.out', '-time', '-node',804,'-dof',1,2,3,'vel')
-# # ------------- Right column -------------
-# recorder('Element', '-file', 'Stress/ele7.out', '-time', '-ele',7, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele357.out', '-time', '-ele',357, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele700.out', '-time', '-ele',700, 'material ',1,'stresses')
+recorder('Node', '-file', 'Velocity/node4.out', '-time', '-node',4,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node404.out', '-time', '-node',404,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node804.out', '-time', '-node',804,'-dof',1,2,3,'vel')
+# ------------- Right column -------------
+recorder('Element', '-file', 'Stress/ele7.out', '-time', '-ele',7, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele357.out', '-time', '-ele',357, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele700.out', '-time', '-ele',700, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node408.out', '-time', '-node',408,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node408.out', '-time', '-node',408,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
 
-# ================= Create an output directory ===================
-# filename = 'soil0.7m_Pwave_NoSide'
+# # ================= Create an output directory ===================
+# filename = 'soil0.7m_SideFoece_Swave'
 # if not os.path.exists(filename):
 #     os.makedirs(filename)
 # recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
@@ -368,7 +367,7 @@ analysis("Transient")
 analyze(8000,1e-4)
 print("finish analyze:0 ~ 0.8s")
 
-# # printModel('-ele', 701,702,703,704,705,707)
+# printModel('-ele', 701,702,703,704,705,707)
 # --------- end to calculate time -------------
 end = time.time()
 print(end - start)
