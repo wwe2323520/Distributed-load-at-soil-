@@ -42,7 +42,7 @@ def diff_val(xvalue: float, absvalue: float) -> float:
 
 cs_id = []
 count = 0
-for j in [float(0.05 + 0.1*i) for i in range(100)]:
+for j in [float(0.05 + 0.1*i) for i in range(100)]: #Nele
     for i in range(Nt-1):
         lv = x[i]
         rv = x[i+1]
@@ -60,16 +60,16 @@ for j in [float(0.05 + 0.1*i) for i in range(100)]:
             break
 cs_id = np.array(cs_id, dtype = int)
 # print(count)
-tns
+
 total_Transport = np.arange(0.0,30.1, (10/1870))
 
 Nele = 100
-dy = L/Nele # 0.1
-dx= 10/1870 # 0.01 each element have 10 step dx
+
+dx= 10/1870 # total soil have 1870 step in Cs from 0-10m
 # ---------- Incoming wave ------------------
 XIn = np.zeros((len(total_Transport),100))
 # X = 0~10 m 
-for j in range(100): #Nele
+for j in range(Nele): #100
     # tin = time[input_disp+10*j]
     csid = cs_id[j]
     tin = time[cs_id[j]]
@@ -83,7 +83,7 @@ for j in range(100): #Nele
 XOut = np.zeros((len(total_Transport),100))
 # Output_disp = 5 # 9.95
 # X = 10m ~ 20m
-for j in range(100):# Nele
+for j in range(Nele):# 100
     # tout = time[Output_disp+10*j] 
     csid = cs_id[99-j]
     tout = time[cs_id[j]]
@@ -118,46 +118,46 @@ for g in range(100): #Nele
 # ----- Swave sigma_yy --------------------------
             SSideforce_y[to+t,99-g] = SSideforce_y[to+t,99-g] + (-XOut[t-to,99-g])
 
-# ---- Output matrix eace column to txt file --------------
-num_rows, num_cols = SSideforce_y.shape# 8001,100
-# 建立資料夾
-# ---------- Pwave ---------------
-S_folder_name_x = "S_Sideforce_x"
-S_folder_name_y = "S_Sideforce_y"
+# # ---- Output matrix eace column to txt file --------------
+# num_rows, num_cols = SSideforce_y.shape# 8001,100
+# # 建立資料夾
+# # ---------- Pwave ---------------
+# S_folder_name_x = "S_Sideforce_x"
+# S_folder_name_y = "S_Sideforce_y"
 
-os.makedirs(S_folder_name_x, exist_ok=True)
-for col in range(num_cols):
-    column_values = SSideforce_x[:, col]
-    output_file = f"ele{col + 1}.txt"
-    with open(os.path.join(S_folder_name_x, output_file), 'w') as f:
-        for value in column_values:
-            f.write(f"{value}\n")
+# os.makedirs(S_folder_name_x, exist_ok=True)
+# for col in range(num_cols):
+#     column_values = SSideforce_x[:, col]
+#     output_file = f"ele{col + 1}.txt"
+#     with open(os.path.join(S_folder_name_x, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
 
-os.makedirs(S_folder_name_y, exist_ok=True)
-# 逐一建立txt檔案並放入資料夾
-for col in range(num_cols):
-    column_values = SSideforce_y[:, col]
-    output_file = f"ele{col + 1}.txt"
-    with open(os.path.join(S_folder_name_y, output_file), 'w') as f:
-        for value in column_values:
-            f.write(f"{value}\n")
+# os.makedirs(S_folder_name_y, exist_ok=True)
+# # 逐一建立txt檔案並放入資料夾
+# for col in range(num_cols):
+#     column_values = SSideforce_y[:, col]
+#     output_file = f"ele{col + 1}.txt"
+#     with open(os.path.join(S_folder_name_y, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
             
 # ------- wave put into the timeSeries ---------------   
 plt.figure()
 # plt.title('Wave Transport',fontsize = 18)   
  
-plt.title(r'SideForce $\sigma_{xy}$',fontsize = 18)         
-# plt.title(r'SideForce $\eta_{p}v_x$',fontsize = 18)   
+# plt.title(r'SideForce $\sigma_{xy}$',fontsize = 18)         
+plt.title(r'SideForce $\eta_{p}v_x$',fontsize = 18)   
 plt.xlabel("tns(s)",fontsize=18)
 # # ----- Swave eta_p*(Vx) -------------
-# plt.plot(total_time,SSideforce_x[:,0],label ='Ele 1', marker='o', markevery=100)
-# plt.plot(total_time,SSideforce_x[:,50],label ='Ele 51', marker='x', markevery=100)
-# plt.plot(total_time,SSideforce_x[:,99],label ='Ele 100', marker='d', markevery=100)
+plt.plot(total_time,SSideforce_x[:,0],label ='Element 1', marker='o', markevery=100)
+plt.plot(total_time,SSideforce_x[:,50],label ='Element 51', marker='x', markevery=100)
+plt.plot(total_time,SSideforce_x[:,99],label ='Element 100', marker='d', markevery=100)
 
 # ----- Swave sigma_xy -------------
-plt.plot(total_time,SSideforce_y[:,0],label ='Ele 1', marker='o', markevery=100)
-plt.plot(total_time,SSideforce_y[:,50],label ='Ele 51', marker='x', markevery=100)
-plt.plot(total_time,SSideforce_y[:,99],label ='Ele 100', marker='d', markevery=100)
+# plt.plot(total_time,SSideforce_y[:,0],label ='Element 1', marker='o', markevery=100)
+# plt.plot(total_time,SSideforce_y[:,50],label ='Element 51', marker='x', markevery=100)
+# plt.plot(total_time,SSideforce_y[:,99],label ='Element 100', marker='d', markevery=100)
 
 plt.legend(loc='upper right',fontsize=18)
 plt.xticks(fontsize = 15)
@@ -165,32 +165,32 @@ plt.yticks(fontsize = 15)
 plt.xlim(0.0, 0.60)
 plt.grid(True)
 # ========== Incoming Wave ==========================================
-# plt.figure()
-# plt.title('Incoming Wave',fontsize = 18)
-# plt.xlabel("x(m)",fontsize=18)
-# plt.ylabel(r"$y=sin\omega(x-c_{s}t)$",fontsize=18)
-# plt.plot(total_Transport,XIn[:,0],label ='Incoming 0',marker='o', markevery=100)
-# plt.plot(total_Transport,XIn[:,50],label ='Incoming 50',marker='d', markevery=100)
-# plt.plot(total_Transport,XIn[:,99],label ='Incoming 100',marker='x', markevery=100)
-# plt.legend(loc='upper right',fontsize=18)
-# plt.xlim(0,20.0)
-# plt.xticks(fontsize = 15)
-# plt.yticks(fontsize = 15)
-# plt.grid(True)
+plt.figure()
+plt.title('Incoming Wave',fontsize = 18)
+plt.xlabel("x(m)",fontsize=18)
+plt.ylabel(r"$y=sin\omega(x-c_{s}t)$",fontsize=18)
+plt.plot(total_Transport,XIn[:,0],label ='Element 1',marker='o', markevery=100)
+plt.plot(total_Transport,XIn[:,50],label ='Element 50',marker='d', markevery=100)
+plt.plot(total_Transport,XIn[:,99],label ='Element 100',marker='x', markevery=100)
+plt.legend(loc='upper right',fontsize=18)
+plt.xlim(0,20.0)
+plt.xticks(fontsize = 15)
+plt.yticks(fontsize = 15)
+plt.grid(True)
 
 # ========== Outcoming Wave ==========================================
-# plt.figure()
-# plt.title('Outcoming Wave',fontsize = 18)
-# plt.xlabel("x(m)",fontsize=18)
-# plt.ylabel(r"$y=sin\omega(x+c_{s}t)$",fontsize=18)
-# plt.plot(total_Transport,XOut[:,0],label ='Outcoming 0',marker='o', markevery=100)
-# plt.plot(total_Transport,XOut[:,50],label ='Outcoming 50',marker='d', markevery=100)
-# plt.plot(total_Transport,XOut[:,99],label ='Outcoming 100',marker='x', markevery=100)
-# plt.xlim(0,20.0)
+plt.figure()
+plt.title('Outcoming Wave',fontsize = 18)
+plt.xlabel("x(m)",fontsize=18)
+plt.ylabel(r"$y=sin\omega(x+c_{s}t)$",fontsize=18)
+plt.plot(total_Transport,XOut[:,0],label ='Element 1',marker='o', markevery=100)
+plt.plot(total_Transport,XOut[:,50],label ='Element 50',marker='d', markevery=100)
+plt.plot(total_Transport,XOut[:,99],label ='Element 100',marker='x', markevery=100)
+plt.xlim(0,20.0)
 
-# plt.legend(loc='upper right',fontsize=18)
-# plt.xticks(fontsize = 15)
-# plt.yticks(fontsize = 15)
-# plt.grid(True)
+plt.legend(loc='upper right',fontsize=18)
+plt.xticks(fontsize = 15)
+plt.yticks(fontsize = 15)
+plt.grid(True)
 
         
