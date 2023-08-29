@@ -1,148 +1,194 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Aug 14 14:31:26 2023
+Created on Sun Aug 27 22:41:51 2023
 
 @author: User
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import os
-plt.rc('font', family= 'Times New Roman')
+
 pi = np.pi
 
-num_f = 100
-eleforce_id = np.empty(num_f, dtype=object)
-for a in range(num_f):
-    eleforce_id[a] = f"ele{a+1}"    #r"$f_{%dx}$"%(2*b+1) # f"u{b+1}x"
-    
-num_N = 101
-Nodeid = np.empty(num_N, dtype=object)
-for b in range(num_N):
-    Nodeid[b] = f"Node{8*b+1}"    #r"$f_{%dx}$"%(2*b+1) # f"u{b+1}x"
-#----- SurfeceLoad wave propogate -----------
-#Give p-wave vel 
-cp = 100  # m/s 
-
-nu = 0.3
-rho = 2020 #1600 kg/m3  ; =1.6 ton/m3 
+cp = 100.0 # m/s
+L = 10 # m(Soil_Depth)
+# fp = cp/L 
+# Tp = 1/fp
+nu = 0.3  #  0.3 -> (epsilon_z /=0)
+rho = 2020 #1600 kg/m3  ; =1.6 ton/m3  
 E = (cp*cp)*rho*(1+nu)*(1-2*nu)/(1-nu)
 G = E/(2*(1+nu))
-
 cs = (G/rho)**(0.5) #m/s
-Lp  = 10  # 10 m  2
 
-fp = cp/Lp
-Tp = 1/fp
-wp = (2*pi)/Tp
-# print(f"lamb_cp= {Lp} ;fcp= {fp} ;Tp= {Tp} ;wp= {wp}")
-A = 0.1*1
+w =  pi/5 # 0 to 10 = 0 to 2*pi => x = pi/5
 
-#calaulate wave length
-fcs = cs / Lp
-Ts = 1/ fcs
-ws = 2*pi/ Ts
+tns = L/cs # Swave transport to surface time
 
+time = np.arange(0.0,0.1871,1e-4)
+Nt = len(time)
+#----------- Soil Coordinate --------------
+x = cs*time #m
+def Incoming_wave(x,t):
+    return np.sin(w*(x-cs*t))
 
-time = np.arange(0,0.8001,1e-4)
+def Outcoming_wave(x,t):
+    return np.sin(w*(x+cs*t))
 
-SVel_FF = np.zeros(len(time))
-# -------- S WAVE -----------------
-Nodeforce_X = np.zeros((len(time),101))
-Sideforce_Y = np.zeros((len(time),100))
+#---------------- To decide beam Center node id ----------------------
+def diff_val(xvalue: float, absvalue: float) -> float:
+    return abs(xvalue-absvalue)
 
-Cs_id = np.zeros(100)
-eleSize = np.arange(0.0, 10, 0.1)
+cs_id = []
+count = 0
+for j in [float(0.05 + 0.1*i) for i in range(100)]: #Nele
+    for i in range(Nt-1):
+        lv = x[i]
+        rv = x[i+1]
+        judge_value = j
+        if (lv <= judge_value and judge_value <= rv):
+            rdval = diff_val(rv, judge_value)
+            ldval = diff_val(lv, judge_value)
+            if (rdval < ldval):
+                cs_id.append(i+1)
+                # print(f"judge value = {judge_value}, rval = {rv}, i = {i+1}")
+            else:
+                cs_id.append(i)
+                # print(f"judge value = {judge_value}, lval = {lv}, i = {i}")
+            count += 1
+            break
+cs_id = np.array(cs_id, dtype = int)
+# print(count)
 
-for i in range(100):
-    Cs_id[i] = round((eleSize[i]/cs)*10000,0)
+total_Transport = np.arange(0.0,30.1, (10/1870))
 
-Tstep = 1870
-for k in range(len(time)):
-# ------- For S wave ------------------------------------
-    if k <= 1870:
-        SVel_FF[k] = np.sin(ws*time[k])/(-rho*cs*A)
+Nele = 100
+
+dx= 10/1870 # total soil have 1870 step in Cs from 0-10m
+# ---------- Incoming wave ------------------
+XIn = np.zeros((len(total_Transport),100))
+# X = 0~10 m 
+for j in range(Nele): #100
+    csid = cs_id[j]
+    tin = time[cs_id[j]]
+    x0 = x[csid]  # 0.05,0.15,0.25....,9.95
+    # print(x0,cs*tin)
+    for i in range(1870):      
+        xii = x0 + dx*i 
+        XIn[cs_id[j]+i,j] = Incoming_wave(xii,tin)  #from 0.05m to 9.95m
         
-# =============== Side Beam Force: Distributed Load ========================
-for i in range(100):
-    csid = int(Cs_id[i])
-    for j in range(len(time)): #len(time)
-# ------- For S wave ------------------------------------
-        if j <= 1870:
-            # Sideforce_X[csid+j,i] = -eta_p*SVel_FF[j]*A ;#-
-            Sideforce_Y[csid+j,i] = +np.sin(ws*time[j])  ;#+
-        if j >=Tstep and j < 2*Tstep:
-            # Sideforce_X[csid+j,99-i] = -eta_p*SVel_FF[j-Tstep]*A ;#-
-            Sideforce_Y[csid+j,99-i] = -np.sin(ws*time[j])  ;#+
+# ---------- Outcoming wave -------------------
+XOut = np.zeros((len(total_Transport),100))
+# Output_disp = 5 # 9.95
+# X = 10m ~ 20m
+for j in range(Nele):# 100
+    csid = cs_id[99-j]
+    tout = time[cs_id[j]]
+    x0 = x[csid] 
+    # print(cs*tout,x0)
+    for i in range(1870):      
+        xoo = x0 + dx*i 
+        XOut[csid+i,99-j] = Outcoming_wave(xoo,tout)  #from 9.95m to 0.05m       
+        
+total_time = np.arange(0.0,0.6001,1e-4)
+Swave = np.zeros((len(total_time),Nele))
+
+# ===== New BC Sideforce on Left and Right ==============
+SSideforce_x = np.zeros((len(total_time),Nele))
+SSideforce_y = np.zeros((len(total_time),Nele))
+
+ForceX_Cofficient = (cp/cs)
+# ===== Input Incoming Wave and Outcoming Wave to wave1 =======================
+for g in range(100): #Nele
+    to = cs_id[g]
+    for t in range(len(total_time)):
+        if t < 1870:
+            # Swave[to+t,g] = (Swave[to+t,g] + XIn[to+t,g])  # original wave transport
+# ----- Swave eta_p*(Vx) --------------------------
+            SSideforce_x[to+t,g] = SSideforce_x[to+t,g] + (ForceX_Cofficient *XIn[to+t,g])
+# ----- Swave sigma_yy --------------------------   
+            SSideforce_y[to+t,g] = SSideforce_y[to+t,g] + (XIn[to+t,g])
+        if t >= 1870 and t < (1870*2):
+            # Swave[to+t,99-g] = Swave[to+t,99-g] + XOut[t-to,99-g]   # original wave transport
+# ----- Swave sigma xx --------------------------
+            SSideforce_x[to+t,99-g] = SSideforce_x[to+t,99-g] + (ForceX_Cofficient *XOut[t-to,99-g])
+# ----- Swave sigma_yy --------------------------
+            SSideforce_y[to+t,99-g] = SSideforce_y[to+t,99-g] + (-XOut[t-to,99-g])
+
+# # ---- Output matrix eace column to txt file --------------
+# num_rows, num_cols = SSideforce_y.shape# 8001,100
+# # 建立資料夾
+# # ---------- Pwave ---------------
+# S_folder_name_x = "S_Sideforce_x"
+# S_folder_name_y = "S_Sideforce_y"
+
+# os.makedirs(S_folder_name_x, exist_ok=True)
+# for col in range(num_cols):
+#     column_values = SSideforce_x[:, col]
+#     output_file = f"ele{col + 1}.txt"
+#     with open(os.path.join(S_folder_name_x, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
+
+# os.makedirs(S_folder_name_y, exist_ok=True)
+# # 逐一建立txt檔案並放入資料夾
+# for col in range(num_cols):
+#     column_values = SSideforce_y[:, col]
+#     output_file = f"ele{col + 1}.txt"
+#     with open(os.path.join(S_folder_name_y, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
             
-# =============== Side Node Force: Dashpot =================================== 
-CsNode_id = np.zeros(101)
-NodeSize = np.arange(0.0, 10.1, 0.1)
-
-for i in range(101):
-    CsNode_id[i] = round((NodeSize[i]/cs)*10000,0)
-    
-eta_s = rho*cs
-eta_p = rho*cp
-for i in range(101):
-    CsNodeid = int(CsNode_id[i])
-    for k in range(len(time)):
-        if k < 1870:    
-            Nodeforce_X[CsNodeid+k,i] =  -eta_p*SVel_FF[k]*A
-        if k >=Tstep and k < 2*Tstep:
-            Nodeforce_X[CsNodeid+k,100-i] =  -eta_p*SVel_FF[k-Tstep]*A
-# ---- Velocity Freefield Plot ----------------
-# plt.figure()
-# plt.plot(time,SVel_FF)
-# plt.grid(True)
-
-
+# ------- wave put into the timeSeries ---------------   
 plt.figure()
-plt.rcParams["figure.figsize"] = (12, 8)
-plt.title("eleForce", fontsize = 18)
+# plt.title('Wave Transport',fontsize = 18)   
+ 
+# plt.title(r'SideForce $\sigma_{xy}$',fontsize = 18)         
+plt.title(r'SideForce $\eta_{p}v_x$',fontsize = 18)   
 plt.xlabel("tns(s)",fontsize=18)
-# # =========== Nodal Force =====================
-# plt.plot(time,Nodeforce_X[:,0],label = Nodeid[0],marker='o', markevery=100)
-# plt.plot(time,Nodeforce_X[:,50],label = Nodeid[50],marker='x', markevery=100)
-# plt.plot(time,Nodeforce_X[:,100],label = Nodeid[100],marker='d', markevery=100)
+# # ----- Swave eta_p*(Vx) -------------
+plt.plot(total_time,SSideforce_x[:,0],label ='Element 1', marker='o', markevery=100)
+plt.plot(total_time,SSideforce_x[:,50],label ='Element 51', marker='x', markevery=100)
+plt.plot(total_time,SSideforce_x[:,99],label ='Element 100', marker='d', markevery=100)
 
-# =========== Element Force =====================
-plt.plot(time,Sideforce_Y[:,0],label = Nodeid[0],marker='o', markevery=100)
-plt.plot(time,Sideforce_Y[:,50],label = Nodeid[50],marker='x', markevery=100)
-plt.plot(time,Sideforce_Y[:,99],label = Nodeid[99],marker='d', markevery=100)
-# for h in range(100):    #101
-# -------- S wave -----------------
-    # plt.plot(time,Sideforce_X[:,h],label = force_id[h])#force[4*i,:]
-    # plt.plot(time,Sideforce_Y[:,h],label = force_id[h])#force[4*i,:]
+# ----- Swave sigma_xy -------------
+# plt.plot(total_time,SSideforce_y[:,0],label ='Element 1', marker='o', markevery=100)
+# plt.plot(total_time,SSideforce_y[:,50],label ='Element 51', marker='x', markevery=100)
+# plt.plot(total_time,SSideforce_y[:,99],label ='Element 100', marker='d', markevery=100)
 
-plt.grid(True)   
-plt.legend(loc='upper right',fontsize=10, ncol=5)
-plt.xlim(0,0.7)
+plt.legend(loc='upper right',fontsize=18)
 plt.xticks(fontsize = 15)
 plt.yticks(fontsize = 15)
+plt.xlim(0.0, 0.60)
+plt.grid(True)
+# ========== Incoming Wave ==========================================
+plt.figure()
+plt.title('Incoming Wave',fontsize = 18)
+plt.xlabel("x(m)",fontsize=18)
+plt.ylabel(r"$y=sin\omega(x-c_{s}t)$",fontsize=18)
+plt.plot(total_Transport,XIn[:,0],label ='Element 1',marker='o', markevery=100)
+plt.plot(total_Transport,XIn[:,50],label ='Element 50',marker='d', markevery=100)
+plt.plot(total_Transport,XIn[:,99],label ='Element 100',marker='x', markevery=100)
+plt.legend(loc='upper right',fontsize=18)
+plt.xlim(0,20.0)
+plt.xticks(fontsize = 15)
+plt.yticks(fontsize = 15)
+plt.grid(True)
 
-# ---------- Element Force ---------------
-num_rows, num_cols = Sideforce_Y.shape# 8001,100
-S_folder_name_y = "S_Sideforce_y"
+# ========== Outcoming Wave ==========================================
+plt.figure()
+plt.title('Outcoming Wave',fontsize = 18)
+plt.xlabel("x(m)",fontsize=18)
+plt.ylabel(r"$y=sin\omega(x+c_{s}t)$",fontsize=18)
+plt.plot(total_Transport,XOut[:,0],label ='Element 1',marker='o', markevery=100)
+plt.plot(total_Transport,XOut[:,50],label ='Element 50',marker='d', markevery=100)
+plt.plot(total_Transport,XOut[:,99],label ='Element 100',marker='x', markevery=100)
+plt.xlim(0,20.0)
 
-os.makedirs(S_folder_name_y, exist_ok=True)
-for col in range(num_cols):
-    column_values = Sideforce_Y[:, col]
-    output_file = f"ele{col + 1}.txt"
-    with open(os.path.join(S_folder_name_y, output_file), 'w') as f:
-        for value in column_values:
-            f.write(f"{value}\n")
+plt.legend(loc='upper right',fontsize=18)
+plt.xticks(fontsize = 15)
+plt.yticks(fontsize = 15)
+plt.grid(True)
 
-
-# ---------- NodeForce ---------------
-num_rows, num_cols = Nodeforce_X.shape# 8001,100
-S_folder_name_x = "S_Nodeforce_X"
-os.makedirs(S_folder_name_x, exist_ok=True)
-for col in range(num_cols):
-    column_values = Nodeforce_X[:, col]
-    output_file = f"Node{col + 1}.txt"
-    with open(os.path.join(S_folder_name_x, output_file), 'w') as f:
-        for value in column_values:
-            f.write(f"{value}\n")    
-            
-print(f"Txt files have been saved in the folder '{S_folder_name_y,S_folder_name_x}'.")
+        
