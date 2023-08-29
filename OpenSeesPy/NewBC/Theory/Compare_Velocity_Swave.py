@@ -166,7 +166,7 @@ for g in range(100): #Nele
 # vel804 = rdnumpy(file1)  # 1/2 Node Velocity
 # vel806 = rdnumpy(file2)  # 1/4 Node Velocity
 
-
+plt_axis2 = 1
 plt.figure()
 # plt.title('Wave Transport',fontsize = 18)   
 plt.title('Velocity Comapare',fontsize = 18)  
