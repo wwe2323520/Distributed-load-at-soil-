@@ -109,7 +109,7 @@ uniaxialMaterial('Viscous',4003, B_Cms, 1)    # S wave: Center node
 xdir = 1
 ydir = 2
 # ------ Traction dashpot element: Vs with x dir
-# element('zeroLength',800,819,818, '-mat',4001,'-dir',xdir)  # node 1: Left side
+element('zeroLength',800,819,818, '-mat',4001,'-dir',xdir)  # node 1: Left side
 
 element('zeroLength',801,821,820, '-mat',4003,'-dir',xdir)
 element('zeroLength',802,823,822, '-mat',4003,'-dir',xdir)
@@ -118,10 +118,10 @@ element('zeroLength',804,827,826, '-mat',4003,'-dir',xdir)
 element('zeroLength',805,829,828, '-mat',4003,'-dir',xdir)
 element('zeroLength',806,831,830, '-mat',4003,'-dir',xdir)
 
-# element('zeroLength',807,833,832, '-mat',4001,'-dir',xdir)  # node 8: Right side
+element('zeroLength',807,833,832, '-mat',4001,'-dir',xdir)  # node 8: Right side
 
 # ------ Normal dashpot element: Vp with y dir
-# element('zeroLength',808,835,834, '-mat',4000,'-dir',ydir)  # node 1: Left side
+element('zeroLength',808,835,834, '-mat',4000,'-dir',ydir)  # node 1: Left side
 
 element('zeroLength',809,837,836, '-mat',4002,'-dir',ydir)
 element('zeroLength',810,839,838, '-mat',4002,'-dir',ydir)
@@ -130,7 +130,7 @@ element('zeroLength',812,843,842, '-mat',4002,'-dir',ydir)
 element('zeroLength',813,845,844, '-mat',4002,'-dir',ydir)
 element('zeroLength',815,847,846, '-mat',4002,'-dir',ydir)
 
-# element('zeroLength',816,849,848, '-mat',4000,'-dir',ydir)  # node 8: Left side
+element('zeroLength',816,849,848, '-mat',4000,'-dir',ydir)  # node 8: Left side
 
 print("Finished creating Bottom dashpot material and element...")
 
@@ -182,8 +182,8 @@ for l in range(ny+1):
 
 print("Finished creating all Side dashpot boundary conditions and equalDOF...")
 # ------------- Side dashpot material -----------------------
-S_Smp = 1.0*rho*Vp*sizeX    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
-S_Sms = 1.0*rho*Vs*sizeX    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
+S_Smp = 0.5*rho*Vp*sizeX    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
+S_Sms = 0.5*rho*Vs*sizeX    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
 
 S_Cmp = 1.0*rho*Vp*sizeX    # side Normal dashpot for S wave: Netwon
 S_Cms = 1.0*rho*Vs*sizeX    # side Traction dashpot for P wave: Netwon
@@ -273,8 +273,8 @@ for j in range(101):
 # load(1859,0,1,0)
 
 # for g in range(1,100): #101
-# # ------- timeSeries ID: 900~1000 (global y force)----------------------
-# # ---------- y direction : Sideforce --------------------
+# # ------- timeSeries ID: 900~1000 (global y force): node 2~100----------------------
+# # ---------- y direction : Sideforce -------------------
 #     timeSeries('Path',900+g, '-filePath',f'P_Nodeforce_y/Node{1+g}.txt','-dt',1e-4)
 #     pattern('Plain',904+g, 900+g)
 # # ---------- For P wave : y direction ---------------------
@@ -288,17 +288,16 @@ for j in range(101):
 #     eleLoad('-ele',1221+g, '-type', '-beamUniform',-20,0)  # for local axes Wy -
 # # ---------- Distributed at Right Side Beam ----------------------
 #     eleLoad('-ele',1321+g, '-type', '-beamUniform',-20,0)   # for local axes Wy +
-
 # ============================== S wave ======================================
 # ------------ Side Load Pattern：Side Node Force -----------
-timeSeries('Path',800, '-filePath',f'S_Nodeforce_X/Node{1}.txt','-dt',1e-4)
+timeSeries('Path',800, '-filePath',f'S_Nodeforce_x/Node{1}.txt','-dt',1e-4)
 pattern('Plain',804, 800)
 # ---- NodeForce at Left Side Corner -----
 load(1658,1,0,0)
 # ---- NodeForce at Right Side Corner -----
 load(1759,1,0,0)
 
-timeSeries('Path',900, '-filePath',f'S_Nodeforce_X/Node{101}.txt','-dt',1e-4)
+timeSeries('Path',900, '-filePath',f'S_Nodeforce_x/Node{101}.txt','-dt',1e-4)
 pattern('Plain',904, 900)
 # ---- NodeForce at Left Side Corner -----
 load(1758,1,0,0)
@@ -308,7 +307,7 @@ load(1859,1,0,0)
 for g in range(1,100): #101
 # ------- timeSeries ID: 900~1000 (global y force)----------------------
 # ---------- x direction : Nodeforce --------------------
-    timeSeries('Path',800+g, '-filePath',f'S_Nodeforce_X/Node{1+g}.txt','-dt',1e-4)
+    timeSeries('Path',800+g, '-filePath',f'S_Nodeforce_x/Node{1+g}.txt','-dt',1e-4)
     pattern('Plain',804+g, 800+g)
 # ---------- For S wave : x direction ---------------------
 # ---------- NodeForce at Left Side Beam ----------------------
