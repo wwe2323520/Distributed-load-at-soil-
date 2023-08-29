@@ -351,11 +351,29 @@ recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,
 recorder('Node', '-file', 'Velocity/node408.out', '-time', '-node',408,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
 
+# ==== Left 1/4 node ======================================
+recorder('Element', '-file', 'Stress/ele2.out', '-time', '-ele',2, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele352.out', '-time', '-ele',352, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele695.out', '-time', '-ele',695, 'material ',1,'stresses')
+
+recorder('Node', '-file', 'Velocity/node2.out', '-time', '-node',2,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node402.out', '-time', '-node',402,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node802.out', '-time', '-node',802,'-dof',1,2,3,'vel')
+
+# ==== Right 1/4 node ======================================
+recorder('Element', '-file', 'Stress/ele6.out', '-time', '-ele',6, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele356.out', '-time', '-ele',356, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele699.out', '-time', '-ele',699, 'material ',1,'stresses')
+
+recorder('Node', '-file', 'Velocity/node6.out', '-time', '-node',6,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node406.out', '-time', '-node',406,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node806.out', '-time', '-node',806,'-dof',1,2,3,'vel')
+
 # # ================= Create an output directory ===================
-# filename = 'soil0.7m_SideFoece_Swave'
-# if not os.path.exists(filename):
-#     os.makedirs(filename)
-# recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
+filename = 'soil0.7m_NoSide_Pwave'
+if not os.path.exists(filename):
+    os.makedirs(filename)
+recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
 
 system("UmfPack")
 numberer("RCM")
