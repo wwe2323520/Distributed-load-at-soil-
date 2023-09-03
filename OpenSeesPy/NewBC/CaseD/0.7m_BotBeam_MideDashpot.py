@@ -234,12 +234,12 @@ print("Finished creating Bottom dashpot material and element...")
 # print("Finished creating Side dashpot material and element...")
 
 #------------- Load Pattern ----------------------------
-# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 # timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
-timeSeries('Path',705, '-filePath','fp.txt','-dt',1e-4)
+# timeSeries('Path',705, '-filePath','fp.txt','-dt',1e-4)
 # timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
 
-pattern('Plain',703, 705)
+pattern('Plain',703, 702)
 
 # ------------- P wave -----------------------------
 eleLoad('-ele', 701, '-type','-beamUniform',20,0)
