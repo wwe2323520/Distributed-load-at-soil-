@@ -104,7 +104,7 @@ vel10201 = rdnumpy(file18)
 # plt_axis1 = 2
 x_axis = 0.5
 def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
-    plt.figure()
+    plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
     plt.title(title_name, fontsize = 18)
     plt.xlabel("time(s)",fontsize=18)
@@ -123,7 +123,7 @@ def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
     
 # plt_axis2 = 2
 def draw_Vel(title_name,vel1,vel2,vel3,label1,label2,label3):
-    plt.figure()
+    plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
     plt.title(title_name, fontsize = 18)
     plt.xlabel("time(s)",fontsize=18)
