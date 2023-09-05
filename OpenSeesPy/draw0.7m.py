@@ -70,6 +70,11 @@ file22 = r"D:\shiang\opensees\20220330\OpenSeesPy\Disp\node16.out"
 # file23 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1031_vel.out"
 # file24 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1032_vel.out"
 # file25 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1033_vel.out"
+
+# # ============ Dashpot Node Velocity =====================
+# file23 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node951.out"
+# file24 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1049.out"
+# file25 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1250.out"
 #----------------------------- Left column file -----------------------------------
 ele1 = rdnumpy(file1)
 ele351 = rdnumpy(file2)
@@ -111,14 +116,18 @@ disp16 = rdnumpy(file22)
 # vel1031 = rdnumpy(file23)
 # vel1032 = rdnumpy(file24)
 # vel1033 = rdnumpy(file25)
+# Dash951 = rdnumpy(file23)
+# Dash1049 = rdnumpy(file24)
+# Dash1250 = rdnumpy(file25)
 
 # plt_axis1 = 2
 x_axis = 0.5
 def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
-    plt.figure()
+    plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
     plt.title(title_name, fontsize = 18)
-    plt.xlabel("tns",fontsize=18)
+    plt.xlabel("time(s)",fontsize=18)
+    plt.ylabel(r'Stress $(N/m^2)$', fontsize = 18)
     
     plt.plot(ele1[:,0], ele1[:,plt_axis1], label= label1,marker='o', markevery=100)
     plt.plot(ele2[:,0], ele2[:,plt_axis1], label= label2,marker='x', markevery=100)
@@ -133,10 +142,11 @@ def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
     
 # plt_axis2 = 2
 def draw_Vel(title_name,vel1,vel2,vel3,label1,label2,label3):
-    plt.figure()
+    plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
     plt.title(title_name, fontsize = 18)
-    plt.xlabel("tns",fontsize=18)
+    plt.xlabel("time(s)",fontsize=18)
+    plt.ylabel('Velocity (m/s)', fontsize = 18)
     
     plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
     plt.plot(vel2[:,0], vel2[:,plt_axis2], label= label2,marker='x', markevery=100)
@@ -230,31 +240,37 @@ ax2.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax2.yaxis.get_offset_text().set(size=18)
 
 # ============== Left/Right/Center Velocity =======================
-# draw_Vel("Left side Velocity",vel1,vel401,vel801,"vel1","vel401","vel801")
-# ax4 = plt.gca()
-# ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax4.yaxis.get_offset_text().set(size=18)
+draw_Vel("Left side Velocity",vel1,vel401,vel801,"vel1","vel401","vel801")
+ax4 = plt.gca()
+ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax4.yaxis.get_offset_text().set(size=18)
 
-# draw_Vel("Center side Velocity",vel4,vel404,vel804,"vel4","vel404","vel804")
-# ax6 = plt.gca()
-# ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax6.yaxis.get_offset_text().set(size=18)
+draw_Vel("Center side Velocity",vel4,vel404,vel804,"vel4","vel404","vel804")
+ax6 = plt.gca()
+ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax6.yaxis.get_offset_text().set(size=18)
 
-# draw_Vel("Right side Velocity",vel8,vel408,vel808,"vel8","vel408","vel808")
-# ax5 = plt.gca()
-# ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax5.yaxis.get_offset_text().set(size=18)
+draw_Vel("Right side Velocity",vel8,vel408,vel808,"vel8","vel408","vel808")
+ax5 = plt.gca()
+ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax5.yaxis.get_offset_text().set(size=18)
 
+# -------------Dashpot Velocity -----------------
+# draw_Vel("Side Dashpot Velocity",Dash951,Dash1049,Dash1250,"Dash951","Dash1049","Dash1250")
+# ax7 = plt.gca()
+# ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax7.yaxis.get_offset_text().set(size=18)
 
 # ================X Disp ===========================
-draw_Disp("node Displacement",disp1,disp8, disp9, disp16,"disp1","disp8","disp9","disp16")
-ax7 = plt.gca()
-ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax7.yaxis.get_offset_text().set(size=18)
+# draw_Disp("node Displacement",disp1,disp8, disp9, disp16,"disp1","disp8","disp9","disp16")
+# ax7 = plt.gca()
+# ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax7.yaxis.get_offset_text().set(size=18)
 
 # # ============== Structure Stress =======================
 # draw_structure_stress("Structure Sterss",col1,col2,Beam,"Coluumn1","Coluumn2","Beam")
