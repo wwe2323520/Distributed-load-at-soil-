@@ -52,21 +52,17 @@ for j in range(nx+1):
 
 # ------------- Beam parameter -----------------
 A = 0.1*1 #0.1*1
-E1 = 1e-06 ; #1e-06 1e+6
+E1 = 1e+20 ; #1e-06 1e+6
 Iz = (0.1*0.1*0.1)/12
 geomTransf('Linear', 1)
 
-element('elasticBeamColumn', 701, 810, 812, A,E1,Iz, 1, '-release', 1)
-element('elasticBeamColumn', 707, 822, 824, A,E1,Iz, 1, '-release', 2)
-for k in range(1,nx-1): #nx
-    element('elasticBeamColumn', 701+k, 810+2*k, 812+2*k, A,E1,Iz, 1)#, '-release', 3
+# element('elasticBeamColumn', 701, 810, 811, A,E1,Iz, 1, '-release', 1) 810--|811*|-812
+# element('elasticBeamColumn', 702, 811, 812, A,E1,Iz, 1, '-release', 2)
 
-# ==== Connect beam node with Bot Dashpot node: ele 900~913 ============
-E2 = 1e+20
-uniaxialMaterial('Elastic', 5000,E2)
-for o in range(2*nx):
-    element('twoNodeLink',900+o,810+o,811+o,'-mat',5000,'-dir',2)
-    # print(900+o,810+o,811+o)
+for k in range(nx):
+    element('elasticBeamColumn', 701+2*k, 810+2*k, 811+2*k, A,E1,Iz, 1, '-release', 1)
+    element('elasticBeamColumn', 702+2*k, 811+2*k, 812+2*k, A,E1,Iz, 1, '-release', 2)
+
 # =========== connect bot beam and soil element =========================
 for k in range(nx+1):
     equalDOF(1+k,810+2*k,1,2)
@@ -89,11 +85,6 @@ for l in range(nx):
 
 # ------ connect dashpot with BEAM bot layer :Vs with x dir / Vp with y-dir --------------
 for k in range(nx):
-# # --------------traction dashpot: for S wave------------------********* maybe 811+2*k, 825+2*k
-#     equalDOF(825+2*k,811+2*k,1)
-# # --------------Normal dashpot: for P wave------------------*************
-#     equalDOF(839+2*k,811+2*k,2)
-
 # --------------traction dashpot: for S wave------------------********* maybe 811+2*k, 825+2*k
     equalDOF(811+2*k,825+2*k,1)
 # --------------Normal dashpot: for P wave------------------*************
@@ -131,7 +122,7 @@ element('zeroLength',805,836,835, '-mat',4003,'-dir',xdir)
 
 element('zeroLength',806,838,837, '-mat',4001,'-dir',xdir)
 
-# ------ Normal dashpot element: Vp with y dir
+# # ------ Normal dashpot element: Vp with y dir
 element('zeroLength',808,840,839, '-mat',4000,'-dir',ydir)  # node 1: Left side
 
 element('zeroLength',809,842,841, '-mat',4002,'-dir',ydir)
@@ -250,17 +241,16 @@ eleLoad('-ele', 705, '-type','-beamUniform',20,0)
 eleLoad('-ele', 706, '-type','-beamUniform',20,0)
 eleLoad('-ele', 707, '-type','-beamUniform',20,0)
 
-# ------------- S wave -----------------------------
-# eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
-# eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
+# # ------------- S wave -----------------------------
+# # eleLoad('-ele', 701, '-type','-beamUniform',0,20,0)
+# # eleLoad('-ele', 702, '-type','-beamUniform',0,20,0)
+# # eleLoad('-ele', 703, '-type','-beamUniform',0,20,0)
+# # eleLoad('-ele', 704, '-type','-beamUniform',0,20,0)
+# # eleLoad('-ele', 705, '-type','-beamUniform',0,20,0)
+# # eleLoad('-ele', 706, '-type','-beamUniform',0,20,0)
+# # eleLoad('-ele', 707, '-type','-beamUniform',0,20,0)
 
-
-# load(805,0,-1)
+# # load(805,0,-1)
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
 #-------------- Recorder --------------------------------
@@ -295,15 +285,15 @@ recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,
 recorder('Node', '-file', 'Velocity/node811.out', '-time', '-node',811,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node817.out', '-time', '-node',817,'-dof',1,2,3,'vel')
 recorder('Node', '-file', 'Velocity/node823.out', '-time', '-node',823,'-dof',1,2,3,'vel')
-# # ==== Left 1/4 node ======================================
-# recorder('Element', '-file', 'Stress/ele695.out', '-time', '-ele',695, 'material ',1,'stresses')
+# ==== Left 1/4 node ======================================
+recorder('Element', '-file', 'Stress/ele695.out', '-time', '-ele',695, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node803.out', '-time', '-node',803,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node803.out', '-time', '-node',803,'-dof',1,2,3,'vel')
 
-# # ==== Right 1/4 node ======================================
-# recorder('Element', '-file', 'Stress/ele699.out', '-time', '-ele',699, 'material ',1,'stresses')
+# ==== Right 1/4 node ======================================
+recorder('Element', '-file', 'Stress/ele699.out', '-time', '-ele',699, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node806.out', '-time', '-node',806,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node806.out', '-time', '-node',806,'-dof',1,2,3,'vel')
 
 # # ================= Create an output directory ===================
 # filename = 'Soil0.7m_TopSide'
