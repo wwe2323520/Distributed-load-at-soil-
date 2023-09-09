@@ -43,6 +43,7 @@ for j in range(nx+1):
     mass(10202+j,1,1,1)
 # -------- fix rotate dof ------------
     fix(10202+j,0,0,1)
+
 # ------------- Beam parameter -----------------
 A = 0.1*1
 E1 = 1e-06   #1e-06 (M/EI); 1e+20
@@ -64,6 +65,7 @@ for l in range(nx+1):
 # ---------- dashpot dir: Vs -> x dir ---------------------     
     fix(10303+2*l, 0, 1, 1)      # x dir dashpot　
     fix(10304+2*l, 1, 1, 1)      # fixed end to let soil fix
+
 # ------------- Normal dashpot (node 10505,10506~ 10705,10706)-> for P wave ------------
     node(10505+2*l, 0.1*l, 0.0)
     node(10506+2*l, 0.1*l, 0.0)
@@ -119,7 +121,7 @@ for q in range(1,nx):
 print("Finished creating Bottom dashpot material and element...")
 
 # ============ Side Beam Node =====================================
-# ------- Left Side Beam Node (ndoe 10707~10907) (ele 20202~20301)-------------------
+# ------- Left Side Beam Node (ndoe 10707~10907) (ele 20202~20401)-------------------
 for l in range(ny+1):
     node(10707+2*l, 0.0, 0.1*l)
     mass(10707+2*l, 1, 1, 1)
@@ -128,11 +130,10 @@ for l in range(ny+1):
         node(10708+2*l, 0.0, 0.05+0.10*l)
         mass(10708+2*l,1,1,1)
         fix(10708+2*l,0,0,1)
-
 # -------- fix rotate dof ------------
     fix(10707+2*l,0,0,1)
 
-# ------- Right Side Beam Node (ndoe 10908~11108) (ele 916~1015) -------------------
+# ------- Right Side Beam Node (ndoe 10908~11108) (ele 20402~20601) -------------------
 for l in range(ny+1):
     node(10908+2*l, 10.0, 0.1*l)
     mass(10908+2*l, 1, 1, 1)
@@ -144,32 +145,21 @@ for l in range(ny+1):
 # -------- fix rotate dof ------------
     fix(10908+2*l,0,0,1)
 
-# ---- Left Beam -----------------
-element('elasticBeamColumn', 20202, 10707, 10709, A,E1,Iz, 1,'-release', 1)
-element('elasticBeamColumn', 20301, 10905, 10907, A,E1,Iz, 1,'-release', 2)
-for k in range(1,ny-1): #ny 
-    element('elasticBeamColumn', 20202+k, 10707+2*k, 10709+2*k, A,E1,Iz, 1)
+E2 = 1e-06  #1e+20 1e-06
+# ---- Left Beam (ele 20202~20401)-----------------
+for k in range(ny): #ny 
+    element('elasticBeamColumn', 20202+2*k, 10707+2*k, 10708+2*k, A,E2,Iz, 1, '-release', 1)
+    element('elasticBeamColumn', 20203+2*k, 10708+2*k, 10709+2*k, A,E2,Iz, 1, '-release', 2)
 
-# ---- Right Beam -----------------
-element('elasticBeamColumn', 20302, 10908, 10910, A,E1,Iz, 1,'-release', 1)
-element('elasticBeamColumn', 20401, 11106, 11108, A,E1,Iz, 1,'-release', 2)
-for k in range(1,ny-1): #ny 
-    element('elasticBeamColumn', 20302+k, 10908+2*k, 10910+2*k, A,E1,Iz, 1)
+# ---- Right Beam (ele 20402~20601)-----------------
+for k in range(ny): #ny 
+    element('elasticBeamColumn', 20402+2*k, 10908+2*k, 10909+2*k, A,E2,Iz, 1, '-release', 1)
+    element('elasticBeamColumn', 20403+2*k, 10909+2*k, 10910+2*k, A,E2,Iz, 1, '-release', 2)
 
 # --------- Side Beam and Soil BC -----------------
 for j in range(101):
     equalDOF(1+101*j,   10707+2*j,1,2)
     equalDOF(101+101*j, 10908+2*j,1,2)
-
-# ======== Connect beam node with Side Dashpot node =================
-E2 = 1e+20
-uniaxialMaterial('Elastic', 5000,E1)
-# ---------- Left twoNodeLink element : ele 20402~20601 ---------------------------------
-for o in range(2*ny):
-    element('twoNodeLink',20402+o, 10707+o, 10708+o,'-mat',5000,'-dir',1,2)
-
-# ---------- Right twoNodeLink element: ele 20602~20801  ---------------------------------
-    element('twoNodeLink',20602+o, 10908+o, 10909+o,'-mat',5000,'-dir',1,2)
 
 # =============== Soil Left and Right "Side" Dashpot =============================== #
 for o in range(ny):
@@ -220,11 +210,12 @@ for o in range(ny):
 print("Finished creating all Side dashpot boundary conditions and equalDOF...")
 
 # ------------- Side dashpot material -----------------------
-S_Smp = 1.0*rho*Vp*sizeX    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
-S_Sms = 1.0*rho*Vs*sizeX    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
+sizex1 = 0.05
+S_Smp = 1.0*rho*Vp*sizex1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
+S_Sms = 1.0*rho*Vs*sizex1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
 
-S_Cmp = 1.0*rho*Vp*sizeX    # side Normal dashpot for S wave: Netwon
-S_Cms = 1.0*rho*Vs*sizeX    # side Traction dashpot for P wave: Netwon
+S_Cmp = 1.0*rho*Vp*sizex1    # side Normal dashpot for S wave: Netwon
+S_Cms = 1.0*rho*Vs*sizex1    # side Traction dashpot for P wave: Netwon
 
 uniaxialMaterial('Viscous',4004, S_Smp, 1)    # "S" wave: Side node
 uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
@@ -248,7 +239,7 @@ element('zeroLength',21101, 11708, 11707, '-mat',4004,'-dir',xdir)  # node 10201
 element('zeroLength',21102, 11710, 11709, '-mat',4005,'-dir',ydir)  # node 101 -> Sms
 element('zeroLength',21201, 11908, 11907, '-mat',4005,'-dir',ydir)  # node 10201 -> Sms
 
-for w in range(1,ny-1): #1,ny  
+for w in range(1,ny-1): #1,ny   1,ny-1
 #----------- Left side Normal Dashpot: (ele 20802~20901)---------- -> Smp
     element('zeroLength',20802+w, 11110+2*w, 11109+2*w, '-mat',4006,'-dir',xdir)  # center node：S wave
 #----------- Left side Traction Dashpot: (ele 20902~21001) ---------- -> Sms
@@ -263,26 +254,37 @@ print("Finished creating Side dashpot material and element...")
 
 # # ==================== Side Load Pattern (Pwave) ============================
 # # --------------------- Side Beam Distributed Force ------------------------------
-# for g in range(100):
-# # ------- timeSeries ID: 800~899 (global x force) ----------------------
-#     timeSeries('Path',800+g, '-filePath',f'P_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
+# for g in range(200):
+# # ------- timeSeries ID: 800~999 (global x force) / pattern ID 804~1003----------------------
+#     timeSeries('Path',800+g, '-filePath',f'P_Sideforce200ele_x/ele{1+g}.txt','-dt',5e-5)
 #     pattern('Plain',804+g, 800+g)
 # # ---------- x direction : Sideforce  ---------------------
-# # ---------- Distributed at Left Side Beam (ele 816~915)----------------------
+# # ---------- Distributed at Left Side Beam (ele 816~1015)----------------------
 #     eleLoad('-ele',20202+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
-# # ---------- Distributed at Right Side Beam (ele 916~1015)----------------------
-#     eleLoad('-ele',20302+g, '-type', '-beamUniform',20,0)   # for local axes Wy
+# # ---------- Distributed at Right Side Beam (ele 1016~1215)----------------------
+#     eleLoad('-ele',20402+g, '-type', '-beamUniform',20,0)   # for local axes Wy
+
+# # for g in range(200):
+# # # ------- timeSeries ID: 900~999 (global y force)----------------------
+# # # ---------- y direction : Sideforce --------------------
+# #     timeSeries('Path',1000+g, '-filePath',f'P_Sideforce200ele_y/ele{1+g}.txt','-dt',5e-5)
+# #     pattern('Plain',1004+g, 1000+g)
+# # # ---------- For P wave : y direction ---------------------
+# # # ---------- Distributed at Left Side Beam ----------------------
+# #     eleLoad('-ele',816+g, '-type', '-beamUniform',0,20,0)  # for local axes Wx
+# # # ---------- Distributed at Right Side Beam ----------------------
+# #     eleLoad('-ele',1016+g, '-type', '-beamUniform',0,20,0)   # for local axes Wx
 
 # # ------------------------- Side Node Force ----------------------------------------
-# timeSeries('Path',900, '-filePath',f'P_Sideforce_y/ele{1}.txt','-dt',1e-4)
-# pattern('Plain',904, 900)
+# timeSeries('Path',1000, '-filePath',f'P_Sideforce_y/ele{1}.txt','-dt',1e-4)
+# pattern('Plain',1004, 1000)
 # # ---- NodeForce at Left Side Corner -----
 # load(10708,0,1,0)
 # # ---- NodeForce at Right Side Corner -----
 # load(10909,0,1,0)
 
-# timeSeries('Path',999, '-filePath',f'P_Sideforce_y/ele{100}.txt','-dt',1e-4)
-# pattern('Plain',1003, 999)
+# timeSeries('Path',1099, '-filePath',f'P_Sideforce_y/ele{100}.txt','-dt',1e-4)
+# pattern('Plain',1103, 1099)
 # # ---- NodeForce at Left Side Corner -----
 # load(10906,0,1,0)
 # # ---- NodeForce at Right Side Corner -----
@@ -291,13 +293,13 @@ print("Finished creating Side dashpot material and element...")
 # for g in range(1,ny-1): #101 1,100
 # # ------- timeSeries ID: 900~1000 (global y force): node 2~100----------------------
 # # ---------- y direction : Sideforce --------------------
-#     timeSeries('Path',900+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
-#     pattern('Plain',904+g, 900+g)
+#     timeSeries('Path',1000+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+#     pattern('Plain',1004+g, 1000+g)
 # # ---------- For P wave : y direction ---------------------
 # # ---------- NodeForce at Left Side Beam ----------------------
-#     load(10708+2*g,0,1,0) #(0,2,0)
+#     load(10708+2*g,0,2,0) #(0,2,0)
 # # ---------- NodeForce at Right Side Beam ----------------------
-#     load(10909+2*g,0,1,0) #(0,2,0)
+#     load(10909+2*g,0,2,0) #(0,2,0)
 
 # ==================== Side Load Pattern (Swave) ============================
 # -------------------------- Side Node Force -------------------------------
@@ -322,37 +324,38 @@ for g in range(1,ny-1): #1011,100
     pattern('Plain',804+g, 800+g)
 # ---------- For S wave : x direction ---------------------
 # ---------- NodeForce at Left Side Beam ----------------------
-    load(10708+2*g,1,0,0)
+    load(10708+2*g,2,0,0)
 # ---------- NodeForce at Right Side Beam ----------------------
-    load(10909+2*g,1,0,0)
+    load(10909+2*g,2,0,0)
 
 # ---------------------- Side Beam Distributed Force -------------------------------
 for g in range(100):
 # ------- timeSeries ID: 900~999 ----------------------
 # ---------- y direction : Sideforce --------------------
-    timeSeries('Path',900+g, '-filePath',f'S_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+    timeSeries('Path',900+g, '-filePath',f'S_Sideforce200ele_y/ele{1+g}.txt','-dt',5e-5)
     pattern('Plain',904+g, 900+g)
 # ---------- For P wave : y direction ---------------------
 # ---------- Distributed at Left Side Beam ----------------------
     eleLoad('-ele',20202+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
 # ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',20302+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
+    eleLoad('-ele',20402+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
 
-print("finish SideBeam Force InputFile Apply")
+# print("finish SideBeam Force InputFile Apply")
 
 #------------- Load Pattern ----------------------------
 # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
-timeSeries('Linear',705)
+# timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# ------------- P wave -----------------------------
+# # ------------- P wave -----------------------------
 # for m in range(nx):
 #     eleLoad('-ele', 10001+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
 for m in range(nx):
     eleLoad('-ele', 10001+m, '-type','-beamUniform',0,20,0)
+
 # # load(1, 0, 1)
 # # load(2, 0, 1) 
 print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
