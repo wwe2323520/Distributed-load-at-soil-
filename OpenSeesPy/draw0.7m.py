@@ -126,7 +126,7 @@ def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
     plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
     plt.title(title_name, fontsize = 18)
-    plt.xlabel("time(s)",fontsize=18)
+    plt.xlabel("time (s)",fontsize=18)
     plt.ylabel(r'Stress $(N/m^2)$', fontsize = 18)
     
     plt.plot(ele1[:,0], ele1[:,plt_axis1], label= label1,marker='o', markevery=100)
@@ -145,7 +145,7 @@ def draw_Vel(title_name,vel1,vel2,vel3,label1,label2,label3):
     plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
     plt.title(title_name, fontsize = 18)
-    plt.xlabel("time(s)",fontsize=18)
+    plt.xlabel("time (s)",fontsize=18)
     plt.ylabel('Velocity (m/s)', fontsize = 18)
     
     plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
@@ -211,8 +211,8 @@ def draw_structure_vel(title_name,vel1,vel2,vel3,vel4,label1,label2,label3,label
     plt.yticks(fontsize = 15)
     plt.grid(True)   
 
-plt_axis1 = 2  # Stress yaxis   
-plt_axis2 = 2  # Velocity yaxis
+plt_axis1 = 3  # Stress yaxis   
+plt_axis2 = 1  # Velocity yaxis
 
 # plt_axis3 = 1  # Structure Stress
 # plt_axis4 = 1  # Structure Vel
