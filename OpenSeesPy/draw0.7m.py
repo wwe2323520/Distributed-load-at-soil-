@@ -56,11 +56,23 @@ file17 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node408.out"
 file18 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node808.out"
 
 
-# ------------node Displacement -------------------
-file19 = r"D:\shiang\opensees\20220330\OpenSeesPy\Disp\node1.out"
-file20 = r"D:\shiang\opensees\20220330\OpenSeesPy\Disp\node8.out"
-file21 = r"D:\shiang\opensees\20220330\OpenSeesPy\Disp\node9.out"
-file22 = r"D:\shiang\opensees\20220330\OpenSeesPy\Disp\node16.out"
+# ------------Side Velocity -------------------
+file19 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node850.out"
+file20 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node950.out"
+file21 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1050.out"
+
+file22 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node851.out"
+file23 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node951.out"
+file24 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1049.out"
+
+file25 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1051.out"
+file26 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1151.out"
+file27 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1251.out"
+
+file28 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1052.out"
+file29 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1152.out"
+file30 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1250.out"
+
 #----------------------------- Structure file -----------------------------------
 # file19 = r"D:\shiang\opensees\20220330\extend_soil\stress\Column1_stress.out"
 # file20 = r"D:\shiang\opensees\20220330\extend_soil\stress\Column2_stress.out"
@@ -102,11 +114,23 @@ vel8 = rdnumpy(file16)
 vel408 = rdnumpy(file17)
 vel808 = rdnumpy(file18)
 
-# -------------------- Node Disp ----------------
-disp1 = rdnumpy(file19)
-disp8 = rdnumpy(file20)
-disp9 = rdnumpy(file21)
-disp16 = rdnumpy(file22)
+# -------------------- Side dash Velocity ----------------
+dash851 = rdnumpy(file22)
+dash951 = rdnumpy(file23)
+dash1049 = rdnumpy(file24)
+
+dash1052 = rdnumpy(file28)
+dash1152 = rdnumpy(file29)
+dash1250 = rdnumpy(file30)
+# -------------------- Side Node Velocity ----------------
+Side850 = rdnumpy(file19)
+Side950 = rdnumpy(file20)
+Side1050 = rdnumpy(file21)
+
+Side1051 = rdnumpy(file25)
+Side1151 = rdnumpy(file26)
+Side1251 = rdnumpy(file27)
+
 #----------------------------- Structure file -----------------------------------
 # col1 = rdnumpy(file19)
 # col2 = rdnumpy(file20)
@@ -259,11 +283,30 @@ ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax5.yaxis.get_offset_text().set(size=18)
 
 # -------------Dashpot Velocity -----------------
-# draw_Vel("Side Dashpot Velocity",Dash951,Dash1049,Dash1250,"Dash951","Dash1049","Dash1250")
-# ax7 = plt.gca()
-# ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax7.yaxis.get_offset_text().set(size=18)
+draw_Vel("Left Dashpot Velocity",dash851,dash951,dash1049,"dash851","dash951","dash1049")
+ax7 = plt.gca()
+ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax7.yaxis.get_offset_text().set(size=18)
+
+draw_Vel("Right Dashpot Velocity",dash1052,dash1152,dash1250,"dash1052","dash1152","dash1250")
+ax8 = plt.gca()
+ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax8.yaxis.get_offset_text().set(size=18)
+
+# -------------Side Velocity -----------------
+draw_Vel("Left Beam Velocity",Side850,Side950,Side1050,"Side850","Side950","Side1050")
+ax9 = plt.gca()
+ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax9.yaxis.get_offset_text().set(size=18)
+
+draw_Vel("Right Beam Velocity",Side1051,Side1151,Side1251,"Side1051","Side1151","Side1251")
+ax10 = plt.gca()
+ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax10.yaxis.get_offset_text().set(size=18)
 
 # ================X Disp ===========================
 # draw_Disp("node Displacement",disp1,disp8, disp9, disp16,"disp1","disp8","disp9","disp16")
