@@ -170,9 +170,12 @@ for k in range(100): #ny
     element('elasticBeamColumn', 1625+2*k, 1851+2*k, 1852+2*k, A,E2,Iz, 1, '-release', 2)
 
 # --------- Side Beam and Soil BC -----------------
-for j in range(101):
-    equalDOF(1+8*2*j,1649+2*j,1,2)
-    equalDOF(8+8*2*j,1850+2*j,1,2)
+for j in range(201): #101
+    # equalDOF(1+8*2*j,1649+2*j,1,2)
+    # equalDOF(8+8*2*j,1850+2*j,1,2)
+
+    equalDOF(1+8*j,1649+j,1,2)
+    equalDOF(8+8*j,1850+j,1,2)
 
 # ============== Soil Left and Right "Side" Dashpot =====================================
 for l in range(100):
@@ -210,24 +213,24 @@ for l in range(100):
 for l in range(100):
 # ========= Left Side =============
 # --------------Normal dashpot: for S wave------------------
-    equalDOF(1650+2*l, 2051+2*l, 1)  # x dir
+    equalDOF(2051+2*l, 1650+2*l, 1)  # x dir
 # --------------Traction dashpot: for P wave------------------
-    equalDOF(1650+2*l, 2251+2*l, 2)  # y dir
+    equalDOF(2251+2*l, 1650+2*l, 2)  # y dir
 
 # ========= Right Side =============
 # --------------Normal dashpot: for S wave------------------
-    equalDOF(1851+2*l, 2451+2*l, 1)  # x dir
+    equalDOF(2451+2*l, 1851+2*l, 1)  # x dir
 # --------------Traction dashpot: for P wave------------------
-    equalDOF(1851+2*l, 2651+2*l, 2)  # y dir
+    equalDOF(2651+2*l, 1851+2*l, 2)  # y dir
 
 print("Finished creating all Side dashpot boundary conditions and equalDOF...")
 # ------------- Side dashpot material -----------------------
 sizex1 = 0.05
-S_Smp = 1.0*rho*Vp*sizex1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node 0.5
-S_Sms = 1.0*rho*Vs*sizex1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node 0.5
+S_Smp = 0.5*rho*Vp*sizex1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node 0.5
+S_Sms = 0.5*rho*Vs*sizex1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node 0.5
 
-S_Cmp = 1.0*rho*Vp*sizex1    # side Normal dashpot for S wave: Netwon
-S_Cms = 1.0*rho*Vs*sizex1    # side Traction dashpot for P wave: Netwon
+S_Cmp = 0.5*rho*Vp*sizex1    # side Normal dashpot for S wave: Netwon
+S_Cms = 0.5*rho*Vs*sizex1    # side Traction dashpot for P wave: Netwon
 
 uniaxialMaterial('Viscous',4004, S_Smp, 1)    # "S" wave: Side node
 uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
@@ -264,110 +267,110 @@ for w in range(1,100-1): #1,ny-1 1,100-1
 
 print("Finished creating Side dashpot material and element...")
 
-# # ==================== Side Load Pattern (Pwave) ============================
-# # --------------------- Side Beam Distributed Force ------------------------------
+# ==================== Side Load Pattern (Pwave) ============================
+# --------------------- Side Beam Distributed Force ------------------------------
+for g in range(200):
+# ------- timeSeries ID: 800~999 (global x force) / pattern ID 804~1003----------------------
+    timeSeries('Path',800+g, '-filePath',f'P_Sideforce200ele_x/ele{1+g}.txt','-dt',5e-5)
+    pattern('Plain',804+g, 800+g)
+# ---------- x direction : Sideforce  ---------------------
+# ---------- Distributed at Left Side Beam (ele 816~1015)----------------------
+    eleLoad('-ele',1424+g, '-type', '-beamUniform',-20,0)  # for local axes Wy
+# ---------- Distributed at Right Side Beam (ele 1016~1215)----------------------
+    eleLoad('-ele',1624+g, '-type', '-beamUniform',20,0)   # for local axes Wy
+
 # for g in range(200):
 # # ------- timeSeries ID: 800~999 (global x force) / pattern ID 804~1003----------------------
-#     timeSeries('Path',800+g, '-filePath',f'P_Sideforce200ele_x/ele{1+g}.txt','-dt',5e-5)
-#     pattern('Plain',804+g, 800+g)
+#     timeSeries('Path',1000+g, '-filePath',f'P_Sideforce200ele_y/ele{1+g}.txt','-dt',5e-5)
+#     pattern('Plain',1004+g, 1000+g)
 # # ---------- x direction : Sideforce  ---------------------
 # # ---------- Distributed at Left Side Beam (ele 816~1015)----------------------
-#     eleLoad('-ele',1424+g, '-type', '-beamUniform',-10,0)  # for local axes Wy
+#     eleLoad('-ele',1424+g, '-type', '-beamUniform',0,20,0)  # for local axes Wy
 # # ---------- Distributed at Right Side Beam (ele 1016~1215)----------------------
-#     eleLoad('-ele',1624+g, '-type', '-beamUniform',10,0)   # for local axes Wy
+#     eleLoad('-ele',1624+g, '-type', '-beamUniform',0,20,0)   # for local axes Wy
 
-# # for g in range(200):
-# # # ------- timeSeries ID: 800~999 (global x force) / pattern ID 804~1003----------------------
-# #     timeSeries('Path',1000+g, '-filePath',f'P_Sideforce200ele_y/ele{1+g}.txt','-dt',5e-5)
-# #     pattern('Plain',1004+g, 1000+g)
-# # # ---------- x direction : Sideforce  ---------------------
-# # # ---------- Distributed at Left Side Beam (ele 816~1015)----------------------
-# #     eleLoad('-ele',1424+g, '-type', '-beamUniform',0,20,0)  # for local axes Wy
-# # # ---------- Distributed at Right Side Beam (ele 1016~1215)----------------------
-# #     eleLoad('-ele',1624+g, '-type', '-beamUniform',0,20,0)   # for local axes Wy
-
-# # ------------------------- Side Node Force ----------------------------------------
-# timeSeries('Path',1000, '-filePath',f'P_Sideforce_y/ele{1}.txt','-dt',1e-4)
-# pattern('Plain',1004, 1000)
-# # ---- NodeForce at Left Side Corner -----
-# load(1650,0,1,0)
-# # ---- NodeForce at Right Side Corner -----
-# load(1851,0,1,0)
-
-# timeSeries('Path',1099, '-filePath',f'P_Sideforce_y/ele{100}.txt','-dt',1e-4)
-# pattern('Plain',1103, 1099)
-# # ---- NodeForce at Left Side Corner -----
-# load(1848,0,1,0)
-# # ---- NodeForce at Right Side Corner -----
-# load(2049,0,1,0)
-
-# for g in range(1,100-1): #101 1,100
-# # ------- timeSeries ID: 900~1000 (global y force): node 2~100----------------------
-# # ---------- y direction : Sideforce --------------------
-#     timeSeries('Path',1000+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
-#     pattern('Plain',1004+g, 1000+g)
-# # ---------- For P wave : y direction ---------------------
-# # ---------- NodeForce at Left Side Beam ----------------------
-#     load(1650+2*g,0,2,0) #(0,2,0)
-# # ---------- NodeForce at Right Side Beam ----------------------
-#     load(1851+2*g,0,2,0) #(0,2,0)
-
-# ==================== Side Load Pattern (Swave) ============================
-# -------------------------- Side Node Force -------------------------------
-timeSeries('Path',800, '-filePath',f'S_Sideforce_x/ele{1}.txt','-dt',1e-4)
-pattern('Plain',804, 800)
+# ------------------------- Side Node Force ----------------------------------------
+timeSeries('Path',1000, '-filePath',f'P_Sideforce_y/ele{1}.txt','-dt',1e-4)
+pattern('Plain',1004, 1000)
 # ---- NodeForce at Left Side Corner -----
-load(1650,1,0,0)
+load(1650,0,1,0)
 # ---- NodeForce at Right Side Corner -----
-load(1851,1,0,0)
+load(1851,0,1,0)
 
-timeSeries('Path',899, '-filePath',f'S_Sideforce_x/ele{100}.txt','-dt',1e-4)
-pattern('Plain',903, 899)
+timeSeries('Path',1099, '-filePath',f'P_Sideforce_y/ele{100}.txt','-dt',1e-4)
+pattern('Plain',1103, 1099)
 # ---- NodeForce at Left Side Corner -----
-load(1848,1,0,0)
+load(1848,0,1,0)
 # ---- NodeForce at Right Side Corner -----
-load(2049,1,0,0)
+load(2049,0,1,0)
 
-for g in range(1,100-1): #1011,100
-# ------- timeSeries ID: 800~899 (global y force)----------------------
-# ---------- x direction : Nodeforce --------------------
-    timeSeries('Path',800+g, '-filePath',f'S_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
-    pattern('Plain',804+g, 800+g)
-# ---------- For S wave : x direction ---------------------
-# ---------- NodeForce at Left Side Beam ----------------------
-    load(1650+2*g,2,0,0)
-# ---------- NodeForce at Right Side Beam ----------------------
-    load(1851+2*g,2,0,0)
-
-# ---------------------- Side Beam Distributed Force -------------------------------
-for g in range(200):
-# ------- timeSeries ID: 900~1099/ Pattern ID: 904~1103 ----------------------
+for g in range(1,100-1): #101 1,100
+# ------- timeSeries ID: 900~1000 (global y force): node 2~100----------------------
 # ---------- y direction : Sideforce --------------------
-    timeSeries('Path',900+g, '-filePath',f'S_Sideforce200ele_y/ele{1+g}.txt','-dt',5e-5)
-    pattern('Plain',904+g, 900+g)
+    timeSeries('Path',1000+g, '-filePath',f'P_Sideforce_y/ele{1+g}.txt','-dt',1e-4)
+    pattern('Plain',1004+g, 1000+g)
 # ---------- For P wave : y direction ---------------------
-# ---------- Distributed at Left Side Beam ----------------------
-    eleLoad('-ele',1424+g, '-type', '-beamUniform',0,+10,0)  # for local axes Wx +
-# ---------- Distributed at Right Side Beam ----------------------
-    eleLoad('-ele',1624+g, '-type', '-beamUniform',0,-10,0)   # for local axes Wx -
+# ---------- NodeForce at Left Side Beam ----------------------
+    load(1650+2*g,0,1,0) #(0,2,0)
+# ---------- NodeForce at Right Side Beam ----------------------
+    load(1851+2*g,0,1,0) #(0,2,0)
+
+# # ==================== Side Load Pattern (Swave) ============================
+# # -------------------------- Side Node Force -------------------------------
+# timeSeries('Path',800, '-filePath',f'S_Sideforce_x/ele{1}.txt','-dt',1e-4)
+# pattern('Plain',804, 800)
+# # ---- NodeForce at Left Side Corner -----
+# load(1650,1,0,0)
+# # ---- NodeForce at Right Side Corner -----
+# load(1851,1,0,0)
+
+# timeSeries('Path',899, '-filePath',f'S_Sideforce_x/ele{100}.txt','-dt',1e-4)
+# pattern('Plain',903, 899)
+# # ---- NodeForce at Left Side Corner -----
+# load(1848,1,0,0)
+# # ---- NodeForce at Right Side Corner -----
+# load(2049,1,0,0)
+
+# for g in range(1,100-1): #1011,100
+# # ------- timeSeries ID: 800~899 (global y force)----------------------
+# # ---------- x direction : Nodeforce --------------------
+#     timeSeries('Path',800+g, '-filePath',f'S_Sideforce_x/ele{1+g}.txt','-dt',1e-4)
+#     pattern('Plain',804+g, 800+g)
+# # ---------- For S wave : x direction ---------------------
+# # ---------- NodeForce at Left Side Beam ----------------------
+#     load(1650+2*g,2,0,0)
+# # ---------- NodeForce at Right Side Beam ----------------------
+#     load(1851+2*g,2,0,0)
+
+# # ---------------------- Side Beam Distributed Force -------------------------------
+# for g in range(200):
+# # ------- timeSeries ID: 900~1099/ Pattern ID: 904~1103 ----------------------
+# # ---------- y direction : Sideforce --------------------
+#     timeSeries('Path',900+g, '-filePath',f'S_Sideforce200ele_y/ele{1+g}.txt','-dt',5e-5)
+#     pattern('Plain',904+g, 900+g)
+# # ---------- For P wave : y direction ---------------------
+# # ---------- Distributed at Left Side Beam ----------------------
+#     eleLoad('-ele',1424+g, '-type', '-beamUniform',0,+10,0)  # for local axes Wx +
+# # ---------- Distributed at Right Side Beam ----------------------
+#     eleLoad('-ele',1624+g, '-type', '-beamUniform',0,-10,0)   # for local axes Wx -
 
 print("finish SideBeam Force InputFile Apply")
 
-# #------------- Load Pattern ----------------------------
-# # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+#------------- Load Pattern ----------------------------
+timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 # timeSeries('Path',702, '-filePath','2fs.txt','-dt',1e-4)
-# # timeSeries('Path',705, '-filePath','fp.txt','-dt',1e-4)
-# # timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
+# timeSeries('Path',705, '-filePath','fp.txt','-dt',1e-4)
+# timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
 
-# pattern('Plain',703, 702)
-# # # ------------- P wave -----------------------------
-# # eleLoad('-ele', 1401, '-type','-beamUniform',20,0)
-# # eleLoad('-ele', 1402, '-type','-beamUniform',20,0)
-# # eleLoad('-ele', 1403, '-type','-beamUniform',20,0)
-# # eleLoad('-ele', 1404, '-type','-beamUniform',20,0)
-# # eleLoad('-ele', 1405, '-type','-beamUniform',20,0)
-# # eleLoad('-ele', 1406, '-type','-beamUniform',20,0)
-# # eleLoad('-ele', 1407, '-type','-beamUniform',20,0)
+pattern('Plain',703, 702)
+# ------------- P wave -----------------------------
+eleLoad('-ele', 1401, '-type','-beamUniform',20,0)
+eleLoad('-ele', 1402, '-type','-beamUniform',20,0)
+eleLoad('-ele', 1403, '-type','-beamUniform',20,0)
+eleLoad('-ele', 1404, '-type','-beamUniform',20,0)
+eleLoad('-ele', 1405, '-type','-beamUniform',20,0)
+eleLoad('-ele', 1406, '-type','-beamUniform',20,0)
+eleLoad('-ele', 1407, '-type','-beamUniform',20,0)
 
 # # ------------- S wave -----------------------------
 # eleLoad('-ele', 1401, '-type','-beamUniform',0,20,0)
@@ -378,69 +381,83 @@ print("finish SideBeam Force InputFile Apply")
 # eleLoad('-ele', 1406, '-type','-beamUniform',0,20,0)
 # eleLoad('-ele', 1407, '-type','-beamUniform',0,20,0)
 
-# # # load(805,0,-1)
-# print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
+# # load(805,0,-1)
+print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
-# #-------------- Recorder --------------------------------
-# # recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
-# # recorder('Element', '-file', 'ele501.out', '-time', '-ele',501, 'globalForce')
-# # ------------- left column -------------
-# recorder('Element', '-file', 'Stress/ele1.out', '-time', '-ele',1, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele701.out', '-time', '-ele',701, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele1394.out', '-time', '-ele',1394, 'material ',1,'stresses')
+#-------------- Recorder --------------------------------
+# recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
+# recorder('Element', '-file', 'ele501.out', '-time', '-ele',501, 'globalForce')
+# ------------- left column -------------
+recorder('Element', '-file', 'Stress/ele1.out', '-time', '-ele',1, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele701.out', '-time', '-ele',701, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele1394.out', '-time', '-ele',1394, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node801.out', '-time', '-node',801,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node1601.out', '-time', '-node',1601,'-dof',1,2,3,'vel')
-# # ------------- Center column -------------
-# recorder('Element', '-file', 'Stress/ele4.out', '-time', '-ele',4, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele704.out', '-time', '-ele',704, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele1397.out', '-time', '-ele',1397, 'material ',1,'stresses')
+recorder('Node', '-file', 'Velocity/node1.out', '-time', '-node',1,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node801.out', '-time', '-node',801,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1601.out', '-time', '-node',1601,'-dof',1,2,3,'vel')
+# ------------- Center column -------------
+recorder('Element', '-file', 'Stress/ele4.out', '-time', '-ele',4, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele704.out', '-time', '-ele',704, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele1397.out', '-time', '-ele',1397, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node4.out', '-time', '-node',4,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node804.out', '-time', '-node',804,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node1604.out', '-time', '-node',1604,'-dof',1,2,3,'vel')
-# # ------------- Right column -------------
-# recorder('Element', '-file', 'Stress/ele7.out', '-time', '-ele',7, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele707.out', '-time', '-ele',707, 'material ',1,'stresses')
-# recorder('Element', '-file', 'Stress/ele1400.out', '-time', '-ele',1400, 'material ',1,'stresses')
+recorder('Node', '-file', 'Velocity/node4.out', '-time', '-node',4,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node804.out', '-time', '-node',804,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1604.out', '-time', '-node',1604,'-dof',1,2,3,'vel')
+# ------------- Right column -------------
+recorder('Element', '-file', 'Stress/ele7.out', '-time', '-ele',7, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele707.out', '-time', '-ele',707, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele1400.out', '-time', '-ele',1400, 'material ',1,'stresses')
 
-# recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
-# recorder('Node', '-file', 'Velocity/node1608.out', '-time', '-node',1608,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node8.out', '-time', '-node',8,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node808.out', '-time', '-node',808,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1608.out', '-time', '-node',1608,'-dof',1,2,3,'vel')
 
-# # # ------------ Dashpot Node --------------------
-# # recorder('Node', '-file', 'Velocity/node951.out', '-time', '-node',951,'-dof',1,2,3,'vel')
-# # recorder('Node', '-file', 'Velocity/node1049.out', '-time', '-node',1049,'-dof',1,2,3,'vel')
-# # recorder('Node', '-file', 'Velocity/node1250.out', '-time', '-node',1250,'-dof',1,2,3,'vel')
-# # ==== Left 1/4 node ======================================
-# recorder('Element', '-file', 'Stress/ele1395.out', '-time', '-ele',1395, 'material ',1,'stresses')
+# ------------ Beam and Dashpot Node --------------------
+#---- Left ------
+recorder('Node', '-file', 'Velocity/node1649.out', '-time', '-node',1649,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1749.out', '-time', '-node',1749,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1849.out', '-time', '-node',1849,'-dof',1,2,3,'vel')
 
-# recorder('Node', '-file', 'Velocity/node1603.out', '-time', '-node',1603,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1650.out', '-time', '-node',1650,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1750.out', '-time', '-node',1750,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1848.out', '-time', '-node',1848,'-dof',1,2,3,'vel')
 
-# # ==== Right 1/4 node ======================================
-# recorder('Element', '-file', 'Stress/ele1399.out', '-time', '-ele',1399, 'material ',1,'stresses')
+#---- Right ------
+recorder('Node', '-file', 'Velocity/node1850.out', '-time', '-node',1850,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1950.out', '-time', '-node',1950,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node2050.out', '-time', '-node',2050,'-dof',1,2,3,'vel')
 
-# recorder('Node', '-file', 'Velocity/node1606.out', '-time', '-node',1606,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1851.out', '-time', '-node',1851,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node1951.out', '-time', '-node',1951,'-dof',1,2,3,'vel')
+recorder('Node', '-file', 'Velocity/node2049.out', '-time', '-node',2049,'-dof',1,2,3,'vel')
+# ==== Left 1/4 node ======================================
+recorder('Element', '-file', 'Stress/ele1395.out', '-time', '-ele',1395, 'material ',1,'stresses')
 
-# # # ================= Create an output directory ===================
-# # filename = 'Soil0.7m_TopSide'
-# # if not os.path.exists(filename):
-# #     os.makedirs(filename)
-# # recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
+recorder('Node', '-file', 'Velocity/node1603.out', '-time', '-node',1603,'-dof',1,2,3,'vel')
+
+# ==== Right 1/4 node ======================================
+recorder('Element', '-file', 'Stress/ele1399.out', '-time', '-ele',1399, 'material ',1,'stresses')
+
+recorder('Node', '-file', 'Velocity/node1606.out', '-time', '-node',1606,'-dof',1,2,3,'vel')
+
+# # ================= Create an output directory ===================
+# filename = 'Soil0.7m_TopSide'
+# if not os.path.exists(filename):
+#     os.makedirs(filename)
+# recorder('PVD', filename, 'vel','eleResponse','stresses') #'eleResponse','stresses'
 
 
-# system("UmfPack")
-# numberer("RCM")
-# constraints("Transformation")
-# integrator("Newmark", 0.5, 0.25)
-# algorithm("Newton")
-# test('EnergyIncr',1e-8, 200)
-# analysis("Transient")
-# analyze(8000,1e-4)
-# print("finish analyze:0 ~ 0.8s")
+system("UmfPack")
+numberer("RCM")
+constraints("Transformation")
+integrator("Newmark", 0.5, 0.25)
+algorithm("Newton")
+test('EnergyIncr',1e-8, 200)
+analysis("Transient")
+analyze(8000,1e-4)
+print("finish analyze:0 ~ 0.8s")
 
-# # printModel('-ele', 701,702,703,704,705,707)
-# # --------- end to calculate time -------------
-# end = time.time()
-# print(end - start)
+# printModel('-ele', 701,702,703,704,705,707)
+# --------- end to calculate time -------------
+end = time.time()
+print(end - start)
