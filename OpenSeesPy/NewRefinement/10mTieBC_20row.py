@@ -103,15 +103,15 @@ uniaxialMaterial('Viscous',4003, B_Cms, 1)    # S wave: Center node
 #----------- dashpot elements: Vs with x dir / Vp with y-dir------------------
 xdir = 1
 ydir = 2
-# # ------ Traction dashpot element: Vs with x dir
-# element('zeroLength',1681, 1784,1783, '-mat',4001,'-dir',xdir)  # node 1: Left side
-# element('zeroLength',1761, 1944,1943, '-mat',4001,'-dir',xdir)  # node 101: Left side
+# ------ Traction dashpot element: Vs with x dir
+element('zeroLength',1681, 1784,1783, '-mat',4001,'-dir',xdir)  # node 1: Left side
+element('zeroLength',1761, 1944,1943, '-mat',4001,'-dir',xdir)  # node 101: Left side
 
-# # ------ Normal dashpot element: Vp with y dir
-# element('zeroLength',1762, 1946,1945, '-mat',4000,'-dir',ydir)  # node 1: Left side
-# element('zeroLength',1842, 2106,2105, '-mat',4000,'-dir',ydir)  # node 101: Left side
+# ------ Normal dashpot element: Vp with y dir
+element('zeroLength',1762, 1946,1945, '-mat',4000,'-dir',ydir)  # node 1: Left side
+element('zeroLength',1842, 2106,2105, '-mat',4000,'-dir',ydir)  # node 101: Left side
 
-for q in range(nx+1): #1,nx / nx+1
+for q in range(1,nx): #1,nx / nx+1
 # -------- Traction dashpot element: Vs with x dir (ele 1681~1761) ------------------
     element('zeroLength',1681+q, 1784+2*q,1783+2*q, '-mat',4003,'-dir',xdir)
 
