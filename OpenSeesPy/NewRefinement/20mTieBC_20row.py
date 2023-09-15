@@ -229,7 +229,7 @@ integrator("Newmark", 0.5, 0.25)
 algorithm("Newton")
 test('EnergyIncr',1e-8, 200)
 analysis("Transient")
-analyze(1600,2.55e-4)
+analyze(1600,2.5e-4)
 print("finish analyze:0 ~ 0.8s")
 
 # # printModel('-ele', 701,702,703,704,705,707)
