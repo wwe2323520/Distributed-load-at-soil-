@@ -47,7 +47,7 @@ file11 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node365.out"
 file12 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node725.out"
 
 #----------------------------- Right column file -----------------------------------
-file13 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele80.out"
+file13 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele8.out"
 file14 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele328.out"
 file15 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele640.out"
 
