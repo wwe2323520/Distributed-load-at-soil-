@@ -181,22 +181,22 @@ uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
 uniaxialMaterial('Viscous',4006, S_Cmp, 1)    # "S" wave: Center node
 uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
 
-# # =============== Right and Left NODE :different dashpot element==================
-# #  ----------- Left side Normal: S wave ----------
-# element('zeroLength',3683, 4188, 4187, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
-# element('zeroLength',3703, 4228, 4227, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
-# #  ----------- Left side Traction: P wave ----------
-# element('zeroLength',3704, 4230, 4229, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
-# element('zeroLength',3724, 4270, 4269, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
+# =============== Right and Left NODE :different dashpot element==================
+#  ----------- Left side Normal: S wave ----------
+element('zeroLength',3683, 4188, 4187, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
+element('zeroLength',3703, 4228, 4227, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
+#  ----------- Left side Traction: P wave ----------
+element('zeroLength',3704, 4230, 4229, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
+element('zeroLength',3724, 4270, 4269, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
 
-# #  ----------- Right side Normal: S wave ----------
-# element('zeroLength',3725, 4272, 4271, '-mat',4004,'-dir',xdir)  # node 8 -> Smp
-# element('zeroLength',3745, 4312, 4311, '-mat',4004,'-dir',xdir)  # node 808 -> Smp
-# #  ----------- Right side Traction: P wave ----------
-# element('zeroLength',3746, 4314, 4313, '-mat',4005,'-dir',ydir)  # node 8 -> Sms
-# element('zeroLength',3766, 4354, 4353, '-mat',4005,'-dir',ydir)  # node 808 -> Sms
+#  ----------- Right side Normal: S wave ----------
+element('zeroLength',3725, 4272, 4271, '-mat',4004,'-dir',xdir)  # node 8 -> Smp
+element('zeroLength',3745, 4312, 4311, '-mat',4004,'-dir',xdir)  # node 808 -> Smp
+#  ----------- Right side Traction: P wave ----------
+element('zeroLength',3746, 4314, 4313, '-mat',4005,'-dir',ydir)  # node 8 -> Sms
+element('zeroLength',3766, 4354, 4353, '-mat',4005,'-dir',ydir)  # node 808 -> Sms
 
-for w in range(ny+1): #1,ny
+for w in range(1,ny): #1,ny
 #----------- Left side Normal Dashpot: (ele 3683~3703)---------- -> Smp
     element('zeroLength',3683+w, 4188+2*w, 4187+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
 #----------- Left side Traction Dashpot: (ele 3704~3724) ---------- -> Sms
