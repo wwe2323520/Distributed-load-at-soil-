@@ -34,9 +34,9 @@ points = [1, 0.0,   0.0,
           4, 0.0,   10.0]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
-# -------- Soil B.C ---------------
-for i in range(ny+1):
-    equalDOF(9*i+1,9*i+9,1,2)
+# # -------- Soil B.C ---------------
+# for i in range(ny+1):
+#     equalDOF(9*i+1,9*i+9,1,2)
 
 # ============== Build Beam element (730~738) (ele 641~648) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
