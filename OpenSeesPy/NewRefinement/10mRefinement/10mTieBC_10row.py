@@ -34,9 +34,9 @@ points = [1, 0.0,   0.0,
           4, 0.0,   10.0]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
-# -------- Soil B.C ---------------
-for i in range(ny+1):
-    equalDOF(81*i+1,81*i+81,1,2)
+# # -------- Soil B.C ---------------
+# for i in range(ny+1):
+#     equalDOF(81*i+1,81*i+81,1,2)
 
 # ============== Build Beam element (892~972) (ele 801~880) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
@@ -115,10 +115,101 @@ for q in range(1,nx): #1,nx / nx+1
 # -------- Traction dashpot element: Vs with x dir (ele 881~961) ------------------
     element('zeroLength',881+q, 974+2*q,973+2*q, '-mat',4003,'-dir',xdir)
 
-# -------- Normal dashpot element: Vp with y dir (ele 20102~20200) ------------------
+# -------- Normal dashpot element: Vp with y dir (ele 962~1042) ------------------
     element('zeroLength',962+q, 1136+2*q,1135+2*q, '-mat',4002,'-dir',ydir)
 
 print("Finished creating dashpot material and element...")
+# ============ Soil Left and Right "Side" Dashpot =====================================
+soilLength = 10 # m
+yMesh = soilLength/ny # Y row MeshSize
+for l in range(ny+1):
+# ========= Left Side =============
+# --------- Normal dashpot (node 1297,1298~ 1317,1318)-> for S wave------------
+    node(1297+2*l, 0.0, yMesh*l)
+    node(1298+2*l, 0.0, yMesh*l)
+# ---------- dashpot dir: Vs -> x dir ---------------------     
+    fix(1297+2*l, 0, 1, 1)      # x dir dashpot　
+    fix(1298+2*l, 1, 1, 1)      # fixed end to let soil fix
+
+# --------- Traction dashpot (node 1319,1320~ 1339,1340)-> for P wave------------
+    node(1319+2*l, 0.0, yMesh*l)
+    node(1320+2*l, 0.0, yMesh*l)
+# ---------- dashpot dir: Vp -> y dir ---------------------     
+    fix(1319+2*l, 1, 0, 1)      # y dir dashpot　
+    fix(1320+2*l, 1, 1, 1)      # fixed end to let soil fix
+
+# ========= Right Side =============
+# --------- Normal dashpot (node 1341,1342~ 1361,1362)-> for S wave------------
+    node(1341+2*l, 10.0, yMesh*l)
+    node(1342+2*l, 10.0, yMesh*l)
+# ---------- dashpot dir: Vs -> x dir ---------------------     
+    fix(1341+2*l, 0, 1, 1)      # x dir dashpot　
+    fix(1342+2*l, 1, 1, 1)      # fixed end to let soil fix
+
+# --------- Traction dashpot (node 1363,1364~ 1383,1384)-> for P wave------------
+    node(1363+2*l, 10.0, yMesh*l)
+    node(1364+2*l, 10.0, yMesh*l)
+# ---------- dashpot dir: Vp -> y dir ---------------------     
+    fix(1363+2*l, 1, 0, 1)      # y dir dashpot　
+    fix(1364+2*l, 1, 1, 1)      # fixed end to let soil fix
+ 
+# ------ connect dashpot with Soil side layer :Vs with x dir / Vp with y-dir --------------
+for l in range(ny+1):
+# ========= Left Side =============
+# --------------Normal dashpot: for S wave------------------
+    equalDOF(1+81*l, 1297+2*l, 1)  # x dir
+# --------------Traction dashpot: for P wave------------------
+    equalDOF(1+81*l, 1319+2*l, 2)  # y dir
+
+# ========= Right Side =============
+# --------------Normal dashpot: for S wave------------------
+    equalDOF(81+81*l, 1341+2*l, 1)  # x dir
+# --------------Traction dashpot: for P wave------------------
+    equalDOF(81+81*l, 1363+2*l, 2)  # y dir
+  
+print("Finished creating all Side dashpot boundary conditions and equalDOF...")
+# ------------- Side dashpot material -----------------------
+sizeX1 = yMesh
+S_Smp = 0.5*rho*Vp*sizeX1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
+S_Sms = 0.5*rho*Vs*sizeX1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
+
+S_Cmp = 1.0*rho*Vp*sizeX1    # side Normal dashpot for S wave: Netwon
+S_Cms = 1.0*rho*Vs*sizeX1    # side Traction dashpot for P wave: Netwon
+
+uniaxialMaterial('Viscous',4004, S_Smp, 1)    # "S" wave: Side node
+uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
+
+uniaxialMaterial('Viscous',4006, S_Cmp, 1)    # "S" wave: Center node
+uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
+
+# =============== Right and Left NODE :different dashpot element==================
+#  ----------- Left side Normal: S wave ----------
+element('zeroLength',1043, 1298, 1297, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
+element('zeroLength',1053, 1318, 1317, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
+#  ----------- Left side Traction: P wave ----------
+element('zeroLength',1054, 1320, 1319, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
+element('zeroLength',1064, 1340, 1339, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
+
+#  ----------- Right side Normal: S wave ----------
+element('zeroLength',1065, 1342, 1341, '-mat',4004,'-dir',xdir)  # node 8 -> Smp
+element('zeroLength',1075, 1362, 1361, '-mat',4004,'-dir',xdir)  # node 808 -> Smp
+#  ----------- Right side Traction: P wave ----------
+element('zeroLength',1076, 1364, 1363, '-mat',4005,'-dir',ydir)  # node 8 -> Sms
+element('zeroLength',1086, 1384, 1383, '-mat',4005,'-dir',ydir)  # node 808 -> Sms
+
+for w in range(1,ny): #1,ny
+#----------- Left side Normal Dashpot: (ele 1043~1053)---------- -> Smp
+    element('zeroLength',1043+w, 1298+2*w, 1297+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+#----------- Left side Traction Dashpot: (ele 1054~1064) ---------- -> Sms
+    element('zeroLength',1054+w, 1320+2*w, 1319+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+
+#----------- Right side Normal Dashpot:(ele 1065 ~ 1075) ---------- -> Smp
+    element('zeroLength',1065+w, 1342+2*w, 1341+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+#----------- Right side Traction Dashpot: (ele 1076 ~ 1086) ----------  -> Sms
+    element('zeroLength',1076+w, 1364+2*w, 1363+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+
+print("Finished creating Side dashpot material and element...")
+
 # # # # # ============================== P wave =================================
 # # # # # ------------ Side Load Pattern ------------------------------
 # # # # for g in range(100):
@@ -169,22 +260,22 @@ print("Finished creating dashpot material and element...")
 #------------- Load Pattern ----------------------------
 # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 timeSeries('Path',702, '-filePath','fs200_10row.txt','-dt',5e-4)
-# timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
+# timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
 
 # # # timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# load(803,0,-1)
-# load(805,0,-2)
-# ------------- P wave -----------------------------
-# for m in range(nx):
-#     eleLoad('-ele', 801+m, '-type','-beamUniform',20,0)
+# load(851,0,-1)
+
+# # ------------- P wave -----------------------------
+# # for m in range(nx):
+# #     eleLoad('-ele', 801+m, '-type','-beamUniform',20,0)
 
 # ------------- S wave -----------------------------
 for m in range(nx):
     eleLoad('-ele', 801+m, '-type','-beamUniform',0,20,0)
 
-print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
+# print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
 # -------------- Recorder --------------------------------
 # recorder('Element', '-file', 'Stressele500.out', '-time', '-ele',500, 'globalForce')
@@ -219,7 +310,7 @@ recorder('Element', '-file', 'Stress/ele740.out', '-time', '-ele',740, 'material
 recorder('Node', '-file', 'Velocity/node831.out', '-time', '-node',831,'-dof',1,2,3,'vel')
 
 # ==== Right 1/4 node ======================================
-recorder('Element', '-file', 'Stress/ele741.out', '-time', '-ele',741, 'material ',1,'stresses')
+recorder('Element', '-file', 'Stress/ele781.out', '-time', '-ele',781, 'material ',1,'stresses')
 recorder('Node', '-file', 'Velocity/node871.out', '-time', '-node',871,'-dof',1,2,3,'vel')
 
 
