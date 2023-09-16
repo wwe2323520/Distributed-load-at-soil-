@@ -34,9 +34,9 @@ points = [1, 0.0,   0.0,
           4, 0.0,   10.0]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
-# -------- Soil B.C ---------------
-for i in range(ny+1):
-    equalDOF(81*i+1,81*i+81,1,2)
+# # -------- Soil B.C ---------------
+# for i in range(ny+1):
+#     equalDOF(81*i+1,81*i+81,1,2)
 
 # ============== Build Beam element (6562~6642) (ele 6401~6480) =========================
 model('basic', '-ndm', 2, '-ndf' , 3)
@@ -119,6 +119,97 @@ for q in range(1,nx): #1,nx / nx+1
     element('zeroLength',6562+q, 6806+2*q,6805+2*q, '-mat',4002,'-dir',ydir)
 
 print("Finished creating dashpot material and element...")
+# ============ Soil Left and Right "Side" Dashpot =====================================
+soilLength = 10 # m
+yMesh = soilLength/ny # Y row MeshSize
+for l in range(ny+1):
+# ========= Left Side =============
+# --------- Normal dashpot (node 6967,6968~ 7127,7128)-> for S wave------------
+    node(6967+2*l, 0.0, yMesh*l)
+    node(6968+2*l, 0.0, yMesh*l)
+# ---------- dashpot dir: Vs -> x dir ---------------------     
+    fix(6967+2*l, 0, 1, 1)      # x dir dashpot　
+    fix(6968+2*l, 1, 1, 1)      # fixed end to let soil fix
+
+# --------- Traction dashpot (node 7129,7130~ 7289,7290)-> for P wave------------
+    node(7129+2*l, 0.0, yMesh*l)
+    node(7130+2*l, 0.0, yMesh*l)
+# ---------- dashpot dir: Vp -> y dir ---------------------     
+    fix(7129+2*l, 1, 0, 1)      # y dir dashpot　
+    fix(7130+2*l, 1, 1, 1)      # fixed end to let soil fix
+
+# ========= Right Side =============
+# --------- Normal dashpot (node 7291,7292~ 7451,7452)-> for S wave------------
+    node(7291+2*l, 10.0, yMesh*l)
+    node(7292+2*l, 10.0, yMesh*l)
+# ---------- dashpot dir: Vs -> x dir ---------------------     
+    fix(7291+2*l, 0, 1, 1)      # x dir dashpot　
+    fix(7292+2*l, 1, 1, 1)      # fixed end to let soil fix
+
+# --------- Traction dashpot (node 7453,7454~ 7613,7614)-> for P wave------------
+    node(7453+2*l, 10.0, yMesh*l)
+    node(7454+2*l, 10.0, yMesh*l)
+# ---------- dashpot dir: Vp -> y dir ---------------------     
+    fix(7453+2*l, 1, 0, 1)      # y dir dashpot　
+    fix(7454+2*l, 1, 1, 1)      # fixed end to let soil fix
+ 
+# ------ connect dashpot with Soil side layer :Vs with x dir / Vp with y-dir --------------
+for l in range(ny+1):
+# ========= Left Side =============
+# --------------Normal dashpot: for S wave------------------
+    equalDOF(1+81*l, 6967+2*l, 1)  # x dir
+# --------------Traction dashpot: for P wave------------------
+    equalDOF(1+81*l, 7129+2*l, 2)  # y dir
+
+# ========= Right Side =============
+# --------------Normal dashpot: for S wave------------------
+    equalDOF(81+81*l, 7291+2*l, 1)  # x dir
+# --------------Traction dashpot: for P wave------------------
+    equalDOF(81+81*l, 7453+2*l, 2)  # y dir
+
+print("Finished creating all Side dashpot boundary conditions and equalDOF...")
+# ------------- Side dashpot material -----------------------
+sizeX1 = yMesh
+S_Smp = 0.5*rho*Vp*sizeX1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
+S_Sms = 0.5*rho*Vs*sizeX1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
+
+S_Cmp = 1.0*rho*Vp*sizeX1    # side Normal dashpot for S wave: Netwon
+S_Cms = 1.0*rho*Vs*sizeX1    # side Traction dashpot for P wave: Netwon
+
+uniaxialMaterial('Viscous',4004, S_Smp, 1)    # "S" wave: Side node
+uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
+
+uniaxialMaterial('Viscous',4006, S_Cmp, 1)    # "S" wave: Center node
+uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
+
+# # =============== Right and Left NODE :different dashpot element==================
+# #  ----------- Left side Normal: S wave ----------
+# element('zeroLength',6643, 6968, 6967, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
+# element('zeroLength',6723, 7128, 7127, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
+# #  ----------- Left side Traction: P wave ----------
+# element('zeroLength',6724, 7130, 7129, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
+# element('zeroLength',6804, 7290, 7289, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
+
+# #  ----------- Right side Normal: S wave ----------
+# element('zeroLength',6805, 7292, 7291, '-mat',4004,'-dir',xdir)  # node 8 -> Smp
+# element('zeroLength',6885, 7452, 7451, '-mat',4004,'-dir',xdir)  # node 808 -> Smp
+# #  ----------- Right side Traction: P wave ----------
+# element('zeroLength',6886, 7454, 7453, '-mat',4005,'-dir',ydir)  # node 8 -> Sms
+# element('zeroLength',6966, 7614 ,7613, '-mat',4005,'-dir',ydir)  # node 808 -> Sms
+
+for w in range(ny+1): #1,ny
+#----------- Left side Normal Dashpot: (ele 6643~6723)---------- -> Smp
+    element('zeroLength',6643+w, 6968+2*w, 6967+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+#----------- Left side Traction Dashpot: (ele 6724~6804) ---------- -> Sms
+    element('zeroLength',6724+w, 7130+2*w, 7129+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+
+#----------- Right side Normal Dashpot:(ele 6805 ~ 6885) ---------- -> Smp
+    element('zeroLength',6805+w, 7292+2*w, 7291+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+#----------- Right side Traction Dashpot: (ele 6886 ~ 6966) ----------  -> Sms
+    element('zeroLength',6886+w, 7454+2*w, 7453+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+
+print("Finished creating Side dashpot material and element...")
+
 # # # # # # # # ============================== P wave =================================
 # # # # # # # # ------------ Side Load Pattern ------------------------------
 # # # # # # # for g in range(100):
@@ -169,13 +260,13 @@ print("Finished creating dashpot material and element...")
 #------------- Load Pattern ----------------------------
 # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
 timeSeries('Path',702, '-filePath','fs200_80row.txt','-dt',6.25e-05)
-# timeSeries('Path',704, '-filePath','topForce.txt','-dt',1e-4)
+# timeSeries('Path',704, '-filePath','TopForce80row.txt','-dt',3.34e-05)
 
 # # # timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# load(803,0,-1)
-# load(805,0,-2)
+# load(6521,0,-1)
+
 # ------------- P wave -----------------------------
 # for m in range(nx):
 #     eleLoad('-ele', 1601+m, '-type','-beamUniform',20,0)
