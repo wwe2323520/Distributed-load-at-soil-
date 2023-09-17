@@ -258,7 +258,7 @@ for g in range(ny):
 for g in range(ny):
 # ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
 # ---------- y direction : Sideforce --------------------
-    timeSeries('Path',810+g, '-filePath',f'SSideforce_10rowy/ele{1+g}.txt','-dt',1e-4)
+    timeSeries('Path',810+g, '-filePath',f'SSideforce_10rowy/ele{1+g}.txt','-dt',5e-4)
     pattern('Plain',814+g, 810+g)
 # ---------- For P wave : y direction ---------------------
 # ---------- Distributed at Left Side Beam ----------------------
