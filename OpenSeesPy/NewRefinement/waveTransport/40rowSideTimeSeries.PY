@@ -138,29 +138,29 @@ for g in [i for i in range(Nele)]: #Nele
             
             
             
-# # # ---- Output matrix eace column to txt file --------------
-# # num_rows, num_cols = PSideforce_y.shape# 8001,100
-# # # 建立資料夾
-# # # ---------- Pwave ---------------
-# # P_folder_name_x = "P_Sideforce_x"
-# # P_folder_name_y = "P_Sideforce_y"
+# # ---- Output matrix eace column to txt file --------------
+# num_rows, num_cols = SSideforce_40rowy.shape# 8001,100
+# # 建立資料夾
+# # ---------- Pwave ---------------
+# P_folder_name_x = "SSideforce_40rowx"
+# P_folder_name_y = "SSideforce_40rowy"
 
-# # os.makedirs(P_folder_name_x, exist_ok=True)
-# # for col in range(num_cols):
-# #     column_values = PSideforce_x[:, col]
-# #     output_file = f"ele{col + 1}.txt"
-# #     with open(os.path.join(P_folder_name_x, output_file), 'w') as f:
-# #         for value in column_values:
-# #             f.write(f"{value}\n")
+# os.makedirs(P_folder_name_x, exist_ok=True)
+# for col in range(num_cols):
+#     column_values = SSideforce_40rowx[:, col]
+#     output_file = f"ele{col + 1}.txt"
+#     with open(os.path.join(P_folder_name_x, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
 
-# # os.makedirs(P_folder_name_y, exist_ok=True)
-# # # 逐一建立txt檔案並放入資料夾
-# # for col in range(num_cols):
-# #     column_values = PSideforce_y[:, col]
-# #     output_file = f"ele{col + 1}.txt"
-# #     with open(os.path.join(P_folder_name_y, output_file), 'w') as f:
-# #         for value in column_values:
-# #             f.write(f"{value}\n")
+# os.makedirs(P_folder_name_y, exist_ok=True)
+# # 逐一建立txt檔案並放入資料夾
+# for col in range(num_cols):
+#     column_values = SSideforce_40rowy[:, col]
+#     output_file = f"ele{col + 1}.txt"
+#     with open(os.path.join(P_folder_name_y, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
          
 # # #----------------------------- Left column file -----------------------------------
 # # #　 ====== Mid Point File  ====================
