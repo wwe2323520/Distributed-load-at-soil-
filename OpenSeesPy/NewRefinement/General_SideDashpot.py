@@ -26,7 +26,7 @@ nDMaterial('ElasticIsotropic', 2000, E, nu, rho)
 soilLength = 10 #m
 soilwidth = 1.0
 nx = int(soilwidth/0.125)
-ny = 80
+ny = 20
 e1 = 1
 n1 = 1
 eleArgs = [1, 'PlaneStrain', 2000]
@@ -286,7 +286,7 @@ xTimeSeriesID = 800
 xPatternID = 804
 for g in range(ny):
 # ------- timeSeries ID: 800~809 / Pattern ID: 804~813----------------------
-    timeSeries('Path',xTimeSeriesID+g, '-filePath',f'SSideforce_80rowx/ele{1+g}.txt','-dt', dt)
+    timeSeries('Path',xTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowx/ele{1+g}.txt','-dt', dt)
     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
 # ---------- x direction : Sideforce ---------------------
 # ---------- Distributed at Left Side Beam ----------------------
@@ -300,7 +300,7 @@ yPatternID  = xPatternID + ny
 for g in range(ny):
 # ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
 # ---------- y direction : Sideforce --------------------
-    timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_80rowy/ele{1+g}.txt','-dt', dt)
+    timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowy/ele{1+g}.txt','-dt', dt)
     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
 # ---------- For P wave : y direction ---------------------
 # ---------- Distributed at Left Side Beam ----------------------
@@ -311,9 +311,8 @@ for g in range(ny):
 print("finish SideBeam Force InputFile Apply")
 
 # #------------- Load Pattern ----------------------------
-# FileName = r'D:/shiang/opensees/20220330/OpenSeesPy/fs200_10row.txt'
 # # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-timeSeries('Path',702, '-filePath', 'fs200_80row.txt','-dt', dt)
+timeSeries('Path',702, '-filePath', f'TimeSeries/fs200_{ny}row.txt','-dt', dt)
 # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
 
 # # # # # timeSeries('Linear',705)
