@@ -25,15 +25,15 @@ nDMaterial('ElasticIsotropic', 2000, E, nu, rho)
 
 soilLength = 10 #m
 soilwidth = 1.0
-nx = 8
-ny = 10
+nx = int(soilwidth/0.125)
+ny = 80
 e1 = 1
 n1 = 1
 eleArgs = [1, 'PlaneStrain', 2000]
 points = [1, 0.0,   0.0, 
-          2, 1.0,  0.0, 
-          3, 1.0,  10.0, 
-          4, 0.0,   10.0]
+          2, soilwidth,  0.0, 
+          3, soilwidth,  soilLength, 
+          4, 0.0,   soilLength]
 block2D(nx, ny, e1, n1,'quad', *eleArgs, *points)
 
 SoilNode_End = (nx+1)+ ny*(nx+1)
@@ -48,8 +48,12 @@ yMesh = soilLength/ny # Y row MeshSize
 dcell = yMesh / Vs 
 dt = dcell/10.0
 print(f"Swave travel each ele = {dcell} ;dt = {dt}")
+# ======= Totla Analysis Time ============================
+analysisTime = (soilLength/Vs)*8
+analystep = analysisTime/dt # int(800*(ny/10))
+print(f"Analysis Total Time = {analysisTime} ;Analysis_step = {analystep}")
 
-# # -------- Soil B.C ---------------
+# # -------- Soil B.C (Tie BC) ---------------
 # for i in range(ny+1):
 #     equalDOF((nx+1)*i+1,(nx+1)*i+(nx+1),1,2)
 
@@ -249,11 +253,67 @@ for w in range(1,ny): #1,ny
     # print(RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w)
 print("Finished creating Side dashpot material and element...")
 
+# ================ NewBC: CaseA_SideLoad Pattern ============================
+# ==================== Side Beam node (233~243 / 244~254) ====================
+LsideNode = RSideTDash_Start + 2*(ny+1)
+RsideNode = LsideNode + (ny+1)
+LsideEle = RsideTEle_End + 1 
+RsideEle = LsideEle + ny
+
+for i in range(ny+1):
+# ----- Left Side: 233~243 -----------------
+    node(LsideNode+i, 0.0, yMesh*i)
+    fix(LsideNode+i,0,0,1)
+# ----- Right Side: 244~254 -----------------
+    node(RsideNode+i, soilwidth ,yMesh*i)
+    fix(RsideNode+i,0,0,1)
+
+# ------------  Beam Element: 151 ~ 160 / 1097 ~ 1106 ------------------
+for j in range(ny):
+# ----- Left Side Beam:151 ~ 160 -----------------
+    element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+# ----- Right Side Beam:161 ~ 170 -----------------
+    element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+
+# --------- Side Beam and Soil BC -----------------
+for j in range(ny+1):
+    equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
+    equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
+
+# ============================== S wave ======================================
+# ------------ Side Load Pattern ------------------------------
+xTimeSeriesID = 800
+xPatternID = 804
+for g in range(ny):
+# ------- timeSeries ID: 800~809 / Pattern ID: 804~813----------------------
+    timeSeries('Path',xTimeSeriesID+g, '-filePath',f'SSideforce_80rowx/ele{1+g}.txt','-dt', dt)
+    pattern('Plain',xPatternID+g, xTimeSeriesID+g)
+# ---------- x direction : Sideforce ---------------------
+# ---------- Distributed at Left Side Beam ----------------------
+    eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',-20,0)  # for local axes Wy -
+# ---------- Distributed at Right Side Beam ----------------------
+    eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',-20,0)   # for local axes Wy +
+
+yTimeSeriesID = xTimeSeriesID + ny
+yPatternID  = xPatternID + ny
+
+for g in range(ny):
+# ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
+# ---------- y direction : Sideforce --------------------
+    timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_80rowy/ele{1+g}.txt','-dt', dt)
+    pattern('Plain',yPatternID+g, yTimeSeriesID+g)
+# ---------- For P wave : y direction ---------------------
+# ---------- Distributed at Left Side Beam ----------------------
+    eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
+# ---------- Distributed at Right Side Beam ----------------------
+    eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
+
+print("finish SideBeam Force InputFile Apply")
 
 # #------------- Load Pattern ----------------------------
 # FileName = r'D:/shiang/opensees/20220330/OpenSeesPy/fs200_10row.txt'
 # # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-timeSeries('Path',702, '-filePath', 'fs200_10row.txt','-dt', dt)
+timeSeries('Path',702, '-filePath', 'fs200_80row.txt','-dt', dt)
 # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
 
 # # # # # timeSeries('Linear',705)
@@ -349,7 +409,6 @@ recorder('Node', '-file', f'Velocity/node{UpperrN_LQuarter}.out', '-time', '-nod
 recorder('Element', '-file', f'Stress/ele{UpperrE_RQuarter}.out', '-time', '-ele',UpperrE_RQuarter, 'material ',1,'stresses')
 recorder('Node', '-file', f'Velocity/node{UpperrN_RQuarter}.out', '-time', '-node',UpperrN_RQuarter,'-dof',1,2,3,'vel')
 
-
 system("UmfPack")
 numberer("RCM")
 constraints("Transformation")
@@ -357,7 +416,7 @@ integrator("Newmark", 0.5, 0.25)
 algorithm("Newton")
 test('EnergyIncr',1e-8, 200)
 analysis("Transient")
-analyze(800,dt)
+analyze(analystep,dt)
 print("finish analyze:0 ~ 0.8s")
 
 # # printModel('-ele', 701,702,703,704,705,707)
