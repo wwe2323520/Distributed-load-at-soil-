@@ -170,7 +170,7 @@ for j in range(ny+1):
     equalDOF(9+9*j,166+2*j,1,2)
 
 # ======== Connect beam node with Side Dashpot node =================
-E2 = 1e+20
+E2 = 1e+20 #1e+20
 uniaxialMaterial('Elastic', 5000,E2)
 # ---------- Left twoNodeLink element : ele 187~206 / 207~226 ---------------------------------
 for o in range(2*ny):
@@ -240,33 +240,33 @@ uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
 
 # =============== Right and Left NODE :different dashpot element==================
 #  ----------- Left side Normal: S wave ----------
-element('zeroLength',147, 189, 190, '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
-element('zeroLength',156, 207, 208, '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
+element('zeroLength',147, 190, 189,  '-mat',4004,'-dir',xdir)  # node 1:  -> Smp
+element('zeroLength',156, 208, 207,  '-mat',4004,'-dir',xdir)  # node 801:  -> Smp
 #  ----------- Left side Traction: P wave ----------
-element('zeroLength',157, 209, 210, '-mat',4005,'-dir',ydir)  # node 1 -> Sms
-element('zeroLength',166, 227, 228, '-mat',4005,'-dir',ydir)  # node 801 -> Sms
+element('zeroLength',157, 210, 209,  '-mat',4005,'-dir',ydir)  # node 1 -> Sms
+element('zeroLength',166, 228, 227,  '-mat',4005,'-dir',ydir)  # node 801 -> Sms
 
 #  ----------- Right side Normal: S wave ----------
-element('zeroLength',167, 229, 230, '-mat',4004,'-dir',xdir)  # node 8 -> Smp
-element('zeroLength',176, 247, 248, '-mat',4004,'-dir',xdir)  # node 808 -> Smp
+element('zeroLength',167, 230, 229,  '-mat',4004,'-dir',xdir)  # node 8 -> Smp
+element('zeroLength',176, 248, 247,  '-mat',4004,'-dir',xdir)  # node 808 -> Smp
 #  ----------- Right side Traction: P wave ----------
-element('zeroLength',177, 249, 250, '-mat',4005,'-dir',ydir)  # node 8 -> Sms
-element('zeroLength',186, 267, 268, '-mat',4005,'-dir',ydir)  # node 808 -> Sms
+element('zeroLength',177, 250, 249,  '-mat',4005,'-dir',ydir)  # node 8 -> Sms
+element('zeroLength',186, 268, 267,  '-mat',4005,'-dir',ydir)  # node 808 -> Sms
 
 for w in range(1,ny-1): #1,ny
 #----------- Left side Normal Dashpot: (ele 147~156)---------- -> Smp
-    element('zeroLength',147+w, 189+2*w, 190+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+    element('zeroLength',147+w, 190+2*w, 189+2*w,  '-mat',4006,'-dir',xdir)  # center node : S wave
 #----------- Left side Traction Dashpot: (ele 157~166) ---------- -> Sms
-    element('zeroLength',157+w, 209+2*w, 210+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+    element('zeroLength',157+w, 210+2*w, 209+2*w,  '-mat',4007,'-dir',ydir)  # center node：P wave
 
 #----------- Right side Normal Dashpot:(ele 167 ~ 176) ---------- -> Smp
-    element('zeroLength',167+w, 229+2*w, 230+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+    element('zeroLength',167+w, 230+2*w, 229+2*w,  '-mat',4006,'-dir',xdir)  # center node : S wave
 #----------- Right side Traction Dashpot: (ele 177 ~ 186) ----------  -> Sms
-    element('zeroLength',177+w, 249+2*w, 250+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+    element('zeroLength',177+w, 250+2*w, 249+2*w,  '-mat',4007,'-dir',ydir)  # center node：P wave
 
 print("Finished creating Side dashpot material and element...")
 
-# ============================== S wave ======================================
+# # ============================== S wave ======================================
 # ------------ Side Load Pattern : Beam Mid Node------------------------------
 for g in range(2*ny):
 # ------- timeSeries ID: 800~819 / Pattern ID: 804~823----------------------
@@ -289,6 +289,8 @@ for g in range(2*ny):
     eleLoad('-ele',107+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wy -
 # ---------- Distributed at Right Side Beam ----------------------
     eleLoad('-ele',127+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wy +
+
+
 
 # # ------------ Side Load Pattern：Side Node Force -----------
 # timeSeries('Path',800, '-filePath',f'S_Nodeforce_10rowx/node{1}.txt','-dt',5e-4)
