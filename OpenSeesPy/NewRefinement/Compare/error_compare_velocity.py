@@ -165,10 +165,10 @@ Analysis[:,1] = wave1[:,99]
          
 # # #----------------------------- Left column file -----------------------------------
 #　 ====== Mid Point File  ====================
-file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_80row\node12961.out"
-file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_40row\node6521.out"
-file3 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_20row\node3301.out"
-file4 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_10row\node1691.out"
+file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_80row\node12961.out"
+file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_40row\node6521.out"
+file3 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_20row\node3301.out"
+file4 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_10row\node1691.out"
 
 # file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_80row\node6521.out"
 # file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_40row\node3281.out"
@@ -192,10 +192,10 @@ Mid20row = rdnumpy(file3)
 Mid10row = rdnumpy(file4)
 
 # #　 ====== Quarter Point File  ====================
-file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_80row\node13001.out"
-file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_40row\node6561.out"
-file8 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_20row\node3341.out"
-file9 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\SideBeam_10row\node1731.out"
+file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_80row\node13001.out"
+file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_40row\node6561.out"
+file8 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_20row\node3341.out"
+file9 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_10row\node1731.out"
 
 # file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_80row\node6541.out"
 # file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_40row\node3301.out"
@@ -252,20 +252,20 @@ plt.ylabel(r"$V_x$  $(m/s)$",fontsize=18)
 # plt.plot(Quarter1[:,0],Quarter1[:,plt_axis2],label ='1m Soil(0.125m)', ls = ':',linewidth=2.0)
 
 # Refinement  Mid node:
-# plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=4.0)
-# plt.plot(Mid80row[:,0],Mid80row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.125$ ${\rm m}$)', ls = '--',linewidth=6.0)
-# plt.plot(Mid40row[:,0],Mid40row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.25$ ${\rm m}$)', ls = '-.',linewidth=4.0)
-# plt.plot(Mid20row[:,0],Mid20row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.50$ ${\rm m}$)', ls = ':',linewidth=3.0)
-# plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=1$ ${\rm m}$)', ls = '-',linewidth=2.0)
+plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=4.0)
+plt.plot(Mid80row[:,0],Mid80row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.125$ ${\rm m}$)', ls = '--',linewidth=6.0)
+plt.plot(Mid40row[:,0],Mid40row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.25$ ${\rm m}$)', ls = '-.',linewidth=4.0)
+plt.plot(Mid20row[:,0],Mid20row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.50$ ${\rm m}$)', ls = ':',linewidth=3.0)
+plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=1$ ${\rm m}$)', ls = '-',linewidth=2.0)
 
 # # plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label ='10row', ls = 'dotted',linewidth=4.0)
 soilWidth = 20
 # # # # Refinement  Quarter node:
-plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=4.0)
-plt.plot(Quarter80row[:,0],Quarter80row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.125$ ${\rm m}$)', ls = '--',linewidth=6.0)
-plt.plot(Quarter40row[:,0],Quarter40row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.25$ ${\rm m}$)', ls = '-.',linewidth=4.0)
-plt.plot(Quarter20row[:,0],Quarter20row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.50$ ${\rm m}$)', ls = ':',linewidth=3.0)
-plt.plot(Quarter10row[:,0],Quarter10row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=1.0$ ${\rm m}$)', ls = '-',linewidth=2.0)
+# plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=4.0)
+# plt.plot(Quarter80row[:,0],Quarter80row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.125$ ${\rm m}$)', ls = '--',linewidth=6.0)
+# plt.plot(Quarter40row[:,0],Quarter40row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.25$ ${\rm m}$)', ls = '-.',linewidth=4.0)
+# plt.plot(Quarter20row[:,0],Quarter20row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.50$ ${\rm m}$)', ls = ':',linewidth=3.0)
+# plt.plot(Quarter10row[:,0],Quarter10row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=1.0$ ${\rm m}$)', ls = '-',linewidth=2.0)
 
 # # plt.plot(Quarter10row[:,0],Quarter10row[:,plt_axis2],label ='10row', ls = 'dotted',linewidth=4.0)
 
@@ -288,7 +288,7 @@ plt.yticks(fontsize = 15)
 plt.xlim(0.0, 0.20)
 plt.grid(True)
 
-x_axis = 0.025 # 0.1 0.05
+x_axis = 0.0125 # 0.1 0.05
 ax4 = plt.gca()
 ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
@@ -330,182 +330,278 @@ def ele_dt(element):
     dt = dcell/10 #eace cell have 10 steps
     return(dt)
 
-def ele_compare(ele80,Mid80row):
-    for j in range(16):
-        dt = round(0.0125*j +0.0125,4)
-        # print(dt)
-        for i in range(len(Mid80row)):
-            if Mid80row[i, 0] == dt:
-                ele80[1+j,0] = Mid80row[i,0]
-                ele80[1+j,1] = Mid80row[i,1]
-                # print(i,Mid20[i,0],Mid20[i,1])
+
+
+    
+
 ele10_time = np.arange(0.0,0.4001,ele_dt(10)) #5e-5 in 100row
 ele20_time = np.arange(0.0,0.4001,ele_dt(20))
 ele40_time = np.arange(0.0,0.4001,ele_dt(40))
 ele80_time = np.arange(0.0,0.4000,ele_dt(80))
 
 
-ele80_Mid = np.zeros((17,2))
-ele40_Mid = np.zeros((17,2))
-ele20_Mid = np.zeros((17,2))
-ele10_Mid = np.zeros((17,2))
+# ele80_Mid = np.zeros((17,2))
 
-ele80_Quarter = np.zeros((17,2))
-ele40_Quarter = np.zeros((17,2))
-ele20_Quarter = np.zeros((17,2))
-ele10_Quarter = np.zeros((17,2))
 
-# ================= Save differ element size velocity ===========================
+# ele40_Mid = np.zeros((17,2))
+# ele20_Mid = np.zeros((17,2))
+# ele10_Mid = np.zeros((17,2))
+
+# ele80_Quarter = np.zeros((17,2))
+# ele40_Quarter = np.zeros((17,2))
+# ele20_Quarter = np.zeros((17,2))
+# ele10_Quarter = np.zeros((17,2))
+
+# ========== Check range time increment about relative error ====================
+top_time = 0.0625
+Min_timeIncrement = (L/Soil_80row)/ cs
+Max_timeIncrement = (L/Soil_10row)/ cs
+error_dt = np.arange(top_time, top_time+(Max_timeIncrement+Min_timeIncrement), 2*Min_timeIncrement)
+
+ele80_Mid = np.zeros((len(error_dt),2))
+ele40_Mid = np.zeros((len(error_dt),2))
+ele20_Mid = np.zeros((len(error_dt),2))
+ele10_Mid = np.zeros((len(error_dt),2))
+
+ele80_Quarter = np.zeros((len(error_dt),2))
+ele40_Quarter = np.zeros((len(error_dt),2))
+ele20_Quarter = np.zeros((len(error_dt),2))
+ele10_Quarter = np.zeros((len(error_dt),2))
+
+# # # ================= Save differ element size velocity ===========================
+# ele_compare(Soil_10row,ele10_Mid,Mid10row)
+def ele_compare(ele80,Mid80row):
+    ele80[:,0] = error_dt[:]
+    for j in range(len(error_dt)):
+        dt = round(error_dt[j],6)
+        for i in range(len(Mid80row)): 
+            if Mid80row[i,0] == dt:
+                # print(Mid80row[i,0])      
+                ele80[j,1] = Mid80row[i,1]
+
+# ======= Ground surface Middle node compare ===========================
 ele_compare(ele80_Mid,Mid80row)
 ele_compare(ele40_Mid,Mid40row)
 ele_compare(ele20_Mid,Mid20row)
-ele_compare(ele10_Mid,Mid10row)
+# # ====== ele 10 mesh too big ,so hand type in =================
+ele10_Mid[:,0] = error_dt[:]
+ele10_Mid[0,1] = Mid10row[124,1]
+ele10_Mid[1,1] = Mid10row[126,1]
+ele10_Mid[2,1] = Mid10row[129,1]
+ele10_Mid[3,1] = Mid10row[131,1]
+ele10_Mid[4,1] = Mid10row[134,1]           
 
+# ======= Ground surface Quarter node compare ===========================
 ele_compare(ele80_Quarter,Quarter80row)
 ele_compare(ele40_Quarter,Quarter40row)
 ele_compare(ele20_Quarter,Quarter20row)
-ele_compare(ele10_Quarter,Quarter10row)
-# ----------- Analysis Theory velocity ----------------       
-Analy_compare = np.zeros((17,2))
-for j in range(16):
-    # print(dt)
-    Analy_compare[1+j,0] = Analysis[250+250*j,0]
-    Analy_compare[1+j,1] = Analysis[250+250*j,1]
-    # print(250+250*j,Analysis[250+250*j,0], Analysis[250+250*j,1])
+# # # ====== ele 10 mesh too big ,so hand type in =================
+ele10_Quarter[:,0] = error_dt[:]
+ele10_Quarter[0,1] = Quarter10row[124,1]
+ele10_Quarter[1,1] = Quarter10row[126,1]
+ele10_Quarter[2,1] = Quarter10row[129,1]
+ele10_Quarter[3,1] = Quarter10row[131,1]
+ele10_Quarter[4,1] = Quarter10row[134,1]     
 
-# ----------- Put all differ element inside matrics --------------- 
-total_MidCompare = np.zeros((len(Analy_compare),6))
-total_MidCompare[:,0] = Analy_compare[:,0]
-total_MidCompare[:,1] = Analy_compare[:,1]
-total_MidCompare[:,2] = ele80_Mid[:,1]
-total_MidCompare[:,3] = ele40_Mid[:,1]
-total_MidCompare[:,4] = ele20_Mid[:,1]
-total_MidCompare[:,5] = ele10_Mid[:,1]
-total_MidCompare[6,1] = 0
+def Find_ColMaxValue(ele80_Mid):
+    column_index = 1
+    column = ele80_Mid[:, column_index]
+    max_value = np.max(column)
+    max_index = np.argmax(column)
+    print(f'max_value= {max_value}; max_index= {max_index}')
+    return(max_value)
 
-total_QuarterCompare = np.zeros((len(Analy_compare),6))
-total_QuarterCompare[:,0] = Analy_compare[:,0]
-total_QuarterCompare[:,1] = Analy_compare[:,1]
-total_QuarterCompare[:,2] = ele80_Quarter[:,1]
-total_QuarterCompare[:,3] = ele40_Quarter[:,1]
-total_QuarterCompare[:,4] = ele20_Quarter[:,1]
-total_QuarterCompare[:,5] = ele10_Quarter[:,1]
-total_QuarterCompare[6,1] = 0
 
-error_Midcompare = np.zeros((len(Analy_compare),5))
-error_Midcompare[:,0] =  total_MidCompare[:,0]
+ele80_max = Find_ColMaxValue(ele80_Mid)
+ele40_max = Find_ColMaxValue(ele40_Mid)
+ele20_max = Find_ColMaxValue(ele20_Mid)
+ele10_max = Find_ColMaxValue(ele10_Mid)
 
-error_Quartercompare = np.zeros((len(Analy_compare),5))
-error_Quartercompare[:,0] =  total_QuarterCompare[:,0]
-for i in range(4):#4
-    for j in range(len(error_Midcompare)):
-        error_Midcompare[j,1+i] = ((total_MidCompare[j,2+i] - total_MidCompare[j,1])/ total_MidCompare[j,1])*100
-        error_Quartercompare[j,1+i] = ((total_QuarterCompare[j,2+i] - total_QuarterCompare[j,1])/ total_QuarterCompare[j,1])*100
-        
-        # print(j,i)
-#----------------- Make the nan,inf to be 0 -----------------
-where_are_nan1 = np.isnan(error_Midcompare) 
-where_are_inf1 = np.isinf(error_Midcompare)
-error_Midcompare[where_are_nan1] = 0
-error_Midcompare[where_are_inf1] = 0
+ele80_Quarter_max = Find_ColMaxValue(ele80_Quarter)
+ele40_Quarter_max = Find_ColMaxValue(ele40_Quarter)
+ele20_Quarter_max = Find_ColMaxValue(ele20_Quarter)
+ele10_Quarter_max = Find_ColMaxValue(ele10_Quarter)
 
-where_are_nan2 = np.isnan(error_Quartercompare) 
-where_are_inf2 = np.isinf(error_Quartercompare)
-error_Quartercompare[where_are_nan2] = 0
-error_Quartercompare[where_are_inf2] = 0
+relative_Error80Mid = np.zeros((len(ele80_Mid),2))
+relative_Error40Mid = np.zeros((len(ele40_Mid),2))
+relative_Error20Mid = np.zeros((len(ele20_Mid),2))
+relative_Error10Mid = np.zeros((len(ele10_Mid),2))
 
-# ------- relative error figure -------------
-plt.figure(figsize=(10,8))
-# plt.title(r'Ground Surface relative error: Middle point',fontsize = 18) 
-plt.ylabel(r'Relative error (%)',fontsize=18)  
-plt.xlabel("Time increment $\Delta t$",fontsize=18)
+relative_Error80Quarter = np.zeros((len(ele80_Mid),2))
+relative_Error40Quarter = np.zeros((len(ele40_Mid),2))
+relative_Error20Quarter = np.zeros((len(ele20_Mid),2))
+relative_Error10Quarter = np.zeros((len(ele10_Mid),2))
 
-plt.plot(error_Midcompare[:,0],error_Midcompare[:,1],label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$", marker = '^',markersize=16,markerfacecolor = 'white')
-plt.plot(error_Midcompare[:,0],error_Midcompare[:,2],label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$", marker = 's',markersize=14,markerfacecolor = 'white')
-plt.plot(error_Midcompare[:,0],error_Midcompare[:,3],label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$", marker = 'o',markersize=12,markerfacecolor = 'white')
-plt.plot(error_Midcompare[:,0],error_Midcompare[:,4],label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$", marker = '>',markersize=10,markerfacecolor = 'white')
+def calculate_error(relative_Error80,ele80_Mid,ele80_max):
+# # ---------- calculate relative error -----------------
+    for n in range(len(ele80_Mid)):
+        relative_Error80[n,0] = ele80_Mid[n,0]
+        relative_Error80[n,1] = ((ele80_Mid[n,1]- ele80_max)/ele80_max)*100
+        # relative_Error80[n,1] = ((ele80_Mid[n,1]- 0.0001)/ele80_max)*100
 
-plt.legend(loc='upper right',fontsize=15) #ncol=2
+calculate_error(relative_Error80Mid,ele80_Mid,ele80_max)
+calculate_error(relative_Error40Mid,ele40_Mid,ele40_max)
+calculate_error(relative_Error20Mid,ele20_Mid,ele20_max)
+calculate_error(relative_Error10Mid,ele10_Mid,ele10_max)
+
+plt.figure(figsize=(8,6))
+plt.title("Ground Surface relative error: Middle node(TieBC)", fontsize = 18)
+plt.xlabel("time (s)",fontsize=18)
+plt.ylabel(r"relative error (%)",fontsize=18)
+
+plt.plot(relative_Error80Mid[:,0],relative_Error80Mid[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$")
+plt.plot(relative_Error40Mid[:,0],relative_Error40Mid[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$")
+plt.plot(relative_Error20Mid[:,0],relative_Error20Mid[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$")
+plt.plot(relative_Error10Mid[:,0],relative_Error10Mid[:,1],marker = 's',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$")
+
+plt.legend(loc='lower left',fontsize=15) #ncol=2
 plt.xticks(fontsize = 15)
 plt.yticks(fontsize = 15)
-plt.xlim(0.0, 0.20)
+# plt.xlim(0.0, 0.20)
 plt.grid(True)
 
-# x_axis = 0.0125 # 0.1 0.05
-ax4 = plt.gca()
-# plt.rcParams['ax4.formatter.limits'] = [-3, 3]
-# ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax4.yaxis.get_offset_text().set(size=18)
-ax4.xaxis.get_offset_text().set(size=18)
-
-
-plt.figure(figsize=(10,8))
-# plt.title(r'Ground Surface relative error: Quarter point',fontsize = 18) 
-plt.ylabel(r'Relative error (%)',fontsize=18)  
-plt.xlabel("Time increment $\Delta t$",fontsize=18)
-
-plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,1],label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$", marker = '^',markersize=16,markerfacecolor = 'white')
-plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,2],label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$", marker = 's',markersize=14,markerfacecolor = 'white')
-plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,3],label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$", marker = 'o',markersize=12,markerfacecolor = 'white')
-plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,4],label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$", marker = '>',markersize=10,markerfacecolor = 'white')
-
-plt.legend(loc='upper right',fontsize=15) #ncol=2
-plt.xticks(fontsize = 15)
-plt.yticks(fontsize = 15)
-plt.xlim(0.0, 0.20)
-plt.grid(True)
-
-# x_axis = 0.0125 # 0.1 0.05
+x_axis = Min_timeIncrement # 0.1 0.05
 ax5 = plt.gca()
-# plt.rcParams['ax4.formatter.limits'] = [-3, 3]
-# ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# 
+ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
 ax5.yaxis.get_offset_text().set(size=18)
 ax5.xaxis.get_offset_text().set(size=18)
 
 
+calculate_error(relative_Error80Quarter,ele80_Quarter,ele80_Quarter_max)
+calculate_error(relative_Error40Quarter,ele40_Quarter,ele40_Quarter_max)
+calculate_error(relative_Error20Quarter,ele20_Quarter,ele20_Quarter_max)
+calculate_error(relative_Error10Quarter,ele10_Quarter,ele10_Quarter_max)
+
+plt.figure(figsize=(8,6))
+plt.title("Ground Surface relative error: Quarter node(TieBC)", fontsize = 18)
+plt.xlabel("time (s)",fontsize=18)
+plt.ylabel(r"relative error (%)",fontsize=18)
+
+plt.plot(relative_Error80Quarter[:,0],relative_Error80Quarter[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$")
+plt.plot(relative_Error40Quarter[:,0],relative_Error40Quarter[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$")
+plt.plot(relative_Error20Quarter[:,0],relative_Error20Quarter[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$")
+plt.plot(relative_Error10Quarter[:,0],relative_Error10Quarter[:,1],marker = 's',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$")
+
+plt.legend(loc='lower left',fontsize=15) #ncol=2
+plt.xticks(fontsize = 15)
+plt.yticks(fontsize = 15)
+# plt.xlim(0.0, 0.20)
+plt.grid(True)
+
+x_axis = Min_timeIncrement # 0.1 0.05
+ax6 = plt.gca()
+# 
+ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+ax6.yaxis.get_offset_text().set(size=18)
+ax6.xaxis.get_offset_text().set(size=18)
 
 
+# # ----------- Analysis Theory velocity ----------------       
+# Analy_compare = np.zeros((17,2))
+# for j in range(16):
+#     # print(dt)
+#     Analy_compare[1+j,0] = Analysis[250+250*j,0]
+#     Analy_compare[1+j,1] = Analysis[250+250*j,1]
+#     # print(250+250*j,Analysis[250+250*j,0], Analysis[250+250*j,1])
 
+# # ----------- Put all differ element inside matrics --------------- 
+# total_MidCompare = np.zeros((len(Analy_compare),6))
+# total_MidCompare[:,0] = Analy_compare[:,0]
+# total_MidCompare[:,1] = Analy_compare[:,1]
+# total_MidCompare[:,2] = ele80_Mid[:,1]
+# total_MidCompare[:,3] = ele40_Mid[:,1]
+# total_MidCompare[:,4] = ele20_Mid[:,1]
+# total_MidCompare[:,5] = ele10_Mid[:,1]
+# total_MidCompare[6,1] = 0
 
-# for i in range(5):
-#     for j in range(len(Analy_compare)):
-#         total_Compare[j,i] = A
+# total_QuarterCompare = np.zeros((len(Analy_compare),6))
+# total_QuarterCompare[:,0] = Analy_compare[:,0]
+# total_QuarterCompare[:,1] = Analy_compare[:,1]
+# total_QuarterCompare[:,2] = ele80_Quarter[:,1]
+# total_QuarterCompare[:,3] = ele40_Quarter[:,1]
+# total_QuarterCompare[:,4] = ele20_Quarter[:,1]
+# total_QuarterCompare[:,5] = ele10_Quarter[:,1]
+# total_QuarterCompare[6,1] = 0
 
-# plt.plot(Analy_compare[:,0],Analy_compare[:,1])
+# error_Midcompare = np.zeros((len(Analy_compare),5))
+# error_Midcompare[:,0] =  total_MidCompare[:,0]
+
+# error_Quartercompare = np.zeros((len(Analy_compare),5))
+# error_Quartercompare[:,0] =  total_QuarterCompare[:,0]
+# for i in range(4):#4
+#     for j in range(len(error_Midcompare)):
+#         error_Midcompare[j,1+i] = ((total_MidCompare[j,2+i] - total_MidCompare[j,1])/ total_MidCompare[j,1])*100
+#         error_Quartercompare[j,1+i] = ((total_QuarterCompare[j,2+i] - total_QuarterCompare[j,1])/ total_QuarterCompare[j,1])*100
+        
+#         # print(j,i)
+# #----------------- Make the nan,inf to be 0 -----------------
+# where_are_nan1 = np.isnan(error_Midcompare) 
+# where_are_inf1 = np.isinf(error_Midcompare)
+# error_Midcompare[where_are_nan1] = 0
+# error_Midcompare[where_are_inf1] = 0
+
+# where_are_nan2 = np.isnan(error_Quartercompare) 
+# where_are_inf2 = np.isinf(error_Quartercompare)
+# error_Quartercompare[where_are_nan2] = 0
+# error_Quartercompare[where_are_inf2] = 0
+
+# # ------- relative error figure -------------
+# plt.figure(figsize=(10,8))
+# # plt.title(r'Ground Surface relative error: Middle point',fontsize = 18) 
+# plt.ylabel(r'Relative error (%)',fontsize=18)  
+# plt.xlabel("Time increment $\Delta t$",fontsize=18)
+
+# plt.plot(error_Midcompare[:,0],error_Midcompare[:,1],label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$", marker = '^',markersize=16,markerfacecolor = 'white')
+# plt.plot(error_Midcompare[:,0],error_Midcompare[:,2],label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$", marker = 's',markersize=14,markerfacecolor = 'white')
+# plt.plot(error_Midcompare[:,0],error_Midcompare[:,3],label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$", marker = 'o',markersize=12,markerfacecolor = 'white')
+# plt.plot(error_Midcompare[:,0],error_Midcompare[:,4],label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$", marker = '>',markersize=10,markerfacecolor = 'white')
+
+# plt.legend(loc='upper right',fontsize=15) #ncol=2
+# plt.xticks(fontsize = 15)
+# plt.yticks(fontsize = 15)
+# plt.xlim(0.0, 0.20)
 # plt.grid(True)
-    # if Mid20[i,0] == 0.025:
-    #     ele80_20Ref[1,0] = Mid20[i,0]
-    #     ele80_20Ref[1,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.050:
-    #     ele80_20Ref[2,0] = Mid20[i,0]
-    #     ele80_20Ref[2,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.075:
-    #     ele80_20Ref[3,0] = Mid20[i,0]
-    #     ele80_20Ref[3,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.10:
-    #     ele80_20Ref[4,0] = Mid20[i,0]
-    #     ele80_20Ref[4,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.125:
-    #     ele80_20Ref[5,0] = Mid20[i,0]
-    #     ele80_20Ref[5,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.150:
-    #     ele80_20Ref[6,0] = Mid20[i,0]
-    #     ele80_20Ref[6,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.175:
-    #     ele80_20Ref[7,0] = Mid20[i,0]
-    #     ele80_20Ref[7,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
-    # if Mid20[i,0] == 0.20:
-    #     ele80_20Ref[8,0] = Mid20[i,0]
-    #     ele80_20Ref[8,1] = Mid20[i,1] 
-    #     print(i,Mid20[i,1])
+
+# # x_axis = 0.0125 # 0.1 0.05
+# ax4 = plt.gca()
+# # plt.rcParams['ax4.formatter.limits'] = [-3, 3]
+# # ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax4.yaxis.get_offset_text().set(size=18)
+# ax4.xaxis.get_offset_text().set(size=18)
+
+
+# plt.figure(figsize=(10,8))
+# # plt.title(r'Ground Surface relative error: Quarter point',fontsize = 18) 
+# plt.ylabel(r'Relative error (%)',fontsize=18)  
+# plt.xlabel("Time increment $\Delta t$",fontsize=18)
+
+# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,1],label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$", marker = '^',markersize=16,markerfacecolor = 'white')
+# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,2],label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$", marker = 's',markersize=14,markerfacecolor = 'white')
+# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,3],label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$", marker = 'o',markersize=12,markerfacecolor = 'white')
+# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,4],label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$", marker = '>',markersize=10,markerfacecolor = 'white')
+
+# plt.legend(loc='upper right',fontsize=15) #ncol=2
+# plt.xticks(fontsize = 15)
+# plt.yticks(fontsize = 15)
+# plt.xlim(0.0, 0.20)
+# plt.grid(True)
+
+# # x_axis = 0.0125 # 0.1 0.05
+# ax5 = plt.gca()
+# # plt.rcParams['ax4.formatter.limits'] = [-3, 3]
+# # ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax5.yaxis.get_offset_text().set(size=18)
+# ax5.xaxis.get_offset_text().set(size=18)
+
+
+
+
