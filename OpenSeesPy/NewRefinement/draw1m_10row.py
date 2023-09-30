@@ -55,33 +55,44 @@ file16 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node9.out"
 file17 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node54.out"
 file18 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node99.out"
 
-# # ------------Side Velocity -------------------
-# file19 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1649.out"
-# file20 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1749.out"
-# file21 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1849.out"
+# ---------- Left Beam Node Velocity / Stress -----------------
+file19 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node145.out"
+file20 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node155.0.out"
+file21 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node165.out"
 
-# file22 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1650.out"
-# file23 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1750.out"
-# file24 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1848.out"
+file22 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele107.out"
+file23 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele117.0.out"
+file24 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele125.out"
 
-# file25 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1850.out"
-# file26 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1950.out"
-# file27 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node2050.out"
+#---- Left Beam Center Node Velocity ------
+file25 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node187.out"
+file26 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node197.0.out"
+file27 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node205.out"
+# ----- Left Dashpot fix y node ------------- 
+file28 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node188.out"
+file29 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node198.0.out"
+file30 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node206.out"
 
-# file28 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1851.out"
-# file29 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1951.out"
-# file30 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node2049.out"
 
+#--------------- Right Beam Node Velocity / Stress------
+file31 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node166.out"
+file32 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node176.0.out"
+file33 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node186.out"
 
-#----------------------------- Structure file -----------------------------------
-# file19 = r"D:\shiang\opensees\20220330\extend_soil\stress\Column1_stress.out"
-# file20 = r"D:\shiang\opensees\20220330\extend_soil\stress\Column2_stress.out"
-# file21 = r"D:\shiang\opensees\20220330\extend_soil\stress\Beam_stress.out"
+file34 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele127.out"
+file35 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele137.0.out"
+file36 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele145.out"
 
-# file22 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1030_vel.out"
-# file23 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1031_vel.out"
-# file24 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1032_vel.out"
-# file25 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1033_vel.out"
+#---- Right Beam Center Node 20220330 ------
+file37 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node228.out"
+file38 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node238.0.out"
+file39 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node246.out"
+
+# ----- Right Dashpot fix y node ------------- 
+file40 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node229.out"
+file41 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node239.0.out"
+file42 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node247.out"
+
 #----------------------------- Left column file -----------------------------------
 ele1 = rdnumpy(file1)
 ele41 = rdnumpy(file2)
@@ -107,31 +118,42 @@ vel9 = rdnumpy(file16)
 vel54 = rdnumpy(file17)
 vel99 = rdnumpy(file18)
 
-# # -------------------- Side dash Velocity ----------------
-# dash1650 = rdnumpy(file22)
-# dash1750 = rdnumpy(file23)
-# dash1848 = rdnumpy(file24)
+# -------------------- Left Beam Node Velocity / Stress----------------
+vel145 = rdnumpy(file19)
+vel155 = rdnumpy(file20)
+vel165 = rdnumpy(file21)
 
-# dash1851 = rdnumpy(file28)
-# dash1951 = rdnumpy(file29)
-# dash2049 = rdnumpy(file30)
-# # -------------------- Side Node Velocity ----------------
-# Side1649 = rdnumpy(file19)
-# Side1749 = rdnumpy(file20)
-# Side1849 = rdnumpy(file21)
+Beam107 = rdnumpy(file22)
+Beam117 = rdnumpy(file23)
+Beam125 = rdnumpy(file24)
 
-# Side1850 = rdnumpy(file25)
-# Side1950 = rdnumpy(file26)
-# Side2050 = rdnumpy(file27)
-# #----------------------------- Structure file -----------------------------------
-# col1 = rdnumpy(file19)
-# col2 = rdnumpy(file20)
-# Beam = rdnumpy(file21)
+# -------------------- Left Beam Center free velocity----------------
+dash187 = rdnumpy(file25)
+dash197 = rdnumpy(file26)
+dash205 = rdnumpy(file27)
+# -------------------- Side dash fix Velocity ----------------
+dash188 = rdnumpy(file28)
+dash198 = rdnumpy(file29)
+dash206 = rdnumpy(file30)
 
-# vel1030 = rdnumpy(file22)
-# vel1031 = rdnumpy(file23)
-# vel1032 = rdnumpy(file24)
-# vel1033 = rdnumpy(file25)
+# -------------------- Right Beam Node Velocity / Stress----------------
+vel166 = rdnumpy(file31)
+vel176 = rdnumpy(file32)
+vel186 = rdnumpy(file33)
+
+Beam127 = rdnumpy(file34)
+Beam137 = rdnumpy(file35)
+Beam145 = rdnumpy(file36)
+
+# -------------------- Right Beam Center free velocity----------------
+dash228 = rdnumpy(file37)
+dash238 = rdnumpy(file38)
+dash246 = rdnumpy(file39)
+# -------------------- Right Side dash fix Velocity ----------------
+dash229 = rdnumpy(file40)
+dash239 = rdnumpy(file41)
+dash247 = rdnumpy(file42)
+
 
 # plt_axis1 = 2
 # x_axis = 0.5
@@ -254,6 +276,61 @@ ax5 = plt.gca()
 ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax5.yaxis.get_offset_text().set(size=18)
+
+
+# -------------Side Velocity -----------------
+draw_Vel("Left Beam Velocity",vel145,vel155,vel165,"vel145","vel155","vel165")
+ax9 = plt.gca()
+ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax9.yaxis.get_offset_text().set(size=18)
+
+draw_Vel("Left Side Free Dash Velocity",dash187,dash197,dash205,"dash187","dash197","dash205")
+ax10 = plt.gca()
+ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax10.yaxis.get_offset_text().set(size=18)
+
+draw_Vel("Left Side Fix Dash Velocity",dash188,dash198,dash206,"dash188","dash198","dash206")
+ax11 = plt.gca()
+ax11.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax11.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax11.yaxis.get_offset_text().set(size=18)
+
+draw_stress("Left Beam Force",Beam107,Beam117,Beam125,"Beam107","Beam117","Beam125")
+ax12 = plt.gca()
+ax12.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# ax12.yaxis.set_major_locator(ticker.MultipleLocator(1))
+ax12.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax12.yaxis.get_offset_text().set(size=18)
+
+# -------------Side Velocity -----------------
+draw_Vel("Right Beam Velocity",vel166,vel176,vel186,"vel166","vel176","vel186")
+ax13 = plt.gca()
+ax13.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax13.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax13.yaxis.get_offset_text().set(size=18)
+
+draw_Vel("Right Side Free Dash Velocity",dash228,dash238,dash246,"dash228","dash238","dash246")
+ax14 = plt.gca()
+ax14.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax14.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax14.yaxis.get_offset_text().set(size=18)
+
+draw_Vel("Right Side Fix Dash Velocity",dash229,dash239,dash247,"dash229","dash239","dash247")
+ax15 = plt.gca()
+ax15.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+ax15.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax15.yaxis.get_offset_text().set(size=18)
+
+draw_stress("Right Beam Force",Beam127,Beam137,Beam145,"Beam127","Beam137","Beam145")
+ax16 = plt.gca()
+ax16.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+# ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
+ax16.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+ax16.yaxis.get_offset_text().set(size=18)
+
+
 
 # # -------------Dashpot Velocity -----------------
 # draw_Vel("Left Dashpot Velocity",dash1650,dash1750,dash1848,"dash1650","dash1750","dash1848")
