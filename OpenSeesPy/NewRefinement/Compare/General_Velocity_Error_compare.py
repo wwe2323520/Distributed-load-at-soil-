@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import os
+from matplotlib.ticker import ScalarFormatter
 pi = np.pi
 plt.rc('font', family= 'Times New Roman')
 
@@ -227,6 +228,7 @@ Analysis[:,1] = wave1[:,99]
 #　 =================== Middle Point File (1/2) ====================
 # ------------------- File Path Name --------------------
 Boundary = '(TieBC)'
+Boundary1 = 'TieBC'
 ele80 = "TieBC_80row"
 ele40 = "TieBC_40row"
 ele20 = "TieBC_20row"
@@ -310,7 +312,7 @@ def Differ_elemetVel(total_time,wave1,titleName,Mid80row,Mid40row,Mid20row,Mid10
     plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label =r'$\Delta_C=1\, \mathrm{m}$', ls = '-',linewidth=2.0)
     
     plt.legend(loc='upper right',prop=font_props) #ncol=2,fontsize=16
-    plt.xtick(fontsize = 16)
+    plt.xticks(fontsize = 16)
     plt.yticks(fontsize = 16)
     plt.xlim(0.0, 0.20)
     # plt.grid(True)
@@ -335,7 +337,7 @@ def Differ_SoilWidthVel(total_time,wave1,titleName,Width20_Mid80row,Width10_Mid8
     plt.grid(True)
     
 # # ------------ Draw Same SoilWidth with Different row element: Middle Point -----------------------
-x_axis = 0.025 # 0.1 0.05
+# x_axis = 0.025 # 0.1 0.05
 # Differ_elemetVel(total_time,wave1,f'Soil Width 20m {Boundary}\nMiddle point',Width20_Mid80row,Width20_Mid40row,Width20_Mid20row,Width20_Mid10row)
 # ax1 = plt.gca()
 # ax1.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
@@ -581,14 +583,12 @@ Width1_ele10_Quarter[2,1] = Width1_Quarter10row[129,1]
 Width1_ele10_Quarter[3,1] = Width1_Quarter10row[131,1]
 Width1_ele10_Quarter[4,1] = Width1_Quarter10row[134,1]     
 
-
-
 def Find_ColMaxValue(ele80_Mid):
     column_index = 1
     column = ele80_Mid[:, column_index]
     max_value = np.max(column)
     max_index = np.argmax(column)
-    print(f'max_value= {max_value}; max_index= {max_index}')
+    # print(f'max_value= {max_value}; max_index= {max_index}')
     return(max_value)
 # =========== Middle point(Ground surface) Find Max Velocity Value ===================
 Width20_ele80_max = Find_ColMaxValue(Width20_Mid80row)
@@ -713,56 +713,347 @@ def Differ_elemetError(titleName,RE_Width20_80Mid,RE_Width20_40Mid,RE_Width20_20
     # plt.xlim(0.0, 0.20)
     plt.grid(True)
     
-# ------------ Relative error : Middele point ---------------------------------
-x_axis1 = Min_timeIncrement # 0.1 0.05
-Differ_elemetError(f"Soil Width 20m {Boundary}\nMiddle node",RE_Width20_80Mid,RE_Width20_40Mid,RE_Width20_20Mid,RE_Width20_10Mid)
-ax8 = plt.gca()
-ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
-ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax8.yaxis.get_offset_text().set(size=18)
-ax8.xaxis.get_offset_text().set(size=18)
+# # ------------ Relative error : Middele point ---------------------------------
+# x_axis1 = Min_timeIncrement # 0.1 0.05
+# Differ_elemetError(f"Soil Width 20m {Boundary}\nMiddle node",RE_Width20_80Mid,RE_Width20_40Mid,RE_Width20_20Mid,RE_Width20_10Mid)
+# ax8 = plt.gca()
+# ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
+# ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax8.yaxis.get_offset_text().set(size=18)
+# ax8.xaxis.get_offset_text().set(size=18)
 
-Differ_elemetError(f"Soil Width 10m {Boundary}\nMiddle node",RE_Width10_80Mid,RE_Width10_40Mid,RE_Width10_20Mid,RE_Width10_10Mid)
-ax9 = plt.gca()
-ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
-ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax9.yaxis.get_offset_text().set(size=18)
-ax9.xaxis.get_offset_text().set(size=18)
+# Differ_elemetError(f"Soil Width 10m {Boundary}\nMiddle node",RE_Width10_80Mid,RE_Width10_40Mid,RE_Width10_20Mid,RE_Width10_10Mid)
+# ax9 = plt.gca()
+# ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
+# ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax9.yaxis.get_offset_text().set(size=18)
+# ax9.xaxis.get_offset_text().set(size=18)
 
-Differ_elemetError(f"Soil Width 1m {Boundary}\nMiddle node",RE_Width1_80Mid,RE_Width1_40Mid,RE_Width1_20Mid,RE_Width1_10Mid)
-ax10 = plt.gca()
-ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
-ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax10.yaxis.get_offset_text().set(size=18)
-ax10.xaxis.get_offset_text().set(size=18)
+# Differ_elemetError(f"Soil Width 1m {Boundary}\nMiddle node",RE_Width1_80Mid,RE_Width1_40Mid,RE_Width1_20Mid,RE_Width1_10Mid)
+# ax10 = plt.gca()
+# ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
+# ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax10.yaxis.get_offset_text().set(size=18)
+# ax10.xaxis.get_offset_text().set(size=18)
 
-# ------------ Relative error : three quarter point ---------------------------------
-Differ_elemetError(f"Soil Width 20m {Boundary}\nThree Quarter node",RE_Width20_80Quarter,RE_Width20_40Quarter,RE_Width20_20Quarter,RE_Width20_10Quarter)
-ax8 = plt.gca()
-ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
-ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax8.yaxis.get_offset_text().set(size=18)
-ax8.xaxis.get_offset_text().set(size=18)
+# # ------------ Relative error : three quarter point ---------------------------------
+# Differ_elemetError(f"Soil Width 20m {Boundary}\nThree Quarter node",RE_Width20_80Quarter,RE_Width20_40Quarter,RE_Width20_20Quarter,RE_Width20_10Quarter)
+# ax8 = plt.gca()
+# ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
+# ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax8.yaxis.get_offset_text().set(size=18)
+# ax8.xaxis.get_offset_text().set(size=18)
 
-Differ_elemetError(f"Soil Width 10m {Boundary}\nThree Quarter node",RE_Width10_80Quarter,RE_Width10_40Quarter,RE_Width10_20Quarter,RE_Width10_10Quarter)
-ax9 = plt.gca()
-ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
-ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax9.yaxis.get_offset_text().set(size=18)
-ax9.xaxis.get_offset_text().set(size=18)
+# Differ_elemetError(f"Soil Width 10m {Boundary}\nThree Quarter node",RE_Width10_80Quarter,RE_Width10_40Quarter,RE_Width10_20Quarter,RE_Width10_10Quarter)
+# ax9 = plt.gca()
+# ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
+# ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax9.yaxis.get_offset_text().set(size=18)
+# ax9.xaxis.get_offset_text().set(size=18)
 
-Differ_elemetError(f"Soil Width 1m {Boundary}\nThree Quarter node",RE_Width1_80Quarter,RE_Width1_40Quarter,RE_Width1_20Quarter,RE_Width1_10Quarter)
-ax10 = plt.gca()
-ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
-ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax10.yaxis.get_offset_text().set(size=18)
-ax10.xaxis.get_offset_text().set(size=18)
+# Differ_elemetError(f"Soil Width 1m {Boundary}\nThree Quarter node",RE_Width1_80Quarter,RE_Width1_40Quarter,RE_Width1_20Quarter,RE_Width1_10Quarter)
+# ax10 = plt.gca()
+# ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis1))
+# ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+# ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
+# ax10.yaxis.get_offset_text().set(size=18)
+# ax10.xaxis.get_offset_text().set(size=18)
+
+# ========== Relative error fot different "Time Increment"(for x in differernt Vertical element) ================================
+# ----------- Mideele Point -----------------
+W20_dt80Mid = np.zeros((4,2))
+W20_dt40Mid = np.zeros((4,2))
+W20_dt20Mid = np.zeros((4,2))
+W20_dt10Mid = np.zeros((4,2))
+
+W10_dt80Mid = np.zeros((4,2))
+W10_dt40Mid = np.zeros((4,2))
+W10_dt20Mid = np.zeros((4,2))
+W10_dt10Mid = np.zeros((4,2))
+
+W1_dt80Mid = np.zeros((4,2))
+W1_dt40Mid = np.zeros((4,2))
+W1_dt20Mid = np.zeros((4,2))
+W1_dt10Mid = np.zeros((4,2))
+
+# -----------Three Quarter Point -----------------
+W20_dt80Qua = np.zeros((4,2))
+W20_dt40Qua = np.zeros((4,2))
+W20_dt20Qua = np.zeros((4,2))
+W20_dt10Qua = np.zeros((4,2))
+
+W10_dt80Qua = np.zeros((4,2))
+W10_dt40Qua = np.zeros((4,2))
+W10_dt20Qua = np.zeros((4,2))
+W10_dt10Qua = np.zeros((4,2))
+
+W1_dt80Qua = np.zeros((4,2))
+W1_dt40Qua = np.zeros((4,2))
+W1_dt20Qua = np.zeros((4,2))
+W1_dt10Qua = np.zeros((4,2))
+
+
+matrix_values = np.array((80.0, 40.0, 20.0, 10.0))
+dc = L/matrix_values
+dc_dt = top_time+ dc/cs
+def Time_RE(dtNumber,W20_dt80, Width20_Mid80row, Width20_Mid40row, Width20_Mid20row, Width20_Mid10row):
+    for k in range(len(dc_dt)):
+        W20_dt80[k,0] = dc[k]
+        dtime = dc_dt[dtNumber]
+        # print(dtime)
+        for i in range(len(Width20_Mid80row)):
+            if Width20_Mid80row[i,0] == dtime:
+                W20_dt80[0,1] = Width20_Mid80row[i,1]
+    
+        for u in range(len(Width20_Mid40row)):
+            if Width20_Mid40row[u,0] == dtime:
+                W20_dt80[1,1] = Width20_Mid40row[u,1]
+                
+        for u in range(len(Width20_Mid20row)):
+            if Width20_Mid20row[u,0] == dtime:
+                W20_dt80[2,1] = Width20_Mid20row[u,1]        
+                # print(u)
+        for u in range(len(Width20_Mid10row)):
+            if Width20_Mid10row[u,0] == dtime :
+                W20_dt80[3,1] = Width20_Mid10row[u,1]        
+            # print(u)
+# ------------------------------- SoilWidth 20、10、1m:Middle point-------------------------------
+Time_RE(0,W20_dt80Mid, Width20_Mid80row, Width20_Mid40row, Width20_Mid20row, Width20_Mid10row)
+W20_dt80Mid[2,1] = Width20_Mid20row[251,1]
+W20_dt80Mid[3,1] = Width20_Mid10row[125,1]
+Time_RE(1,W20_dt40Mid, Width20_Mid80row, Width20_Mid40row, Width20_Mid20row, Width20_Mid10row)
+W20_dt40Mid[3,1] = Width20_Mid10row[126,1]
+Time_RE(2,W20_dt20Mid, Width20_Mid80row, Width20_Mid40row, Width20_Mid20row, Width20_Mid10row)
+Time_RE(3,W20_dt10Mid, Width20_Mid80row, Width20_Mid40row, Width20_Mid20row, Width20_Mid10row)
+
+Time_RE(0,W10_dt80Mid, Width10_Mid80row, Width10_Mid40row, Width10_Mid20row, Width10_Mid10row)
+W10_dt80Mid[2,1] = Width10_Mid20row[251,1]
+W10_dt80Mid[3,1] = Width10_Mid10row[125,1]
+Time_RE(1,W10_dt40Mid, Width10_Mid80row, Width10_Mid40row, Width10_Mid20row, Width10_Mid10row)
+W10_dt40Mid[3,1] = Width10_Mid10row[126,1]
+Time_RE(2,W10_dt20Mid, Width10_Mid80row, Width10_Mid40row, Width10_Mid20row, Width10_Mid10row)
+Time_RE(3,W10_dt10Mid, Width10_Mid80row, Width10_Mid40row, Width10_Mid20row, Width10_Mid10row)
+
+Time_RE(0,W1_dt80Mid, Width1_Mid80row, Width1_Mid40row, Width1_Mid20row, Width1_Mid10row)
+W1_dt80Mid[2,1] = Width1_Mid20row[251,1]
+W1_dt80Mid[3,1] = Width1_Mid10row[125,1]
+Time_RE(1,W1_dt40Mid, Width1_Mid80row, Width1_Mid40row, Width1_Mid20row, Width1_Mid10row)
+W1_dt40Mid[3,1] = Width1_Mid10row[126,1]
+Time_RE(2,W1_dt20Mid, Width1_Mid80row, Width1_Mid40row, Width1_Mid20row, Width1_Mid10row)
+Time_RE(3,W1_dt10Mid, Width1_Mid80row, Width1_Mid40row, Width1_Mid20row, Width1_Mid10row)
+
+# ------------------------------- SoilWidth 20、10、1m:Three Quarter point-------------------------------
+Time_RE(0,W20_dt80Qua, Width20_Quarter80row, Width20_Quarter40row, Width20_Quarter20row, Width20_Quarter10row)
+W20_dt80Qua[2,1] = Width20_Quarter20row[251,1]
+W20_dt80Qua[3,1] = Width20_Quarter10row[125,1]
+Time_RE(1,W20_dt40Qua, Width20_Quarter80row, Width20_Quarter40row, Width20_Quarter20row, Width20_Quarter10row)
+W20_dt40Qua[3,1] = Width20_Quarter10row[126,1]
+Time_RE(2,W20_dt20Qua, Width20_Quarter80row, Width20_Quarter40row, Width20_Quarter20row, Width20_Quarter10row)
+Time_RE(3,W20_dt10Qua, Width20_Quarter80row, Width20_Quarter40row, Width20_Quarter20row, Width20_Quarter10row)
+
+Time_RE(0,W10_dt80Qua, Width10_Quarter80row, Width10_Quarter40row, Width10_Quarter20row, Width10_Quarter10row)
+W10_dt80Qua[2,1] = Width10_Quarter20row[251,1]
+W10_dt80Qua[3,1] = Width10_Quarter10row[125,1]
+Time_RE(1,W10_dt40Qua, Width10_Quarter80row, Width10_Quarter40row, Width10_Quarter20row, Width10_Quarter10row)
+W10_dt40Qua[3,1] = Width10_Quarter10row[126,1]
+Time_RE(2,W10_dt20Qua, Width10_Quarter80row, Width10_Quarter40row, Width10_Quarter20row, Width10_Quarter10row)
+Time_RE(3,W10_dt10Qua, Width10_Quarter80row, Width10_Quarter40row, Width10_Quarter20row, Width10_Quarter10row)
+
+Time_RE(0,W1_dt80Qua, Width1_Quarter80row, Width1_Quarter40row, Width1_Quarter20row, Width1_Quarter10row)
+W1_dt80Qua[2,1] = Width1_Quarter20row[251,1]
+W1_dt80Qua[3,1] = Width1_Quarter10row[125,1]
+Time_RE(1,W1_dt40Qua, Width1_Quarter80row, Width1_Quarter40row, Width1_Quarter20row, Width1_Quarter10row)
+W1_dt40Qua[3,1] = Width1_Quarter10row[126,1]
+Time_RE(2,W1_dt20Qua, Width1_Quarter80row, Width1_Quarter40row, Width1_Quarter20row, Width1_Quarter10row)
+Time_RE(3,W1_dt10Qua, Width1_Quarter80row, Width1_Quarter40row, Width1_Quarter20row, Width1_Quarter10row)
+
+def calculate_Dc_error(RE_DC_W20_80Mid, W20_dt80, Width20_ele80_max,Width20_ele40_max, Width20_ele20_max, Width20_ele10_max):
+    RE_DC_W20_80Mid[:,0] =  W20_dt80[:,0]
+    RE_DC_W20_80Mid[0,1] =  ((W20_dt80[0,1]- Width20_ele80_max)/Width20_ele80_max)*100
+    RE_DC_W20_80Mid[1,1] =  ((W20_dt80[1,1]- Width20_ele40_max)/Width20_ele40_max)*100
+    RE_DC_W20_80Mid[2,1] =  ((W20_dt80[2,1]- Width20_ele20_max)/Width20_ele20_max)*100
+    RE_DC_W20_80Mid[3,1] =  ((W20_dt80[3,1]- Width20_ele10_max)/Width20_ele20_max)*100
+
+# ------------------------------- Time Increment Relative Error: 20、10、1m (Middle point)-------------------- 
+RE_DC_W20_80Mid = np.zeros((len(W20_dt80Mid),2))
+RE_DC_W20_40Mid = np.zeros((len(W20_dt40Mid),2))
+RE_DC_W20_20Mid = np.zeros((len(W20_dt20Mid),2))
+RE_DC_W20_10Mid = np.zeros((len(W20_dt10Mid),2))
+
+RE_DC_W10_80Mid = np.zeros((len(W10_dt80Mid),2))
+RE_DC_W10_40Mid = np.zeros((len(W10_dt40Mid),2))
+RE_DC_W10_20Mid = np.zeros((len(W10_dt20Mid),2))
+RE_DC_W10_10Mid = np.zeros((len(W10_dt10Mid),2))
+
+RE_DC_W1_80Mid = np.zeros((len(W1_dt80Mid),2))
+RE_DC_W1_40Mid = np.zeros((len(W1_dt40Mid),2))
+RE_DC_W1_20Mid = np.zeros((len(W1_dt20Mid),2))
+RE_DC_W1_10Mid = np.zeros((len(W1_dt10Mid),2))
+
+calculate_Dc_error(RE_DC_W20_80Mid, W20_dt80Mid, Width20_ele80_max,Width20_ele40_max, Width20_ele20_max, Width20_ele10_max)
+calculate_Dc_error(RE_DC_W20_40Mid, W20_dt40Mid, Width20_ele80_max,Width20_ele40_max, Width20_ele20_max, Width20_ele10_max)
+calculate_Dc_error(RE_DC_W20_20Mid, W20_dt20Mid, Width20_ele80_max,Width20_ele40_max, Width20_ele20_max, Width20_ele10_max)
+calculate_Dc_error(RE_DC_W20_10Mid, W20_dt10Mid, Width20_ele80_max,Width20_ele40_max, Width20_ele20_max, Width20_ele10_max)
+
+calculate_Dc_error(RE_DC_W10_80Mid, W10_dt80Mid, Width10_ele80_max,Width10_ele40_max, Width10_ele20_max, Width10_ele10_max)
+calculate_Dc_error(RE_DC_W10_40Mid, W10_dt40Mid, Width10_ele80_max,Width10_ele40_max, Width10_ele20_max, Width10_ele10_max)
+calculate_Dc_error(RE_DC_W10_20Mid, W10_dt20Mid, Width10_ele80_max,Width10_ele40_max, Width10_ele20_max, Width10_ele10_max)
+calculate_Dc_error(RE_DC_W10_10Mid, W10_dt10Mid, Width10_ele80_max,Width10_ele40_max, Width10_ele20_max, Width10_ele10_max)
+
+calculate_Dc_error(RE_DC_W1_80Mid, W1_dt80Mid, Width1_ele80_max,Width1_ele40_max, Width1_ele20_max, Width1_ele10_max)
+calculate_Dc_error(RE_DC_W1_40Mid, W1_dt40Mid, Width1_ele80_max,Width1_ele40_max, Width1_ele20_max, Width1_ele10_max)
+calculate_Dc_error(RE_DC_W1_20Mid, W1_dt20Mid, Width1_ele80_max,Width1_ele40_max, Width1_ele20_max, Width1_ele10_max)
+calculate_Dc_error(RE_DC_W1_10Mid, W1_dt10Mid, Width1_ele80_max,Width1_ele40_max, Width1_ele20_max, Width1_ele10_max)
+
+# ------------------------------- Time Increment Relative Error: 20、10、1m (Three Quarter point)-------------------- 
+RE_DC_W20_80Qua = np.zeros((len(W20_dt80Qua),2))
+RE_DC_W20_40Qua = np.zeros((len(W20_dt40Qua),2))
+RE_DC_W20_20Qua = np.zeros((len(W20_dt20Qua),2))
+RE_DC_W20_10Qua = np.zeros((len(W20_dt10Qua),2))
+
+RE_DC_W10_80Qua = np.zeros((len(W10_dt80Qua),2))
+RE_DC_W10_40Qua = np.zeros((len(W10_dt40Qua),2))
+RE_DC_W10_20Qua = np.zeros((len(W10_dt20Qua),2))
+RE_DC_W10_10Qua = np.zeros((len(W10_dt10Qua),2))
+
+RE_DC_W1_80Qua = np.zeros((len(W1_dt80Qua),2))
+RE_DC_W1_40Qua = np.zeros((len(W1_dt40Qua),2))
+RE_DC_W1_20Qua = np.zeros((len(W1_dt20Qua),2))
+RE_DC_W1_10Qua = np.zeros((len(W1_dt10Qua),2))
+
+calculate_Dc_error(RE_DC_W20_80Qua, W20_dt80Qua, Width20_ele80_Quartermax,Width20_ele40_Quartermax, Width20_ele20_Quartermax, Width20_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W20_40Qua, W20_dt40Qua, Width20_ele80_Quartermax,Width20_ele40_Quartermax, Width20_ele20_Quartermax, Width20_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W20_20Qua, W20_dt20Qua, Width20_ele80_Quartermax,Width20_ele40_Quartermax, Width20_ele20_Quartermax, Width20_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W20_10Qua, W20_dt10Qua, Width20_ele80_Quartermax,Width20_ele40_Quartermax, Width20_ele20_Quartermax, Width20_ele10_Quartermax)
+
+calculate_Dc_error(RE_DC_W10_80Qua, W10_dt80Qua, Width10_ele80_Quartermax,Width10_ele40_Quartermax, Width10_ele20_Quartermax, Width10_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W10_40Qua, W10_dt40Qua, Width10_ele80_Quartermax,Width10_ele40_Quartermax, Width10_ele20_Quartermax, Width10_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W10_20Qua, W10_dt20Qua, Width10_ele80_Quartermax,Width10_ele40_Quartermax, Width10_ele20_Quartermax, Width10_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W10_10Qua, W10_dt10Qua, Width10_ele80_Quartermax,Width10_ele40_Quartermax, Width10_ele20_Quartermax, Width10_ele10_Quartermax)
+
+calculate_Dc_error(RE_DC_W1_80Qua, W1_dt80Qua, Width1_ele80_Quartermax,Width1_ele40_Quartermax, Width1_ele20_Quartermax, Width1_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W1_40Qua, W1_dt40Qua, Width1_ele80_Quartermax,Width1_ele40_Quartermax, Width1_ele20_Quartermax, Width1_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W1_20Qua, W1_dt20Qua, Width1_ele80_Quartermax,Width1_ele40_Quartermax, Width1_ele20_Quartermax, Width1_ele10_Quartermax)
+calculate_Dc_error(RE_DC_W1_10Qua, W1_dt10Qua, Width1_ele80_Quartermax,Width1_ele40_Quartermax, Width1_ele20_Quartermax, Width1_ele10_Quartermax)
+
+# ------------------------------- Time Increment Relative Error: 20、10、1m (Middle point)-------------------- 
+# ==================Draw Relative error : Middele point =============================
+def DifferTime_elemetError(RE_DC_W20_80Mid, RE_DC_W20_40Mid, RE_DC_W20_20Mid, RE_DC_W20_10Mid):
+    # plt.figure(figsize=(8,6))
+    font_props = {'family': 'Arial', 'size': 10}
+    # plt.xlabel("time (s)",fontsize= 20)
+    # plt.ylabel(r"relative error (%)",fontsize=20)
+    # plt.title("Ground Surface relative error: Middle node(TieBC)", fontsize = 18)
+    # plt.title(titleName,x=0.25,y=0.35, fontsize = 18)
+    
+    plt.plot(RE_DC_W20_80Mid[:,0],RE_DC_W20_80Mid[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$\Delta t = 0.000625$ ${\rm s}$")
+    plt.plot(RE_DC_W20_40Mid[:,0],RE_DC_W20_40Mid[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$\Delta t = 0.00125$ ${\rm s}$")
+    plt.plot(RE_DC_W20_20Mid[:,0],RE_DC_W20_20Mid[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$\Delta t = 0.0025$ ${\rm s}$")
+    plt.plot(RE_DC_W20_10Mid[:,0],RE_DC_W20_10Mid[:,1],marker = 's',markersize=12,markerfacecolor = 'white',label = r"$\Delta t = 0.005$ ${\rm s}$")
+    
+    plt.legend(loc='lower right',prop=font_props) #ncol=2,fontsize=16 frameon=False
+    plt.xticks(fontsize = 15)
+    plt.yticks(fontsize = 15)
+    # plt.xlim(0.0, 0.20)
+    plt.grid(True)
+    
+x_axis2 = 0.125 # 0.1 0.05    
+
+# ==================Draw Relative error : Middele point =============================
+# (ax11,ax12,ax13)
+fig1, (ax11,ax12,ax13) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(12,8))
+fig1.suptitle(f'Ground Surface Relative error ({Boundary1})',x=0.5,y =0.95,fontsize = 20)
+fig1.text(0.03,0.5, 'relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
+fig1.text(0.45,0.05, 'time (s)', va= 'center', fontsize=20)
+
+# fig1.text(0.25,0.05, 'Middle Node', va= 'center', fontsize=16)
+# fig1.text(0.65,0.05, 'Three_Quarter Node', va= 'center', fontsize=16)
+
+ax11 = plt.subplot(321)
+DifferTime_elemetError(RE_DC_W20_80Mid,RE_DC_W20_40Mid,RE_DC_W20_20Mid,RE_DC_W20_10Mid)
+ax11.set_title(f"Soil Width 20m",fontsize =16)
+
+
+ax12 = plt.subplot(323)
+DifferTime_elemetError(RE_DC_W10_80Mid,RE_DC_W10_40Mid,RE_DC_W10_20Mid,RE_DC_W10_10Mid)
+ax12.set_title(f"Soil Width 10m",fontsize =16)
+
+
+ax13 = plt.subplot(325)
+DifferTime_elemetError(RE_DC_W1_80Mid,RE_DC_W1_40Mid,RE_DC_W1_20Mid,RE_DC_W1_10Mid)
+ax13.set_title(f"Soil Width 1m",fontsize =16)
+ax13.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+ax13.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+for ax in [ax11,ax12,ax13]:
+    ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+    ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
+# ==================Draw Relative error(20,10,1 m) : Three Quarter point =============================
+fig2, (ax14,ax15,ax16) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
+fig2.suptitle(f'{Boundary1} (Three Quarter node)',x=0.5,y =0.95,fontsize = 20)
+fig2.text(0.03,0.5, 'relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
+fig2.text(0.45,0.05, 'time (s)', va= 'center', fontsize=20)
+
+ax14 = plt.subplot(322)
+DifferTime_elemetError(RE_DC_W20_80Qua,RE_DC_W20_40Qua,RE_DC_W20_20Qua,RE_DC_W20_10Qua)
+ax14.set_title(f"Soil Width 20m",fontsize =16)
+
+ax15 = plt.subplot(324)
+DifferTime_elemetError(RE_DC_W10_80Qua,RE_DC_W10_40Qua,RE_DC_W10_20Qua,RE_DC_W10_10Qua)
+ax15.set_title(f"Soil Width 10m",fontsize =16)
+
+ax16 = plt.subplot(326)
+DifferTime_elemetError(RE_DC_W1_80Qua,RE_DC_W1_40Qua,RE_DC_W1_20Qua,RE_DC_W1_10Qua)
+ax16.set_title(f"Soil Width 1m",fontsize =16)
+
+# for ax in axes:
+#     ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+#     ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
+
+for ax in [ax14,ax15,ax16]:
+    ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+    ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
+
+
+# # ----------- Middle point relative error ---------------------
+# RE_Width20_80Mid = np.zeros((len(Width20_ele80_Mid),2))
+# RE_Width20_40Mid = np.zeros((len(Width20_ele40_Mid),2))
+# RE_Width20_20Mid = np.zeros((len(Width20_ele20_Mid),2))
+# RE_Width20_10Mid = np.zeros((len(Width20_ele10_Mid),2))
+
+# RE_Width10_80Mid = np.zeros((len(Width10_ele80_Mid),2))
+# RE_Width10_40Mid = np.zeros((len(Width10_ele40_Mid),2))
+# RE_Width10_20Mid = np.zeros((len(Width10_ele20_Mid),2))
+# RE_Width10_10Mid = np.zeros((len(Width10_ele10_Mid),2))
+
+# RE_Width1_80Mid = np.zeros((len(Width1_ele80_Mid),2))
+# RE_Width1_40Mid = np.zeros((len(Width1_ele40_Mid),2))
+# RE_Width1_20Mid = np.zeros((len(Width1_ele20_Mid),2))
+# RE_Width1_10Mid = np.zeros((len(Width1_ele10_Mid),2))
+
+# # ----------- Middle point Calculate relative error ---------------------
+# calculate_error(RE_Width20_80Mid, Width20_ele80_Mid, Width20_ele80_max)
+# calculate_error(RE_Width20_40Mid, Width20_ele40_Mid, Width20_ele40_max)
+# calculate_error(RE_Width20_20Mid, Width20_ele20_Mid, Width20_ele20_max)
+# calculate_error(RE_Width20_10Mid, Width20_ele10_Mid, Width20_ele10_max)
+
+# calculate_error(RE_Width10_80Mid, Width10_ele80_Mid, Width10_ele80_max)
+# calculate_error(RE_Width10_40Mid, Width10_ele40_Mid, Width10_ele40_max)
+# calculate_error(RE_Width10_20Mid, Width10_ele20_Mid, Width10_ele20_max)
+# calculate_error(RE_Width10_10Mid, Width10_ele10_Mid, Width10_ele10_max)
+
+# calculate_error(RE_Width1_80Mid, Width1_ele80_Mid, Width1_ele80_max)
+# calculate_error(RE_Width1_40Mid, Width1_ele40_Mid, Width1_ele40_max)
+# calculate_error(RE_Width1_20Mid, Width1_ele20_Mid, Width1_ele20_max)
+# calculate_error(RE_Width1_10Mid, Width1_ele10_Mid, Width1_ele10_max)
 
 
 # # ==================Draw Relative error : three-quarters point =============================
