@@ -964,59 +964,59 @@ def DifferTime_elemetError(RE_DC_W20_80Mid, RE_DC_W20_40Mid, RE_DC_W20_20Mid, RE
     
 x_axis2 = 0.125 # 0.1 0.05    
 
-# # ==================Draw Relative error : Middele point =============================
-# # (ax11,ax12,ax13)
-# r'$\Delta_C='+ '0.50' + r'\mathrm{m}$'+ f' {Boundary}\nThree-Quarter point'
-# fig1, (ax11,ax12,ax13) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-# fig1.suptitle(f'{Boundary1} (Middle node)',x=0.5,y =0.95,fontsize = 20)
-# fig1.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
-# fig1.text(0.40,0.05, f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
+# ==================Draw Relative error : Middele point =============================
+# (ax11,ax12,ax13)
+r'$\Delta_C='+ '0.50' + r'\mathrm{m}$'+ f' {Boundary}\nThree-Quarter point'
+fig1, (ax11,ax12,ax13) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
+fig1.suptitle(f'{Boundary1} (Middle node)',x=0.5,y =0.95,fontsize = 20)
+fig1.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
+fig1.text(0.40,0.05, f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
 
-# # fig1.text(0.25,0.05, 'Middle Node', va= 'center', fontsize=16)
-# # fig1.text(0.65,0.05, 'Three_Quarter Node', va= 'center', fontsize=16)
+# fig1.text(0.25,0.05, 'Middle Node', va= 'center', fontsize=16)
+# fig1.text(0.65,0.05, 'Three_Quarter Node', va= 'center', fontsize=16)
 
-# ax11 = plt.subplot(311)
-# DifferTime_elemetError(RE_DC_W20_80Mid,RE_DC_W20_40Mid,RE_DC_W20_20Mid,RE_DC_W20_10Mid)
-# ax11.set_title(f"Soil Width 20m",fontsize =16)
-
-
-# ax12 = plt.subplot(312)
-# DifferTime_elemetError(RE_DC_W10_80Mid,RE_DC_W10_40Mid,RE_DC_W10_20Mid,RE_DC_W10_10Mid)
-# ax12.set_title(f"Soil Width 10m",fontsize =16)
+ax11 = plt.subplot(311)
+DifferTime_elemetError(RE_DC_W20_80Mid,RE_DC_W20_40Mid,RE_DC_W20_20Mid,RE_DC_W20_10Mid)
+ax11.set_title(f"Soil Width 20m",fontsize =16)
 
 
-# ax13 = plt.subplot(313)
-# DifferTime_elemetError(RE_DC_W1_80Mid,RE_DC_W1_40Mid,RE_DC_W1_20Mid,RE_DC_W1_10Mid)
-# ax13.set_title(f"Soil Width 1m",fontsize =16)
-# ax13.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
-# ax13.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+ax12 = plt.subplot(312)
+DifferTime_elemetError(RE_DC_W10_80Mid,RE_DC_W10_40Mid,RE_DC_W10_20Mid,RE_DC_W10_10Mid)
+ax12.set_title(f"Soil Width 10m",fontsize =16)
 
-# for ax in [ax11,ax12,ax13]:
-#     ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
-#     ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
-# # ==================Draw Relative error(20,10,1 m) : Three Quarter point =============================
-# fig2, (ax14,ax15,ax16) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-# fig2.suptitle(f'{Boundary1} (Three Quarter node)',x=0.5,y =0.95,fontsize = 20)
-# fig2.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
-# fig2.text(0.40,0.05, f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
 
-# ax14 = plt.subplot(311)
-# DifferTime_elemetError(RE_DC_W20_80Qua,RE_DC_W20_40Qua,RE_DC_W20_20Qua,RE_DC_W20_10Qua)
-# ax14.set_title(f"Soil Width 20m",fontsize =16)
+ax13 = plt.subplot(313)
+DifferTime_elemetError(RE_DC_W1_80Mid,RE_DC_W1_40Mid,RE_DC_W1_20Mid,RE_DC_W1_10Mid)
+ax13.set_title(f"Soil Width 1m",fontsize =16)
+ax13.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+ax13.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
 
-# ax15 = plt.subplot(312)
-# DifferTime_elemetError(RE_DC_W10_80Qua,RE_DC_W10_40Qua,RE_DC_W10_20Qua,RE_DC_W10_10Qua)
-# ax15.set_title(f"Soil Width 10m",fontsize =16)
+for ax in [ax11,ax12,ax13]:
+    ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+    ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
+# ==================Draw Relative error(20,10,1 m) : Three Quarter point =============================
+fig2, (ax14,ax15,ax16) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
+fig2.suptitle(f'{Boundary1} (Three Quarter node)',x=0.5,y =0.95,fontsize = 20)
+fig2.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
+fig2.text(0.40,0.05, f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
 
-# ax16 = plt.subplot(313)
-# DifferTime_elemetError(RE_DC_W1_80Qua,RE_DC_W1_40Qua,RE_DC_W1_20Qua,RE_DC_W1_10Qua)
-# ax16.set_title(f"Soil Width 1m",fontsize =16)
+ax14 = plt.subplot(311)
+DifferTime_elemetError(RE_DC_W20_80Qua,RE_DC_W20_40Qua,RE_DC_W20_20Qua,RE_DC_W20_10Qua)
+ax14.set_title(f"Soil Width 20m",fontsize =16)
 
-# for ax in [ax14,ax15,ax16]:
-#     ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
-#     ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
+ax15 = plt.subplot(312)
+DifferTime_elemetError(RE_DC_W10_80Qua,RE_DC_W10_40Qua,RE_DC_W10_20Qua,RE_DC_W10_10Qua)
+ax15.set_title(f"Soil Width 10m",fontsize =16)
+
+ax16 = plt.subplot(313)
+DifferTime_elemetError(RE_DC_W1_80Qua,RE_DC_W1_40Qua,RE_DC_W1_20Qua,RE_DC_W1_10Qua)
+ax16.set_title(f"Soil Width 1m",fontsize =16)
+
+for ax in [ax14,ax15,ax16]:
+    ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis2))
+    ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
 
 
 # # ----------- Middle point relative error ---------------------
