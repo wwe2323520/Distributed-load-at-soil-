@@ -227,8 +227,8 @@ Analysis[:,1] = wave1[:,99]
 
 #　 =================== Middle Point File (1/2) ====================
 # ------------------- File Path Name --------------------
-Boundary = '(SideMidBeamDash)'
-Boundary1 = 'SideMidBeamDash'
+Boundary = '(TieBC)'
+Boundary1 = 'TieBC'
 ele80 = f"{Boundary1}_80row"
 ele40 = f"{Boundary1}_40row"
 ele20 = f"{Boundary1}_20row"
@@ -890,7 +890,7 @@ def calculate_Dc_error(RE_DC_W20_80Mid, W20_dt80, Width20_ele80_max,Width20_ele4
     RE_DC_W20_80Mid[0,1] =  ((W20_dt80[0,1]- Width20_ele80_max)/Width20_ele80_max)*100
     RE_DC_W20_80Mid[1,1] =  ((W20_dt80[1,1]- Width20_ele40_max)/Width20_ele40_max)*100
     RE_DC_W20_80Mid[2,1] =  ((W20_dt80[2,1]- Width20_ele20_max)/Width20_ele20_max)*100
-    RE_DC_W20_80Mid[3,1] =  ((W20_dt80[3,1]- Width20_ele10_max)/Width20_ele20_max)*100
+    RE_DC_W20_80Mid[3,1] =  ((W20_dt80[3,1]- Width20_ele10_max)/Width20_ele10_max)*100
 
 # ------------------------------- Time Increment Relative Error: 20、10、1m (Middle point)-------------------- 
 RE_DC_W20_80Mid = np.zeros((len(W20_dt80Mid),2))
