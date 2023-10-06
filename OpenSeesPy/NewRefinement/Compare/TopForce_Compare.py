@@ -58,8 +58,8 @@ time = np.arange(0.0,0.050005,dt)
 Nt = len(time)
 #　 =================== Middle Point File (1/2) ====================
 # ------------------- File Path Name --------------------
-Boundary = 'TopForce'
-Boundary1 = 'TieBC_TopForce' # for plot title
+Boundary = 'TopSideMidBeamDash'
+Boundary1 = 'Side Beam Middle Node Boundary Condition (TopForce)' # for plot title
 ele80 = f"{Boundary}_80row"
 ele40 = f"{Boundary}_40row"
 ele20 = f"{Boundary}_20row"
@@ -170,7 +170,7 @@ def Differ_SoilWidthVel(Width20_Mid80row,Width10_Mid80row,Width1_Mid80row):
 # # ------------ Draw Same SoilWidth with Different row element: Middle Point -----------------------
 x_axis = 0.0267 # 0.1 0.05
 fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-fig1.suptitle(f'{Boundary1} (Middle node)',x=0.50,y =0.95,fontsize = 20)
+fig1.suptitle(f'{Boundary1} \n(Middle node)',x=0.50,y =0.99,fontsize = 20)
 fig1.text(0.03,0.5, r"$V_y$  $(m/s)$", va= 'center', rotation= 'vertical', fontsize=20)
 fig1.text(0.45,0.04, 'time (s)', va= 'center', fontsize=20)
 
@@ -195,7 +195,7 @@ for ax in [ax1,ax2,ax3]:
     ax.xaxis.get_offset_text().set(size=18)
 # ------------ Draw Same SoilWidth with Different row element: Quarter Point -----------------------
 fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-fig2.suptitle(f'{Boundary1} (Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
+fig2.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.99,fontsize = 20)
 fig2.text(0.03,0.5, r"$V_x$  $(m/s)$", va= 'center', rotation= 'vertical', fontsize=20)
 fig2.text(0.45,0.04, 'time (s)', va= 'center', fontsize=20)
 
@@ -221,7 +221,7 @@ for ax in [ax4,ax5,ax6]:
 
 # ------------ Draw Different SoilWidth with Same row element: Middle Point -----------------------
 fig3, (ax7,ax8,ax9,ax10) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
-fig3.suptitle(f'{Boundary1} (Middle node)',x=0.55,y =0.97,fontsize = 20)
+fig3.suptitle(f'{Boundary1} \n(Middle node)',x=0.50,y =0.99,fontsize = 20)
 fig3.text(0.040,0.5, r"$V_y$  $(m/s)$", va= 'center', rotation= 'vertical', fontsize=20)
 fig3.text(0.45,0.04, 'time (s)', va= 'center', fontsize=20)
 
@@ -253,13 +253,13 @@ for ax in [ax7,ax8,ax9,ax10]:
 plt.subplots_adjust(left=0.125,
                     bottom=0.1, 
                     right=0.9, 
-                    top=0.9, 
+                    top=0.88, 
                     wspace=0.2, 
                     hspace=0.35)
 # # # fig3.tight_layout()
 # ------------ Draw Different SoilWidth with Same row element: Middle Point -----------------------
 fig4, (ax11,ax12,ax13,ax14) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
-fig4.suptitle(f'{Boundary1} (Three Quarter node)',x=0.55,y =0.97,fontsize = 20)
+fig4.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.99,fontsize = 20)
 fig4.text(0.046,0.5, r"$V_y$  $(m/s)$", va= 'center', rotation= 'vertical', fontsize=20)
 fig4.text(0.45,0.04, 'time (s)', va= 'center', fontsize=20)
 
@@ -290,7 +290,7 @@ for ax in [ax11,ax12,ax13,ax14]:
 plt.subplots_adjust(left=0.125,
                     bottom=0.1, 
                     right=0.9, 
-                    top=0.9, 
+                    top=0.88, 
                     wspace=0.2, 
                     hspace=0.35)
 # =========== Build Different element size dt ================================
@@ -661,7 +661,7 @@ def Differ_elemetError(RE_Width20_80Mid,RE_Width20_40Mid,RE_Width20_20Mid,RE_Wid
 x_axis1 = Min_timeIncrement # 0.1 0.05
 
 fig5, (ax15,ax16,ax17) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-fig5.suptitle(f'{Boundary1} (Middle node)',x=0.5,y =0.95,fontsize = 20)
+fig5.suptitle(f'{Boundary1} \n(Middle node)',x=0.5,y =0.99,fontsize = 20)
 fig5.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
 fig5.text(0.35,0.05, f'Time Increment '+ r'$\Delta t$ $\mathrm {(s)}$', va= 'center', fontsize=18)
 
@@ -688,7 +688,7 @@ for ax in [ax15,ax16,ax17]:
 
 # ------------ Relative error : three quarter point ---------------------------------
 fig6, (ax18,ax19,ax20) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-fig6.suptitle(f'{Boundary1} (Three Quarter node)',x=0.5,y =0.95,fontsize = 20)
+fig6.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.5,y =0.99,fontsize = 20)
 fig6.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
 fig6.text(0.35,0.05, f'Time Increment '+ r'$\Delta t$ $\mathrm {(s)}$', va= 'center', fontsize=18)
 
@@ -878,7 +878,7 @@ x_axis2 = 0.125 # 0.1 0.05
 # ==================Draw Relative error : Middele point =============================
 # (ax11,ax12,ax13)
 fig7, (ax21,ax22,ax23) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-fig7.suptitle(f'{Boundary1} (Middle node)',x=0.5,y =0.95,fontsize = 20)
+fig7.suptitle(f'{Boundary1} \n(Middle node)',x=0.5,y =0.99,fontsize = 20)
 fig7.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
 fig7.text(0.40,0.05, f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
 
@@ -908,7 +908,7 @@ for ax in [ax21,ax22,ax23]:
     
 # ==================Draw Relative error(20,10,1 m) : Three Quarter point =============================
 fig8, (ax24,ax25,ax26) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-fig8.suptitle(f'{Boundary1} (Three Quarter node)',x=0.5,y =0.95,fontsize = 20)
+fig8.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.5,y =0.99,fontsize = 20)
 fig8.text(0.03,0.5, 'Relative error (%)', va= 'center', rotation= 'vertical', fontsize=20)
 fig8.text(0.40,0.05, f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
 
