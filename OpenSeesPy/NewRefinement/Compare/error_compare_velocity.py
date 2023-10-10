@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Aug 26 16:01:18 2023
+Created on Wed Oct  4 16:33:00 2023
 
 @author: User
 """
-# vel[i] = -P*np.sin(ws*time[i])/(-rho*cs*A)
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import os
+from matplotlib.ticker import ScalarFormatter
 pi = np.pi
 plt.rc('font', family= 'Times New Roman')
 
@@ -30,17 +30,16 @@ def rdnumpy(textname):
         A_row += 1
     return A
 
-# lamb_cs = 0.1 #total length cs
+# ----------- Element on vertical direction ------------------ 
 Soil_10row= 10 # dt= 5e-4       #cpdt = 2.67e-4
 Soil_20row= 20 # dt= 2.5e-4     #cpdt = 1.33e-4
 Soil_40row= 40 # dt= 1.25e-4    #cpdt = 6.68e-05
 Soil_80row= 80 # dt= 6.25e-05   #cpdt = 3.34e-05
 Soil_100row= 100 # dt= 5e-05   #cpdt = 
-
+# ----------- Soil/Wave parameters -------------------
 cs = 200 # m/s
 L = 10 # m(Soil_Depth)
-# fp = cp/L 
-# Tp = 1/fp
+
 nu = 0.3  #  0.3 -> (epsilon_z /=0)
 rho = 2000 #1600 kg/m3  ; =1.6 ton/m3  
 G = (cs*cs)*rho  # N/m^2 = Kg/(m*s^2)
@@ -50,7 +49,7 @@ cp = (E*(1-nu)/((1+nu)*(1-2*nu)*rho))**(0.5)
 A = 0.1# 0.1
 w =  pi/5 # 0 to 10 = 0 to 2*pi => x = pi/5
 
-# calculate eace step time
+# ------------------- calculate eace step time -------------------
 tns = L/cs # wave transport time
 dcell = tns/Soil_100row #each cell time
 dt = dcell/10 #eace cell have 10 steps
@@ -61,7 +60,6 @@ Nt = len(time)
 #----------- Soil Coordinate --------------
 x = cs*time #m
 
-yOut =  np.zeros(len(x))
 def Incoming_wave(x,t):
     yIn = np.sin(w*(x-cs*t))
     return yIn
@@ -76,7 +74,6 @@ dx= dy/10 # 0.1, 0.01 each element have 10 step dx
 
 total_Transport = np.arange(0.0,20.1, dx)
 XIn = np.zeros((len(total_Transport),Nele))
-
 
 # ---------- Incoming wave -------------------
 input_disp = 5 # 5
@@ -110,8 +107,6 @@ SSideforce_10rowy = np.zeros((len(total_time),Nele))
 
 # ===== Input Incoming Wave and Outcoming Wave to wave1 =======================
 ForceX_Cofficient = (cp/cs)
-# ForceY_Cofficient = 
-
 
 vely_Coefficient =  2/(A*rho*cs)
 for g in [i for i in range(Nele)]: #Nele
@@ -133,475 +128,857 @@ for g in [i for i in range(Nele)]: #Nele
 # # ----- Swave sigma xy --------------------------            
             SSideforce_10rowy[to+t,99-g] = SSideforce_10rowy[to+t,99-g] + (-XOut[t-to,99-g])
             
-Analysis = np.zeros((len(total_time),2))
-Analysis[:,0] = total_time[:]
-Analysis[:,1] = wave1[:,99]
+# Analysis = np.zeros((len(total_time),2))
+# Analysis[:,0] = total_time[:]
+# Analysis[:,1] = wave1[:,99]
+#　 =================== Middle Point File (1/2) ====================
+# ------------------- File Path Name --------------------
+# Boundary = 'TieBC'
+# Boundary1 = 'Tie Boundary Condition'
 
-# plt.plot(Analysis[:,0], Analysis[:,1])
-# plt.grid(True)
-# # ---- Output matrix eace column to txt file --------------
-# num_rows, num_cols = SSideforce_10rowy.shape# 8001,100
-# # 建立資料夾
-# # ---------- Pwave ---------------
-# P_folder_name_x = "SSideforce_10rowx"
-# P_folder_name_y = "SSideforce_10rowy"
+# ele80 = f"{Boundary}_80row"
+# ele40 = f"{Boundary}_40row"
+# ele20 = f"{Boundary}_20row"
+# ele10 = f"{Boundary}_10row"
+soilWidth = 20
+# --------- Tie Boundary Condition ----------------
+file1 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_80row/node12961.out"
+file2 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_40row/node6521.out"
+file3 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_20row/node3301.out"
+file4 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_10row/node1691.out"
+# --------- LK Dashpot Boundary Condition ----------------
+file5 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_80row/node12961.out"
+file6 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_40row/node6521.out"
+file7 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_20row/node3301.out"
+file8 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_10row/node1691.out"
+# --------- Distributed Beam Boundary Condition ----------------
+file9 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_80row/node12961.out"
+file10 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_40row/node6521.out"
+file11 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_20row/node3301.out"
+file12 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_10row/node1691.out"
+# --------- Distributed Beam and Node Boundary Condition ----------------
+file13 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_80row/node12961.out"
+file14 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_40row/node6521.out"
+file15 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_20row/node3301.out"
+file16 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_10row/node1691.out"
 
-# os.makedirs(P_folder_name_x, exist_ok=True)
-# for col in range(num_cols):
-#     column_values = SSideforce_10rowx[:, col]
-#     output_file = f"ele{col + 1}.txt"
-#     with open(os.path.join(P_folder_name_x, output_file), 'w') as f:
-#         for value in column_values:
-#             f.write(f"{value}\n")
+Tie_W20_Mid80row = rdnumpy(file1)
+Tie_W20_Mid40row = rdnumpy(file2)
+Tie_W20_Mid20row = rdnumpy(file3)
+Tie_W20_Mid10row = rdnumpy(file4)
 
-# os.makedirs(P_folder_name_y, exist_ok=True)
-# # 逐一建立txt檔案並放入資料夾
-# for col in range(num_cols):
-#     column_values = SSideforce_10rowy[:, col]
-#     output_file = f"ele{col + 1}.txt"
-#     with open(os.path.join(P_folder_name_y, output_file), 'w') as f:
-#         for value in column_values:
-#             f.write(f"{value}\n")
-         
-# # #----------------------------- Left column file -----------------------------------
-#　 ====== Mid Point File  ====================
-file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_80row\node12961.out"
-file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_40row\node6521.out"
-file3 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_20row\node3301.out"
-file4 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_10row\node1691.out"
+LK_W20_Mid80row = rdnumpy(file5)
+LK_W20_Mid40row = rdnumpy(file6)
+LK_W20_Mid20row = rdnumpy(file7)
+LK_W20_Mid10row = rdnumpy(file8)
 
-# file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_80row\node6521.out"
-# file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_40row\node3281.out"
-# file3 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_20row\node1661.out"
-# file4 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_10row\node851.out"
+Beam_W20_Mid80row = rdnumpy(file9)
+Beam_W20_Mid40row = rdnumpy(file10)
+Beam_W20_Mid20row = rdnumpy(file11)
+Beam_W20_Mid10row = rdnumpy(file12)
 
-# file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_80row\node725.out"
-# file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_40row\node365.out"
-# file3 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_20row\node185.out"
-# file4 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_10row\node95.out"
+BeamNode_W20_Mid80row = rdnumpy(file13)
+BeamNode_W20_Mid40row = rdnumpy(file14)
+BeamNode_W20_Mid20row = rdnumpy(file15)
+BeamNode_W20_Mid10row = rdnumpy(file16)
 
-# file5 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\0.7mRefinement\10Row(Pwave)\node84.out"
+# --------- Tie Boundary Condition ----------------
+file17 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_80row/node6521.out"
+file18 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_40row/node3281.out"
+file19 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_20row/node1661.out"
+file20 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_10row/node851.out"
+# --------- LK Dashpot Boundary Condition ----------------
+file21 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_80row/node6521.out"
+file22 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_40row/node3281.out"
+file23 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_20row/node1661.out"
+file24 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_10row/node851.out"
+# --------- Distributed Beam Boundary Condition ----------------
+file25 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_80row/node6521.out"
+file26 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_40row/node3281.out"
+file27 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_20row/node1661.out"
+file28 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_10row/node851.out"
+# --------- Distributed Beam and Node Boundary Condition ----------------
+file29 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_80row/node6521.out"
+file30 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_40row/node3281.out"
+file31 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_20row/node1661.out"
+file32 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_10row/node851.out"
 
-# Mid20 = rdnumpy(file1)  # 1/2 Node Velocity
-# Mid10 = rdnumpy(file2)  # 1/2 Node Velocity
-# Mid1  = rdnumpy(file3)  # 1/2 Node Velocity
+Tie_W10_Mid80row = rdnumpy(file17)
+Tie_W10_Mid40row = rdnumpy(file18)
+Tie_W10_Mid20row = rdnumpy(file19)
+Tie_W10_Mid10row = rdnumpy(file20)
 
-Mid80row = rdnumpy(file1)
-Mid40row = rdnumpy(file2)
-Mid20row = rdnumpy(file3)
-Mid10row = rdnumpy(file4)
+LK_W10_Mid80row = rdnumpy(file21)
+LK_W10_Mid40row = rdnumpy(file22)
+LK_W10_Mid20row = rdnumpy(file23)
+LK_W10_Mid10row = rdnumpy(file24)
 
-# #　 ====== Quarter Point File  ====================
-file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_80row\node13001.out"
-file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_40row\node6561.out"
-file8 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_20row\node3341.out"
-file9 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\20mRefinement\TieBC_10row\node1731.out"
+Beam_W10_Mid80row = rdnumpy(file25)
+Beam_W10_Mid40row = rdnumpy(file26)
+Beam_W10_Mid20row = rdnumpy(file27)
+Beam_W10_Mid10row = rdnumpy(file28)
 
-# file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_80row\node6541.out"
-# file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_40row\node3301.out"
-# file8 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_20row\node1681.out"
-# file9 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\10mRefinement\SideBeam_10row\node871.out"
+BeamNode_W10_Mid80row = rdnumpy(file29)
+BeamNode_W10_Mid40row = rdnumpy(file30)
+BeamNode_W10_Mid20row = rdnumpy(file31)
+BeamNode_W10_Mid10row = rdnumpy(file32)
 
-# file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_80row\node727.out"
-# file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_40row\node367.out"
-# file8 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_20row\node187.out"
-# file9 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\1mRefinement\SideBeam_10row\node97.out"
+# --------- Tie Boundary Condition ----------------
+file33 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_80row/node725.out"
+file34 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_40row/node365.out"
+file35 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_20row/node185.out"
+file36 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_10row/node95.out"
+# --------- LK Dashpot Boundary Condition ----------------
+file37 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_80row/node725.out"
+file38 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_40row/node365.out"
+file39 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_20row/node185.out"
+file40 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_10row/node95.out"
+# --------- Distributed Beam Boundary Condition ----------------
+file41 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_80row/node725.out"
+file42 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_40row/node365.out"
+file43 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_20row/node185.out"
+file44 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_10row/node95.out"
+# --------- Distributed Beam and Node Boundary Condition ----------------
+file45 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_80row/node725.out"
+file46 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_40row/node365.out"
+file47 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_20row/node185.out"
+file48 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_10row/node95.out"
 
-# # file10 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\0.7mRefinement\10Row(Pwave)\node86.out"
+Tie_W1_Mid80row = rdnumpy(file33)
+Tie_W1_Mid40row = rdnumpy(file34)
+Tie_W1_Mid20row = rdnumpy(file35)
+Tie_W1_Mid10row = rdnumpy(file36)
 
-# Quarter20 = rdnumpy(file6)  # 1/4 Node Velocity
-# Quarter10 = rdnumpy(file7)  # 1/4 Node Velocity
-# Quarter1 = rdnumpy(file8)  # 1/4 Node Velocity
+LK_W1_Mid80row = rdnumpy(file37)
+LK_W1_Mid40row = rdnumpy(file38)
+LK_W1_Mid20row = rdnumpy(file39)
+LK_W1_Mid10row = rdnumpy(file40)
 
-Quarter80row = rdnumpy(file6)
-Quarter40row = rdnumpy(file7)
-Quarter20row = rdnumpy(file8)
-Quarter10row = rdnumpy(file9)
+Beam_W1_Mid80row = rdnumpy(file41)
+Beam_W1_Mid40row = rdnumpy(file42)
+Beam_W1_Mid20row = rdnumpy(file43)
+Beam_W1_Mid10row = rdnumpy(file44)
+
+BeamNode_W1_Mid80row = rdnumpy(file45)
+BeamNode_W1_Mid40row = rdnumpy(file46)
+BeamNode_W1_Mid20row = rdnumpy(file47)
+BeamNode_W1_Mid10row = rdnumpy(file48)
 
 
+# # ================ Three-Quarter Point File (3/4) ====================
+# --------- Tie Boundary Condition ----------------
+file49 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_80row/node13001.out"
+file50 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_40row/node6561.out"
+file51 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_20row/node3341.out"
+file52 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/TieBC_10row/node1731.out"
+# --------- LK Dashpot Boundary Condition ----------------
+file53 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_80row/node13001.out"
+file54 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_40row/node6561.out"
+file55 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_20row/node3341.out"
+file56 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideDash_10row/node1731.out"
+# --------- Distributed Beam Boundary Condition ----------------
+file57 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_80row/node13001.out"
+file58 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_40row/node6561.out"
+file59 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_20row/node3341.out"
+file60 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideBeam_10row/node1731.out"
+# --------- Distributed Beam and Node Boundary Condition ----------------
+file61 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_80row/node13001.out"
+file62 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_40row/node6561.out"
+file63 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_20row/node3341.out"
+file64 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/20mRefinement/SideNodeDash_10row/node1731.out"
+
+Tie_W20_Qua80row = rdnumpy(file49)
+Tie_W20_Qua40row = rdnumpy(file50)
+Tie_W20_Qua20row = rdnumpy(file51)
+Tie_W20_Qua10row = rdnumpy(file52)
+
+LK_W20_Qua80row = rdnumpy(file53)
+LK_W20_Qua40row = rdnumpy(file54)
+LK_W20_Qua20row = rdnumpy(file55)
+LK_W20_Qua10row = rdnumpy(file56)
+
+Beam_W20_Qua80row = rdnumpy(file57)
+Beam_W20_Qua40row = rdnumpy(file58)
+Beam_W20_Qua20row = rdnumpy(file59)
+Beam_W20_Qua10row = rdnumpy(file60)
+
+BeamNode_W20_Qua80row = rdnumpy(file61)
+BeamNode_W20_Qua40row = rdnumpy(file62)
+BeamNode_W20_Qua20row = rdnumpy(file63)
+BeamNode_W20_Qua10row = rdnumpy(file64)
+
+# --------- Tie Boundary Condition ----------------
+file65 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_80row/node6541.out"
+file66 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_40row/node3301.out"
+file67 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_20row/node1681.out"
+file68 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/TieBC_10row/node871.out"
+# --------- LK Dashpot Boundary Condition ----------------
+file69 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_80row/node6541.out"
+file70 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_40row/node3301.out"
+file71 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_20row/node1681.out"
+file72 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideDash_10row/node871.out"
+# --------- Distributed Beam Boundary Condition ----------------
+file73 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_80row/node6541.out"
+file74 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_40row/node3301.out"
+file75 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_20row/node1681.out"
+file76 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideBeam_10row/node871.out"
+# --------- Distributed Beam and Node Boundary Condition ----------------
+file77 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_80row/node6541.out"
+file78 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_40row/node3301.out"
+file79 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_20row/node1681.out"
+file80 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/10mRefinement/SideNodeDash_10row/node871.out"
+
+Tie_W10_Qua80row = rdnumpy(file65)
+Tie_W10_Qua40row = rdnumpy(file66)
+Tie_W10_Qua20row = rdnumpy(file67)
+Tie_W10_Qua10row = rdnumpy(file68)
+
+LK_W10_Qua80row = rdnumpy(file69)
+LK_W10_Qua40row = rdnumpy(file70)
+LK_W10_Qua20row = rdnumpy(file71)
+LK_W10_Qua10row = rdnumpy(file72)
+
+Beam_W10_Qua80row = rdnumpy(file73)
+Beam_W10_Qua40row = rdnumpy(file74)
+Beam_W10_Qua20row = rdnumpy(file75)
+Beam_W10_Qua10row = rdnumpy(file76)
+
+BeamNode_W10_Qua80row = rdnumpy(file77)
+BeamNode_W10_Qua40row = rdnumpy(file78)
+BeamNode_W10_Qua20row = rdnumpy(file79)
+BeamNode_W10_Qua10row = rdnumpy(file80)
+# --------- Tie Boundary Condition ----------------
+file81 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_80row/node727.out"
+file82 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_40row/node367.out"
+file83 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_20row/node187.out"
+file84 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/TieBC_10row/node97.out"
+# --------- LK Dashpot Boundary Condition ----------------
+file85 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_80row/node727.out"
+file86 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_40row/node367.out"
+file87 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_20row/node187.out"
+file88 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideDash_10row/node97.out"
+# --------- Distributed Beam Boundary Condition ----------------
+file89 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_80row/node727.out"
+file90 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_40row/node367.out"
+file91 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_20row/node187.out"
+file92 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideBeam_10row/node97.out"
+# --------- Distributed Beam and Node Boundary Condition ----------------
+file93 =  f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_80row/node727.out"
+file94 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_40row/node367.out"
+file95 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_20row/node187.out"
+file96 = f"D:/shiang/opensees/20220330/OpenSeesPy/Velocity/1mRefinement/SideNodeDash_10row/node97.out"
+
+Tie_W1_Qua80row = rdnumpy(file81)
+Tie_W1_Qua40row = rdnumpy(file82)
+Tie_W1_Qua20row = rdnumpy(file83)
+Tie_W1_Qua10row = rdnumpy(file84)
+
+LK_W1_Qua80row = rdnumpy(file85)
+LK_W1_Qua40row = rdnumpy(file86)
+LK_W1_Qua20row = rdnumpy(file87)
+LK_W1_Qua10row = rdnumpy(file88)
+
+Beam_W1_Qua80row = rdnumpy(file89)
+Beam_W1_Qua40row = rdnumpy(file90)
+Beam_W1_Qua20row = rdnumpy(file91)
+Beam_W1_Qua10row = rdnumpy(file92)
+
+BeamNode_W1_Qua80row = rdnumpy(file93)
+BeamNode_W1_Qua40row = rdnumpy(file94)
+BeamNode_W1_Qua20row = rdnumpy(file95)
+BeamNode_W1_Qua10row = rdnumpy(file96)
 
 plt_axis2 = 1
-# # ------- wave put into the timeSeries ---------------   
-plt.figure(figsize=(8,6))
-  
-# plt.title(r'SideForce $\eta_{p}v_x$',fontsize = 18)  
-# plt.ylabel(r"$\eta_{p}v_x$  $(N/m^2)$",fontsize=18) 
-
-# plt.title(r'SideForce  $\sigma_{xy}$',fontsize = 18) 
-# plt.ylabel(r"$\sigma_{xy}$  $(N/m^2)$",fontsize=18)  
-
-plt.xlabel("time (s)",fontsize=18)
-
-
-plt.ylabel(r"$V_x$  $(m/s)$",fontsize=18)
-# # ------ wave Transport -----------------
-# plt.plot(total_time,wave1[:,0],label ='Ele 1', marker='o', markevery=100)
-# plt.plot(total_time,wave1[:,50],label ='Ele 5', marker='x', markevery=100)
-# plt.plot(total_time,wave1[:,99],label ='Ele 10', marker='x', markevery=100)
-
-# # plt.title('Mid Point',fontsize = 18) 
-# plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=2.0)
-# plt.plot(Mid20[:,0],Mid20[:,plt_axis2],label ='20m Soil(0.125m)', ls = '--',linewidth=6.0)
-# plt.plot(Mid10[:,0],Mid10[:,plt_axis2],label ='10m Soil(0.125m)', ls = '-.',linewidth=4.0)
-# plt.plot(Mid1[:,0],Mid1[:,plt_axis2],label ='1m Soil(0.125m)', ls = ':',linewidth=2.0)
-
-# # # # # plt.title('Quarter Point',fontsize = 18) 
-# plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=2.0)
-# plt.plot(Quarter20[:,0],Quarter20[:,plt_axis2],label ='20m Soil(0.125m)', ls = '--',linewidth=6.0)
-# plt.plot(Quarter10[:,0],Quarter10[:,plt_axis2],label ='10m Soil(0.125m)', ls = '-.',linewidth=4.0)
-# plt.plot(Quarter1[:,0],Quarter1[:,plt_axis2],label ='1m Soil(0.125m)', ls = ':',linewidth=2.0)
-
-# Refinement  Mid node:
-plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=4.0)
-plt.plot(Mid80row[:,0],Mid80row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.125$ ${\rm m}$)', ls = '--',linewidth=6.0)
-plt.plot(Mid40row[:,0],Mid40row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.25$ ${\rm m}$)', ls = '-.',linewidth=4.0)
-plt.plot(Mid20row[:,0],Mid20row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.50$ ${\rm m}$)', ls = ':',linewidth=3.0)
-plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=1$ ${\rm m}$)', ls = '-',linewidth=2.0)
-
-# # plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label ='10row', ls = 'dotted',linewidth=4.0)
-soilWidth = 20
-# # # # Refinement  Quarter node:
-# plt.plot(total_time,wave1[:,99],label ='Analytical',color= 'black',linewidth=4.0)
-# plt.plot(Quarter80row[:,0],Quarter80row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.125$ ${\rm m}$)', ls = '--',linewidth=6.0)
-# plt.plot(Quarter40row[:,0],Quarter40row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.25$ ${\rm m}$)', ls = '-.',linewidth=4.0)
-# plt.plot(Quarter20row[:,0],Quarter20row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=0.50$ ${\rm m}$)', ls = ':',linewidth=3.0)
-# plt.plot(Quarter10row[:,0],Quarter10row[:,plt_axis2],label =r'${\rm 20msoil}$ ($\Delta C=1.0$ ${\rm m}$)', ls = '-',linewidth=2.0)
-
-# # plt.plot(Quarter10row[:,0],Quarter10row[:,plt_axis2],label ='10row', ls = 'dotted',linewidth=4.0)
-
-
-
-
-# # ----- Swave  eta_p*(Vx) --------------------------
-# plt.plot(total_time,SSideforce_10rowx[:,0],label ='Ele 1', marker='o', markevery=100)
-# plt.plot(total_time,SSideforce_10rowx[:,5],label ='Ele 51', marker='x', markevery=100)
-# plt.plot(total_time,SSideforce_10rowx[:,9],label ='Ele 100', marker='d', markevery=100)
-
-# # ----- Swave sigma_Xy -------------
-# plt.plot(total_time,SSideforce_10rowy[:,0],label ='Ele 1', marker='o', markevery=100)
-# plt.plot(total_time,SSideforce_10rowy[:,5],label ='Ele 5', marker='x', markevery=100)
-# plt.plot(total_time,SSideforce_10rowy[:,9],label ='Ele 10', marker='d', markevery=100)
-
-plt.legend(loc='upper right',fontsize=16) #ncol=2
-plt.xticks(fontsize = 15)
-plt.yticks(fontsize = 15)
-plt.xlim(0.0, 0.20)
-plt.grid(True)
-
-x_axis = 0.0125 # 0.1 0.05
-ax4 = plt.gca()
-ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax4.yaxis.get_offset_text().set(size=18)
-
-# # ========== Incoming Wave ==========================================
-# plt.figure()
-# plt.title('Incoming Wave',fontsize = 18)
-# plt.xlabel("x(m)",fontsize=18)
-# plt.ylabel(r"$y=sin(x-c_{s}t)$",fontsize=18)
-# plt.plot(total_Transport,XIn[:,0],label ='Element 1',marker='o', markevery=100)
-# plt.plot(total_Transport,XIn[:,50],label ='Element 50',marker='d', markevery=100)
-# plt.plot(total_Transport,XIn[:,99],label ='Element 100',marker='x', markevery=100)
-# plt.legend(loc='upper right',fontsize=18)
-# plt.xlim(0,20.0)
-# plt.xticks(fontsize = 15)
-# plt.yticks(fontsize = 15)
-# plt.grid(True)
-
-# # ========== Outcoming Wave ==========================================
-# plt.figure()
-# plt.title('Outcoming Wave',fontsize = 18)
-# plt.xlabel("x(m)",fontsize=18)
-# plt.ylabel(r"$y=sin(x+c_{p}t)$",fontsize=18)
-# plt.plot(total_Transport,XOut[:,0],label ='Element 1',marker='o', markevery=100)
-# plt.plot(total_Transport,XOut[:,50],label ='Element 50',marker='d', markevery=100)
-# plt.plot(total_Transport,XOut[:,99],label ='Element 100',marker='x', markevery=100)
-# plt.xlim(0,20.0)
-
-# plt.legend(loc='upper right',fontsize=18)
-# plt.xticks(fontsize = 15)
-# plt.yticks(fontsize = 15)
-# plt.grid(True)
-
-# =========== Build Different element size dt ================================
-def ele_dt(element):
-    tns = L/cs # wave transport time
-    dcell = tns/element #each cell time
-    dt = dcell/10 #eace cell have 10 steps
-    return(dt)
-
-
-
+# # ------- wave put into the timeSeries ---------------
+def Differ_BCVel(total_time,wave1,Mid80row,Mid40row,Mid20row,Mid10row):
+    # plt.figure(figsize=(8,6))
+    font_props = {'family': 'Arial', 'size': 9}
+    # plt.xlabel("time (s)",fontsize=18)
+    # plt.ylabel(r"$V_x$  $(m/s)$",fontsize=18)
+    # plt.title(titleName,x=0.75,y=0.25, fontsize = 20)
     
+    plt.plot(total_time,wave1[:,99],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=2.0)
+    plt.plot(Mid80row[:,0],Mid80row[:,plt_axis2],label ='Tie BC', ls = '--',color= 'darkorange',linewidth=6.0)
+    plt.plot(Mid40row[:,0],Mid40row[:,plt_axis2],label ='LK Dashpot BC', ls = '-.',color= 'limegreen',linewidth=5.0)
+    plt.plot(Mid20row[:,0],Mid20row[:,plt_axis2],label ='Beam BC', ls = ':',color= 'blue',linewidth=4.0)
+    plt.plot(Mid10row[:,0],Mid10row[:,plt_axis2],label ='Beam and Node Dashpot BC', ls = '-',color= 'red',linewidth=2.0)
+    
+    plt.legend(loc=(0.025,0.0),prop=font_props,framealpha=0.0) #ncol=2,fontsize=16 loc='lower left'
+    plt.xticks(fontsize = 16)
+    plt.yticks(fontsize = 16)
+    plt.xlim(0.0, 0.20)
+    # plt.xlim(0.050, 0.070)
+    plt.grid(True)
 
-ele10_time = np.arange(0.0,0.4001,ele_dt(10)) #5e-5 in 100row
-ele20_time = np.arange(0.0,0.4001,ele_dt(20))
-ele40_time = np.arange(0.0,0.4001,ele_dt(40))
-ele80_time = np.arange(0.0,0.4000,ele_dt(80))
+
+# =========================== Different Boundary compare at Different Mesh Size =================================
+x_axis = 0.025 # 0.1 0.05
+# x_axis = 0.0025 # 0.1 0.05
+row_heights = [3, 3, 3]
+fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+fig1.suptitle(f'Different Boundary '+ r'$\Delta_C='+ '0.125' + r'\mathrm{m}$' + '\n(Middle node)',x=0.50,y =0.97,fontsize = 20)
+fig1.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig1.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
+
+ax1 = plt.subplot(311)
+Differ_BCVel(total_time,wave1, Tie_W20_Mid80row, LK_W20_Mid80row, Beam_W20_Mid80row, BeamNode_W20_Mid80row)
+ax1.set_title(f"SW 20m",fontsize =18, x=0.50, y=0.78)
+
+ax2 = plt.subplot(312)
+Differ_BCVel(total_time,wave1, Tie_W10_Mid80row, LK_W10_Mid80row, Beam_W10_Mid80row, BeamNode_W10_Mid80row)
+ax2.set_title(f"SW 10m",fontsize =18, x=0.50, y=0.78)
+
+ax3 = plt.subplot(313)
+Differ_BCVel(total_time,wave1, Tie_W1_Mid80row, LK_W1_Mid80row, Beam_W1_Mid80row, BeamNode_W1_Mid80row)
+ax3.set_title(f"SW 1m",fontsize =18, x=0.50, y=0.78)
+
+for ax in [ax1,ax2,ax3]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
 
 
-# ele80_Mid = np.zeros((17,2))
+fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+fig2.suptitle(f'Different Boundary '+ r'$\Delta_C='+ '0.25' + r'\mathrm{m}$' + '\n(Middle node)',x=0.50,y =0.97,fontsize = 20)
+fig2.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig2.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
 
+ax4 = plt.subplot(311)
+Differ_BCVel(total_time,wave1, Tie_W20_Mid40row, LK_W20_Mid40row, Beam_W20_Mid40row, BeamNode_W20_Mid40row)
+ax4.set_title(f"SW 20m",fontsize =18, x=0.50, y=0.78)
 
-# ele40_Mid = np.zeros((17,2))
-# ele20_Mid = np.zeros((17,2))
-# ele10_Mid = np.zeros((17,2))
+ax5 = plt.subplot(312)
+Differ_BCVel(total_time,wave1, Tie_W10_Mid40row, LK_W10_Mid40row, Beam_W10_Mid40row, BeamNode_W10_Mid40row)
+ax5.set_title(f"SW 10m",fontsize =18, x=0.50, y=0.78)
 
-# ele80_Quarter = np.zeros((17,2))
-# ele40_Quarter = np.zeros((17,2))
-# ele20_Quarter = np.zeros((17,2))
-# ele10_Quarter = np.zeros((17,2))
+ax6 = plt.subplot(313)
+Differ_BCVel(total_time,wave1, Tie_W1_Mid40row, LK_W1_Mid40row, Beam_W1_Mid40row, BeamNode_W1_Mid40row)
+ax6.set_title(f"SW 1m",fontsize =18, x=0.50, y=0.78)
 
-# ========== Check range time increment about relative error ====================
-top_time = 0.0625
-Min_timeIncrement = (L/Soil_80row)/ cs
-Max_timeIncrement = (L/Soil_10row)/ cs
-error_dt = np.arange(top_time, top_time+(Max_timeIncrement+Min_timeIncrement), 2*Min_timeIncrement)
+for ax in [ax4,ax5,ax6]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
 
-ele80_Mid = np.zeros((len(error_dt),2))
-ele40_Mid = np.zeros((len(error_dt),2))
-ele20_Mid = np.zeros((len(error_dt),2))
-ele10_Mid = np.zeros((len(error_dt),2))
+fig3, (ax7,ax8,ax9) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+fig3.suptitle(f'Different Boundary '+ r'$\Delta_C='+ '0.50' + r'\mathrm{m}$' + '\n(Middle node)',x=0.50,y =0.97,fontsize = 20)
+fig3.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig3.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
 
-ele80_Quarter = np.zeros((len(error_dt),2))
-ele40_Quarter = np.zeros((len(error_dt),2))
-ele20_Quarter = np.zeros((len(error_dt),2))
-ele10_Quarter = np.zeros((len(error_dt),2))
+ax7 = plt.subplot(311)
+Differ_BCVel(total_time,wave1, Tie_W20_Mid20row, LK_W20_Mid20row, Beam_W20_Mid20row, BeamNode_W20_Mid20row)
+ax7.set_title(f"SW 20m",fontsize =18, x=0.50, y=0.78)
 
-# # # ================= Save differ element size velocity ===========================
-# ele_compare(Soil_10row,ele10_Mid,Mid10row)
-def ele_compare(ele80,Mid80row):
-    ele80[:,0] = error_dt[:]
-    for j in range(len(error_dt)):
-        dt = round(error_dt[j],6)
-        for i in range(len(Mid80row)): 
-            if Mid80row[i,0] == dt:
-                # print(Mid80row[i,0])      
-                ele80[j,1] = Mid80row[i,1]
+ax8 = plt.subplot(312)
+Differ_BCVel(total_time,wave1, Tie_W10_Mid20row, LK_W10_Mid20row, Beam_W10_Mid20row, BeamNode_W10_Mid20row)
+ax8.set_title(f"SW 10m",fontsize =18, x=0.50, y=0.78)
 
-# ======= Ground surface Middle node compare ===========================
-ele_compare(ele80_Mid,Mid80row)
-ele_compare(ele40_Mid,Mid40row)
-ele_compare(ele20_Mid,Mid20row)
-# # ====== ele 10 mesh too big ,so hand type in =================
-ele10_Mid[:,0] = error_dt[:]
-ele10_Mid[0,1] = Mid10row[124,1]
-ele10_Mid[1,1] = Mid10row[126,1]
-ele10_Mid[2,1] = Mid10row[129,1]
-ele10_Mid[3,1] = Mid10row[131,1]
-ele10_Mid[4,1] = Mid10row[134,1]           
+ax9 = plt.subplot(313)
+Differ_BCVel(total_time,wave1, Tie_W1_Mid20row, LK_W1_Mid20row, Beam_W1_Mid20row, BeamNode_W1_Mid20row)
+ax9.set_title(f"SW 1m",fontsize =18, x=0.50, y=0.78)
 
-# ======= Ground surface Quarter node compare ===========================
-ele_compare(ele80_Quarter,Quarter80row)
-ele_compare(ele40_Quarter,Quarter40row)
-ele_compare(ele20_Quarter,Quarter20row)
-# # # ====== ele 10 mesh too big ,so hand type in =================
-ele10_Quarter[:,0] = error_dt[:]
-ele10_Quarter[0,1] = Quarter10row[124,1]
-ele10_Quarter[1,1] = Quarter10row[126,1]
-ele10_Quarter[2,1] = Quarter10row[129,1]
-ele10_Quarter[3,1] = Quarter10row[131,1]
-ele10_Quarter[4,1] = Quarter10row[134,1]     
+for ax in [ax7,ax8,ax9]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+    
+fig4, (ax10,ax11,ax12) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+fig4.suptitle(f'Different Boundary '+ r'$\Delta_C='+ '1.0' + r'\mathrm{m}$' + '\n(Middle node)',x=0.50,y =0.97,fontsize = 20)
+fig4.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig4.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
 
-def Find_ColMaxValue(ele80_Mid):
-    column_index = 1
+ax10 = plt.subplot(311)
+Differ_BCVel(total_time,wave1, Tie_W20_Mid10row, LK_W20_Mid10row, Beam_W20_Mid10row, BeamNode_W20_Mid10row)
+ax10.set_title(f"SW 20m",fontsize =18, x=0.50, y=0.78)
+
+ax11 = plt.subplot(312)
+Differ_BCVel(total_time,wave1, Tie_W10_Mid10row, LK_W10_Mid10row, Beam_W10_Mid10row, BeamNode_W10_Mid10row)
+ax11.set_title(f"SW 10m",fontsize =18, x=0.50, y=0.78)
+
+ax12 = plt.subplot(313)
+Differ_BCVel(total_time,wave1, Tie_W1_Mid10row, LK_W1_Mid10row, Beam_W1_Mid10row, BeamNode_W1_Mid10row)
+ax12.set_title(f"SW 1m",fontsize =18, x=0.50, y=0.78)
+
+for ax in [ax10,ax11,ax12]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+    
+    
+    
+def Find_ColMaxValue(column_index,ele80_Mid):
+    # column_index = 1
     column = ele80_Mid[:, column_index]
     max_value = np.max(column)
     max_index = np.argmax(column)
-    print(f'max_value= {max_value}; max_index= {max_index}')
-    return(max_value)
+    
+    min_value = np.min(column)
+    min_index = np.argmin(column)
+    
+    # print(f'max_value= {max_value}; max_index= {max_index}')
+    # print(f'min_value= {min_value}; min_index= {min_index}')
+    return(max_value,min_value)
+# =========== Find Grounf Surface Max/ Min Peak Value ==========================
+column_index = 1
+Analysis_column = 99
 
+# =================================== Middle Node ===================================
+# ------------ Tie Boundary Condition -----------------------
+maxTie20_Mid80, minTie20_Mid80 = Find_ColMaxValue(column_index,Tie_W20_Mid80row)
+maxTie20_Mid40, minTie20_Mid40 = Find_ColMaxValue(column_index,Tie_W20_Mid40row)
+maxTie20_Mid20, minTie20_Mid20 = Find_ColMaxValue(column_index,Tie_W20_Mid20row)
+maxTie20_Mid10, minTie20_Mid10 = Find_ColMaxValue(column_index,Tie_W20_Mid10row)
 
-ele80_max = Find_ColMaxValue(ele80_Mid)
-ele40_max = Find_ColMaxValue(ele40_Mid)
-ele20_max = Find_ColMaxValue(ele20_Mid)
-ele10_max = Find_ColMaxValue(ele10_Mid)
+maxTie10_Mid80, minTie10_Mid80 = Find_ColMaxValue(column_index,Tie_W10_Mid80row)
+maxTie10_Mid40, minTie10_Mid40 = Find_ColMaxValue(column_index,Tie_W10_Mid40row)
+maxTie10_Mid20, minTie10_Mid20 = Find_ColMaxValue(column_index,Tie_W10_Mid20row)
+maxTie10_Mid10, minTie10_Mid10 = Find_ColMaxValue(column_index,Tie_W10_Mid10row)
 
-ele80_Quarter_max = Find_ColMaxValue(ele80_Quarter)
-ele40_Quarter_max = Find_ColMaxValue(ele40_Quarter)
-ele20_Quarter_max = Find_ColMaxValue(ele20_Quarter)
-ele10_Quarter_max = Find_ColMaxValue(ele10_Quarter)
+maxTie1_Mid80, minTie1_Mid80 = Find_ColMaxValue(column_index,Tie_W1_Mid80row)
+maxTie1_Mid40, minTie1_Mid40 = Find_ColMaxValue(column_index,Tie_W1_Mid40row)
+maxTie1_Mid20, minTie1_Mid20 = Find_ColMaxValue(column_index,Tie_W1_Mid20row)
+maxTie1_Mid10, minTie1_Mid10 = Find_ColMaxValue(column_index,Tie_W1_Mid10row)
 
-relative_Error80Mid = np.zeros((len(ele80_Mid),2))
-relative_Error40Mid = np.zeros((len(ele40_Mid),2))
-relative_Error20Mid = np.zeros((len(ele20_Mid),2))
-relative_Error10Mid = np.zeros((len(ele10_Mid),2))
+# ------------ LK Dashpot Boundary Condition -----------------------
+maxLK20_Mid80, minLK20_Mid80 = Find_ColMaxValue(column_index,LK_W20_Mid80row)
+maxLK20_Mid40, minLK20_Mid40 = Find_ColMaxValue(column_index,LK_W20_Mid40row)
+maxLK20_Mid20, minLK20_Mid20 = Find_ColMaxValue(column_index,LK_W20_Mid20row)
+maxLK20_Mid10, minLK20_Mid10 = Find_ColMaxValue(column_index,LK_W20_Mid10row)
 
-relative_Error80Quarter = np.zeros((len(ele80_Mid),2))
-relative_Error40Quarter = np.zeros((len(ele40_Mid),2))
-relative_Error20Quarter = np.zeros((len(ele20_Mid),2))
-relative_Error10Quarter = np.zeros((len(ele10_Mid),2))
+maxLK10_Mid80, minLK10_Mid80 = Find_ColMaxValue(column_index,LK_W10_Mid80row)
+maxLK10_Mid40, minLK10_Mid40 = Find_ColMaxValue(column_index,LK_W10_Mid40row)
+maxLK10_Mid20, minLK10_Mid20 = Find_ColMaxValue(column_index,LK_W10_Mid20row)
+maxLK10_Mid10, minLK10_Mid10 = Find_ColMaxValue(column_index,LK_W10_Mid10row)
 
-def calculate_error(relative_Error80,ele80_Mid,ele80_max):
-# # ---------- calculate relative error -----------------
-    for n in range(len(ele80_Mid)):
-        relative_Error80[n,0] = ele80_Mid[n,0]
-        relative_Error80[n,1] = ((ele80_Mid[n,1]- ele80_max)/ele80_max)*100
-        # relative_Error80[n,1] = ((ele80_Mid[n,1]- 0.0001)/ele80_max)*100
+maxLK1_Mid80, minLK1_Mid80 = Find_ColMaxValue(column_index,LK_W1_Mid80row)
+maxLK1_Mid40, minLK1_Mid40 = Find_ColMaxValue(column_index,LK_W1_Mid40row)
+maxLK1_Mid20, minLK1_Mid20 = Find_ColMaxValue(column_index,LK_W1_Mid20row)
+maxLK1_Mid10, minLK1_Mid10 = Find_ColMaxValue(column_index,LK_W1_Mid10row)
+# ------------ Distributed Beam Boundary Condition -----------------------
+maxBeam20_Mid80, minBeam20_Mid80 = Find_ColMaxValue(column_index,Beam_W20_Mid80row)
+maxBeam20_Mid40, minBeam20_Mid40 = Find_ColMaxValue(column_index,Beam_W20_Mid40row)
+maxBeam20_Mid20, minBeam20_Mid20 = Find_ColMaxValue(column_index,Beam_W20_Mid20row)
+maxBeam20_Mid10, minBeam20_Mid10 = Find_ColMaxValue(column_index,Beam_W20_Mid10row)
 
-calculate_error(relative_Error80Mid,ele80_Mid,ele80_max)
-calculate_error(relative_Error40Mid,ele40_Mid,ele40_max)
-calculate_error(relative_Error20Mid,ele20_Mid,ele20_max)
-calculate_error(relative_Error10Mid,ele10_Mid,ele10_max)
+maxBeam10_Mid80, minBeam10_Mid80 = Find_ColMaxValue(column_index,Beam_W10_Mid80row)
+maxBeam10_Mid40, minBeam10_Mid40 = Find_ColMaxValue(column_index,Beam_W10_Mid40row)
+maxBeam10_Mid20, minBeam10_Mid20 = Find_ColMaxValue(column_index,Beam_W10_Mid20row)
+maxBeam10_Mid10, minBeam10_Mid10 = Find_ColMaxValue(column_index,Beam_W10_Mid10row)
 
-plt.figure(figsize=(8,6))
-plt.title("Ground Surface relative error: Middle node(TieBC)", fontsize = 18)
-plt.xlabel("time (s)",fontsize=18)
-plt.ylabel(r"relative error (%)",fontsize=18)
+maxBeam1_Mid80, minBeam1_Mid80 = Find_ColMaxValue(column_index,Beam_W1_Mid80row)
+maxBeam1_Mid40, minBeam1_Mid40 = Find_ColMaxValue(column_index,Beam_W1_Mid40row)
+maxBeam1_Mid20, minBeam1_Mid20 = Find_ColMaxValue(column_index,Beam_W1_Mid20row)
+maxBeam1_Mid10, minBeam1_Mid10 = Find_ColMaxValue(column_index,Beam_W1_Mid10row)
 
-plt.plot(relative_Error80Mid[:,0],relative_Error80Mid[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$")
-plt.plot(relative_Error40Mid[:,0],relative_Error40Mid[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$")
-plt.plot(relative_Error20Mid[:,0],relative_Error20Mid[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$")
-plt.plot(relative_Error10Mid[:,0],relative_Error10Mid[:,1],marker = 's',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$")
+# ------------ Distributed Beam and Node Boundary Condition -----------------------
+maxBN20_Mid80, minBN20_Mid80 = Find_ColMaxValue(column_index,BeamNode_W20_Mid80row)
+maxBN20_Mid40, minBN20_Mid40 = Find_ColMaxValue(column_index,BeamNode_W20_Mid40row)
+maxBN20_Mid20, minBN20_Mid20 = Find_ColMaxValue(column_index,BeamNode_W20_Mid20row)
+maxBN20_Mid10, minBN20_Mid10 = Find_ColMaxValue(column_index,BeamNode_W20_Mid10row)
 
-plt.legend(loc='lower left',fontsize=15) #ncol=2
-plt.xticks(fontsize = 15)
-plt.yticks(fontsize = 15)
-# plt.xlim(0.0, 0.20)
-plt.grid(True)
+maxBN10_Mid80, minBN10_Mid80 = Find_ColMaxValue(column_index,BeamNode_W10_Mid80row)
+maxBN10_Mid40, minBN10_Mid40 = Find_ColMaxValue(column_index,BeamNode_W10_Mid40row)
+maxBN10_Mid20, minBN10_Mid20 = Find_ColMaxValue(column_index,BeamNode_W10_Mid20row)
+maxBN10_Mid10, minBN10_Mid10 = Find_ColMaxValue(column_index,BeamNode_W10_Mid10row)
 
-x_axis = Min_timeIncrement # 0.1 0.05
-ax5 = plt.gca()
-# 
-ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax5.yaxis.get_offset_text().set(size=18)
-ax5.xaxis.get_offset_text().set(size=18)
+maxBN1_Mid80, minBN1_Mid80 = Find_ColMaxValue(column_index,BeamNode_W1_Mid80row)
+maxBN1_Mid40, minBN1_Mid40 = Find_ColMaxValue(column_index,BeamNode_W1_Mid40row)
+maxBN1_Mid20, minBN1_Mid20 = Find_ColMaxValue(column_index,BeamNode_W1_Mid20row)
+maxBN1_Mid10, minBN1_Mid10 = Find_ColMaxValue(column_index,BeamNode_W1_Mid10row)
 
+# =================================== Three Quarter Node ===================================
+# ------------ Tie Boundary Condition -----------------------
+maxTie20_Qua80, minTie20_Qua80 = Find_ColMaxValue(column_index,Tie_W20_Qua80row)
+maxTie20_Qua40, minTie20_Qua40 = Find_ColMaxValue(column_index,Tie_W20_Qua40row)
+maxTie20_Qua20, minTie20_Qua20 = Find_ColMaxValue(column_index,Tie_W20_Qua20row)
+maxTie20_Qua10, minTie20_Qua10 = Find_ColMaxValue(column_index,Tie_W20_Qua10row)
 
-calculate_error(relative_Error80Quarter,ele80_Quarter,ele80_Quarter_max)
-calculate_error(relative_Error40Quarter,ele40_Quarter,ele40_Quarter_max)
-calculate_error(relative_Error20Quarter,ele20_Quarter,ele20_Quarter_max)
-calculate_error(relative_Error10Quarter,ele10_Quarter,ele10_Quarter_max)
+maxTie10_Qua80, minTie10_Qua80 = Find_ColMaxValue(column_index,Tie_W10_Qua80row)
+maxTie10_Qua40, minTie10_Qua40 = Find_ColMaxValue(column_index,Tie_W10_Qua40row)
+maxTie10_Qua20, minTie10_Qua20 = Find_ColMaxValue(column_index,Tie_W10_Qua20row)
+maxTie10_Qua10, minTie10_Qua10 = Find_ColMaxValue(column_index,Tie_W10_Qua10row)
 
-plt.figure(figsize=(8,6))
-plt.title("Ground Surface relative error: Quarter node(TieBC)", fontsize = 18)
-plt.xlabel("time (s)",fontsize=18)
-plt.ylabel(r"relative error (%)",fontsize=18)
+maxTie1_Qua80, minTie1_Qua80 = Find_ColMaxValue(column_index,Tie_W1_Qua80row)
+maxTie1_Qua40, minTie1_Qua40 = Find_ColMaxValue(column_index,Tie_W1_Qua40row)
+maxTie1_Qua20, minTie1_Qua20 = Find_ColMaxValue(column_index,Tie_W1_Qua20row)
+maxTie1_Qua10, minTie1_Qua10 = Find_ColMaxValue(column_index,Tie_W1_Qua10row)
 
-plt.plot(relative_Error80Quarter[:,0],relative_Error80Quarter[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$")
-plt.plot(relative_Error40Quarter[:,0],relative_Error40Quarter[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$")
-plt.plot(relative_Error20Quarter[:,0],relative_Error20Quarter[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$")
-plt.plot(relative_Error10Quarter[:,0],relative_Error10Quarter[:,1],marker = 's',markersize=12,markerfacecolor = 'white',label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$")
+# ------------ LK Dashpot Boundary Condition -----------------------
+maxLK20_Qua80, minLK20_Qua80 = Find_ColMaxValue(column_index,LK_W20_Qua80row)
+maxLK20_Qua40, minLK20_Qua40 = Find_ColMaxValue(column_index,LK_W20_Qua40row)
+maxLK20_Qua20, minLK20_Qua20 = Find_ColMaxValue(column_index,LK_W20_Qua20row)
+maxLK20_Qua10, minLK20_Qua10 = Find_ColMaxValue(column_index,LK_W20_Qua10row)
 
-plt.legend(loc='lower left',fontsize=15) #ncol=2
-plt.xticks(fontsize = 15)
-plt.yticks(fontsize = 15)
-# plt.xlim(0.0, 0.20)
-plt.grid(True)
+maxLK10_Qua80, minLK10_Qua80 = Find_ColMaxValue(column_index,LK_W10_Qua80row)
+maxLK10_Qua40, minLK10_Qua40 = Find_ColMaxValue(column_index,LK_W10_Qua40row)
+maxLK10_Qua20, minLK10_Qua20 = Find_ColMaxValue(column_index,LK_W10_Qua20row)
+maxLK10_Qua10, minLK10_Qua10 = Find_ColMaxValue(column_index,LK_W10_Qua10row)
 
-x_axis = Min_timeIncrement # 0.1 0.05
-ax6 = plt.gca()
-# 
-ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-ax6.yaxis.get_offset_text().set(size=18)
-ax6.xaxis.get_offset_text().set(size=18)
+maxLK1_Qua80, minLK1_Qua80 = Find_ColMaxValue(column_index,LK_W1_Qua80row)
+maxLK1_Qua40, minLK1_Qua40 = Find_ColMaxValue(column_index,LK_W1_Qua40row)
+maxLK1_Qua20, minLK1_Qua20 = Find_ColMaxValue(column_index,LK_W1_Qua20row)
+maxLK1_Qua10, minLK1_Qua10 = Find_ColMaxValue(column_index,LK_W1_Qua10row)
+# ------------ Distributed Beam Boundary Condition -----------------------
+maxBeam20_Qua80, minBeam20_Qua80 = Find_ColMaxValue(column_index,Beam_W20_Qua80row)
+maxBeam20_Qua40, minBeam20_Qua40 = Find_ColMaxValue(column_index,Beam_W20_Qua40row)
+maxBeam20_Qua20, minBeam20_Qua20 = Find_ColMaxValue(column_index,Beam_W20_Qua20row)
+maxBeam20_Qua10, minBeam20_Qua10 = Find_ColMaxValue(column_index,Beam_W20_Qua10row)
 
+maxBeam10_Qua80, minBeam10_Qua80 = Find_ColMaxValue(column_index,Beam_W10_Qua80row)
+maxBeam10_Qua40, minBeam10_Qua40 = Find_ColMaxValue(column_index,Beam_W10_Qua40row)
+maxBeam10_Qua20, minBeam10_Qua20 = Find_ColMaxValue(column_index,Beam_W10_Qua20row)
+maxBeam10_Qua10, minBeam10_Qua10 = Find_ColMaxValue(column_index,Beam_W10_Qua10row)
 
-# # ----------- Analysis Theory velocity ----------------       
-# Analy_compare = np.zeros((17,2))
-# for j in range(16):
-#     # print(dt)
-#     Analy_compare[1+j,0] = Analysis[250+250*j,0]
-#     Analy_compare[1+j,1] = Analysis[250+250*j,1]
-#     # print(250+250*j,Analysis[250+250*j,0], Analysis[250+250*j,1])
+maxBeam1_Qua80, minBeam1_Qua80 = Find_ColMaxValue(column_index,Beam_W1_Qua80row)
+maxBeam1_Qua40, minBeam1_Qua40 = Find_ColMaxValue(column_index,Beam_W1_Qua40row)
+maxBeam1_Qua20, minBeam1_Qua20 = Find_ColMaxValue(column_index,Beam_W1_Qua20row)
+maxBeam1_Qua10, minBeam1_Qua10 = Find_ColMaxValue(column_index,Beam_W1_Qua10row)
 
-# # ----------- Put all differ element inside matrics --------------- 
-# total_MidCompare = np.zeros((len(Analy_compare),6))
-# total_MidCompare[:,0] = Analy_compare[:,0]
-# total_MidCompare[:,1] = Analy_compare[:,1]
-# total_MidCompare[:,2] = ele80_Mid[:,1]
-# total_MidCompare[:,3] = ele40_Mid[:,1]
-# total_MidCompare[:,4] = ele20_Mid[:,1]
-# total_MidCompare[:,5] = ele10_Mid[:,1]
-# total_MidCompare[6,1] = 0
+# ------------ Distributed Beam and Node Boundary Condition -----------------------
+maxBN20_Qua80, minBN20_Qua80 = Find_ColMaxValue(column_index,BeamNode_W20_Qua80row)
+maxBN20_Qua40, minBN20_Qua40 = Find_ColMaxValue(column_index,BeamNode_W20_Qua40row)
+maxBN20_Qua20, minBN20_Qua20 = Find_ColMaxValue(column_index,BeamNode_W20_Qua20row)
+maxBN20_Qua10, minBN20_Qua10 = Find_ColMaxValue(column_index,BeamNode_W20_Qua10row)
 
-# total_QuarterCompare = np.zeros((len(Analy_compare),6))
-# total_QuarterCompare[:,0] = Analy_compare[:,0]
-# total_QuarterCompare[:,1] = Analy_compare[:,1]
-# total_QuarterCompare[:,2] = ele80_Quarter[:,1]
-# total_QuarterCompare[:,3] = ele40_Quarter[:,1]
-# total_QuarterCompare[:,4] = ele20_Quarter[:,1]
-# total_QuarterCompare[:,5] = ele10_Quarter[:,1]
-# total_QuarterCompare[6,1] = 0
+maxBN10_Qua80, minBN10_Qua80 = Find_ColMaxValue(column_index,BeamNode_W10_Qua80row)
+maxBN10_Qua40, minBN10_Qua40 = Find_ColMaxValue(column_index,BeamNode_W10_Qua40row)
+maxBN10_Qua20, minBN10_Qua20 = Find_ColMaxValue(column_index,BeamNode_W10_Qua20row)
+maxBN10_Qua10, minBN10_Qua10 = Find_ColMaxValue(column_index,BeamNode_W10_Qua10row)
 
-# error_Midcompare = np.zeros((len(Analy_compare),5))
-# error_Midcompare[:,0] =  total_MidCompare[:,0]
+maxBN1_Qua80, minBN1_Qua80 = Find_ColMaxValue(column_index,BeamNode_W1_Qua80row)
+maxBN1_Qua40, minBN1_Qua40 = Find_ColMaxValue(column_index,BeamNode_W1_Qua40row)
+maxBN1_Qua20, minBN1_Qua20 = Find_ColMaxValue(column_index,BeamNode_W1_Qua20row)
+maxBN1_Qua10, minBN1_Qua10 = Find_ColMaxValue(column_index,BeamNode_W1_Qua10row)
 
-# error_Quartercompare = np.zeros((len(Analy_compare),5))
-# error_Quartercompare[:,0] =  total_QuarterCompare[:,0]
-# for i in range(4):#4
-#     for j in range(len(error_Midcompare)):
-#         error_Midcompare[j,1+i] = ((total_MidCompare[j,2+i] - total_MidCompare[j,1])/ total_MidCompare[j,1])*100
-#         error_Quartercompare[j,1+i] = ((total_QuarterCompare[j,2+i] - total_QuarterCompare[j,1])/ total_QuarterCompare[j,1])*100
+maxAnaly, minAnaly = Find_ColMaxValue(Analysis_column,wave1)
+Mesh_Size = np.zeros(4)
+ele = 80 
+for m in range(len(Mesh_Size)):
+    if m == 0 :    
+        Mesh_Size[m] = L/ (ele)
+    if m > 0:    
+        Mesh_Size[m] = Mesh_Size[m-1]*2
         
-#         # print(j,i)
-# #----------------- Make the nan,inf to be 0 -----------------
-# where_are_nan1 = np.isnan(error_Midcompare) 
-# where_are_inf1 = np.isinf(error_Midcompare)
-# error_Midcompare[where_are_nan1] = 0
-# error_Midcompare[where_are_inf1] = 0
+def errMatrix(error_dc,maxTie20_Mid80,minTie20_Mid80,maxTie20_Mid40,minTie20_Mid40,maxTie20_Mid20,minTie20_Mid20,maxTie20_Mid10,minTie20_Mid10):
+    error_dc[:,0] = Mesh_Size[:]
+    error_dc[0,1] = maxTie20_Mid80
+    error_dc[0,2] = minTie20_Mid80
+    error_dc[1,1] = maxTie20_Mid40
+    error_dc[1,2] = minTie20_Mid40
+    error_dc[2,1] = maxTie20_Mid20
+    error_dc[2,2] = minTie20_Mid20
+    error_dc[3,1] = maxTie20_Mid10
+    error_dc[3,2] = minTie20_Mid10
+    return error_dc
 
-# where_are_nan2 = np.isnan(error_Quartercompare) 
-# where_are_inf2 = np.isinf(error_Quartercompare)
-# error_Quartercompare[where_are_nan2] = 0
-# error_Quartercompare[where_are_inf2] = 0
+# ============================= Middle Node ========================================
+# ------------W20m Tie BC Error Peak Value-----------------------
+MidTie20_error = np.zeros((4,3))
+errMatrix(MidTie20_error,maxTie20_Mid80,minTie20_Mid80,maxTie20_Mid40,minTie20_Mid40,maxTie20_Mid20,minTie20_Mid20,maxTie20_Mid10,minTie20_Mid10)
+# ------------W20m LK BC Error Peak Value-----------------------
+MidLK20_error = np.zeros((4,3))
+errMatrix(MidLK20_error,maxLK20_Mid80,minLK20_Mid80,maxLK20_Mid40,minLK20_Mid40,maxLK20_Mid20,minLK20_Mid20,maxLK20_Mid10,minLK20_Mid10)
+# ------------W20m Distributed Beam BC Error Peak Value-----------------------
+MidBeam20_error = np.zeros((4,3))
+errMatrix(MidBeam20_error,maxBeam20_Mid80,minBeam20_Mid80,maxBeam20_Mid40,minBeam20_Mid40,maxBeam20_Mid20,minBeam20_Mid20,maxBeam20_Mid10,minBeam20_Mid10)
+# ------------W20m Distributed Beam and Node BC Error Peak Value-----------------------
+MidBN20_error = np.zeros((4,3))
+errMatrix(MidBN20_error,maxBN20_Mid80,minBN20_Mid80,maxBN20_Mid40,minBN20_Mid40,maxBN20_Mid20,minBN20_Mid20,maxBN20_Mid10,minBN20_Mid10)
 
-# # ------- relative error figure -------------
-# plt.figure(figsize=(10,8))
-# # plt.title(r'Ground Surface relative error: Middle point',fontsize = 18) 
-# plt.ylabel(r'Relative error (%)',fontsize=18)  
-# plt.xlabel("Time increment $\Delta t$",fontsize=18)
+# ------------W10m Tie BC Error Peak Value-----------------------
+MidTie10_error = np.zeros((4,3))
+errMatrix(MidTie10_error, maxTie10_Mid80,minTie10_Mid80, maxTie10_Mid40,minTie10_Mid40, maxTie10_Mid20,minTie10_Mid20, maxTie10_Mid10,minTie10_Mid10)
+# ------------W10m LK BC Error Peak Value-----------------------
+MidLK10_error = np.zeros((4,3))
+errMatrix(MidLK10_error, maxLK10_Mid80,minLK10_Mid80, maxLK10_Mid40,minLK10_Mid40, maxLK10_Mid20,minLK10_Mid20, maxLK10_Mid10,minLK10_Mid10)
+# ------------W10m Distributed Beam BC Error Peak Value-----------------------
+MidBeam10_error = np.zeros((4,3))
+errMatrix(MidBeam10_error, maxBeam10_Mid80,minBeam10_Mid80, maxBeam10_Mid40,minBeam10_Mid40, maxBeam10_Mid20,minBeam10_Mid20, maxBeam10_Mid10,minBeam10_Mid10)
+# ------------W10m Distributed Beam and Node BC Error Peak Value-----------------------
+MidBN10_error = np.zeros((4,3))
+errMatrix(MidBN10_error, maxBN10_Mid80,minBN10_Mid80, maxBN10_Mid40,minBN10_Mid40, maxBN10_Mid20,minBN10_Mid20, maxBN10_Mid10,minBN10_Mid10)
 
-# plt.plot(error_Midcompare[:,0],error_Midcompare[:,1],label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$", marker = '^',markersize=16,markerfacecolor = 'white')
-# plt.plot(error_Midcompare[:,0],error_Midcompare[:,2],label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$", marker = 's',markersize=14,markerfacecolor = 'white')
-# plt.plot(error_Midcompare[:,0],error_Midcompare[:,3],label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$", marker = 'o',markersize=12,markerfacecolor = 'white')
-# plt.plot(error_Midcompare[:,0],error_Midcompare[:,4],label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$", marker = '>',markersize=10,markerfacecolor = 'white')
+# ------------W1m Tie BC Error Peak Value-----------------------
+MidTie1_error = np.zeros((4,3))
+errMatrix(MidTie1_error, maxTie1_Mid80,minTie1_Mid80, maxTie1_Mid40,minTie1_Mid40, maxTie1_Mid20,minTie1_Mid20, maxTie1_Mid10,minTie1_Mid10)
+# ------------W1m LK BC Error Peak Value-----------------------
+MidLK1_error = np.zeros((4,3))
+errMatrix(MidLK1_error, maxLK1_Mid80,minLK1_Mid80, maxLK1_Mid40,minLK1_Mid40, maxLK1_Mid20,minLK1_Mid20, maxLK1_Mid10,minLK1_Mid10)
+# ------------W1m Distributed Beam BC Error Peak Value-----------------------
+MidBeam1_error = np.zeros((4,3))
+errMatrix(MidBeam1_error, maxBeam1_Mid80,minBeam1_Mid80, maxBeam1_Mid40,minBeam1_Mid40, maxBeam1_Mid20,minBeam1_Mid20, maxBeam1_Mid10,minBeam1_Mid10)
+# ------------W1m Distributed Beam and Node BC Error Peak Value-----------------------
+MidBN1_error = np.zeros((4,3))
+errMatrix(MidBN1_error, maxBN1_Mid80,minBN1_Mid80, maxBN1_Mid40,minBN1_Mid40, maxBN1_Mid20,minBN1_Mid20, maxBN1_Mid10,minBN1_Mid10)
 
-# plt.legend(loc='upper right',fontsize=15) #ncol=2
-# plt.xticks(fontsize = 15)
-# plt.yticks(fontsize = 15)
-# plt.xlim(0.0, 0.20)
-# plt.grid(True)
+# ============================= Three Quarter Node ====================================================
+# ------------W20m Tie BC Error Peak Value-----------------------
+QuaTie20_error = np.zeros((4,3))
+errMatrix(QuaTie20_error,maxTie20_Qua80,minTie20_Qua80,maxTie20_Qua40,minTie20_Qua40,maxTie20_Qua20,minTie20_Qua20,maxTie20_Qua10,minTie20_Qua10)
+# ------------W20m LK BC Error Peak Value-----------------------
+QuaLK20_error = np.zeros((4,3))
+errMatrix(QuaLK20_error,maxLK20_Qua80,minLK20_Qua80,maxLK20_Qua40,minLK20_Qua40,maxLK20_Qua20,minLK20_Qua20,maxLK20_Qua10,minLK20_Qua10)
+# ------------W20m Distributed Beam BC Error Peak Value-----------------------
+QuaBeam20_error = np.zeros((4,3))
+errMatrix(QuaBeam20_error,maxBeam20_Qua80,minBeam20_Qua80,maxBeam20_Qua40,minBeam20_Qua40,maxBeam20_Qua20,minBeam20_Qua20,maxBeam20_Qua10,minBeam20_Qua10)
+# ------------W20m Distributed Beam and Node BC Error Peak Value-----------------------
+QuaBN20_error = np.zeros((4,3))
+errMatrix(QuaBN20_error,maxBN20_Qua80,minBN20_Qua80,maxBN20_Qua40,minBN20_Qua40,maxBN20_Qua20,minBN20_Qua20,maxBN20_Qua10,minBN20_Qua10)
 
-# # x_axis = 0.0125 # 0.1 0.05
-# ax4 = plt.gca()
-# # plt.rcParams['ax4.formatter.limits'] = [-3, 3]
-# # ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-# ax4.yaxis.get_offset_text().set(size=18)
-# ax4.xaxis.get_offset_text().set(size=18)
+# ------------W10m Tie BC Error Peak Value-----------------------
+QuaTie10_error = np.zeros((4,3))
+errMatrix(QuaTie10_error, maxTie10_Qua80,minTie10_Qua80, maxTie10_Qua40,minTie10_Qua40, maxTie10_Qua20,minTie10_Qua20, maxTie10_Qua10,minTie10_Qua10)
+# ------------W10m LK BC Error Peak Value-----------------------
+QuaLK10_error = np.zeros((4,3))
+errMatrix(QuaLK10_error, maxLK10_Qua80,minLK10_Qua80, maxLK10_Qua40,minLK10_Qua40, maxLK10_Qua20,minLK10_Qua20, maxLK10_Qua10,minLK10_Qua10)
+# ------------W10m Distributed Beam BC Error Peak Value-----------------------
+QuaBeam10_error = np.zeros((4,3))
+errMatrix(QuaBeam10_error, maxBeam10_Qua80,minBeam10_Qua80, maxBeam10_Qua40,minBeam10_Qua40, maxBeam10_Qua20,minBeam10_Qua20, maxBeam10_Qua10,minBeam10_Qua10)
+# ------------W10m Distributed Beam and Node BC Error Peak Value-----------------------
+QuaBN10_error = np.zeros((4,3))
+errMatrix(QuaBN10_error, maxBN10_Qua80,minBN10_Qua80, maxBN10_Qua40,minBN10_Qua40, maxBN10_Qua20,minBN10_Qua20, maxBN10_Qua10,minBN10_Qua10)
+
+# ------------W1m Tie BC Error Peak Value-----------------------
+QuaTie1_error = np.zeros((4,3))
+errMatrix(QuaTie1_error, maxTie1_Qua80,minTie1_Qua80, maxTie1_Qua40,minTie1_Qua40, maxTie1_Qua20,minTie1_Qua20, maxTie1_Qua10,minTie1_Qua10)
+# ------------W1m LK BC Error Peak Value-----------------------
+QuaLK1_error = np.zeros((4,3))
+errMatrix(QuaLK1_error, maxLK1_Qua80,minLK1_Qua80, maxLK1_Qua40,minLK1_Qua40, maxLK1_Qua20,minLK1_Qua20, maxLK1_Qua10,minLK1_Qua10)
+# ------------W1m Distributed Beam BC Error Peak Value-----------------------
+QuaBeam1_error = np.zeros((4,3))
+errMatrix(QuaBeam1_error, maxBeam1_Qua80,minBeam1_Qua80, maxBeam1_Qua40,minBeam1_Qua40, maxBeam1_Qua20,minBeam1_Qua20, maxBeam1_Qua10,minBeam1_Qua10)
+# ------------W1m Distributed Beam and Node BC Error Peak Value-----------------------
+QuaBN1_error = np.zeros((4,3))
+errMatrix(QuaBN1_error, maxBN1_Qua80,minBN1_Qua80, maxBN1_Qua40,minBN1_Qua40, maxBN1_Qua20,minBN1_Qua20, maxBN1_Qua10,minBN1_Qua10)
+
+# calculate_Error()
+MidTieErr20 = np.zeros((4,3))
+MidLKErr20 = np.zeros((4,3))
+MidBeamErr20 = np.zeros((4,3))
+MidBNErr20 = np.zeros((4,3))
+
+MidTieErr10 = np.zeros((4,3))
+MidLKErr10 = np.zeros((4,3))
+MidBeamErr10 = np.zeros((4,3))
+MidBNErr10 = np.zeros((4,3))
+
+MidTieErr1 = np.zeros((4,3))
+MidLKErr1 = np.zeros((4,3))
+MidBeamErr1 = np.zeros((4,3))
+MidBNErr1 = np.zeros((4,3))
+
+def Calculate_Error(TieErr,Tie_error):
+    for i in range(len(Mesh_Size)):
+        TieErr[:,0] = Tie_error[:,0]
+        TieErr[i,1] = (abs(Tie_error[i,1] - maxAnaly)/maxAnaly)*100
+        TieErr[i,2] = (abs(Tie_error[i,2] - minAnaly)/minAnaly)*100
+
+        # TieErr[i,1] = ((Tie_error[i,1] - maxAnaly)/maxAnaly)*100
+        # TieErr[i,2] = ((Tie_error[i,2] - minAnaly)/minAnaly)*100
+# -------- W20 Relative Error --------------   
+Calculate_Error(MidTieErr20, MidTie20_error)
+Calculate_Error(MidLKErr20, MidLK20_error)      
+Calculate_Error(MidBeamErr20, MidBeam20_error)
+Calculate_Error(MidBNErr20, MidBN20_error)   
+# -------- W10 Relative Error --------------   
+Calculate_Error(MidTieErr10, MidTie10_error)
+Calculate_Error(MidLKErr10, MidLK10_error)      
+Calculate_Error(MidBeamErr10, MidBeam10_error)
+Calculate_Error(MidBNErr10, MidBN10_error)   
+# -------- W1 Relative Error --------------   
+Calculate_Error(MidTieErr1, MidTie1_error)
+Calculate_Error(MidLKErr1, MidLK1_error)      
+Calculate_Error(MidBeamErr1, MidBeam1_error)
+Calculate_Error(MidBNErr1, MidBN1_error)   
 
 
-# plt.figure(figsize=(10,8))
-# # plt.title(r'Ground Surface relative error: Quarter point',fontsize = 18) 
-# plt.ylabel(r'Relative error (%)',fontsize=18)  
-# plt.xlabel("Time increment $\Delta t$",fontsize=18)
+# calculate_Error()
+QuaTieErr20 = np.zeros((4,3))
+QuaLKErr20 = np.zeros((4,3))
+QuaBeamErr20 = np.zeros((4,3))
+QuaBNErr20 = np.zeros((4,3))
 
-# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,1],label = r"$\Delta c = 0.125$ ${\rm m}$ ${\rm (80 element)}$", marker = '^',markersize=16,markerfacecolor = 'white')
-# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,2],label = r"$\Delta c = 0.25$ ${\rm m}$ ${\rm (40 element)}$", marker = 's',markersize=14,markerfacecolor = 'white')
-# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,3],label = r"$\Delta c = 0.50$ ${\rm m}$ ${\rm (20 element)}$", marker = 'o',markersize=12,markerfacecolor = 'white')
-# plt.plot(error_Quartercompare[:,0],error_Quartercompare[:,4],label = r"$\Delta c = 1.0$ ${\rm m}$ ${\rm (10 element)}$", marker = '>',markersize=10,markerfacecolor = 'white')
+QuaTieErr10 = np.zeros((4,3))
+QuaLKErr10 = np.zeros((4,3))
+QuaBeamErr10 = np.zeros((4,3))
+QuaBNErr10 = np.zeros((4,3))
 
-# plt.legend(loc='upper right',fontsize=15) #ncol=2
-# plt.xticks(fontsize = 15)
-# plt.yticks(fontsize = 15)
-# plt.xlim(0.0, 0.20)
-# plt.grid(True)
+QuaTieErr1 = np.zeros((4,3))
+QuaLKErr1 = np.zeros((4,3))
+QuaBeamErr1 = np.zeros((4,3))
+QuaBNErr1 = np.zeros((4,3))
 
-# # x_axis = 0.0125 # 0.1 0.05
-# ax5 = plt.gca()
-# # plt.rcParams['ax4.formatter.limits'] = [-3, 3]
-# # ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='x')
-# ax5.yaxis.get_offset_text().set(size=18)
-# ax5.xaxis.get_offset_text().set(size=18)
+# -------- W20 Relative Error --------------   
+Calculate_Error(QuaTieErr20, QuaTie20_error)
+Calculate_Error(QuaLKErr20, QuaLK20_error)      
+Calculate_Error(QuaBeamErr20, QuaBeam20_error)
+Calculate_Error(QuaBNErr20, QuaBN20_error)   
+# -------- W10 Relative Error --------------   
+Calculate_Error(QuaTieErr10, QuaTie10_error)
+Calculate_Error(QuaLKErr10, QuaLK10_error)      
+Calculate_Error(QuaBeamErr10, QuaBeam10_error)
+Calculate_Error(QuaBNErr10, QuaBN10_error)   
+# -------- W1 Relative Error --------------   
+Calculate_Error(QuaTieErr1, QuaTie1_error)
+Calculate_Error(QuaLKErr1, QuaLK1_error)      
+Calculate_Error(QuaBeamErr1, QuaBeam1_error)
+Calculate_Error(QuaBNErr1, QuaBN1_error)   
 
 
+# ------------------------------- Time Increment Relative Error: 20、10、1m (Middle point)-------------------- 
+# ==================Draw Relative error : Middele point =============================
+def DifferTime_elemetError(Peak,TieErr, LKErr, BeamErr, BNErr):
+    # plt.figure(figsize=(8,6))
+    font_props = {'family': 'Arial', 'size': 12}
+    # plt.xlabel("time t(s)",fontsize= 20)
+    # plt.ylabel(r"relative error (%)",fontsize=20)
+    # plt.title("Compare Different Boundary Condition: Middle node", fontsize = 18)
+    # plt.title(titleName,x=0.25,y=0.35, fontsize = 18)
+    
+    plt.plot(TieErr[:,0],TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie Boundary Condition')
+    plt.plot(LKErr[:,0],LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot Boundary Condition')
+    plt.plot(BeamErr[:,0],BeamErr[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Beam Boundary Condition')
+    plt.plot(BNErr[:,0],BNErr[:,Peak],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Beam and Node Dashpot Boundary Condition')
+    
+    plt.legend(loc='best',prop=font_props) #ncol=2,fontsize=16 frameon=False
+    plt.xticks(fontsize = 15)
+    plt.yticks(fontsize = 15)
+    # plt.xlim(0.0, 0.20)
+    plt.grid(True)
+
+x_axis = 0.125
+figsize = (10,10)
+# ----------------- Middle Node Relative Error -------------------------
+fig5, (ax13,ax14,ax15) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize)
+fig5.suptitle(f'Ground Surface Different Boundary Maximum Velocity Compare \n(Middle node)',x=0.50,y =0.95,fontsize = 20)
+fig5.text(0.045,0.5, r"Relative Error (%)", va= 'center', rotation= 'vertical', fontsize=20)
+fig5.text(0.40,0.06,  f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
+
+ax13 = plt.subplot(311)
+DifferTime_elemetError(1,MidTieErr20, MidLKErr20, MidBeamErr20, MidBNErr20)
+ax13.set_title(f"SW 20m",fontsize =18, x=0.20, y=0.45)
+
+ax14 = plt.subplot(312)
+DifferTime_elemetError(1,MidTieErr10, MidLKErr10, MidBeamErr10, MidBNErr10)
+ax14.set_title(f"SW 10m",fontsize =18, x=0.20, y=0.45)
+
+ax15 = plt.subplot(313)
+DifferTime_elemetError(1,MidTieErr1, MidLKErr1, MidBeamErr1, MidBNErr1)
+ax15.set_title(f"SW 1m",fontsize =18, x=0.20, y=0.45)
 
 
+for ax in [ax13,ax14,ax15]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+
+fig6, (ax16,ax17,ax18) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize)
+fig6.suptitle(f'Ground Surface Different Boundary Minimum Velocity Compare \n(Middle node)',x=0.50,y =0.95,fontsize = 20)
+fig6.text(0.045,0.5, r"Relative Error (%)", va= 'center', rotation= 'vertical', fontsize=20)
+fig6.text(0.40,0.06,  f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
+
+ax16 = plt.subplot(311)
+DifferTime_elemetError(2,MidTieErr20, MidLKErr20, MidBeamErr20, MidBNErr20)
+ax16.set_title(f"SW 20m",fontsize =18, x=0.20, y=0.45)
+
+ax17 = plt.subplot(312)
+DifferTime_elemetError(2,MidTieErr10, MidLKErr10, MidBeamErr10, MidBNErr10)
+ax17.set_title(f"SW 10m",fontsize =18, x=0.20, y=0.45)
+
+ax18 = plt.subplot(313)
+DifferTime_elemetError(2,MidTieErr1, MidLKErr1, MidBeamErr1, MidBNErr1)
+ax18.set_title(f"SW 1m",fontsize =18, x=0.20, y=0.45)
+
+
+for ax in [ax16,ax17,ax18]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+    
+# # ----------------- Three Quarter Node Relative Error -------------------------
+# x_axis = 0.125
+fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize)
+fig7.suptitle(f'Ground Surface Different Boundary Maximum value Velocity \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
+fig7.text(0.045,0.5, r"Relative Error (%)", va= 'center', rotation= 'vertical', fontsize=20)
+fig7.text(0.40,0.06,  f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
+
+ax19 = plt.subplot(311)
+DifferTime_elemetError(1,QuaTieErr20, QuaLKErr20, QuaBeamErr20, QuaBNErr20)
+ax19.set_title(f"SW 20m",fontsize =18, x=0.20, y=0.45)
+
+ax20 = plt.subplot(312)
+DifferTime_elemetError(1,QuaTieErr10, QuaLKErr10, QuaBeamErr10, QuaBNErr10)
+ax20.set_title(f"SW 10m",fontsize =18, x=0.20, y=0.45)
+
+ax21 = plt.subplot(313)
+DifferTime_elemetError(1,QuaTieErr1, QuaLKErr1, QuaBeamErr1, QuaBNErr1)
+ax21.set_title(f"SW 1m",fontsize =18, x=0.20, y=0.45)
+
+for ax in [ax19,ax20,ax21]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+
+fig8, (ax22,ax23,ax24) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize)
+fig8.suptitle(f'Ground Surface Different Boundary Minimum Velocity Compare \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
+fig8.text(0.045,0.5, r"Relative Error (%)", va= 'center', rotation= 'vertical', fontsize=20)
+fig8.text(0.40,0.06,  f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', va= 'center', fontsize=20)
+
+ax22 = plt.subplot(311)
+DifferTime_elemetError(2,QuaTieErr20, QuaLKErr20, QuaBeamErr20, QuaBNErr20)
+ax22.set_title(f"SW 20m",fontsize =18, x=0.20, y=0.45)
+
+ax23 = plt.subplot(312)
+DifferTime_elemetError(2,QuaTieErr10, QuaLKErr10, QuaBeamErr10, QuaBNErr10)
+ax23.set_title(f"SW 10m",fontsize =18, x=0.20, y=0.45)
+
+ax24 = plt.subplot(313)
+DifferTime_elemetError(2,QuaTieErr1, QuaLKErr1, QuaBeamErr1, QuaBNErr1)
+ax24.set_title(f"SW 1m",fontsize =18, x=0.20, y=0.45)
+
+
+for ax in [ax22,ax23,ax24]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+    
