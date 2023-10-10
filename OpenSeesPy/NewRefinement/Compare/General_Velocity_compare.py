@@ -227,8 +227,8 @@ Analysis[:,1] = wave1[:,99]
 
 #　 =================== Middle Point File (1/2) ====================
 # ------------------- File Path Name --------------------
-Boundary = 'SideBeam'
-Boundary1 = 'Beam Boundary Condition'
+Boundary = 'SideDash'
+Boundary1 = 'LK Dashpot Boundary Condition'
 ele80 = f"{Boundary}_80row"
 ele40 = f"{Boundary}_40row"
 ele20 = f"{Boundary}_20row"
@@ -337,7 +337,7 @@ def Differ_SoilWidthVel(total_time,wave1,Width20_Mid80row,Width10_Mid80row,Width
     plt.xlim(0.0, 0.20)
     plt.grid(True)
     
-# ------------ Draw Same SoilWidth with Different row element: Middle Point -----------------------
+# ------------ Draw Same SoilWidth with 'Different' row element: Middle Point -----------------------
 x_axis = 0.025 # 0.1 0.05
 # x_axis = 0.0025 # 0.1 0.05
 fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
@@ -371,148 +371,148 @@ for ax in [ax1,ax2,ax3]:
     # ax.ticklabel_format(axis='y', style='sci', scilimits=(-1,2))
     # ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
 
-# # ------------ Draw Same SoilWidth with Different row element: Quarter Point -----------------------
-# fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-# fig2.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
-# fig2.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig2.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
+# ------------ Draw Same SoilWidth with 'Different' row element: Quarter Point -----------------------
+fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
+fig2.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
+fig2.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig2.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
 
-# ax4 = plt.subplot(311)
-# Differ_elemetVel(total_time,wave1 ,Width20_Quarter80row,Width20_Quarter40row,Width20_Quarter20row,Width20_Quarter10row)
-# ax4.set_title(f"SW 20m",fontsize =18, x=0.50, y=0.78)
+ax4 = plt.subplot(311)
+Differ_elemetVel(total_time,wave1 ,Width20_Quarter80row,Width20_Quarter40row,Width20_Quarter20row,Width20_Quarter10row)
+ax4.set_title(f"SW 20m",fontsize =18, x=0.50, y=0.78)
 
-# ax5 = plt.subplot(312)
-# Differ_elemetVel(total_time,wave1 ,Width10_Quarter80row,Width10_Quarter40row,Width10_Quarter20row,Width10_Quarter10row)
-# ax5.set_title(f"SW 10m",fontsize =18, x=0.50, y=0.78)
-
-
-# ax6 = plt.subplot(313)
-# Differ_elemetVel(total_time,wave1 ,Width1_Quarter80row,Width1_Quarter40row,Width1_Quarter20row,Width1_Quarter10row)
-# ax6.set_title(f"SW 1m",fontsize =18, x=0.50, y=0.78)
-
-# for ax in [ax4,ax5,ax6]:
-#     formatter = ticker.ScalarFormatter(useMathText =True)
-#     formatter.set_scientific(True)
-#     formatter.set_powerlimits((0,0))
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-#     ax.yaxis.set_major_formatter(formatter)
-#     ax.xaxis.set_major_formatter(formatter)
-#     ax.yaxis.get_offset_text().set(size=18)
-#     ax.xaxis.get_offset_text().set(size=18)
-# ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
-
-# # ------------ Draw Different SoilWidth with Same row element: Middle Point -----------------------
-# fig3, (ax7,ax8,ax9,ax10) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
-# fig3.suptitle(f'{Boundary1} \n(Middle node)',x=0.50,y =0.95,fontsize = 20)
-# fig3.text(0.050,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig3.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
-
-# ax7 = plt.subplot(411)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Mid80row,Width10_Mid80row,Width1_Mid80row)
-# ax7.set_title(r'$\Delta_C='+ '0.125' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
-
-# ax8 = plt.subplot(412)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Mid40row,Width10_Mid40row,Width1_Mid40row)
-# ax8.set_title(r'$\Delta_C='+ '0.25' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
+ax5 = plt.subplot(312)
+Differ_elemetVel(total_time,wave1 ,Width10_Quarter80row,Width10_Quarter40row,Width10_Quarter20row,Width10_Quarter10row)
+ax5.set_title(f"SW 10m",fontsize =18, x=0.50, y=0.78)
 
 
-# ax9 = plt.subplot(413)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter20row,Width10_Quarter20row,Width1_Mid20row)
-# ax9.set_title(r'$\Delta_C='+ '0.50' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
+ax6 = plt.subplot(313)
+Differ_elemetVel(total_time,wave1 ,Width1_Quarter80row,Width1_Quarter40row,Width1_Quarter20row,Width1_Quarter10row)
+ax6.set_title(f"SW 1m",fontsize =18, x=0.50, y=0.78)
 
-# ax10 = plt.subplot(414)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Mid10row,Width10_Mid10row,Width1_Mid10row)
-# ax10.set_title(r'$\Delta_C='+ '1.0' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
+for ax in [ax4,ax5,ax6]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
 
-# for ax in [ax7,ax8,ax9,ax10]:
-#     formatter = ticker.ScalarFormatter(useMathText =True)
-#     formatter.set_scientific(True)
-#     formatter.set_powerlimits((0,0))
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-#     ax.yaxis.set_major_formatter(formatter)
-#     ax.xaxis.set_major_formatter(formatter)
-#     ax.yaxis.get_offset_text().set(size=18)
-#     ax.xaxis.get_offset_text().set(size=18)
-#     # ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
+# ------------ Draw Different SoilWidth with 'Same' row element: Middle Point -----------------------
+fig3, (ax7,ax8,ax9,ax10) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
+fig3.suptitle(f'{Boundary1} \n(Middle node)',x=0.50,y =0.95,fontsize = 20)
+fig3.text(0.050,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig3.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
 
-# plt.subplots_adjust(left=0.125,
-#                     bottom=0.1, 
-#                     right=0.9, 
-#                     top=0.88, 
-#                     wspace=0.2, 
-#                     hspace=0.35)
-# # # fig3.tight_layout()
-# # ------------ Draw Different SoilWidth with Same row element: Middle Point -----------------------
-# fig4, (ax11,ax12,ax13,ax14) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
-# fig4.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
-# fig4.text(0.050,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig4.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
+ax7 = plt.subplot(411)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Mid80row,Width10_Mid80row,Width1_Mid80row)
+ax7.set_title(r'$\Delta_C='+ '0.125' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# ax11 = plt.subplot(411)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter80row,Width10_Quarter80row,Width1_Quarter80row)
-# ax11.set_title(r'$\Delta_C='+ '0.125' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
+ax8 = plt.subplot(412)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Mid40row,Width10_Mid40row,Width1_Mid40row)
+ax8.set_title(r'$\Delta_C='+ '0.25' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# ax12 = plt.subplot(412)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter40row,Width10_Quarter40row,Width1_Quarter40row)
-# ax12.set_title(r'$\Delta_C='+ '0.25' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# ax13 = plt.subplot(413)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter20row,Width10_Quarter20row,Width1_Quarter20row)
-# ax13.set_title(r'$\Delta_C='+ '0.50' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
+ax9 = plt.subplot(413)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter20row,Width10_Quarter20row,Width1_Mid20row)
+ax9.set_title(r'$\Delta_C='+ '0.50' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# ax14 = plt.subplot(414)
-# Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter10row,Width10_Quarter10row,Width1_Quarter10row)
-# ax14.set_title(r'$\Delta_C='+ '1.0' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
+ax10 = plt.subplot(414)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Mid10row,Width10_Mid10row,Width1_Mid10row)
+ax10.set_title(r'$\Delta_C='+ '1.0' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# for ax in [ax11,ax12,ax13,ax14]:
-#     formatter = ticker.ScalarFormatter(useMathText =True)
-#     formatter.set_scientific(True)
-#     formatter.set_powerlimits((0,0))
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-#     ax.yaxis.set_major_formatter(formatter)
-#     ax.xaxis.set_major_formatter(formatter)
-#     ax.yaxis.get_offset_text().set(size=18)
-#     ax.xaxis.get_offset_text().set(size=18)
+for ax in [ax7,ax8,ax9,ax10]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+    # ax.ticklabel_format(axis='x', style='sci', scilimits=(-1,2))
 
-# plt.subplots_adjust(left=0.125,
-#                     bottom=0.1, 
-#                     right=0.9, 
-#                     top=0.88, 
-#                     wspace=0.2, 
-#                     hspace=0.35)
-# =========== Build Different element size dt ================================
-def ele_dt(element):
-    tns = L/cs # wave transport time
-    dcell = tns/element #each cell time
-    dt = dcell/10 #eace cell have 10 steps
-    return(dt)
+plt.subplots_adjust(left=0.125,
+                    bottom=0.1, 
+                    right=0.9, 
+                    top=0.88, 
+                    wspace=0.2, 
+                    hspace=0.35)
+# # fig3.tight_layout()
+# ------------ Draw Different SoilWidth with 'Same' row element: Three Quarter Point -----------------------
+fig4, (ax11,ax12,ax13,ax14) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
+fig4.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
+fig4.text(0.050,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig4.text(0.45,0.04, 'time t (s)', va= 'center', fontsize=20)
 
-# ele10_time = np.arange(0.0,0.4001,ele_dt(10)) #5e-5 in 100row
-# ele20_time = np.arange(0.0,0.4001,ele_dt(20))
-# ele40_time = np.arange(0.0,0.4001,ele_dt(40))
-# ele80_time = np.arange(0.0,0.4000,ele_dt(80))
+ax11 = plt.subplot(411)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter80row,Width10_Quarter80row,Width1_Quarter80row)
+ax11.set_title(r'$\Delta_C='+ '0.125' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# ========== Check range time increment about relative error ====================
-top_time = 0.0625
-Min_timeIncrement = (L/Soil_80row)/ cs
-Max_timeIncrement = (L/Soil_10row)/ cs
-error_dt = np.arange(top_time, top_time+(Max_timeIncrement+Min_timeIncrement), 2*Min_timeIncrement)
+ax12 = plt.subplot(412)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter40row,Width10_Quarter40row,Width1_Quarter40row)
+ax12.set_title(r'$\Delta_C='+ '0.25' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-# ------------ Build Middle different SoilWidth error time Step ---------------- 
-Width20_ele80_Mid = np.zeros((len(error_dt),2))
-Width20_ele40_Mid = np.zeros((len(error_dt),2))
-Width20_ele20_Mid = np.zeros((len(error_dt),2))
-Width20_ele10_Mid = np.zeros((len(error_dt),2))
+ax13 = plt.subplot(413)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter20row,Width10_Quarter20row,Width1_Quarter20row)
+ax13.set_title(r'$\Delta_C='+ '0.50' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-Width10_ele80_Mid = np.zeros((len(error_dt),2))
-Width10_ele40_Mid = np.zeros((len(error_dt),2))
-Width10_ele20_Mid = np.zeros((len(error_dt),2))
-Width10_ele10_Mid = np.zeros((len(error_dt),2))
+ax14 = plt.subplot(414)
+Differ_SoilWidthVel(total_time,wave1 ,Width20_Quarter10row,Width10_Quarter10row,Width1_Quarter10row)
+ax14.set_title(r'$\Delta_C='+ '1.0' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.70)
 
-Width1_ele80_Mid = np.zeros((len(error_dt),2))
-Width1_ele40_Mid = np.zeros((len(error_dt),2))
-Width1_ele20_Mid = np.zeros((len(error_dt),2))
-Width1_ele10_Mid = np.zeros((len(error_dt),2))
+for ax in [ax11,ax12,ax13,ax14]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
+
+plt.subplots_adjust(left=0.125,
+                    bottom=0.1, 
+                    right=0.9, 
+                    top=0.88, 
+                    wspace=0.2, 
+                    hspace=0.35)
+# # =========== Build Different element size dt ================================
+# def ele_dt(element):
+#     tns = L/cs # wave transport time
+#     dcell = tns/element #each cell time
+#     dt = dcell/10 #eace cell have 10 steps
+#     return(dt)
+
+# # ele10_time = np.arange(0.0,0.4001,ele_dt(10)) #5e-5 in 100row
+# # ele20_time = np.arange(0.0,0.4001,ele_dt(20))
+# # ele40_time = np.arange(0.0,0.4001,ele_dt(40))
+# # ele80_time = np.arange(0.0,0.4000,ele_dt(80))
+
+# # ========== Check range time increment about relative error ====================
+# top_time = 0.0625
+# Min_timeIncrement = (L/Soil_80row)/ cs
+# Max_timeIncrement = (L/Soil_10row)/ cs
+# error_dt = np.arange(top_time, top_time+(Max_timeIncrement+Min_timeIncrement), 2*Min_timeIncrement)
+
+# # ------------ Build Middle different SoilWidth error time Step ---------------- 
+# Width20_ele80_Mid = np.zeros((len(error_dt),2))
+# Width20_ele40_Mid = np.zeros((len(error_dt),2))
+# Width20_ele20_Mid = np.zeros((len(error_dt),2))
+# Width20_ele10_Mid = np.zeros((len(error_dt),2))
+
+# Width10_ele80_Mid = np.zeros((len(error_dt),2))
+# Width10_ele40_Mid = np.zeros((len(error_dt),2))
+# Width10_ele20_Mid = np.zeros((len(error_dt),2))
+# Width10_ele10_Mid = np.zeros((len(error_dt),2))
+
+# Width1_ele80_Mid = np.zeros((len(error_dt),2))
+# Width1_ele40_Mid = np.zeros((len(error_dt),2))
+# Width1_ele20_Mid = np.zeros((len(error_dt),2))
+# Width1_ele10_Mid = np.zeros((len(error_dt),2))
 
 # # ------------ Build three quarter different SoilWidth error time Step ---------------- 
 # Width20_ele80_Quarter = np.zeros((len(error_dt),2))
