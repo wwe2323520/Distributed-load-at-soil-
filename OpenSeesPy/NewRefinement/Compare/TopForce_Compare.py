@@ -58,8 +58,8 @@ time = np.arange(0.0,0.050005,dt)
 Nt = len(time)
 #　 =================== Middle Point File (1/2) ====================
 # ------------------- File Path Name --------------------
-Boundary = 'TopForce'
-Boundary1 = 'Tie Boundary Condition (TopForce)' # for plot title
+Boundary = 'TopSideNodeDash'
+Boundary1 = 'Beam and Node Dashpot Boundary Condition (TopForce)' # for plot title
 ele80 = f"{Boundary}_80row"
 ele40 = f"{Boundary}_40row"
 ele20 = f"{Boundary}_20row"
@@ -169,32 +169,32 @@ def Differ_SoilWidthVel(Width20_Mid80row,Width10_Mid80row,Width1_Mid80row):
     
 # # ------------ Draw Same SoilWidth with Different row element: Middle Point -----------------------
 x_axis = 0.0267 # 0.1 0.05
-# fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
-# fig1.suptitle(f'{Boundary1} \n(Middle node)',x=0.50,y =0.95,fontsize = 20)
-# fig1.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig1.text(0.44,0.04, 'time t (s)', va= 'center', fontsize=20)
+fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
+fig1.suptitle(f'{Boundary1} \n(Middle node)',x=0.50,y =0.95,fontsize = 20)
+fig1.text(0.03,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
+fig1.text(0.44,0.04, 'time t (s)', va= 'center', fontsize=20)
 
-# ax1 = plt.subplot(311)
-# Differ_elemetVel(Width20_Mid80row,Width20_Mid40row,Width20_Mid20row,Width20_Mid10row)
-# ax1.set_title(f"SW 20m",fontsize =18, x=0.10, y=0.78)
+ax1 = plt.subplot(311)
+Differ_elemetVel(Width20_Mid80row,Width20_Mid40row,Width20_Mid20row,Width20_Mid10row)
+ax1.set_title(f"SW 20m",fontsize =18, x=0.10, y=0.78)
 
-# ax2 = plt.subplot(312)
-# Differ_elemetVel(Width10_Mid80row,Width10_Mid40row,Width10_Mid20row,Width10_Mid10row)
-# ax2.set_title(f"SW 10m",fontsize =18, x=0.10, y=0.78)
+ax2 = plt.subplot(312)
+Differ_elemetVel(Width10_Mid80row,Width10_Mid40row,Width10_Mid20row,Width10_Mid10row)
+ax2.set_title(f"SW 10m",fontsize =18, x=0.10, y=0.78)
 
-# ax3 = plt.subplot(313)
-# Differ_elemetVel(Width1_Mid80row,Width1_Mid40row,Width1_Mid20row,Width1_Mid10row)
-# ax3.set_title(f"SW 1m",fontsize =18, x=0.10, y=0.80)
+ax3 = plt.subplot(313)
+Differ_elemetVel(Width1_Mid80row,Width1_Mid40row,Width1_Mid20row,Width1_Mid10row)
+ax3.set_title(f"SW 1m",fontsize =18, x=0.10, y=0.80)
 
-# for ax in [ax1,ax2,ax3]:
-#     formatter = ticker.ScalarFormatter(useMathText =True)
-#     formatter.set_scientific(True)
-#     formatter.set_powerlimits((0,0))
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-#     ax.yaxis.set_major_formatter(formatter)
-#     ax.xaxis.set_major_formatter(formatter)
-#     ax.yaxis.get_offset_text().set(size=18)
-#     ax.xaxis.get_offset_text().set(size=18)
+for ax in [ax1,ax2,ax3]:
+    formatter = ticker.ScalarFormatter(useMathText =True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((0,0))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax.yaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.get_offset_text().set(size=18)
+    ax.xaxis.get_offset_text().set(size=18)
     
 # ------------ Draw Same SoilWidth with Different row element: Quarter Point -----------------------
 fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8,8))
@@ -238,9 +238,9 @@ ax8 = plt.subplot(412)
 Differ_SoilWidthVel(Width20_Mid40row,Width10_Mid40row,Width1_Mid40row)
 ax8.set_title(r'$\Delta_C='+ '0.25' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.76)
 
-
+#////
 ax9 = plt.subplot(413)
-Differ_SoilWidthVel(Width20_Quarter20row,Width10_Quarter20row,Width1_Mid20row)
+Differ_SoilWidthVel(Width20_Mid20row,Width10_Mid20row,Width1_Mid20row)
 ax9.set_title(r'$\Delta_C='+ '0.50' + r'\mathrm{m}$',fontsize =16, x=0.50, y=0.76)
 
 ax10 = plt.subplot(414)
@@ -264,7 +264,7 @@ plt.subplots_adjust(left=0.125,
                     wspace=0.2, 
                     hspace=0.35)
 # # fig3.tight_layout()
-# ------------ Draw Different SoilWidth with Same row element: Middle Point -----------------------
+# ------------ Draw Different SoilWidth with Same row element: Three Quarter points -----------------------
 fig4, (ax11,ax12,ax13,ax14) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8,8))
 fig4.suptitle(f'{Boundary1} \n(Three Quarter node)',x=0.50,y =0.95,fontsize = 20)
 fig4.text(0.046,0.5,r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
@@ -302,6 +302,10 @@ plt.subplots_adjust(left=0.125,
                     top=0.88, 
                     wspace=0.2, 
                     hspace=0.35)
+
+
+
+
 # # =========== Build Different element size dt ================================
 # def ele_dt(element):
 #     tns = L/cp # wave transport time
