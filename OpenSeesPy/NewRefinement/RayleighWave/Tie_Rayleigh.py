@@ -732,15 +732,8 @@ bKZ = 0.4006
 Ray_Smp = 0.5*aKZ*rho*Vp*sizeX2      # upper Left and Right corner node dashpot :N (newton) 0.5
 Ray_Sms = 0.5*bKZ*rho*Vs*sizeX2      # upper Left and Right corner node dashpot :N (newton) 0.5
 
-# Ray_Cmp = 1.0*rho*Vp*sizeX2      # Bottom Center node dashpot :N (newton)
-# Ray_Cms = 1.0*rho*Vs*sizeX2      # Bottom Center node dashpot :N (newton)
-
 uniaxialMaterial('Viscous',4010, Ray_Smp, 1)    # P wave: Side node
 uniaxialMaterial('Viscous',4011, Ray_Sms, 1)    # S wave: Side node
-
-# uniaxialMaterial('Viscous',4002, B_Cmp, 1)    # P wave: Center node
-# uniaxialMaterial('Viscous',4003, B_Cms, 1)    # S wave: Center node
-
 #----------- dashpot elements: Vs with x dir / Vp with y-dir------------------
 xdir = 1
 ydir = 2
