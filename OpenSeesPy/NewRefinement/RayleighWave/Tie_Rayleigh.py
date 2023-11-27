@@ -729,8 +729,8 @@ equalDOF((nx+1)+(nx+1)*ny, RTDash_Raly, 2)  # y dir
 sizeX2 = yMesh # m
 aKZ = 1.8356
 bKZ = 0.4006
-Ray_Smp = 1.0*aKZ*rho*Vp*sizeX2      # upper Left and Right corner node dashpot :N (newton) 0.5
-Ray_Sms = 1.0*bKZ*rho*Vs*sizeX2      # upper Left and Right corner node dashpot :N (newton) 0.5
+Ray_Smp = 0.5*aKZ*rho*Vp*sizeX2      # upper Left and Right corner node dashpot :N (newton) 0.5
+Ray_Sms = 0.5*bKZ*rho*Vs*sizeX2      # upper Left and Right corner node dashpot :N (newton) 0.5
 
 # Ray_Cmp = 1.0*rho*Vp*sizeX2      # Bottom Center node dashpot :N (newton)
 # Ray_Cms = 1.0*rho*Vs*sizeX2      # Bottom Center node dashpot :N (newton)
