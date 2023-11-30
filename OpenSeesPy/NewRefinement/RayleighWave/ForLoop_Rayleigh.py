@@ -9,12 +9,17 @@ import time
 import os 
 import numpy as np
 from openseespy.opensees import *
+
+# ----------- Rayleigh Dashpot Cofficient ------------------
+Boundary = 'Tie'
 a_cofficient = np.arange(0, 2.2, 0.2)
 b_cofficient = np.arange(0, 2.2, 0.2)
 
-Boundary = 'Tie'
-for akz in a_cofficient:
-    for bkz in b_cofficient:        
+for a in a_cofficient:
+    for b in b_cofficient:
+        akz = round(a,2)
+        bkz = round(b,2)
+        print(f'a_cofficient = {akz}; b_cofficient = {bkz}')        
         wipe()
         # -------- Start calculaate time -----------------
         start = time.time()
@@ -28,7 +33,7 @@ for akz in a_cofficient:
         nDMaterial('ElasticIsotropic', 2000, E, nu, rho)
 
         soilLength = 10 #m
-        soilwidth = 1.0
+        soilwidth = 10.0
         nx = int(soilwidth/0.125)
         ny = 80
         e1 = 1
@@ -815,32 +820,32 @@ for akz in a_cofficient:
         # ------ Traction dashpot element: Vp with y dir
         element('zeroLength',RT_Rayele, RTDash_Raly+1, RTDash_Raly, '-mat',4011,'-dir',ydir)  # node 8: Right side
 
-        #=========================== Load Pattern 1: Shear wave / P wave ============================
-        # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
-        timeSeries('Path',702, '-filePath', f'TimeSeries/fs200_{ny}row.txt','-dt', dt)
-        # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
-        # # # # timeSeries('Linear',705)
+        # #=========================== Load Pattern 1: Shear wave / P wave ============================
+        # # timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+        # timeSeries('Path',702, '-filePath', f'TimeSeries/fs200_{ny}row.txt','-dt', dt)
+        # # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
+        # # # # # timeSeries('Linear',705)
 
-        pattern('Plain',703, 702)
-        # load(95,0,-1)
-        # ------------- P wave -----------------------------
+        # pattern('Plain',703, 702)
+        # # load(95,0,-1)
+        # # ------------- P wave -----------------------------
+        # # for o in range(nx):
+        # #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',20,0)
+
+        # # ------------- S wave -----------------------------
         # for o in range(nx):
-        #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',20,0)
+        #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',0,20,0)
 
-        # ------------- S wave -----------------------------
-        for o in range(nx):
-            eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',0,20,0)
+        # ===================== Load Pattern 2: TopForce on the top Middle Point ======================
+        tnscp = soilLength/Vp # wave transport time
+        dcellcp = tnscp/ny #each cell time
+        cpdt = round(dcellcp/10, 7) #eace cell have 10 steps
+        print(f"tnscp = {tnscp}; dcellcp= {dcellcp}, cp_dt = {cpdt}")
 
-        # # ===================== Load Pattern 2: TopForce on the top Middle Point ======================
-        # tnscp = soilLength/Vp # wave transport time
-        # dcellcp = tnscp/ny #each cell time
-        # cpdt = round(dcellcp/10, 7) #eace cell have 10 steps
-        # print(f"tnscp = {tnscp}; dcellcp= {dcellcp}, cp_dt = {cpdt}")
-
-        # timeSeries('Path',704, '-filePath',f'TimeSeries/TopForce{ny}row.txt','-dt', cpdt)
-        # pattern('Plain',703, 704)
-        # load(UpperN_Center,0,-1)
-        # print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
+        timeSeries('Path',704, '-filePath',f'TimeSeries/TopForce{ny}row.txt','-dt', cpdt)
+        pattern('Plain',703, 704)
+        load(UpperN_Center,0,-1)
+        print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
 
         # # -------------- Recorder --------------------------------
@@ -956,3 +961,4 @@ for akz in a_cofficient:
         # --------- end to calculate time -------------
         end = time.time()
         print(end - start)
+print('Finish all Rayleigh Cofficient Compare')
