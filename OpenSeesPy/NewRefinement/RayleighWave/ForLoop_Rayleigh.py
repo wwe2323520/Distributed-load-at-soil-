@@ -9,10 +9,9 @@ import time
 import os 
 import numpy as np
 from openseespy.opensees import *
-# a = np.arange(0, 2.2, 0.2)
-# b = np.arange(0, 2.2, 0.2)
-a_cofficient = np.array([0.0 ,0.2])
-b_cofficient = np.array([0.0])
+a_cofficient = np.arange(0, 2.2, 0.2)
+b_cofficient = np.arange(0, 2.2, 0.2)
+
 Boundary = 'Tie'
 for akz in a_cofficient:
     for bkz in b_cofficient:        
