@@ -255,6 +255,24 @@ ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax5.yaxis.get_offset_text().set(size=18)
 
+# ------------ Quarter Node Velocity ----------------------
+plt.figure(figsize=(10,8))
+plt.rcParams["figure.figsize"] = (12, 8)
+plt.title("Quarter Node Velocity", fontsize = 18)
+plt.xlabel("time t (s)",fontsize=18)
+plt.ylabel(r'Velocity $(m/s)$', fontsize = 18)
+
+# plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
+# plt.plot(vel2[:,0], vel2[:,plt_axis2], label= label2,marker='x', markevery=100)
+plt.plot(vel6541[:,0], vel6541[:,plt_axis2], label= "vel6541")
+
+
+plt.legend(loc='upper right',fontsize=18)
+plt.xlim(0,0.2)
+plt.xticks(fontsize = 15)
+plt.yticks(fontsize = 15)
+plt.grid(True)   
+
 # # -------------Dashpot Velocity -----------------
 # draw_Vel("Left Dashpot Velocity",dash1650,dash1750,dash1848,"dash1650","dash1750","dash1848")
 # ax7 = plt.gca()
