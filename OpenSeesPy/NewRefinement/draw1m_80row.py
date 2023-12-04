@@ -159,15 +159,14 @@ def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
 def draw_Vel(title_name,vel1,vel2,vel3,label1,label2,label3):
     plt.figure(figsize=(10,8))
     plt.rcParams["figure.figsize"] = (12, 8)
-    plt.title(title_name, fontsize = 18)
-    plt.xlabel("time (s)",fontsize=18)
-    plt.ylabel(r'Velocity $(m/s)$', fontsize = 18)
+    plt.title(title_name, fontsize = 20)
+    plt.xlabel(r"$\mathrm {time}$ ${t}$  $(10^{-1}\,s)$",fontsize=18)
+    plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 18)
     
-    # plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
-    # plt.plot(vel2[:,0], vel2[:,plt_axis2], label= label2,marker='x', markevery=100)
+    plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
+    plt.plot(vel2[:,0], vel2[:,plt_axis2], label= label2,marker='x', markevery=100)
     plt.plot(vel3[:,0], vel3[:,plt_axis2], label= label3)
-    
-    
+          
     plt.legend(loc='upper right',fontsize=18)
     plt.xlim(0,0.2)
     plt.xticks(fontsize = 15)
@@ -207,13 +206,13 @@ def draw_structure_vel(title_name,vel1,vel2,vel3,vel4,label1,label2,label3,label
     plt.yticks(fontsize = 15)
     plt.grid(True)   
 
-plt_axis1 = 2  # Stress yaxis   
-plt_axis2 = 2  # Velocity yaxis
+plt_axis1 = 3  # Stress yaxis   
+plt_axis2 = 1  # Velocity yaxis
 
 # plt_axis3 = 1  # Structure Stress
 # plt_axis4 = 1  # Structure Vel
 # # ============== Left/Right/Center Stress =======================
-# x_axis = 0.05
+x_axis = 0.05
 # draw_stress("Left side stress",ele1,ele321,ele633,"ele1","ele321","ele633")
 # ax1 = plt.gca()
 # ax1.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
@@ -237,21 +236,21 @@ plt_axis2 = 2  # Velocity yaxis
 # ax2.yaxis.get_offset_text().set(size=18)
 
 
-x_axis = 0.0267
+# x_axis = 0.0267
 # ============== Left/Right/Center Velocity =======================
-draw_Vel("Left side Velocity",vel1,vel361,vel721,"vel1","vel361","vel721")
+draw_Vel("Left side Velocity",vel1,vel361,vel721,"Bot velocity","Center velocity","Top velocity")
 ax4 = plt.gca()
 ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax4.yaxis.get_offset_text().set(size=18)
 
-draw_Vel("Center side Velocity",vel5,vel365,vel725,"vel5","vel365","vel725")
+draw_Vel("Center side Velocity",vel5,vel365,vel725,"Bot velocity","Center velocity","Top velocity")
 ax6 = plt.gca()
 ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax6.yaxis.get_offset_text().set(size=18)
 
-draw_Vel("Right side Velocity",vel9,vel369,vel729,"vel9","vel369","vel729")
+draw_Vel("Right side Velocity",vel9,vel369,vel729,"Bot velocity","Center velocity","Top velocity")
 ax5 = plt.gca()
 ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
