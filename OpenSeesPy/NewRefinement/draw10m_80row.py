@@ -237,19 +237,19 @@ ax2.yaxis.get_offset_text().set(size=18)
 
 
 # ============== Left/Right/Center Velocity =======================
-draw_Vel("Left side Velocity",vel1,vel3241,vel6481,"vel1","vel3241","vel6481")
+draw_Vel("Left side Velocity",vel1,vel3241,vel6481,"Bot velocity","Center velocity","Top velocity")
 ax4 = plt.gca()
 ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax4.yaxis.get_offset_text().set(size=18)
 
-draw_Vel("Center side Velocity",vel41,vel3281,vel6521,"vel41","vel3281","vel6521")
+draw_Vel("Center side Velocity",vel41,vel3281,vel6521,"Bot velocity","Center velocity","Top velocity")
 ax6 = plt.gca()
 ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
 ax6.yaxis.get_offset_text().set(size=18)
 
-draw_Vel("Right side Velocity",vel81,vel3321,vel6561,"vel81","vel3321","vel6561")
+draw_Vel("Right side Velocity",vel81,vel3321,vel6561,"Bot velocity","Center velocity","Top velocity")
 ax5 = plt.gca()
 ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
 ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
