@@ -45,7 +45,7 @@ print(f"SoilEnd = {SoilNode_End}; SoilEle_End = {SoilEle_End}")
 Vp = 374.166    # m/s 
 Vs = 200     ;# m/s 
 
-yMesh = soilLength/ny # Y row MeshSize
+yMesh = soilLength/ny # Y row MeshSize = Δc
 dcell = yMesh / Vs 
 dt = dcell/10.0
 print(f"Swave travel each ele = {dcell} ;dt = {dt}, yMesh= {yMesh}")
@@ -344,34 +344,34 @@ for w in range(1,ny): #1,ny
 #----------- Right side Traction Dashpot: (ele 140 ~ 150) ----------  -> Sms
     element('zeroLength',RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
     # print(RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w)
-# print("Finished creating Side dashpot material and element...")
+# # print("Finished creating Side dashpot material and element...")
 
-# # ================ NewBC: for Case A/B============================
-# # ==================== Side Beam node (233~243 / 244~254) ====================
-# LsideNode = RSideTDash_Start + 2*(ny+1)
-# RsideNode = LsideNode + (ny+1)
-# LsideEle = RsideTEle_End + 1 
-# RsideEle = LsideEle + ny
+# ================ NewBC: for Case A/B============================
+# ==================== Side Beam node (233~243 / 244~254) ====================
+LsideNode = RSideTDash_Start + 2*(ny+1)
+RsideNode = LsideNode + (ny+1)
+LsideEle = RsideTEle_End + 1 
+RsideEle = LsideEle + ny
 
-# for i in range(ny+1):
-# # ----- Left Side: 233~243 -----------------
-#     node(LsideNode+i, 0.0, yMesh*i)
-#     fix(LsideNode+i,0,0,1)
-# # ----- Right Side: 244~254 -----------------
-#     node(RsideNode+i, soilwidth ,yMesh*i)
-#     fix(RsideNode+i,0,0,1)
+for i in range(ny+1):
+# ----- Left Side: 233~243 -----------------
+    node(LsideNode+i, 0.0, yMesh*i)
+    fix(LsideNode+i,0,0,1)
+# ----- Right Side: 244~254 -----------------
+    node(RsideNode+i, soilwidth ,yMesh*i)
+    fix(RsideNode+i,0,0,1)
 
-# # # ------------  Beam Element: 151 ~ 160 / 161 ~ 170 ------------------
-# # for j in range(ny):
-# # # ----- Left Side Beam:151 ~ 160 -----------------
-# #     element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
-# # # ----- Right Side Beam:161 ~ 170 -----------------
-# #     element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+# ------------  Beam Element: 151 ~ 160 / 161 ~ 170 ------------------
+for j in range(ny):
+# ----- Left Side Beam:151 ~ 160 -----------------
+    element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+# ----- Right Side Beam:161 ~ 170 -----------------
+    element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
 
-# # --------- Side Beam and Soil BC -----------------
-# for j in range(ny+1):d
-#     equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
-#     equalDOF((nx+1)+(nx+1)*j,RsideNoe+j,1,2)
+# --------- Side Beam and Soil BC -----------------
+for j in range(ny+1):
+    equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
+    equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
 
 # ============================== S wave ======================================
 # ========================= "CaseA": SideLoad Pattern ===================================
@@ -403,9 +403,9 @@ for w in range(1,ny): #1,ny
 #     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
 
 # ========================= "Case B": Side Node Dashpot ===================================
-LsideNode = 1
-RsideNode = 9
-
+# LsideNode = 1
+# RsideNode = 9
+P0 = 20  
 # ------------ Side Nodal Load Pattern ------------------------------
 xTimeSeriesID = 800
 xPatternID = 804
@@ -413,17 +413,17 @@ xPatternID = 804
 timeSeries('Path',xTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowx/node{1}.txt','-dt',dt)
 pattern('Plain',xPatternID, xTimeSeriesID)
 # ---- NodeForce at Left Side Corner -----
-load(LsideNode, 1.25, 0) # 20*yMesh*0.5, 0,0
+load(LsideNode, P0*yMesh*0.5, 0, 0) # 20*yMesh*0.5, 0,0
 # ---- NodeForce at Right Side Corner -----
-load(RsideNode, 1.25, 0) # 20*yMesh*0.5, 0,0
+load(RsideNode, P0*yMesh*0.5, 0, 0) # 20*yMesh*0.5, 0,0
 # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowx/node{1}.txt')
 
 timeSeries('Path',xTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowx/node{ny+1}.txt','-dt',dt)
 pattern('Plain',xPatternID+ny, xTimeSeriesID+ny)
 # ---- NodeForce at Left Side Corner (# FOR Beam INPUT NODE)-----
-load(LsideNode+9*ny, 1.25,0) # load(LsideNode+ny, 1.25,0,0) /20*yMesh*0.5, 0,0
+load(LsideNode+ny, P0*yMesh*0.5,0, 0) # load(LsideNode+ny, 1.25,0,0) /20*yMesh*0.5, 0,0
 # ---- NodeForce at Right Side Corner -----
-load(RsideNode+9*ny, 1.25,0) # load(RsideNode+ny, 1.25,0,0) /20*yMesh*0.5, 0,0
+load(RsideNode+ny, P0*yMesh*0.5,0, 0) # load(RsideNode+ny, 1.25,0,0) /20*yMesh*0.5, 0,0
 
 # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowx/node{ny+1}.txt')
 
@@ -433,58 +433,55 @@ for g in range(1,ny):
     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
 # ---------- x direction : Sideforce ---------------------
 # ---------- NodeForce at Left Side Beam ----------------------
-    load(LsideNode+9*g, 1.25*2,0) # 20*yMesh*1.0, 0,0
+    load(LsideNode+g, P0*yMesh*0.5*2.0, 0, 0) # 20*yMesh*1.0, 0,0
 # ---------- NodeForce at Right Side Beam ----------------------
-    load(RsideNode+9*g, 1.25*2,0) # 20*yMesh*1.0, 0,0
+    load(RsideNode+g, P0*yMesh*0.5*2.0, 0, 0) # 20*yMesh*1.0, 0,0
     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowx/node{1+g}')
 # print("Nodalforce= ", 20*yMesh*0.5, 20*yMesh*1 )
 
-# ------------------ SideForce Nodal Load: Py ---------------------------------
-yTimeSeriesID = xTimeSeriesID + (ny+1)
-yPatternID  = xPatternID + (ny+1)
-
-timeSeries('Path',yTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowy/node{1}.txt','-dt',dt)
-pattern('Plain',yPatternID, yTimeSeriesID)
-# ---- NodeForce at Left Side Corner -----
-load(LsideNode, 0, 1.25) # 0, +20*yMesh*0.5,0
-# ---- NodeForce at Right Side Corner -----
-load(RsideNode, 0, -1.25)
-# print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
-
-timeSeries('Path',yTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt',dt)
-pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
-# ---- NodeForce at Left Side Corner -----
-load(LsideNode+9*ny, 0, 1.25) #load(LsideNode+ny, 0, 1.25,0)
-# ---- NodeForce at Right Side Corner -----
-load(RsideNode+9*ny, 0, -1.25) #load(LsideNode+ny, 0, 1.25,0)
-
-
-# print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowy/node{ny+1}.txt')
-
-for g in range(1,ny):
-# ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
-    timeSeries('Path',yTimeSeriesID+g, '-filePath',f'S_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', dt)
-    pattern('Plain',yPatternID+g, yTimeSeriesID+g)
-# ---------- x direction : Sideforce ---------------------
-# ---------- NodeForce at Left Side Beam ----------------------
-    load(LsideNode+9*g, 0, 1.25*2)
-# ---------- NodeForce at Right Side Beam ----------------------
-    load(RsideNode+9*g, 0, -1.25*2) #-20*yMesh*1.0
-#     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
-
-# # ------------------ SideForce Distributed Load: Wy ---------------------------------
+# # ------------------ SideForce Nodal Load: Py ---------------------------------
 # yTimeSeriesID = xTimeSeriesID + (ny+1)
 # yPatternID  = xPatternID + (ny+1)
-# for g in range(ny):
-# # ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
-# # ---------- y direction : Sideforce --------------------
-#     timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowy/ele{1+g}.txt','-dt', dt)
+
+# timeSeries('Path',yTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowy/node{1}.txt','-dt',dt)
+# pattern('Plain',yPatternID, yTimeSeriesID)
+# # ---- NodeForce at Left Side Corner -----
+# load(LsideNode, 0, P0*yMesh*0.5, 0) # 0, +20*yMesh*0.5,0
+# # ---- NodeForce at Right Side Corner -----
+# load(RsideNode, 0, -P0*yMesh*0.5, 0)
+# # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
+
+# timeSeries('Path',yTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt',dt)
+# pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
+# # ---- NodeForce at Left Side Corner -----
+# load(LsideNode+ny, 0, P0*yMesh*0.5, 0) #load(LsideNode+ny, 0, 1.25,0)
+# # ---- NodeForce at Right Side Corner -----
+# load(RsideNode+ny, 0, -P0*yMesh*0.5, 0) #load(LsideNode+ny, 0, 1.25,0)
+
+# for g in range(1,ny):
+# # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
+#     timeSeries('Path',yTimeSeriesID+g, '-filePath',f'S_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', dt)
 #     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
-# # ---------- For P wave : y direction ---------------------
-# # ---------- Distributed at Left Side Beam ----------------------
-#     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
-# # ---------- Distributed at Right Side Beam ----------------------
-#     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
+# # ---------- x direction : Sideforce ---------------------
+# # ---------- NodeForce at Left Side Beam ----------------------
+#     load(LsideNode+g, 0, P0*yMesh*0.5*2.0, 0)
+# # ---------- NodeForce at Right Side Beam ----------------------
+#     load(RsideNode+g, 0, -P0*yMesh*0.5*2.0, 0) #-20*yMesh*1.0
+# #     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
+
+# ------------------ SideForce Distributed Load: Wy ---------------------------------
+yTimeSeriesID = xTimeSeriesID + (ny+1)
+yPatternID  = xPatternID + (ny+1)
+for g in range(ny):
+# ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
+# ---------- y direction : Sideforce --------------------
+    timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowy/ele{1+g}.txt','-dt', dt)
+    pattern('Plain',yPatternID+g, yTimeSeriesID+g)
+# ---------- For P wave : y direction ---------------------
+# ---------- Distributed at Left Side Beam ----------------------
+    eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
+# ---------- Distributed at Right Side Beam ----------------------
+    eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
 
 #     print(LsideEle+g, RsideEle+g,"finish SideBeam Force InputFile Apply")
 
