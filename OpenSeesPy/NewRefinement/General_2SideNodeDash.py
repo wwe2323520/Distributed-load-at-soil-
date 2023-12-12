@@ -405,21 +405,21 @@ for j in range(ny+1):
 # ------------ Side Nodal Load Pattern ------------------------------
 xTimeSeriesID = 800
 xPatternID = 804
-
+P0 = 20
 timeSeries('Path',xTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowx/node{1}.txt','-dt',dt)
 pattern('Plain',xPatternID, xTimeSeriesID)
 # ---- NodeForce at Left Side Corner -----
-load(LsideNode, 20*yMesh*0.5,0,0) # 10,0,0
+load(LsideNode, P0*yMesh*0.5,0,0) # 10,0,0
 # ---- NodeForce at Right Side Corner -----
-load(RsideNode, 20*yMesh*0.5,0,0)
+load(RsideNode, P0*yMesh*0.5,0,0)
 # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowx/node{1}.txt')
 
 timeSeries('Path',xTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowx/node{ny+1}.txt','-dt',dt)
 pattern('Plain',xPatternID+ny, xTimeSeriesID+ny)
 # ---- NodeForce at Left Side Corner -----
-load(LsideNode+ny, 20*yMesh*0.5,0,0)
+load(LsideNode+ny, P0*yMesh*0.5,0,0)
 # ---- NodeForce at Right Side Corner -----
-load(RsideNode+ny, 20*yMesh*0.5,0,0)
+load(RsideNode+ny, P0*yMesh*0.5,0,0)
 # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowx/node{ny+1}.txt')
 
 for g in range(1,ny):
@@ -428,9 +428,9 @@ for g in range(1,ny):
     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
 # # ---------- x direction : Sideforce ---------------------
 # ---------- NodeForce at Left Side Beam ----------------------
-    load(LsideNode+g, 20*yMesh*1,0,0)
+    load(LsideNode+g, P0*yMesh*0.5*2.0,0,0)
 # ---------- NodeForce at Right Side Beam ----------------------
-    load(RsideNode+g, 20*yMesh*1,0,0)
+    load(RsideNode+g, P0*yMesh*0.5*2.0,0,0)
     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowx/node{1+g}')
 # print("Nodalforce= ", 20*yMesh*0.5, 20*yMesh*1 )
 
@@ -441,17 +441,17 @@ yPatternID  = xPatternID + (ny+1)
 timeSeries('Path',yTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowy/node{1}.txt','-dt',dt)
 pattern('Plain',yPatternID, yTimeSeriesID)
 # ---- NodeForce at Left Side Corner -----
-load(LsideNode, 0, +20*yMesh*0.5,0) # 10,0,0
+load(LsideNode, 0, +P0*yMesh*0.5,0) # 10,0,0
 # ---- NodeForce at Right Side Corner -----
-load(RsideNode, 0, -20*yMesh*0.5,0)
+load(RsideNode, 0, -P0*yMesh*0.5,0)
 # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
 
 timeSeries('Path',yTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt',dt)
 pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
 # ---- NodeForce at Left Side Corner -----
-load(LsideNode+ny, 0, +20*yMesh*0.5,0)
+load(LsideNode+ny, 0, +P0*yMesh*0.5,0)
 # ---- NodeForce at Right Side Corner -----
-load(RsideNode+ny, 0, -20*yMesh*0.5,0)
+load(RsideNode+ny, 0, -P0*yMesh*0.5,0)
 # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowy/node{ny+1}.txt')
 
 for g in range(1,ny):
@@ -460,9 +460,9 @@ for g in range(1,ny):
     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
 # # ---------- x direction : Sideforce ---------------------
 # ---------- NodeForce at Left Side Beam ----------------------
-    load(LsideNode+g, 0, +20*yMesh,0)
+    load(LsideNode+g, 0, +P0*yMesh*0.5*2.0,0)
 # ---------- NodeForce at Right Side Beam ----------------------
-    load(RsideNode+g, 0, -20*yMesh,0)
+    load(RsideNode+g, 0, -P0*yMesh*0.5*2.0,0)
     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
 
 # # ------------------ SideForce Distributed Load: Wy ---------------------------------
