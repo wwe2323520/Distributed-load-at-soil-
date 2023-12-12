@@ -1,313 +1,233 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun 28 17:16:40 2023
+Created on Sat Dec  9 15:21:58 2023
 
 @author: User
 """
-import pandas as pd
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-plt.rc('font', family= 'Times New Roman')
+import os
+pi = np.pi
 
-#------------- Read file ---------------------
-def rdnumpy(textname):
-    f = open(textname)
-    line = f.readlines()
-    lines = len(line)
-    for l in line:
-        le = l.strip('\n').split(' ')
-        columns = len(le)
+# Soil_10row= 10 # dt= 5e-4       #cpdt = 2.67e-4
+# Soil_20row= 20 # dt= 2.5e-4     #cpdt = 1.33e-4
+# Soil_40row= 40 # dt= 1.25e-4    #cpdt = 6.68e-05
+# Soil_80row= 80 # dt= 6.25e-05   #cpdt = 3.34e-05
+# Soil_100row= 100 # dt= 6.25e-05   #cpdt = 3.34e-05
+
+wave_Choose = 'Swave'
+Nele = 80 # Soil_80row
+End_Ele = Nele-1
+Nnode = Nele + 1
+
+# --------------------------- Give S wave Velocity to Calculate P wave Velocity ----------------------------
+cs = 200 # m/s
+Soil_Depth = 10 # m(Soil_Depth)
+nu = 0.3  #  0.3 -> (epsilon_z /=0)
+rho = 2000 # kg/m3 
+G = (cs*cs)*rho  # N/m^2 = Kg/(m*s^2)
+E =  G*2*(1+nu)  # N/m^2 = Kg/(m*s^2)
+cp = (E*(1-nu)/((1+nu)*(1-2*nu)*rho))**(0.5)
+
+# -------- calaulate wave parameter: P wave and S wave ---------------------------
+fcs = cs / Soil_Depth
+Ts = 1/ fcs
+ws = 2*pi/ Ts
+
+fcp = cp / Soil_Depth
+Tp = 1/ fcp
+wp = 2*pi/ Tp
+
+# --------------------------- Soil Parameter ---------------------------
+A = 0.1 # 0.1
+w =  pi/5 # 0 to 10 = 0 to 2*pi => x = pi/5
+
+DW = 0.125 # x Column Mesh Size (m)
+DC = 0.125 # y Roe Mesh Size (m)
+
+# =========== For 2-D, decide by the wave transmit direction to use x or y ======================
+# ====================== wave transmit with time (t) and space (x or y) ======================
+def Incoming_Wave(x,y,t):
+    return np.sin(w*(x+y-cs*t))
+
+def OutGoing_Wave(x,y,t):
+    return np.sin(w*(x+y+cs*t))
+
+# ============= Calculate wave Transmit TimeStep ===============================
+if wave_Choose in ['Swave']:
+    wave_Vel = cs
+    tns = Soil_Depth/(wave_Vel) # wave transport time
+    dcell = tns/Nele #each cell time
+    dt = dcell/10 #eace cell have 10 steps
+    print(f"wave travel = {tns} ;dcell = {dcell} ;dt = {dt}")
     
-    A = np.zeros((lines, columns), dtype = float)
-    A_row = 0
+elif wave_Choose in ['Pwave']:
+    wave_Vel = cp
+    tns = Soil_Depth/(wave_Vel) # wave transport time
+    dcell = tns/Nele #each cell time
+    dt = dcell/10 #eace cell have 10 steps
+    print(f"wave travel = {tns} ;dcell = {dcell} ;dt = {dt}")
     
-    for lin in line:
-        list = lin.strip('\n').split(' ')
-        A[A_row:] = list[0:columns]
-        A_row += 1
-    return A
-
-#----------------------------- Left column file -----------------------------------
-file1 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele1.out"
-file2 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele321.out"
-file3 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele633.out"
-
-file4 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1.out"
-file5 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node361.out"
-file6 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node721.out"
-
-#----------------------------- Center column file -----------------------------------
-file7 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele5.out"
-file8 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele325.out"
-file9 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele637.out"
-
-file10 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node5.out"
-file11 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node365.out"
-file12 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node725.out"
-
-#----------------------------- Right column file -----------------------------------
-file13 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele8.out"
-file14 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele328.out"
-file15 = r"D:\shiang\opensees\20220330\OpenSeesPy\Stress\ele640.out"
-
-file16 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node9.out"
-file17 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node369.out"
-file18 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node729.out"
-
-file19 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node727.out"
-# # ------------Side Velocity -------------------
-# file19 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1649.out"
-# file20 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1749.out"
-# file21 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1849.out"
-
-# file22 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1650.out"
-# file23 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1750.out"
-# file24 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1848.out"
-
-# file25 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1850.out"
-# file26 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1950.out"
-# file27 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node2050.out"
-
-# file28 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1851.out"
-# file29 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node1951.out"
-# file30 = r"D:\shiang\opensees\20220330\OpenSeesPy\Velocity\node2049.out"
-
-
-#----------------------------- Structure file -----------------------------------
-# file19 = r"D:\shiang\opensees\20220330\extend_soil\stress\Column1_stress.out"
-# file20 = r"D:\shiang\opensees\20220330\extend_soil\stress\Column2_stress.out"
-# file21 = r"D:\shiang\opensees\20220330\extend_soil\stress\Beam_stress.out"
-
-# file22 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1030_vel.out"
-# file23 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1031_vel.out"
-# file24 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1032_vel.out"
-# file25 = r"D:\shiang\opensees\20220330\extend_soil\velocity\node1033_vel.out"
-#----------------------------- Left column file -----------------------------------
-ele1 = rdnumpy(file1)
-ele321 = rdnumpy(file2)
-ele633 = rdnumpy(file3)
-
-vel1 = rdnumpy(file4)
-vel361 = rdnumpy(file5)
-vel721 = rdnumpy(file6)
-#----------------------------- Center column file -----------------------------------
-ele5 = rdnumpy(file7)
-ele325 = rdnumpy(file8)
-ele637 = rdnumpy(file9)
-
-vel5 = rdnumpy(file10)
-vel365 = rdnumpy(file11)
-vel725 = rdnumpy(file12)
-#----------------------------- Right column file -----------------------------------
-ele8 = rdnumpy(file13)
-ele328 = rdnumpy(file14)
-ele640 = rdnumpy(file15)
-
-vel9 = rdnumpy(file16)
-vel369 = rdnumpy(file17)
-vel729 = rdnumpy(file18)
-
-vel727 = rdnumpy(file19)
-# # -------------------- Side dash Velocity ----------------
-# dash1650 = rdnumpy(file22)
-# dash1750 = rdnumpy(file23)
-# dash1848 = rdnumpy(file24)
-
-# dash1851 = rdnumpy(file28)
-# dash1951 = rdnumpy(file29)
-# dash2049 = rdnumpy(file30)
-# # -------------------- Side Node Velocity ----------------
-# Side1649 = rdnumpy(file19)
-# Side1749 = rdnumpy(file20)
-# Side1849 = rdnumpy(file21)
-
-# Side1850 = rdnumpy(file25)
-# Side1950 = rdnumpy(file26)
-# Side2050 = rdnumpy(file27)
-# #----------------------------- Structure file -----------------------------------
-# col1 = rdnumpy(file19)
-# col2 = rdnumpy(file20)
-# Beam = rdnumpy(file21)
-
-# vel1030 = rdnumpy(file22)
-# vel1031 = rdnumpy(file23)
-# vel1032 = rdnumpy(file24)
-# vel1033 = rdnumpy(file25)
-
-# plt_axis1 = 2
-# x_axis = 0.5
-def draw_stress(title_name,ele1,ele2,ele3,label1,label2,label3):
-    plt.figure(figsize=(10,8))
-    plt.rcParams["figure.figsize"] = (12, 8)
-    plt.title(title_name, fontsize = 18)
-    plt.xlabel("time (s)",fontsize=18)
-    plt.ylabel(r'Stress $(N/m^2)$', fontsize = 18)
+dy = Soil_Depth/Nele # 1, 0.1
+dx= dy/10 # 0.1, 0.01 each element have 10 step dx
     
-    plt.plot(ele1[:,0], ele1[:,plt_axis1], label= label1,marker='o', markevery=100)
-    plt.plot(ele2[:,0], ele2[:,plt_axis1], label= label2,marker='x', markevery=100)
-    plt.plot(ele3[:,0], ele3[:,plt_axis1], label= label3)
+time = np.arange(0.0, 4*tns+dt, dt)  # 4*soilDepth TimeStep (each element have 10 step)
+y = cs*time  # 4*soilDepth dy
+x = 0.0
+
+# -------------------------- calculate eace step time ---------------------------
+def Give_me_Data(wave, x,y,time):
+    # --------------- LK Dashpot Cofficient -----------------------
+    eta_x = rho*cs 
+    eta_y = rho*cp
+    if wave in ['Swave']:
+        wave_Vel = cs
+        Condition = 'Swave'
+    elif wave in ['Pwave']:
+        wave_Vel = cp
+        Condition = 'Pwave'
+        
+    # ----------- Stress / Velocity----------------------
+    Impulse_Time = np.arange(0.0, Soil_Depth/wave_Vel, dt)
+    Distributed_Force = 20 #(N)
     
+    wave_Transport = np.zeros((len(time), Nnode))
+    Stress = np.zeros((len(time), Nnode))
     
-    plt.legend(loc='upper right',fontsize=18)
-    plt.xlim(0,0.4)
-    plt.xticks(fontsize = 15)
-    plt.yticks(fontsize = 15)
-    plt.grid(True)   
+    Out_Ele = Nele*10
     
-# plt_axis2 = 2
-def draw_Vel(title_name,vel1,vel2,vel3,label1,label2,label3):
-    plt.figure(figsize=(10,8))
-    plt.rcParams["figure.figsize"] = (12, 8)
-    plt.title(title_name, fontsize = 20)
-    plt.xlabel(r"$\mathrm {time}$ ${t}$  $(10^{-1}\,s)$",fontsize=18)
-    plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 18)
+    for i in range(Nnode): #Nnode
+        y_Incoming = y[10*i]
+        y_OutGoing = y[Out_Ele-10*i]
+        
+        x_Incoming = 0.0
+        x_OutGoing = 0.0
+        tNode = time[10*i]
+        
+        for t in range(len(time)):
+# ------------------ Incoming Wave Transport ------------------------------------
+            if time[t] < tns:
+                yin = y_Incoming + dx*t
+                wave_Transport[t+10*i,i] = wave_Transport[t+10*i,i] + np.sin(w*(x_Incoming + yin-cs*tNode))#Incoming_Wave(x_Incoming, yin, tNode)
+                Stress[t+10*i, i] = Stress[t+10*i, i] + np.sin(w*(x_Incoming + yin-cs*tNode)) # Incoming_Wave(x_Incoming, yin, tNode)
+
+# ------------------ Reflecting Wave Transport ------------------------------------    
+            if time[t] >= tns and time[t] < 2*tns:
+                yout = y_OutGoing + dx*(t-Out_Ele)
+                wave_Transport[t+10*i, Nele-i] =  wave_Transport[t+10*i, Nele-i] +  np.sin(w*(x_OutGoing + yout +cs*tNode)) #OutGoing_Wave(x_OutGoing, yout, tNode)
+                Stress[t+10*i, Nele-i] =  Stress[t+10*i, Nele-i] - np.sin(w*(x_OutGoing + yout + cs*tNode)) # OutGoing_Wave(x_OutGoing, yout, tNode)
     
-    plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
-    plt.plot(vel2[:,0], vel2[:,plt_axis2], label= label2,marker='x', markevery=100)
-    plt.plot(vel3[:,0], vel3[:,plt_axis2], label= label3)
-          
-    plt.legend(loc='upper right',fontsize=18)
-    plt.xlim(0,0.4)
-    plt.xticks(fontsize = 15)
-    plt.yticks(fontsize = 15)
-    plt.grid(True)   
-
-def draw_structure_stress(title_name,col1,col2,Beam,label1,label2,label3):
-    plt.figure()
-    plt.rcParams["figure.figsize"] = (12, 8)
-    plt.title(title_name, fontsize = 18)
-    plt.xlabel("tns",fontsize=18)
+    P0 = -Distributed_Force*DW #np.sin(ws*(Impulse_Time)) # Distributed Force * DW            
+    # ================ S Wave Input (Input File: sin(ws*t)=======================================
+    if Condition in ['Swave']:
+        Sxx = P0 / DW
+        Vx = -(1/eta_x)*Sxx
+        
+        Velocity_x = Vx*wave_Transport
+        Velocity_y = 0.0
+        # ------------ Side Boundary Stress -----------------    
+        Stress_xx = 0.0
+        Stress_yy = 0.0
+        Stress_xy = Sxx * Stress
+        #------------- Output TimeSeries ------------------------
+        SNodeforce_x = (cp/cs)*wave_Transport #cp*Velocity_x  #(cp/cs)*Stress
+        SNodeforce_y = Stress
+        
+    # # ================ P Wave Input (Input File: sin(wp*t)=======================================     
+    elif Condition in ['Pwave']:
+        Syy = P0/DW  
+        Vy = -(1/eta_y)*Syy
     
-    plt.plot(col1[:,0], col1[:,plt_axis3], label= label1,marker='o', markevery=100)
-    plt.plot(col2[:,0], col2[:,plt_axis3], label= label2,marker='x', markevery=100)
-    plt.plot(Beam[:,0], Beam[:,plt_axis3], label= label3)
+        Velocity_x = 0.0
+        Velocity_y = Vy*wave_Transport
+    # ------------ Side Boundary Stress -----------------
+        Stress_xx = Syy*Stress
+        Stress_yy = 0.0
+        Stress_xy = 0.0
+        #------------- Output TimeSeries ------------------------
+        SNodeforce_x = Stress
+        SNodeforce_y = (cs/cp)*Stress
     
-    plt.legend(loc='upper right',fontsize=18)
-    plt.xlim(0,0.8)
-    plt.xticks(fontsize = 15)
-    plt.yticks(fontsize = 15)
-    plt.grid(True)   
+    return(Velocity_x, Velocity_y, Stress_xx, Stress_yy, Stress_xy, eta_x, eta_y, SNodeforce_x, SNodeforce_y)
+
+Vx, Vy, Sxx, Syy, Sxy, Eta_x, Eta_y, SNodeforce_x, SNodeforce_y = Give_me_Data('Swave',x,y,time)
+
+# Vx, Vy, Sxx, Syy, Sxy, Ex, Ey, PNodeforce_x, PNodeforce_y = Give_me_Data('Swave',x,y,time)
+
+
+# # ---- Output matrix eace column to txt file --------------
+# num_rows, num_cols = SNodeforce_x.shape# 8001,100
+# # 建立資料夾
+# # ---------- Swave ---------------
+# S_folder_name_x = "S_Nodeforce_80rowX"
+
+# os.makedirs(S_folder_name_x, exist_ok=True)
+# for col in range(num_cols):
+#     column_values = SNodeforce_x[:, col]
+#     output_file = f"node{col + 1}.txt"
+#     with open(os.path.join(S_folder_name_x, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
+
+# # ---------- S wave NodalForce Wy---------------
+# S_folder_name_y = "S_Nodeforce_80rowy" # NodalForce
+# os.makedirs(S_folder_name_y, exist_ok=True)
+# for col in range(num_cols):
+#     column_values = SNodeforce_y[:, col]
+#     output_file = f"node{col + 1}.txt"
+#     with open(os.path.join(S_folder_name_y, output_file), 'w') as f:
+#         for value in column_values:
+#             f.write(f"{value}\n")
+
+
+
+# draw('Wave Transport in space', wave_Transport, y)
+# plt.plot(Impulse_Time[:], P0[:])
+# plt.plot(Impulse_Time[:], Sxx[:]) # -20 ~ 20
+x_axis = 0.025
+def draw(titlename,ylabel, wave_Transport,y):
+    plt.figure(figsize= (8,6))
+    plt.title(titlename, fontsize = 20)
     
-def draw_structure_vel(title_name,vel1,vel2,vel3,vel4,label1,label2,label3,label4):
-    plt.figure()
-    plt.rcParams["figure.figsize"] = (12, 8)
-    plt.title(title_name, fontsize = 18)
-    plt.xlabel("tns",fontsize=18)
+    plt.xlabel('time t (s)', fontsize = 20)
+    # plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 20)
+    plt.ylabel(ylabel, fontsize = 20)
+        
+    plt.plot(y[:], wave_Transport[:,0], label = 'Bottom Node')
+    plt.plot(y[:], wave_Transport[:,40], label = 'Center Node')
+    plt.plot(y[:], wave_Transport[:,80], label = 'Top Node')
+    # plt.ylim(0.0, SoilDepth)
+    # plt.xlim(0,3*Soil_Depth) # For Space
+    plt.xlim(0,0.16) # For time
     
-    plt.plot(vel1[:,0], vel1[:,plt_axis4], label= label1,marker='o', markevery=100)
-    plt.plot(vel2[:,0], vel2[:,plt_axis4], label= label2,marker='x', markevery=100)
-    plt.plot(vel3[:,0], vel3[:,plt_axis4], label= label3,marker='d', markevery=100)
-    plt.plot(vel4[:,0], vel4[:,plt_axis4], label= label4)
+    plt.legend(loc='upper right',fontsize=16)
+    plt.xticks(fontsize = 16)
+    plt.yticks(fontsize = 16)
+    plt.grid(True)
     
-    plt.legend(loc='upper right',fontsize=18)
-    plt.xlim(0,0.8)
-    plt.xticks(fontsize = 15)
-    plt.yticks(fontsize = 15)
-    plt.grid(True)   
+    ax1 = plt.gca()
+    ax1.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
+    ax1.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+    ax1.yaxis.get_offset_text().set(size=18)
+                
+# ---------- S wave plot ------------------
+draw('Velocity TimeSeries', r"$v_{xx}$ $\mathrm {(m/s)}$",Vx, time)
+draw(r"$\sigma_{xx}$ $\mathrm {TimeSeries}$", r"$\sigma_{xy}$ $\mathrm {(N/m)}$", Sxy, time)
+# ------------ Output x、y direction TimeSeries plot ---------------------
+draw('Node TimeSeries: X direction', 'SNode_x TimeSeries',SNodeforce_x, time)
+draw('Node TimeSeries: Y direction', 'SNode_y TimeSeries',SNodeforce_y, time)
 
-plt_axis1 = 3  # Stress yaxis   
-plt_axis2 = 1  # Velocity yaxis
-
-# plt_axis3 = 1  # Structure Stress
-# plt_axis4 = 1  # Structure Vel
-# # ============== Left/Right/Center Stress =======================
-x_axis = 0.05
-draw_stress("Left side stress",ele1,ele321,ele633,"ele1","ele321","ele633")
-ax1 = plt.gca()
-ax1.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax1.yaxis.set_major_locator(ticker.MultipleLocator(1))
-ax1.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax1.yaxis.get_offset_text().set(size=18)
-
-draw_stress("Center side stress",ele5,ele325,ele637,"ele5","ele325","ele637")
-ax3 = plt.gca()
-ax3.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax3.yaxis.set_major_locator(ticker.MultipleLocator(1))
-ax3.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax3.yaxis.get_offset_text().set(size=18)
+# # ---------- P wave plot ------------------
+# draw('Velocity TimeSeries', r"$v_{yy}$ $\mathrm {(m/s)}$",Vy, time)
+# draw(r"$\sigma_{xx}$ $\mathrm {TimeSeries}$", r"$\sigma_{xx}$ $\mathrm {(N/m)}$", Sxx, time)
+# # ------------ Output x、y direction TimeSeries plot ---------------------
+# draw('Node TimeSeries: X direction', 'PNode_x TimeSeries',PNodeforce_x, time)
+# draw('Node TimeSeries: Y direction', 'PNode_y TimeSeries',PNodeforce_y, time)
 
 
-draw_stress("Right side stress",ele8,ele328,ele640,"ele8","ele328","ele640")
-ax2 = plt.gca()
-ax2.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax2.yaxis.set_major_locator(ticker.MultipleLocator(1))
-ax2.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax2.yaxis.get_offset_text().set(size=18)
 
 
-# x_axis = 0.0267
-# ============== Left/Right/Center Velocity =======================
-draw_Vel("Left side Velocity",vel1,vel361,vel721,"Bot velocity","Center velocity","Top velocity")
-ax4 = plt.gca()
-ax4.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax4.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax4.yaxis.get_offset_text().set(size=18)
-
-draw_Vel("Center side Velocity",vel5,vel365,vel725,"Bot velocity","Center velocity","Top velocity")
-ax6 = plt.gca()
-ax6.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax6.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax6.yaxis.get_offset_text().set(size=18)
-
-draw_Vel("Right side Velocity",vel9,vel369,vel729,"Bot velocity","Center velocity","Top velocity")
-ax5 = plt.gca()
-ax5.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-ax5.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-ax5.yaxis.get_offset_text().set(size=18)
-
-# ------------ Quarter Node Velocity ----------------------
-plt.figure(figsize=(10,8))
-plt.rcParams["figure.figsize"] = (12, 8)
-plt.title("Quarter Node Velocity", fontsize = 18)
-plt.xlabel("time t (s)",fontsize=18)
-plt.ylabel(r'Velocity $(m/s)$', fontsize = 18)
-
-# plt.plot(vel1[:,0], vel1[:,plt_axis2], label= label1,marker='o', markevery=100)
-# plt.plot(vel2[:,0], vel2[:,plt_axis2], label= label2,marker='x', markevery=100)
-plt.plot(vel727[:,0], vel727[:,plt_axis2], label= "vel727")
 
 
-plt.legend(loc='upper right',fontsize=18)
-plt.xlim(0,0.4)
-plt.xticks(fontsize = 15)
-plt.yticks(fontsize = 15)
-plt.grid(True)   
-# # -------------Dashpot Velocity -----------------
-# draw_Vel("Left Dashpot Velocity",dash1650,dash1750,dash1848,"dash1650","dash1750","dash1848")
-# ax7 = plt.gca()
-# ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax7.yaxis.get_offset_text().set(size=18)
-
-# draw_Vel("Right Dashpot Velocity",dash1851,dash1951,dash2049,"dash1851","dash1951","dash2049")
-# ax8 = plt.gca()
-# ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax8.yaxis.get_offset_text().set(size=18)
-
-# # -------------Side Velocity -----------------
-# draw_Vel("Left Beam Velocity",Side1649,Side1749,Side1849,"Side1649","Side1749","Side1849")
-# ax9 = plt.gca()
-# ax9.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax9.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax9.yaxis.get_offset_text().set(size=18)
-
-# draw_Vel("Right Beam Velocity",Side1850,Side1950,Side2050,"Side1850","Side1950","Side2050")
-# ax10 = plt.gca()
-# ax10.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax10.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax10.yaxis.get_offset_text().set(size=18)
-
-# # ============== Structure Stress =======================
-# draw_structure_stress("Structure Sterss",col1,col2,Beam,"Coluumn1","Coluumn2","Beam")
-# ax7 = plt.gca()
-# ax7.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax7.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax7.yaxis.get_offset_text().set(size=18)
-# # ============== Structure Velocity =======================
-# draw_structure_vel("Structure Velocity",vel1030,vel1031,vel1032,vel1033,"vel1030","vel1031","vel1032","vel1033")
-# ax8 = plt.gca()
-# ax8.xaxis.set_major_locator(ticker.MultipleLocator(x_axis))
-# ax8.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-# ax8.yaxis.get_offset_text().set(size=18)# -*- coding: utf-8 -*-
