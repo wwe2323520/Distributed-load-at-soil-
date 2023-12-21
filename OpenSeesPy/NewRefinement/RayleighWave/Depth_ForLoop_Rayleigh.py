@@ -807,10 +807,10 @@ for Apply_Depth in Depth:
             Dwidth = 0.125 # m
             DMeshSize = yMesh
 
-            Ray_Smp = 0.5*akz*rho*Vp*Dwidth         # upper Left and Right corner node dashpot :N (newton) 
-            Ray_Sms = 0.5*bkz*rho*Vs*DMeshSize      # upper Left and Right corner node dashpot :N (newton) 
-            Ray_Cmp = 0.5*akz*rho*Vp*Dwidth         # upper Left and Right corner node dashpot :N (newton) 1.0
-            Ray_Cms = 0.5*bkz*rho*Vs*DMeshSize      # upper Left and Right corner node dashpot :N (newton) 1.0
+            Ray_Smp = 0.5*akz*rho*Vp*DMeshSize         # upper Left and Right corner node dashpot :N (newton) rho*Vp*Dwidth
+            Ray_Sms = 0.5*bkz*rho*Vs*Dwidth      # upper Left and Right corner node dashpot :N (newton) rho*Vs*DMeshSize 
+            Ray_Cmp = 1.0*akz*rho*Vp*DMeshSize         # upper Left and Right corner node dashpot :N (newton) 1.0
+            Ray_Cms = 1.0*bkz*rho*Vs*Dwidth      # upper Left and Right corner node dashpot :N (newton) 1.0
 
             uniaxialMaterial('Viscous',4010, Ray_Smp, 1)    # P wave: Side node
             uniaxialMaterial('Viscous',4011, Ray_Sms, 1)    # S wave: Side node
