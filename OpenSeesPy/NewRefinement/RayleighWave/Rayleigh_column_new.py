@@ -189,7 +189,7 @@ for k in range(nx+1):
 # element('zeroLength',BotNEle_Start+1,(BotNDash_Start+1)+2*1,BotNDash_Start+2*1, '-mat',4000,'-dir',ydir)
 
 # ================== Apply Rayleigh Dashpot ============================= 
-alphaM = -(6/yMesh)*(Vp*(1-2*nu) + Vs*(2*nu-2)) #(6/yMesh)*(Vp*(1-2*nu) + Vs*(2*nu-2))
+alphaM = -(6/yMesh)*(Vp*(1-2*nu) + Vs*(2*nu-2))  #*1.5
 betaK = -(-4*yMesh)*((1+nu)*(1-2*nu)/E)*rho*(Vp-Vs) #-0.0008373317307692309
 betaKinit = 0.0
 betaKcomm = 0.0
