@@ -189,7 +189,7 @@ for k in range(nx+1):
 # element('zeroLength',BotNEle_Start+1,(BotNDash_Start+1)+2*1,BotNDash_Start+2*1, '-mat',4000,'-dir',ydir)
 
 # ================== Apply Rayleigh Dashpot ============================= 
-alphaM = -(6/yMesh)*(Vp*(1-2*nu) + Vs*(2*nu-2))  #*1.5
+alphaM = -(6/yMesh)*(Vp*(1-2*nu) + Vs*(2*nu-2))  # Vs = *1.5 ; Vp = *2.0 (special coff)
 betaK = -(-4*yMesh)*((1+nu)*(1-2*nu)/E)*rho*(Vp-Vs) #-0.0008373317307692309
 betaKinit = 0.0
 betaKcomm = 0.0
@@ -197,15 +197,21 @@ print(f"alphaM = {alphaM}; betaK = {betaK}")
 region(10000, '-nodeRange ', BotNode, BotNode+3 ,'-rayleigh',alphaM, betaK, betaKinit,betaKcomm)
 
 #=========================== Load Pattern 1: Shear wave / P wave ============================
-# timeSeries('Path',702, '-filePath','2fp.txt','-dt',1e-4)
+tnscp = soilLength/Vp # wave transport time
+dcellcp = tnscp/ny #each cell time
+cpdt = round(dcellcp/10, 7) #eace cell have 10 steps
+print(f"tnscp = {tnscp}; dcellcp= {dcellcp}, cp_dt = {cpdt}")
+
+# timeSeries('Path',702, '-filePath', f'TimeSeries/fp_80row.txt','-dt',cpdt) #1e-4
 timeSeries('Path',702, '-filePath', f'TimeSeries/fs200_{ny}row.txt','-dt', dt)
 # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
+
 # # # # timeSeries('Linear',705)
 
 pattern('Plain',703, 702)
-# load(1, 1,0)
-# load(2, 1,0)
-# ------------- P wave -----------------------------
+# load(1, 0, 1)
+# load(2, 0, 1)
+# # ------------- P wave -----------------------------
 # for o in range(nx):
 #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',20,0)
 
