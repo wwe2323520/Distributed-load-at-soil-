@@ -96,7 +96,7 @@ for i in range(len(Width)):
             print(f"Analysis Total Time = {analysisTime} ;Analysis_step = {analystep}")
 
             # ================= Build Boundary File =====================
-            Boundary = f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/LKDash_{ny}row" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
+            Boundary = f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
             path1 = f'D:/shiang/opensees/20220330/OpenSeesPy/1D_Transport/{Boundary}/Velocity' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Velocity'
             path2 = f'D:/shiang/opensees/20220330/OpenSeesPy/1D_Transport/{Boundary}/Stress' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Stress'
             # path3 =  # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/SurfaceVelocity'
@@ -199,9 +199,9 @@ for i in range(len(Width)):
             # RSideNDash_EndFix = RSideNDash_EndFree +1 # 247
             # print(f"RSideNDash_StartFix = {RSideNDash_StartFix} , RSideNDash_CenterFix = {RSideNDash_CenterFix}, RSideNDash_EndFix ={RSideNDash_EndFix}")
 
-            # # -------- Soil B.C (Tie BC) ---------------
-            # for i in range(ny+1):
-            #     equalDOF((nx+1)*i+1,(nx+1)*i+(nx+1),1,2)
+            # -------- Soil B.C (Tie BC) ---------------
+            for i in range(ny+1):
+                equalDOF((nx+1)*i+1,(nx+1)*i+(nx+1),1,2)
 
             # #  ================ Make Find Stiffnes and Mass Matrix =============================
             # Compare = f"Test_Central"
@@ -338,114 +338,114 @@ for i in range(len(Width)):
                 # print(BotNEle_Start+m,(BotNDash_Start+1)+2*m,BotNDash_Start+2*m)
             print("Finished creating Bottom dashpot material and element...")
 
-            # ============== Soil Left and Right "Side" Dashpot =====================================
-            LSideNDash_Start =  BotNDash_Start + 2*(nx+1)
-            LSideTDash_Start =  LSideNDash_Start + 2*(ny+1)
-            # print(LSideNDash_Start,LSideTDash_Start)
-            RSideNDash_Start =  LSideTDash_Start + 2*(ny+1)
-            RSideTDash_Start =  RSideNDash_Start + 2*(ny+1)
-            # print(RSideNDash_Start,RSideTDash_Start)
-            for l in range(ny+1):
-            # ========= Left Side =============
-            # --------- Normal dashpot (node 145,146~ 165,166)-> for S wave------------
-                node(LSideNDash_Start+2*l, 0.0, yMesh*l)
-                node((LSideNDash_Start+1)+2*l, 0.0, yMesh*l)
-            # ---------- dashpot dir: Vs -> x dir ---------------------     
-                fix(LSideNDash_Start+2*l, 0, 1, 1)      # x dir dashpot　
-                fix((LSideNDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
+            # # ============== Soil Left and Right "Side" Dashpot =====================================
+            # LSideNDash_Start =  BotNDash_Start + 2*(nx+1)
+            # LSideTDash_Start =  LSideNDash_Start + 2*(ny+1)
+            # # print(LSideNDash_Start,LSideTDash_Start)
+            # RSideNDash_Start =  LSideTDash_Start + 2*(ny+1)
+            # RSideTDash_Start =  RSideNDash_Start + 2*(ny+1)
+            # # print(RSideNDash_Start,RSideTDash_Start)
+            # for l in range(ny+1):
+            # # ========= Left Side =============
+            # # --------- Normal dashpot (node 145,146~ 165,166)-> for S wave------------
+            #     node(LSideNDash_Start+2*l, 0.0, yMesh*l)
+            #     node((LSideNDash_Start+1)+2*l, 0.0, yMesh*l)
+            # # ---------- dashpot dir: Vs -> x dir ---------------------     
+            #     fix(LSideNDash_Start+2*l, 0, 1, 1)      # x dir dashpot　
+            #     fix((LSideNDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
 
-            # --------- Traction dashpot (node 167,168~ 187,188)-> for P wave------------
-                node(LSideTDash_Start+2*l, 0.0, yMesh*l)
-                node((LSideTDash_Start+1)+2*l, 0.0, yMesh*l)
-            # ---------- dashpot dir: Vp -> y dir ---------------------     
-                fix(LSideTDash_Start+2*l, 1, 0, 1)      # y dir dashpot　
-                fix((LSideTDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
+            # # --------- Traction dashpot (node 167,168~ 187,188)-> for P wave------------
+            #     node(LSideTDash_Start+2*l, 0.0, yMesh*l)
+            #     node((LSideTDash_Start+1)+2*l, 0.0, yMesh*l)
+            # # ---------- dashpot dir: Vp -> y dir ---------------------     
+            #     fix(LSideTDash_Start+2*l, 1, 0, 1)      # y dir dashpot　
+            #     fix((LSideTDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
 
-            # ========= Right Side =============
-            # --------- Normal dashpot (node 189,190~ 209,210)-> for S wave------------
-                node(RSideNDash_Start+2*l, soilwidth, yMesh*l)
-                node((RSideNDash_Start+1)+2*l, soilwidth, yMesh*l)
-            # ---------- dashpot dir: Vs -> x dir ---------------------     
-                fix(RSideNDash_Start+2*l, 0, 1, 1)      # x dir dashpot　
-                fix((RSideNDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
+            # # ========= Right Side =============
+            # # --------- Normal dashpot (node 189,190~ 209,210)-> for S wave------------
+            #     node(RSideNDash_Start+2*l, soilwidth, yMesh*l)
+            #     node((RSideNDash_Start+1)+2*l, soilwidth, yMesh*l)
+            # # ---------- dashpot dir: Vs -> x dir ---------------------     
+            #     fix(RSideNDash_Start+2*l, 0, 1, 1)      # x dir dashpot　
+            #     fix((RSideNDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
 
-            # --------- Traction dashpot (node 211,212~ 231,232)-> for P wave------------
-                node(RSideTDash_Start+2*l, soilwidth, yMesh*l)
-                node((RSideTDash_Start+1)+2*l, soilwidth, yMesh*l)
-            # ---------- dashpot dir: Vp -> y dir ---------------------     
-                fix(RSideTDash_Start+2*l, 1, 0, 1)      # y dir dashpot　
-                fix((RSideTDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
+            # # --------- Traction dashpot (node 211,212~ 231,232)-> for P wave------------
+            #     node(RSideTDash_Start+2*l, soilwidth, yMesh*l)
+            #     node((RSideTDash_Start+1)+2*l, soilwidth, yMesh*l)
+            # # ---------- dashpot dir: Vp -> y dir ---------------------     
+            #     fix(RSideTDash_Start+2*l, 1, 0, 1)      # y dir dashpot　
+            #     fix((RSideTDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
 
-            # ------ connect dashpot with Soil side layer :Vs with x dir / Vp with y-dir --------------
-            for l in range(ny+1):
-            # ========= Left Side =============
-            # --------------Normal dashpot: for S wave------------------
-                equalDOF(1+(nx+1)*l, LSideNDash_Start+2*l, 1)  # x dir
-            # --------------Traction dashpot: for P wave------------------
-                equalDOF(1+(nx+1)*l, LSideTDash_Start+2*l, 2)  # y dir
+            # # ------ connect dashpot with Soil side layer :Vs with x dir / Vp with y-dir --------------
+            # for l in range(ny+1):
+            # # ========= Left Side =============
+            # # --------------Normal dashpot: for S wave------------------
+            #     equalDOF(1+(nx+1)*l, LSideNDash_Start+2*l, 1)  # x dir
+            # # --------------Traction dashpot: for P wave------------------
+            #     equalDOF(1+(nx+1)*l, LSideTDash_Start+2*l, 2)  # y dir
 
-            # ========= Right Side =============
-            # --------------Normal dashpot: for S wave------------------
-                equalDOF((nx+1)+(nx+1)*l, RSideNDash_Start+2*l, 1)  # x dir
-            # --------------Traction dashpot: for P wave------------------
-                equalDOF((nx+1)+(nx+1)*l, RSideTDash_Start+2*l, 2)  # y dir
+            # # ========= Right Side =============
+            # # --------------Normal dashpot: for S wave------------------
+            #     equalDOF((nx+1)+(nx+1)*l, RSideNDash_Start+2*l, 1)  # x dir
+            # # --------------Traction dashpot: for P wave------------------
+            #     equalDOF((nx+1)+(nx+1)*l, RSideTDash_Start+2*l, 2)  # y dir
 
-            print("Finished creating all Side dashpot boundary conditions and equalDOF...")
-            # ------------- Side dashpot material -----------------------
-            sizeX1 = yMesh
-            S_Smp = 0.5*rho*Vp*sizeX1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
-            S_Sms = 0.5*rho*Vs*sizeX1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
+            # print("Finished creating all Side dashpot boundary conditions and equalDOF...")
+            # # ------------- Side dashpot material -----------------------
+            # sizeX1 = yMesh
+            # S_Smp = 0.5*rho*Vp*sizeX1    # side Normal dashpot for S wave   ; lower/Upper  Left and Right corner node
+            # S_Sms = 0.5*rho*Vs*sizeX1    # side Traction dashpot for P wave ; lower/Upper Left and Right corner node
 
-            S_Cmp = 1.0*rho*Vp*sizeX1    # side Normal dashpot for S wave: Netwon
-            S_Cms = 1.0*rho*Vs*sizeX1    # side Traction dashpot for P wave: Netwon
+            # S_Cmp = 1.0*rho*Vp*sizeX1    # side Normal dashpot for S wave: Netwon
+            # S_Cms = 1.0*rho*Vs*sizeX1    # side Traction dashpot for P wave: Netwon
 
-            uniaxialMaterial('Viscous',4004, S_Smp, 1)    # "S" wave: Side node
-            uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
+            # uniaxialMaterial('Viscous',4004, S_Smp, 1)    # "S" wave: Side node
+            # uniaxialMaterial('Viscous',4005, S_Sms, 1)    # "P" wave: Side node
 
-            uniaxialMaterial('Viscous',4006, S_Cmp, 1)    # "S" wave: Center node
-            uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
+            # uniaxialMaterial('Viscous',4006, S_Cmp, 1)    # "S" wave: Center node
+            # uniaxialMaterial('Viscous',4007, S_Cms, 1)    # "P" wave: Center node
 
-            # # =============== Right and Left NODE :different dashpot element==================
-            LsideNEle_Start = BotNEle_End + 1
-            LsideNEle_End = LsideNEle_Start + ny
-            # print(LsideNEle_Start, LsideNEle_End)
-            #  ----------- Left side Normal: S wave ----------
-            element('zeroLength',LsideNEle_Start, (LSideNDash_Start+1), LSideNDash_Start, '-mat',4004,'-dir',xdir)  # lower Left node: -> Smp
-            element('zeroLength',LsideNEle_End, (LSideNDash_Start+1)+2*ny, LSideNDash_Start+2*ny, '-mat',4004,'-dir',xdir)  # Upper left node: -> Smp
+            # # # =============== Right and Left NODE :different dashpot element==================
+            # LsideNEle_Start = BotNEle_End + 1
+            # LsideNEle_End = LsideNEle_Start + ny
+            # # print(LsideNEle_Start, LsideNEle_End)
+            # #  ----------- Left side Normal: S wave ----------
+            # element('zeroLength',LsideNEle_Start, (LSideNDash_Start+1), LSideNDash_Start, '-mat',4004,'-dir',xdir)  # lower Left node: -> Smp
+            # element('zeroLength',LsideNEle_End, (LSideNDash_Start+1)+2*ny, LSideNDash_Start+2*ny, '-mat',4004,'-dir',xdir)  # Upper left node: -> Smp
 
-            LsideTEle_Start = LsideNEle_End + 1
-            LsideTEle_End = LsideTEle_Start + ny
-            # print(LsideTEle_Start, LsideTEle_End)
-            #  ----------- Left side Traction: P wave ----------
-            element('zeroLength',LsideTEle_Start, (LSideTDash_Start+1), LSideTDash_Start, '-mat',4005,'-dir',ydir)  # lower Left node: -> Sms
-            element('zeroLength',LsideTEle_End, (LSideTDash_Start+1)+2*ny, LSideTDash_Start+2*ny, '-mat',4005,'-dir',ydir)  # Upper left node -> Sms
+            # LsideTEle_Start = LsideNEle_End + 1
+            # LsideTEle_End = LsideTEle_Start + ny
+            # # print(LsideTEle_Start, LsideTEle_End)
+            # #  ----------- Left side Traction: P wave ----------
+            # element('zeroLength',LsideTEle_Start, (LSideTDash_Start+1), LSideTDash_Start, '-mat',4005,'-dir',ydir)  # lower Left node: -> Sms
+            # element('zeroLength',LsideTEle_End, (LSideTDash_Start+1)+2*ny, LSideTDash_Start+2*ny, '-mat',4005,'-dir',ydir)  # Upper left node -> Sms
 
-            RsideNEle_Start = LsideTEle_End + 1
-            RsideNEle_End = RsideNEle_Start + ny
-            # print(RsideNEle_Start, RsideNEle_End)
-            #  ----------- Right side Normal: S wave ----------
-            element('zeroLength',RsideNEle_Start, (RSideNDash_Start+1), RSideNDash_Start, '-mat',4004,'-dir',xdir)  # lower Right node: -> Smp
-            element('zeroLength',RsideNEle_End, (RSideNDash_Start+1)+2*ny, RSideNDash_Start+2*ny, '-mat',4004,'-dir',xdir)   # Upper Right node: -> Smp
+            # RsideNEle_Start = LsideTEle_End + 1
+            # RsideNEle_End = RsideNEle_Start + ny
+            # # print(RsideNEle_Start, RsideNEle_End)
+            # #  ----------- Right side Normal: S wave ----------
+            # element('zeroLength',RsideNEle_Start, (RSideNDash_Start+1), RSideNDash_Start, '-mat',4004,'-dir',xdir)  # lower Right node: -> Smp
+            # element('zeroLength',RsideNEle_End, (RSideNDash_Start+1)+2*ny, RSideNDash_Start+2*ny, '-mat',4004,'-dir',xdir)   # Upper Right node: -> Smp
 
-            RsideTEle_Start = RsideNEle_End + 1
-            RsideTEle_End = RsideTEle_Start + ny
-            # print(RsideTEle_Start, RsideTEle_End)
-            #  ----------- Right side Traction: P wave ----------
-            element('zeroLength',RsideTEle_Start, (RSideTDash_Start+1), RSideTDash_Start, '-mat',4005,'-dir',ydir)  # lower Right node: -> Sms
-            element('zeroLength',RsideTEle_End, (RSideTDash_Start+1)+2*ny, RSideTDash_Start+2*ny, '-mat',4005,'-dir',ydir)  # Upper Right node: -> Sms
+            # RsideTEle_Start = RsideNEle_End + 1
+            # RsideTEle_End = RsideTEle_Start + ny
+            # # print(RsideTEle_Start, RsideTEle_End)
+            # #  ----------- Right side Traction: P wave ----------
+            # element('zeroLength',RsideTEle_Start, (RSideTDash_Start+1), RSideTDash_Start, '-mat',4005,'-dir',ydir)  # lower Right node: -> Sms
+            # element('zeroLength',RsideTEle_End, (RSideTDash_Start+1)+2*ny, RSideTDash_Start+2*ny, '-mat',4005,'-dir',ydir)  # Upper Right node: -> Sms
 
-            for w in range(1,ny): #1,ny
-            #----------- Left side Normal Dashpot: (ele 107~117)---------- -> Smp
-                element('zeroLength',LsideNEle_Start+w, (LSideNDash_Start+1)+2*w, LSideNDash_Start+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
-            #----------- Left side Traction Dashpot: (ele 118~128) ---------- -> Sms
-                element('zeroLength',LsideTEle_Start+w, (LSideTDash_Start+1)+2*w, LSideTDash_Start+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
-                # print(LsideTEle_Start+w, (LSideTDash_Start+1)+2*w, LSideTDash_Start+2*w)
-            #----------- Right side Normal Dashpot:(ele 129 ~ 139) ---------- -> Smp
-                element('zeroLength',RsideNEle_Start+w, (RSideNDash_Start+1)+2*w, RSideNDash_Start+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
-            #----------- Right side Traction Dashpot: (ele 140 ~ 150) ----------  -> Sms
-                element('zeroLength',RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
-                # print(RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w)
-            # print("Finished creating Side dashpot material and element...")
+            # for w in range(1,ny): #1,ny
+            # #----------- Left side Normal Dashpot: (ele 107~117)---------- -> Smp
+            #     element('zeroLength',LsideNEle_Start+w, (LSideNDash_Start+1)+2*w, LSideNDash_Start+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+            # #----------- Left side Traction Dashpot: (ele 118~128) ---------- -> Sms
+            #     element('zeroLength',LsideTEle_Start+w, (LSideTDash_Start+1)+2*w, LSideTDash_Start+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+            #     # print(LsideTEle_Start+w, (LSideTDash_Start+1)+2*w, LSideTDash_Start+2*w)
+            # #----------- Right side Normal Dashpot:(ele 129 ~ 139) ---------- -> Smp
+            #     element('zeroLength',RsideNEle_Start+w, (RSideNDash_Start+1)+2*w, RSideNDash_Start+2*w, '-mat',4006,'-dir',xdir)  # center node : S wave
+            # #----------- Right side Traction Dashpot: (ele 140 ~ 150) ----------  -> Sms
+            #     element('zeroLength',RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w, '-mat',4007,'-dir',ydir)  # center node：P wave
+            #     # print(RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w)
+            # # print("Finished creating Side dashpot material and element...")
 
             # # ================ NewBC: for Case A/B============================
             # # ==================== Side Beam node (233~243 / 244~254) ====================
