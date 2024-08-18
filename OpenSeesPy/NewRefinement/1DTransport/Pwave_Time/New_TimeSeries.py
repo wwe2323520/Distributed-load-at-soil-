@@ -101,7 +101,7 @@ for j in range(Nnode): #Nele 101
     # print(x0,cp*tNin)
     for i in range(len(timecp_Node)):      
         xii = x0 + dx*i 
-        XNodeIn[0+10*j+i,j] = Incoming_wave(wp_20HZ, xii, cp, tNin)  #from 0.05m to 9.95m
+        XNodeIn[0+10*j+i,j] = Incoming_wave(wp_10HZ, xii, cp, tNin)  #from 0.05m to 9.95m
         # print(xii)
         
 # ---------- Outcoming wave (Nodal load)-------------------
@@ -114,7 +114,7 @@ for j in range(Nnode):# Nnode 101
     # print(x0,cp*tNout)
     for i in range(len(timecp_Node)):      
         xoo = x0 + dx*i 
-        XNodeOut[Endx0-10*j+i,End_Node-j] = Outgoing_wave(wp_20HZ, xoo, cp, tNout)  #from 10.0m to 0.0m   
+        XNodeOut[Endx0-10*j+i,End_Node-j] = Outgoing_wave(wp_10HZ, xoo, cp, tNout)  #from 10.0m to 0.0m   
 
 total_time = np.arange(0.0,0.40003,dt_cp)
 Pwave = np.zeros((len(total_time),Nele))
@@ -151,23 +151,22 @@ for g in range(Nele): #Nele
 # ----- Pwave eta_p*(Vx) taux --------------------------             
             PSideforce_y[to+t,End_Ele-g] = PSideforce_y[to+t,End_Ele-g] + (ForceY_Cofficient*XOut[t-to,End_Ele-g]) # + (ForceX_Cofficient *XOut[t-to,End_Ele-g])
 
-# for m in range(Nnode): #Nnode 101/ 81
-#     t1 = 10*m
-#     # print(t1)
-#     for n in range(len(total_time)):
-#         if total_time[n] < 0.025:
-# # ----- Swave eta_p*(Vx) -------------------------- 
-#             PNodeforce_x[t1+n,m] = PNodeforce_x[t1+n,m] + (ForceX_Cofficient *XNodeIn[t1+n,m])
-# # ----- Swave sigma_xy ---------------------------------------
-#             PNodeforce_y[t1+n,m] = PNodeforce_y[t1+n,m] + (ForceY_Cofficient *XNodeIn[t1+n,m])
+for m in range(Nnode): #Nnode 101/ 81
+    t1 = 10*m
+    # print(t1)
+    for n in range(len(total_time)):
+        if total_time[n] < Input_Time: # total_time[n] < 0.025
+# ----- Swave eta_p*(Vx) -------------------------- 
+            PNodeforce_x[t1+n,m] = PNodeforce_x[t1+n,m] + (ForceX_Cofficient *XNodeIn[t1+n,m])
+# ----- Swave sigma_xy ---------------------------------------
+            PNodeforce_y[t1+n,m] = PNodeforce_y[t1+n,m] + (ForceY_Cofficient *XNodeIn[t1+n,m])
             
-#         if total_time[n] >= 0.025 and total_time[n] < 0.050: 
-# # ----- Swave eta_p*(Vx) taux -------------------------- 
-#             PNodeforce_x[t1+n,End_Node-m] = PNodeforce_x[t1+n,End_Node-m] - (ForceX_Cofficient *XNodeOut[n-t1,End_Node-m]) # XNodeOut[n-t1,End_Node-m]
-# # ----- Swave sigma_xy tauy---------------------------------------
-#             PNodeforce_y[t1+n, End_Node-m] = PNodeforce_y[t1+n, End_Node-m] + (ForceY_Cofficient* XNodeOut[n-t1, End_Node-m]) # XNodeOut[n-t1, End_Node-m]
-# # --只需要vx vy sx sy sxy etax etay(7個)----
-            
+        if total_time[n] >= 0.025 and total_time[n] < (0.025+Input_Time):  # total_time[t] >= 0.025 and total_time[t] < 0.050
+# ----- Swave eta_p*(Vx) taux -------------------------- 
+            PNodeforce_x[t1+n,End_Node-m] = PNodeforce_x[t1+n,End_Node-m] - (ForceX_Cofficient *XNodeOut[n-t1,End_Node-m]) # XNodeOut[n-t1,End_Node-m]
+# ----- Swave sigma_xy tauy---------------------------------------
+            PNodeforce_y[t1+n, End_Node-m] = PNodeforce_y[t1+n, End_Node-m] + (ForceY_Cofficient* XNodeOut[n-t1, End_Node-m]) # XNodeOut[n-t1, End_Node-m]
+# --只需要vx vy sx sy sxy etax etay(7個)----
 
 # # # ---- Output matrix eace column to txt file --------------
 FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Pwave_Time"
@@ -225,18 +224,18 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Pwave_Time"
 plt.figure(figsize=(8,6))
 # plt.title('Wave Transport',fontsize = 18)   
  
-plt.title(r'SideForce $\nu/(1-\nu)$ $\sigma_{yy}$',fontsize = 18)    
+# plt.title(r'SideForce $\nu/(1-\nu)$ $\sigma_{yy}$',fontsize = 18)    
 # plt.title(r'SideForce $\eta_{s}v_y$',fontsize = 18)   
 
 # plt.title(r'NodeForce $\sigma_{yy}$',fontsize = 18)      
-# plt.title(r'NodeForce $\eta_{s}v_y$',fontsize = 18)   
+plt.title(r'NodeForce $\eta_{s}v_y$',fontsize = 18)   
 
 plt.xlabel("time t(s)",fontsize=18)
 
-# ----- Swave sigma_yy -------------
-plt.plot(total_time,PSideforce_x[:,0],label ='Bot Element', marker='o', markevery=100)
-plt.plot(total_time,PSideforce_x[:, int(Nele/2)-1],label ='Center Element', marker='x', markevery=100)
-plt.plot(total_time,PSideforce_x[:, int(Nele-1)],label ='Top Element', marker='d', markevery=100)
+# # ----- Swave sigma_yy -------------
+# plt.plot(total_time,PSideforce_x[:,0],label ='Bot Element', marker='o', markevery=100)
+# plt.plot(total_time,PSideforce_x[:, int(Nele/2)-1],label ='Center Element', marker='x', markevery=100)
+# plt.plot(total_time,PSideforce_x[:, int(Nele-1)],label ='Top Element', marker='d', markevery=100)
 
 # plt.plot(total_time,PNodeforce_x[:,0],label ='Bot node', marker='o', markevery=100)
 # plt.plot(total_time,PNodeforce_x[:,int(Nele/2)],label ='Center node', marker='x', markevery=100)
@@ -247,9 +246,9 @@ plt.plot(total_time,PSideforce_x[:, int(Nele-1)],label ='Top Element', marker='d
 # plt.plot(total_time,PSideforce_y[:, int(Nele/2)-1],label ='Center Element', marker='x', markevery=100)
 # plt.plot(total_time,PSideforce_y[:, int(Nele-1)],label ='Top Element', marker='d', markevery=100)
 
-# plt.plot(total_time,PNodeforce_y[:,0],label ='Bot node', marker='o', markevery=100)
-# plt.plot(total_time,PNodeforce_y[:,int(Nele/2)],label ='Center node', marker='x', markevery=100)
-# plt.plot(total_time,PNodeforce_y[:,int(Nele)],label ='Top node', marker='d', markevery=100)
+plt.plot(total_time,PNodeforce_y[:,0],label ='Bot node', marker='o', markevery=100)
+plt.plot(total_time,PNodeforce_y[:,int(Nele/2)],label ='Center node', marker='x', markevery=100)
+plt.plot(total_time,PNodeforce_y[:,int(Nele)],label ='Top node', marker='d', markevery=100)
 
 plt.legend(loc='upper right',fontsize=18)
 plt.xticks(fontsize = 15)
