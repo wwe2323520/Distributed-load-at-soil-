@@ -32,12 +32,6 @@ G = (cs*cs)*rho  # N/m^2 = Kg/(m*s^2)
 E =  G*2*(1+nu)  # N/m^2 = Kg/(m*s^2)
 cp = (E*(1-nu)/((1+nu)*(1-2*nu)*rho))**(0.5)
 
-
-#calaulate wave length
-fcs = 10 # cs / lamb_cp = 20 HZ; 40, 20, 10 HZ
-Ts = 1/ fcs
-ws = 2*pi/ Ts
-
 def Cal_fp(fcp):
     Tp = 1/ fcp
     wp = 2*pi/ Tp
@@ -47,15 +41,17 @@ def Cal_fp(fcp):
     
     print(f"lamb_cp= {lamb_cp} ;fcp= {fcp} ;Tp= {Tp} ;wp= {wp}")
     
-    tnscp = lamb_cp/cp # wave transport time
-    dcellcp = tnscp/Soil_80row #each cell time
+    tnscp = SoilLength/cp # wave transport time
+    dcellcp = tnscp/Soil_40row #each cell time
     cpdt = dcellcp*0.1 #eace cell have 10 steps
     print(f"Pwave travel = {tnscp} ;dcell = {dcellcp} ;dt = {cpdt}")
     # ===============================Timeseries:Disp, Vel, Accel (Vs)====================================
     A = 0.125 # 0.1*10 or 0.1*1
     P = 2 #10
     
-    timeCp = np.arange(0,0.30014,cpdt)
+    Input_Time = lamb_cp/cp
+    
+    timeCp = np.arange(0, 0.2+cpdt, cpdt)
     fp = np.zeros(len(timeCp))
     
     # -------- Pwave From Bottom / TopForce Apply with P wave transport -------------------
@@ -63,14 +59,14 @@ def Cal_fp(fcp):
     P_Surface_Step = int(0.025/cpdt) # **********
     # P_Surface_Step = int(tnscp/cpdt) # **********
     
-    Pwave_Time = lamb_cp/cp
     Top_Time = SoilLength/cp
-    print(f'Pwave Travel Time = {Pwave_Time}')
+    print(f'Pwave Travel Time = {Input_Time}')
+    
     for i in range(len(timeCp)):
-        if timeCp[i] < Pwave_Time:
+        if timeCp[i] < Input_Time:
             fp[i] = 2*np.sin(wp*timeCp[i])
             
-        if timeCp[i] >= Top_Time and timeCp[i] < (Top_Time + Pwave_Time):
+        if timeCp[i] >= Top_Time and timeCp[i] < (Top_Time + Input_Time):
             TopForce_fp[i] = 2*np.sin(wp*timeCp[i-P_Surface_Step])
 
     return fp, timeCp, TopForce_fp
@@ -147,41 +143,43 @@ def draw_plot2(title_name, time,fp, time1,fp1, time2,fp2):
     ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
     ax.yaxis.get_offset_text().set(size=18)
     
-draw_plot2("P wave Impulse TimeSeries", timeCp_HZ40,fp_HZ40, timeCp_HZ10,fp_HZ10, timeCp_HZ20,fp_HZ20) # "time t (s)"
-draw_plot2("P wave Surface Impulse TimeSeries", timeCp_HZ40,TopHZ40_fp, timeCp_HZ10,TopHZ10_fp, timeCp_HZ20,TopHZ20_fp)
+# draw_plot2("P wave Impulse TimeSeries", timeCp_HZ40,fp_HZ40, timeCp_HZ10,fp_HZ10, timeCp_HZ20,fp_HZ20) # "time t (s)"
+# draw_plot2("P wave Surface Impulse TimeSeries", timeCp_HZ40,TopHZ40_fp, timeCp_HZ10,TopHZ10_fp, timeCp_HZ20,TopHZ20_fp)
 
 def Cal_fs(fcs):
     Ts = 1/ fcs
     ws = 2*pi/ Ts
+    
     SoilLength = 10 #m
     lamb_cs = cs/fcs #total length cp
     
     print(f"lamb_cs= {lamb_cs} ;fcs= {fcs} ;Ts= {Ts} ;ws= {ws}")
     
-    tnscs = lamb_cs/cs # wave transport time
-    dcellcs = tnscs/Soil_80row #each cell time
+    tnscs = SoilLength/cs # wave transport time
+    dcellcs = tnscs/Soil_40row #each cell time
     csdt = dcellcs*0.1 #eace cell have 10 steps
-    print(f"Pwave travel = {tnscs} ;dcell = {dcellcs} ;dt = {csdt}")
+    print(f"Swave travel = {tnscs} ;dcell = {dcellcs} ;dt = {csdt}")
     # ===============================Timeseries:Disp, Vel, Accel (Vs)====================================
     A = 0.125 # 0.1*10 or 0.1*1
     P = 2 #10
     
-    timeCs = np.arange(0,0.30014,csdt)
+    Input_Time = lamb_cs/cs
+    
+    timeCs = np.arange(0, 0.2+csdt, csdt)
     fs = np.zeros(len(timeCs))
     
     # -------- Pwave From Bottom / TopForce Apply with P wave transport -------------------
     TopForce_fs = np.zeros(len(timeCs))
-    S_Surface_Step = int(0.05/csdt)
-    # S_Surface_Step = int(tnscs/csdt)
+    S_Surface_Step = int(0.050/csdt) # **********
     
-    Swave_Time = lamb_cs/cs
-    Top_time = SoilLength/cs
-    print(f'Swave Travel Time = {Swave_Time}')
+    Top_Time = SoilLength/cs
+    print(f'Swave Travel Time = {Input_Time}')
+    
     for i in range(len(timeCs)):
-        if timeCs[i] < Swave_Time:
+        if timeCs[i] < Input_Time:
             fs[i] = 2*np.sin(ws*timeCs[i])
             
-        if timeCs[i] >= Top_time and timeCs[i] < (Top_time + Swave_Time): # 
+        if timeCs[i] >= Top_Time and timeCs[i] < (Top_Time + Input_Time):
             TopForce_fs[i] = 2*np.sin(ws*timeCs[i-S_Surface_Step])
 
     return fs, timeCs, TopForce_fs
@@ -220,4 +218,4 @@ def draw_plot3(title_name, time,fs, time1,fs1, time2,fs2):
     
 # draw_plot3("S wave Impulse TimeSeries", timeCs_HZ20,fs_HZ20, timeCs_HZ10,fs_HZ10, timeCs_HZ40,fs_HZ40)
 
-# draw_plot3("S wave Surface Impulse TimeSeries", timeCs_HZ20,Topfs_HZ20, timeCs_HZ10,Topfs_HZ10, timeCs_HZ40,Topfs_HZ40)
+draw_plot3("S wave Surface Impulse TimeSeries", timeCs_HZ20,Topfs_HZ20, timeCs_HZ10,Topfs_HZ10, timeCs_HZ40,Topfs_HZ40)
