@@ -518,8 +518,8 @@ def Differ_BCVel(total_time, Pwave, Tie, LKDash, BeamType1, BeamType2, BeamType3
     plt.plot(BeamType2[:,0], BeamType2[:,plt_axis2],label ='Beam Type2', ls = '--',color= 'blue',linewidth=3.0)
     plt.plot(BeamType3[:,0], BeamType3[:,plt_axis2],label ='Node BC',color= 'red',linewidth= 2.0)
 
-    plt.xticks(fontsize = 16)
-    plt.yticks(fontsize = 16)
+    plt.xticks(fontsize = 18)
+    plt.yticks(fontsize = 18)
     plt.xlim(0.0, 0.20) 
     plt.grid(True)
     
