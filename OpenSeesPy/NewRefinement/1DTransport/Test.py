@@ -11,17 +11,18 @@ import numpy as np
 from openseespy.opensees import *
 
 pi = np.pi
-# ----------- Rayleigh Dashpot Cofficient ------------------
-# Integrator = "Central"
+# # ----------- Rayleigh Dashpot Cofficient ------------------
+# # Integrator = "Central"
      
-# PtimeNum = np.array([702, 704, 705]) # For P wave TimeSeries
-# StimeNum = np.array([706, 707, 708]) # For S wave TimeSeries
+# PtimeNum = np.array([702, 704, 705]) # For P wave TimeSeries 702, 704, 705
+# StimeNum = np.array([706, 707, 708]) # For S wave TimeSeries 706, 707, 708
 
-# Force_HZ = np.array([10, 20, 40])
-# Width = np.array([10.0, 20.0]) # 2.0, 10.0, 20.0
+# Force_HZ = np.array([10, 20, 40]) # 10, 20, 40
+# Width = np.array([2.0, 10.0, 20.0]) # 2.0, 10.0, 20.0
 # Y_MeshNumber= np.array([80, 40, 20, 10])
 
-Choose_Wave = f"Test_Central"
+Choose_Wave = f"Test_Integrator/NewMark_Linear/Test" # Central / NewMark_Constant / NewMark_Linear
+HZ = 20
 
 # for i in range(len(Width)):
 #     soilwidth = Width[i]
@@ -36,6 +37,17 @@ Choose_Wave = f"Test_Central"
 #             ny = int(Y_MeshNumber[h])
 #             # print(soilwidth, TimeSeries_Num, HZ, ny)
 
+# Y_MeshNumber= np.array([20, 10]) # 80,40,20,10
+# Dt_Number = np.array([0.8]) # 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8
+
+# for i in range(len(Dt_Number)):
+#     Dt_Size = Dt_Number[i]
+#     print(f"================ Now Dt_Szie = {Dt_Size} ================")
+
+#     for j in range(len(Y_MeshNumber)):
+#         ny = int(Y_MeshNumber[j]) # PtimeNum / StimeNum
+#         print(f"--------------------- Mesh row = {ny} -------------------")
+    
 wipe()
 # -------- Start calculaate time -----------------
 start = time.time()
@@ -51,13 +63,19 @@ G = rho*Vs*Vs
 M = rho*Vp*Vp
 
 E =  2*(1+nu)*G # (N/m^2)
-
 nDMaterial('ElasticIsotropic', 2000, E, nu, rho)
 
 soilLength = 10 #m
-soilwidth = 2.0 # 2.0
-nx = int(soilwidth/0.125)
-ny = 10 # 80, 40, 20, 10
+soilwidth =  20.0# 2.0 / 0.125
+ny = 40 # 80, 40, 20, 10
+
+yMesh = soilLength/ny # Y row MeshSize
+dcell = (yMesh / Vp)
+
+Dw = soilLength/80 # soilLength/80 , soilLength/ny
+nx = int(soilwidth/Dw)# int(soilwidth/0.125)
+print(f'x Column = {nx}; xMesh Size = {Dw}')
+
 e1 = 1
 n1 = 1
 eleArgs = [1, 'PlaneStrain', 2000]
@@ -74,11 +92,7 @@ print(f"Soil_NodeEnd = {SoilNode_End}; Soil_Ele_End = {SoilEle_End}")
 # ---- Calculate dt -------------------
 Dt_Size = 0.8 # C = 0.1, 0.4, 0.8, 1.0, 2.0
 
-yMesh = soilLength/ny # Y row MeshSize
-dcell = (yMesh / Vp) 
-# dt = dcell*Dt_Size # 
-
-dt_Mesh = (soilLength/80)
+dt_Mesh = (soilLength/ny) # (soilLength/ny)
 dt = (dt_Mesh/Vp)*Dt_Size # dcell*Dt_Size
 print(f'dt_Mesh = {dt_Mesh}')
 
@@ -89,9 +103,9 @@ analystep = analysisTime/dt # int(800*(ny/10))
 print(f"Analysis Total Time = {analysisTime} ;Analysis_step = {analystep}")
 
 # ================= Build Boundary File =====================
-Boundary = f"{Choose_Wave}/Dt_{Dt_Size}" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
-path1 = f'D:/shiang/opensees/20220330/OpenSeesPy/Test_Integrator/{Boundary}/Velocity' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Velocity'
-path2 = f'D:/shiang/opensees/20220330/OpenSeesPy/Test_Integrator/{Boundary}/Stress' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Stress'
+Boundary = f"{Choose_Wave}/Dt_{Dt_Size}/HZ_{HZ}/row{ny}" # {Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/BeamType3_{ny}row
+path1 = f'D:/shiang/opensees/20220330/OpenSeesPy/{Boundary}/Velocity' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Velocity'
+path2 = f'D:/shiang/opensees/20220330/OpenSeesPy/{Boundary}/Stress' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Stress'
 # path3 =  # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/SurfaceVelocity'
 
 if not os.path.isdir(path1):
@@ -197,8 +211,8 @@ for i in range(ny+1):
     equalDOF((nx+1)*i+1,(nx+1)*i+(nx+1),1,2)
 
 # #  ================ Make Find Stiffnes and Mass Matrix =============================
-# Compare = f"Test_Central"
-# Path = f'D:/shiang/opensees/20220330/OpenSeesPy/Test_Integrator/{Compare}'  #/{Scale}{Compare_For}
+# Compare = f"Pwave/W_2m/TieBC_{ny}row"
+# Path = f'D:/shiang/opensees/20220330/OpenSeesPy/1D_Transport/{Compare}'  #/{Scale}{Compare_For}
 # wipeAnalysis()
 # system('FullGeneral')
 # analysis('Transient')
@@ -220,20 +234,20 @@ for i in range(ny+1):
 # # K.shape = (N,N)
 # # print(K)
 
-# # Nmodes = SoilNode_End-1
-# # lam = eigen('-standard','-symmBandLapack',Nmodes) # With no considered Mass matrix
-# # # lam = eigen(Nmodes) # Full Generalize Eigen 
-# # print('Computed eigenvalues:',lam)
-# # omega = np.zeros(len(lam))
-# # for i in range(len(lam)):
-# #     omega[i] =(lam[i]**0.5)
+# Nmodes = SoilNode_End-1
+# lam = eigen('-standard','-symmBandLapack',Nmodes) # With no considered Mass matrix
+# # lam = eigen(Nmodes) # Full Generalize Eigen 
+# print('Computed eigenvalues:',lam)
+# omega = np.zeros(len(lam))
+# for i in range(len(lam)):
+#     omega[i] =(lam[i]**0.5)
 
-# # Tperiod = np.zeros(len(omega))
-# # for j in range(len(omega)):
-# #     Tperiod[j] = (2*pi)/omega[j]
+# Tperiod = np.zeros(len(omega))
+# for j in range(len(omega)):
+#     Tperiod[j] = (2*pi)/omega[j]
 
-# # np.savetxt(f'{Path}/Tperiod.txt',Tperiod, delimiter = " ")
-# # print(f"Tperiod = {Tperiod}")
+# np.savetxt(f'{Path}/Tperiod.txt',Tperiod, delimiter = " ")
+# print(f"Tperiod = {Tperiod}")
 
 # # print('Eigenvector 1')
 # # print(nodeEigenvector(1,1), nodeEigenvector(2,1))
@@ -249,7 +263,7 @@ BeamEle_Start = SoilEle_End +1
 
 model('basic', '-ndm', 2, '-ndf' , 3)
 for j in range(nx+1):
-    node(BeamNode_Start+j,0.125*j,0.0)
+    node(BeamNode_Start+j, Dw*j,0.0)
     mass(BeamNode_Start+j,1,1,1)
 # -------- fix rotate dof ------------
     fix(BeamNode_Start+j,0,0,1)
@@ -273,15 +287,15 @@ BotNDash_Start = BotTDash_Start + 2*(nx+1)
 
 for l in range(nx+1):
 # ------------- traction dashpot (node 109,110~ 125,126)-> for S wave------------
-    node(BotTDash_Start+2*l, 0.125*l, 0.0)
-    node((BotTDash_Start+1)+2*l, 0.125*l, 0.0)
+    node(BotTDash_Start+2*l, Dw*l, 0.0)
+    node((BotTDash_Start+1)+2*l, Dw*l, 0.0)
 # ---------- dashpot dir: Vs -> x dir ---------------------     
     fix(BotTDash_Start+2*l, 0, 1, 1)      # x dir dashpot　
     fix((BotTDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
 
 # ------------- Normal dashpot (node 127,128~ 143,144)-> for P wave ------------
-    node(BotNDash_Start+2*l, 0.125*l, 0.0)
-    node((BotNDash_Start+1)+2*l, 0.125*l, 0.0)
+    node(BotNDash_Start+2*l, Dw*l, 0.0)
+    node((BotNDash_Start+1)+2*l, Dw*l, 0.0)
 # ---------- dashpot dir: Vp -> y dir---------------------     
     fix(BotNDash_Start+2*l, 1, 0, 1)      # y dir dashpot　
     fix((BotNDash_Start+1)+2*l, 1, 1, 1)      # fixed end to let soil fix
@@ -295,7 +309,7 @@ for k in range(nx+1):
 
 print("Finished creating all Bottom dashpot boundary conditions and equalDOF...")
 # ------------------- ZeroLength to Build dashpot: Material ----------------------------------
-sizeX = 0.125  # m ******
+sizeX = Dw  # m ******
 B_Smp = 0.5*rho*Vp*sizeX      # lower Left and Right corner node dashpot :N (newton)
 B_Sms = 0.5*rho*Vs*sizeX      # lower Left and Right corner node dashpot :N (newton)
 
@@ -446,7 +460,7 @@ print("Finished creating Bottom dashpot material and element...")
 # RsideNode = LsideNode + (ny+1)
 # LsideEle = RsideTEle_End + 1 
 # RsideEle = LsideEle + ny
-
+# print(f"LsideNode = {LsideNode}; RsideNode = {RsideNode}; LsideEle ={LsideEle}; RsideEle = {RsideEle}")
 # for i in range(ny+1):
 # # ----- Left Side: 233~243 -----------------
 #     node(LsideNode+i, 0.0, yMesh*i)
@@ -467,145 +481,257 @@ print("Finished creating Bottom dashpot material and element...")
 #     equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
 #     equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
 
-# ============================== S wave ======================================
-# ========================= "CaseA": SideLoad Pattern ===================================
-# ------------ Side Load Pattern ------------------------------
-# xTimeSeriesID = 800
-# xPatternID = 804
-# for g in range(ny):
-# # ------- timeSeries ID: 800~809 / Pattern ID: 804~813----------------------
-#     timeSeries('Path',xTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowx/ele{1+g}.txt','-dt', dt)
-#     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
-# # ---------- x direction : Sideforce ---------------------
-# # ---------- Distributed at Left Side Beam ----------------------
-#     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',-20,0)  # for local axes Wy -
-# # ---------- Distributed at Right Side Beam ----------------------
-#     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',-20,0)   # for local axes Wy +
+# # ============================== S wave ======================================
+# SideBeam_TimePath = f'D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Swave_Time/SideBeam_Time/HZ_{HZ}'
+# Cs_dt =  (yMesh/Vs)*0.1
+# Cp_dt =  (yMesh/Vp)*0.1
+# print(f"Beam Side TimeSeries : Swave Dt = {Cs_dt}; Pwave Dt = {Cp_dt}")
+# # # ========================= "CaseA": SideLoad Pattern ===================================
+# # # ------------ Side Load Pattern ------------------------------
+# # xTimeSeriesID = 800
+# # xPatternID = 804
+# # for g in range(ny):
+# # # ------- timeSeries ID: 800~809 / Pattern ID: 804~813---------------------- HZ_{HZ}/
+# #     timeSeries('Path',xTimeSeriesID+g, '-filePath',f'{SideBeam_TimePath}/HZ{HZ}_P_Sideforce_{ny}rowx/ele{1+g}.txt','-dt', Cp_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# #     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # # ---------- Distributed at Left Side Beam ----------------------
+# #     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',-20*1e4,0)  # for local axes Wy -
+# # # ---------- Distributed at Right Side Beam ----------------------
+# #     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',+20*1e4,0)   # for local axes Wy +
 
-# yTimeSeriesID = xTimeSeriesID + ny
-# yPatternID  = xPatternID + ny
+# # yTimeSeriesID = xTimeSeriesID + ny
+# # yPatternID  = xPatternID + ny
 
-# for g in range(ny):
-# # ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
-# # ---------- y direction : Sideforce --------------------
-#     timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowy/ele{1+g}.txt','-dt', dt)
-#     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
-# # ---------- For P wave : y direction ---------------------
-# # ---------- Distributed at Left Side Beam ----------------------
-#     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
-# # ---------- Distributed at Right Side Beam ----------------------
-#     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
+# # for g in range(ny):
+# # # ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------HZ_{HZ}/
+# # # ---------- y direction : Sideforce --------------------
+# #     timeSeries('Path',yTimeSeriesID+g, '-filePath',f'{SideBeam_TimePath}/HZ{HZ}_P_Sideforce_{ny}rowy/ele{1+g}.txt','-dt', Cp_dt)
+# #     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
+# # # ---------- For P wave : y direction ---------------------
+# # # ---------- Distributed at Left Side Beam ----------------------
+# #     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',0,+20*1e4,0)  # for local axes Wx +
+# # # ---------- Distributed at Right Side Beam ----------------------
+# #     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,+20*1e4,0)   # for local axes Wx -
 
-# # ========================= "Case B": Side Node Dashpot ===================================
+# # # =========== "Case B": Side Beam + Node Dashpot (Beam Distributed + Nodal Force at Left and Right side) ===================================
+# # # ------------ Side Load Pattern-X direction ------------------------------
+# # xTimeSeriesID = 800
+# # xPatternID = 804
+
+# # # ==============================================  P Wave Condition =================================
+# # for g in range(ny):
+# # # ------- timeSeries ID: 800~809 / Pattern ID: 804~813----------------------
+# #     timeSeries('Path',xTimeSeriesID+g, '-filePath',f'{SideBeam_TimePath}/HZ{HZ}_P_Sideforce_{ny}rowx/ele{1+g}.txt','-dt', Cp_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# #     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # # ---------- Distributed at Left Side Beam ----------------------
+# #     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform', -20*1e4,0)  # for local axes Wy -    -20*coff
+# # # ---------- Distributed at Right Side Beam ----------------------
+# #     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform', +20*1e4,0)   # for local axes Wy +
+
+# # # # ------------------ SideForce Nodal Load: Py ---------------------------------
+# # yTimeSeriesID = xTimeSeriesID + ny
+# # yPatternID  = xPatternID + ny
+# # P0 = 20*1e4
+
+# # timeSeries('Path',yTimeSeriesID, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowy/node{1}.txt','-dt', Cp_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# # pattern('Plain',yPatternID, yTimeSeriesID)
+# # # ---- NodeForce at Left Side Corner -----
+# # load(LsideNode, 0, +P0*yMesh*0.5 ,0) # 10,0,0
+# # # ---- NodeForce at Right Side Corner -----
+# # load(RsideNode, 0, +P0*yMesh*0.5 ,0)
+# # # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
+
+# # timeSeries('Path',yTimeSeriesID+ny, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt', Cp_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# # pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
+# # # ---- NodeForce at Left Side Corner -----
+# # load(LsideNode+ny, 0, +P0*yMesh*0.5 ,0) # LsideNode+ny
+# # # ---- NodeForce at Right Side Corner -----
+# # load(RsideNode+ny, 0, +P0*yMesh*0.5 ,0) # RsideNode+ny
+# # # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowy/node{ny+1}.txt')
+
+
+# # for g in range(1,ny):
+# # # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
+# #     timeSeries('Path',yTimeSeriesID+g, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', Cp_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# #     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # # ---------- NodeForce at Left Side Beam ----------------------
+# #     load(LsideNode+g, 0, +P0*yMesh*1.0,0) # LsideNode+g
+# # # ---------- NodeForce at Right Side Beam ----------------------
+# #     load(RsideNode+g, 0, +P0*yMesh*1.0,0) # RsideNode+g
+# #     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
+
+# # # ==============================================  S Wave Condition =================================
+# # for g in range(ny):
+# # # ------- timeSeries ID: 800~809 / Pattern ID: 804~813----------------------
+# #     timeSeries('Path',xTimeSeriesID+g, '-filePath',f'{SideBeam_TimePath}/HZ{HZ}_S_Sideforce_{ny}rowx/ele{1+g}.txt','-dt', Cs_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# #     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # # ---------- Distributed at Left Side Beam ----------------------
+# #     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform', -20*1e4,0)  # for local axes Wy -    -20*coff
+# # # ---------- Distributed at Right Side Beam ----------------------
+# #     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform', -20*1e4,0)   # for local axes Wy +
+
+# # # # ------------------ SideForce Nodal Load: Py ---------------------------------
+# # yTimeSeriesID = xTimeSeriesID + ny
+# # yPatternID  = xPatternID + ny
+# # P0 = 20*1e4
+
+# # timeSeries('Path',yTimeSeriesID, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowy/node{1}.txt','-dt', Cs_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# # pattern('Plain',yPatternID, yTimeSeriesID)
+# # # ---- NodeForce at Left Side Corner -----
+# # load(LsideNode, 0, +P0*yMesh*0.5 ,0) # 10,0,0
+# # # ---- NodeForce at Right Side Corner -----
+# # load(RsideNode, 0, -P0*yMesh*0.5 ,0)
+# # # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
+
+# # timeSeries('Path',yTimeSeriesID+ny, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt', Cs_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# # pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
+# # # ---- NodeForce at Left Side Corner -----
+# # load(LsideNode+ny, 0, +P0*yMesh*0.5 ,0) # LsideNode+ny
+# # # ---- NodeForce at Right Side Corner -----
+# # load(RsideNode+ny, 0, -P0*yMesh*0.5 ,0) # RsideNode+ny
+# # # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowy/node{ny+1}.txt')
+
+
+# # for g in range(1,ny):
+# # # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
+# #     timeSeries('Path',yTimeSeriesID+g, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', Cs_dt) # Swave dt = Cs_dt/ Pwave dt = Cp_dt 
+# #     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # # ---------- NodeForce at Left Side Beam ----------------------
+# #     load(LsideNode+g, 0, +P0*yMesh*1.0,0) # LsideNode+g
+# # # ---------- NodeForce at Right Side Beam ----------------------
+# #     load(RsideNode+g, 0, -P0*yMesh*1.0,0) # RsideNode+g
+# #     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
+
+# # ========================= "Case C": Side Node Dashpot (Only Nodal Force at Left and Right side) =================================== HZ_{HZ}/
 # # ------------ Side Nodal Load Pattern ------------------------------
 # xTimeSeriesID = 800
 # xPatternID = 804
 
-# LsideNode = 1
-# RsideNode = 1 + nx #1+(nx+1)*ny
-
-
-# timeSeries('Path',xTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowx/node{1}.txt','-dt',dt)
+# # ============================== Swave Condition ======================== 
+# timeSeries('Path',xTimeSeriesID, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowx/node{1}.txt','-dt', Cs_dt) # Swave dt = 6.25e-05/ Pwave dt = 
 # pattern('Plain',xPatternID, xTimeSeriesID)
 # # ---- NodeForce at Left Side Corner -----
-# load(LsideNode, 20*yMesh*0.5,0) # 10,0,0
+# load(LsideNode, 20*1e4*yMesh*0.5,0 ,0) # 10,0,0
 # # ---- NodeForce at Right Side Corner -----
-# load(RsideNode, 20*yMesh*0.5,0)
+# load(RsideNode, 20*1e4*yMesh*0.5,0 ,0)
 # # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowx/node{1}.txt')
 
-# timeSeries('Path',xTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowx/node{ny+1}.txt','-dt',dt)
+# timeSeries('Path',xTimeSeriesID+ny, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowx/node{ny+1}.txt','-dt', Cs_dt)
 # pattern('Plain',xPatternID+ny, xTimeSeriesID+ny)
 # # ---- NodeForce at Left Side Corner -----
-# load(LsideNode+(nx+1)*ny, 20*yMesh*0.5,0)
+# load(LsideNode+ny, 20*1e4*yMesh*0.5,0 ,0)
 # # ---- NodeForce at Right Side Corner -----
-# load(RsideNode+(nx+1)* ny, 20*yMesh*0.5,0)
+# load(RsideNode+ny, 20*1e4*yMesh*0.5,0 ,0)
 # # print(LsideNode+(nx+1)*ny, RsideNode+(nx+1)* ny,f'S_Nodeforce_{ny}rowx/node{ny+1}.txt')
 
 # for g in range(1,ny):
 # # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
-#     timeSeries('Path',xTimeSeriesID+g, '-filePath',f'S_Nodeforce_{ny}rowx/node{1+g}.txt','-dt', dt)
+#     timeSeries('Path',xTimeSeriesID+g, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowx/node{1+g}.txt','-dt', Cs_dt)
 #     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
 # # # ---------- x direction : Sideforce ---------------------
 # # ---------- NodeForce at Left Side Beam ----------------------
-#     load(LsideNode+(nx+1)*g, 20*yMesh*1,0)
+#     load(LsideNode+g, 20*1e4*yMesh*1.0, 0 ,0)
 # # ---------- NodeForce at Right Side Beam ----------------------
-#     load(RsideNode+(nx+1)*g, 20*yMesh*1,0)
-#     # print(LsideNode+(nx+1)*g, RsideNode+(nx+1)*g,f'S_Nodeforce_{ny}rowx/node{1+g}')
+#     load(RsideNode+g, 20*1e4*yMesh*1.0, 0 ,0)
+#     # print(LsideNode+g, RsideNode+(nx+1)*g,f'S_Nodeforce_{ny}rowx/node{1+g}')
 # # print("Nodalforce= ", 20*yMesh*0.5, 20*yMesh*1 )
 
 # # ------------------ SideForce Nodal Load: Py ---------------------------------
 # yTimeSeriesID = xTimeSeriesID + (ny+1)
 # yPatternID  = xPatternID + (ny+1)
 
-# timeSeries('Path',yTimeSeriesID, '-filePath',f'S_Nodeforce_{ny}rowy/node{1}.txt','-dt',dt)
+# timeSeries('Path',yTimeSeriesID, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowy/node{1}.txt','-dt',Cs_dt)
 # pattern('Plain',yPatternID, yTimeSeriesID)
 # # ---- NodeForce at Left Side Corner -----
-# load(LsideNode, 0, +20*yMesh*0.5) # 10,0,0
+# load(LsideNode, 0, +20*1e4*yMesh*0.5 ,0) # 10,0,0
 # # ---- NodeForce at Right Side Corner -----
-# load(RsideNode, 0, -20*yMesh*0.5)
+# load(RsideNode, 0, -20*1e4*yMesh*0.5 ,0)
 # # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
 
-# timeSeries('Path',yTimeSeriesID+ny, '-filePath',f'S_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt',dt)
+# timeSeries('Path',yTimeSeriesID+ny, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt',Cs_dt)
 # pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
 # # ---- NodeForce at Left Side Corner -----
-# load(LsideNode+(nx+1)*ny, 0, +20*yMesh*0.5)
+# load(LsideNode+ny, 0, +20*1e4*yMesh*0.5 ,0)
 # # ---- NodeForce at Right Side Corner -----
-# load(RsideNode+(nx+1)*ny, 0, -20*yMesh*0.5)
+# load(RsideNode+ny, 0, -20*1e4*yMesh*0.5 ,0)
 # # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowy/node{ny+1}.txt')
 
 # for g in range(1,ny):
 # # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
-#     timeSeries('Path',yTimeSeriesID+g, '-filePath',f'S_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', dt)
+#     timeSeries('Path',yTimeSeriesID+g, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_S_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', Cs_dt)
 #     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
 # # # ---------- x direction : Sideforce ---------------------
 # # ---------- NodeForce at Left Side Beam ----------------------
-#     load(LsideNode+(nx+1)*g, 0, +20*yMesh*0.5)
+#     load(LsideNode+g, 0, +20*1e4*yMesh*1.0 ,0)
 # # ---------- NodeForce at Right Side Beam ----------------------
-#     load(RsideNode+(nx+1)*g, 0, +20*yMesh*0.5)
+#     load(RsideNode+g, 0, -20*1e4*yMesh*1.0 ,0)
 #     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
 
-# # # ------------------ SideForce Distributed Load: Wy ---------------------------------
-# # yTimeSeriesID = xTimeSeriesID + (ny+1)
-# # yPatternID  = xPatternID + (ny+1)
-# # for g in range(ny):
-# # # ------- timeSeries ID: 810~819 / Pattern ID:814~823 ----------------------
-# # # ---------- y direction : Sideforce --------------------
-# #     timeSeries('Path',yTimeSeriesID+g, '-filePath',f'SSideforce_{ny}rowy/ele{1+g}.txt','-dt', dt)
-# #     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
-# # # ---------- For P wave : y direction ---------------------
-# # # ---------- Distributed at Left Side Beam ----------------------
-# #     eleLoad('-ele',LsideEle+g, '-type', '-beamUniform',0,+20,0)  # for local axes Wx +
-# # # ---------- Distributed at Right Side Beam ----------------------
-# #     eleLoad('-ele',RsideEle+g, '-type', '-beamUniform',0,-20,0)   # for local axes Wx -
+# # ============================== Pwave Condition ======================== 
+# timeSeries('Path',xTimeSeriesID, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowx/node{1}.txt','-dt', Cp_dt) # Swave dt = 6.25e-05/ Pwave dt = 
+# pattern('Plain',xPatternID, xTimeSeriesID)
+# # ---- NodeForce at Left Side Corner -----
+# load(LsideNode, 20*1e4*yMesh*0.5,0 ,0) # 
+# # ---- NodeForce at Right Side Corner -----
+# load(RsideNode, -20*1e4*yMesh*0.5,0 ,0)
+# # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowx/node{1}.txt')
 
-# #     print(LsideEle+g, RsideEle+g,"finish SideBeam Force InputFile Apply")
+# timeSeries('Path',xTimeSeriesID+ny, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowx/node{ny+1}.txt','-dt', Cp_dt)
+# pattern('Plain',xPatternID+ny, xTimeSeriesID+ny)
+# # ---- NodeForce at Left Side Corner -----
+# load(LsideNode+ny, 20*1e4*yMesh*0.5,0 ,0)
+# # ---- NodeForce at Right Side Corner -----
+# load(RsideNode+ny, -20*1e4*yMesh*0.5,0 ,0)
+# # print(LsideNode+(nx+1)*ny, RsideNode+(nx+1)* ny,f'S_Nodeforce_{ny}rowx/node{ny+1}.txt')
 
-# # ============== SideBeam and Dashpot for "Case C" =========================================
-# # ==================== Side Beam node (145~165 / 146~164) ====================
-# yMesh = soilLength/ny # Y row MeshSize
-# LSideBeamNode_Start =  BotNDash_Start + 2*(nx+1)
-# RSideBeamNode_Start =  LSideBeamNode_Start + 2*ny +1
-# # print(LSideBeamNode_Start)
-# for i in range(ny+1):
-# # ----- Left Side: 145~165 -----------------
-#     node(LSideBeamNode_Start+2*i, 0.0, yMesh*i)
-#     mass(LSideBeamNode_Start+2*i,1,1,1)
-#     fix(LSideBeamNode_Start+2*i,0,0,1)
-    
-#     if i < ny: #146,148...,164
-#         node((LSideBeamNode_Start+1)+2*i, 0.0, (0.5*yMesh)+ yMesh*i)
-#         mass((LSideBeamNode_Start+1)+2*i,1,1,1)
-#         fix((LSideBeamNode_Start+1)+2*i,0,1,1)
+# for g in range(1,ny):
+# # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
+#     timeSeries('Path',xTimeSeriesID+g, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowx/node{1+g}.txt','-dt', Cp_dt)
+#     pattern('Plain',xPatternID+g, xTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # ---------- NodeForce at Left Side Beam ----------------------
+#     load(LsideNode+g, 20*1e4*yMesh*1.0, 0 ,0)
+# # ---------- NodeForce at Right Side Beam ----------------------
+#     load(RsideNode+g, -20*1e4*yMesh*1.0, 0 ,0)
+#     # print(LsideNode+g, RsideNode+g)
+# # print("Nodalforce= ", 20*yMesh*0.5, 20*yMesh*1 )
 
-# # ----- Right Side: 166~186 / 167~185 -----------------
-#     node(RSideBeamNode_Start+2*i, soilwidth, yMesh*i)
-#     mass(RSideBeamNode_Start+2*i,1,1,1)
-#     fix(RSideBeamNode_Start+2*i,0,0,1)
+# # ------------------ SideForce Nodal Load: Py ---------------------------------
+# yTimeSeriesID = xTimeSeriesID + (ny+1)
+# yPatternID  = xPatternID + (ny+1)
 
-#     if i < ny: #146,148...,164
-#         node((RSideBeamNode_Start+1)+2*i, soilwidth, (0.5*yMesh)+ yMesh*i)
-#         mass((RSideBeamNode_Start+1)+2*i,1,1,1)
-#         fix((RSideBeamNode_Start+1)+2*i,0,1,1)
+# timeSeries('Path',yTimeSeriesID, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowy/node{1}.txt','-dt',Cp_dt)
+# pattern('Plain',yPatternID, yTimeSeriesID)
+# # ---- NodeForce at Left Side Corner -----
+# load(LsideNode, 0, +20*1e4*yMesh*0.5 ,0) # 10,0,0
+# # ---- NodeForce at Right Side Corner -----
+# load(RsideNode, 0, +20*1e4*yMesh*0.5 ,0)
+# # print(LsideNode,RsideNode, f'S_Nodeforce_{ny}rowy/node{1}.txt')
+
+# timeSeries('Path',yTimeSeriesID+ny, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowy/node{ny+1}.txt','-dt',Cp_dt)
+# pattern('Plain',yPatternID+ny, yTimeSeriesID+ny)
+# # ---- NodeForce at Left Side Corner -----
+# load(LsideNode+ny, 0, +20*1e4*yMesh*0.5,0)
+# # ---- NodeForce at Right Side Corner -----
+# load(RsideNode+ny, 0, +20*1e4*yMesh*0.5,0)
+# # print(LsideNode+ny,RsideNode+ny,f'S_Nodeforce_{ny}rowy/node{ny+1}.txt')
+# printModel('-node', LsideNode+(nx+1)*ny, RsideNode+(nx+1)*ny)
+
+# for g in range(1,ny):
+# # ------- timeSeries ID: 800~810 / Pattern ID: 804~814----------------------
+#     timeSeries('Path',yTimeSeriesID+g, '-filePath', f'{SideBeam_TimePath}/HZ{HZ}_P_Nodeforce_{ny}rowy/node{1+g}.txt','-dt', Cp_dt)
+#     pattern('Plain',yPatternID+g, yTimeSeriesID+g)
+# # # ---------- x direction : Sideforce ---------------------
+# # ---------- NodeForce at Left Side Beam ----------------------
+#     load(LsideNode+g, 0, +20*1e4*yMesh*1.0,0)
+# # ---------- NodeForce at Right Side Beam ----------------------
+#     load(RsideNode+g, 0, +20*1e4*yMesh*1.0,0)
+#     # print(LsideNode+g, RsideNode+g,f'S_Nodeforce_{ny}rowy/node{1+g}')
 
 # # ============================ Apply Rayleigh Wave Absorption Dahpot ===================================================
 # # ---------- Left Side Rayleigh Dashpot ---------------------
@@ -801,28 +927,33 @@ print("Finished creating Bottom dashpot material and element...")
 # ======================================== Rayleigh Dashpot END ===============================================
 
 #=========================== Load Pattern 1: Shear wave / P wave ============================
-TimeSeries_Path = f"D:/shiang/opensees/20220330/OpenSeesPy"
-timeSeries('Path',702, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Dt0.1_HZ10.txt','-dt', 3.125e-05) # HZ = 40
-timeSeries('Path',704, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Dt0.1_HZ20.txt','-dt', 3.125e-05) # HZ = 20
-timeSeries('Path',705, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Dt0.1_HZ40.txt','-dt', 3.125e-05) # HZ = 10
+TimeSeries_Path = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries"
+#------------- Original TimeSeries dt => Pwave = 3.125e-05 ; Swave = 6.25e-05 ---------------------------------------
+#------------- New TimeSeries dt (Dy = 40 row) => Pwave = 6.25e-05 ; Swave = 1.25e-04 ------------------------------------
+Pwave_dt = 6.25e-05
+Swave_dt = 1.25e-04
+timeSeries('Path',702, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ10.txt','-dt', Pwave_dt) # HZ = 10
+timeSeries('Path',704, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ20.txt','-dt', Pwave_dt) # HZ = 20
+timeSeries('Path',705, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ40.txt','-dt', Pwave_dt) # HZ = 40
 
-timeSeries('Path',706, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Dt0.1_HZ10.txt','-dt', 6.25e-05) # HZ = 40
-timeSeries('Path',707, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Dt0.1_HZ20.txt','-dt', 6.25e-05) # HZ = 20
-timeSeries('Path',708, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Dt0.1_HZ40.txt','-dt', 6.25e-05) # HZ = 10
+timeSeries('Path',706, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ10.txt','-dt', Swave_dt) # HZ = 10
+timeSeries('Path',707, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ20.txt','-dt', Swave_dt) # HZ = 20
+timeSeries('Path',708, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ40.txt','-dt', Swave_dt) # HZ = 40
 # timeSeries('Path',702, '-filePath', f'TimeSeries/fs200_{ny}row.txt','-dt', dt)
 # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
 # # # # timeSeries('Linear',705)
 
-pattern('Plain',703, 705)
+HZ80_dt = ((soilLength/2)/(80*Vp))*0.1
+HZ160_dt = ((soilLength/4)/(80*Vp))*0.1
+HZ320_dt = ((soilLength/8)/(80*Vp))*0.1
+print(f'Different HZ Time => HZ80_dt = {HZ80_dt}; HZ160_dt = {HZ160_dt}; HZ320_dt = {HZ320_dt}')
+timeSeries('Path',709, '-filePath', f'{TimeSeries_Path}/Integrator_Time/fp_80HZ.txt','-dt', HZ80_dt) # HZ = 80
+timeSeries('Path',710, '-filePath', f'{TimeSeries_Path}/Integrator_Time/fp_160HZ.txt','-dt', HZ160_dt) # HZ = 160
+timeSeries('Path',711, '-filePath', f'{TimeSeries_Path}/Integrator_Time/fp_320HZ.txt','-dt', HZ320_dt) # HZ = 320
+
+pattern('Plain',703, 704) # TimeSeries_Num
 # load(95,0,-1)
-# ------------- P wave -----------------------------.
-Py = 20*1e4*yMesh
-# load(1, 0, Py*0.5)
-# load(1+nx, 0, Py*0.5)
-
-# for o in range(1,nx):
-#     load(1+o, 0 , Py)
-
+# ------------- P wave -----------------------------
 for o in range(nx):
     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',20*1e4,0) # *1e4
 
@@ -872,13 +1003,13 @@ recorder('Node', '-file', f'{path1}/node{LowerN_Right}.out', '-time', '-node',Lo
 recorder('Node', '-file', f'{path1}/node{CenterN_Right}.out', '-time', '-node',CenterN_Right,'-dof',1,2,3,'vel')
 recorder('Node', '-file', f'{path1}/node{UpperN_Right}.out', '-time', '-node',UpperN_Right,'-dof',1,2,3,'vel')
 
-# ==== Left 1/4 node ======================================
-recorder('Element', '-file', f'{path2}/ele{UpperrE_LQuarter}.out', '-time', '-ele',UpperrE_LQuarter, 'material ',1,'stresses')
-recorder('Node', '-file', f'{path1}/node{UpperrN_LQuarter}.out', '-time', '-node',UpperrN_LQuarter,'-dof',1,2,3,'vel')
+# # ==== Left 1/4 node ======================================
+# recorder('Element', '-file', f'{path2}/ele{UpperrE_LQuarter}.out', '-time', '-ele',UpperrE_LQuarter, 'material ',1,'stresses')
+# recorder('Node', '-file', f'{path1}/node{UpperrN_LQuarter}.out', '-time', '-node',UpperrN_LQuarter,'-dof',1,2,3,'vel')
 
-# ==== Right 1/4 node ======================================
-recorder('Element', '-file', f'{path2}/ele{UpperrE_RQuarter}.out', '-time', '-ele',UpperrE_RQuarter, 'material ',1,'stresses')
-recorder('Node', '-file', f'{path1}/node{UpperrN_RQuarter}.out', '-time', '-node',UpperrN_RQuarter,'-dof',1,2,3,'vel')
+# # ==== Right 1/4 node ======================================
+# recorder('Element', '-file', f'{path2}/ele{UpperrE_RQuarter}.out', '-time', '-ele',UpperrE_RQuarter, 'material ',1,'stresses')
+# recorder('Node', '-file', f'{path1}/node{UpperrN_RQuarter}.out', '-time', '-node',UpperrN_RQuarter,'-dof',1,2,3,'vel')
 
 # # # -------- Left Side Beam Node Vel/Stress --------------------------
 # # recorder('Node', '-file', f'Velocity/node{LSideBeamNode_Start}.out', '-time', '-node',LSideBeamNode_Start,'-dof',1,2,3,'vel')
@@ -946,11 +1077,11 @@ system("UmfPack")
 numberer("RCM")
 constraints("Transformation")
 
-# integrator("Newmark", 0.5, 0.25) # NewMark, (Constant), 0.5, 0.25 / (Linear),  0.5, (1/6)
+integrator("Newmark", 0.5, (1/6)) # NewMark, (Constant), 0.5, 0.25 / (Linear),  0.5, (1/6)
 # integrator("HHT", (2/3)) # unconditionally stable when 2/3 <= alpha <= 1.0(NewMark),
-integrator("CentralDifference")
+# integrator("CentralDifference")
 
-algorithm("Linear") # Newton For Intrgeator = "NewMark"/ "HHT"; Linear For Integrator = "CentralDifference"
+algorithm("Newton") # Newton For Intrgeator = "NewMark"/ "HHT"; Linear For Integrator = "CentralDifference"
 test('EnergyIncr',1e-8, 200)
 analysis("Transient")
 analyze(int(analystep),dt)
