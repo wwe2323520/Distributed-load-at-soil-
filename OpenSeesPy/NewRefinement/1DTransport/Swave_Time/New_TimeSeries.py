@@ -28,6 +28,7 @@ cp = (E*(1-nu)/((1+nu)*(1-2*nu)*rho))**(0.5)
 
 A = 0.1# 0.1
 # ======== Different frequency to Control Ws and Wp (v = f * lambda)======================
+ws_80HZ =  (4*pi)/5 # 0 to 5m = 0 to 2*pi => x = 4*pi/5
 ws_40HZ =  (2*pi)/5 # 0 to 5m = 0 to 2*pi => x = 2*pi/5
 ws_20HZ =  pi/5  # 0 to 10m = 0 to 2*pi => x = pi/5
 ws_10HZ =  pi/10 # 0 to 20m = 0 to 2*pi => x = pi/10
@@ -35,6 +36,7 @@ ws_10HZ =  pi/10 # 0 to 20m = 0 to 2*pi => x = pi/10
 fs_10HZ = 10
 fs_20HZ = 20
 fs_40HZ = 40
+fs_80HZ = 80
 
 # wp_20HZ =  pi/10 # 0 to 20m = 0 to 2*pi => x = pi/10
 # wp_10HZ =  pi/20 # 0 to 40m = 0 to 2*pi => x = pi/20
@@ -44,7 +46,12 @@ fs_40HZ = 40
 # fp_10HZ = 10
 # fp_40HZ = 40
 # ============================== Consider PWave ======================================
-L = cs/fs_10HZ # ********
+# ----------- Input Different Frequency and wp ------------------------------------
+Swave_frequency = fs_80HZ 
+Swave_wp = ws_80HZ
+# ----------- ------------------------------------------------------------
+
+L = cs/Swave_frequency # ********
 # calculate eace step time
 tns_cs = soilLength/cs # wave transport time L/cp
 dcell_cs = tns_cs/Nele #each cell time
@@ -53,8 +60,8 @@ print(f"Swave travel = {tns_cs} ;dcell = {dcell_cs} ;dt = {dt_cs}")
 
 Input_Time = L/cs
 
-time_cs = np.arange(0.0, Input_Time + dt_cs, dt_cs) # 0.0,0.050005,dt
-timecs_Node = np.arange(0.0, Input_Time + dt_cs, dt_cs) # 0.0,0.050005,dt
+time_cs = np.arange(0.0, 4*Input_Time + dt_cs, dt_cs) # 0.0,0.050005,dt
+timecs_Node = np.arange(0.0, 4*Input_Time + dt_cs, dt_cs) # 0.0,0.050005,dt
 Nt_cs = len(time_cs)
 
 #----------- Soil Coordinate --------------
@@ -70,7 +77,7 @@ End_Node = Nele
 dy = soilLength/Nele # L/Nele
 dx= dy/10 # 0.1, 0.01 each element have 10 step dx
 
-total_Transport_cs = np.arange(0.0,2*L+0.1, dx) # 0.0,20.1, dx
+total_Transport_cs = np.arange(0.0, 8*L+0.1, dx) # 0.0,20.1, dx
 
 # ---------- Incoming wave (Beam distributed load)------------------
 XIn = np.zeros((len(total_Transport_cs), Nele))
@@ -78,10 +85,10 @@ XIn = np.zeros((len(total_Transport_cs), Nele))
 for j in range(Nele): #100 
     tin = time_cs[10*j+5]
     x0 = x[10*j+5]  # 0.05,0.15,0.25....,9.95
-    # print(x0,cs*tin)
+    print(x0,cs*tin)
     for i in range(len(time_cs)):      
         xii = x0 + dx*i 
-        XIn[5+10*j+i,j] = Incoming_wave(ws_10HZ, xii, cs, tin)  #from 0.05m to 9.95m
+        XIn[5+10*j+i,j] = Incoming_wave(Swave_wp, xii, cs, tin)  #from 0.05m to 9.95m
 
 # ---------- Outcoming wave (Beam distributed load)-------------------
 XOut = np.zeros((len(total_Transport_cs), Nele))
@@ -94,7 +101,7 @@ for j in range(Nele):# 100 Nele
     # print(x0,cs*tout)
     for i in range(len(time_cs)):      
         xoo = x0 + dx*i 
-        XOut[End_disp-10*j+i,End_Ele-j] = Outgoing_wave(ws_10HZ, xoo, cs, tout)  #from 9.95m to 0.05m      
+        XOut[End_disp-10*j+i,End_Ele-j] = Outgoing_wave(Swave_wp, xoo, cs, tout)  #from 9.95m to 0.05m      
         
 # ---------- Incoming wave (Nodal Load)------------------
 XNodeIn = np.zeros((len(total_Transport_cs),Nnode))
@@ -105,7 +112,7 @@ for j in range(Nnode): #Nele 101
     # print(x0,cs*tNin)
     for i in range(len(timecs_Node)):      
         xii = x0 + dx*i 
-        XNodeIn[0+10*j+i,j] = Incoming_wave(ws_10HZ, xii, cs, tNin)  #from 0.05m to 9.95m
+        XNodeIn[0+10*j+i,j] = Incoming_wave(Swave_wp, xii, cs, tNin)  #from 0.05m to 9.95m
         # print(xii)
         
 # ---------- Outcoming wave (Nodal load)-------------------
@@ -118,7 +125,7 @@ for j in range(Nnode):# Nnode 101
     # print(x0,cs*tNout)
     for i in range(len(timecs_Node)):      
         xoo = x0 + dx*i 
-        XNodeOut[Endx0-10*j+i,End_Node-j] = Outgoing_wave(ws_10HZ, xoo, cs, tNout)  #from 10.0m to 0.0m   
+        XNodeOut[Endx0-10*j+i,End_Node-j] = Outgoing_wave(Swave_wp, xoo, cs, tNout)  #from 10.0m to 0.0m   
 
 total_time = np.arange(0.0,0.40003,dt_cs)
 Swave = np.zeros((len(total_time),Nele))
@@ -173,9 +180,9 @@ for m in range(Nnode): #Nnode 101/ 81
 # # ---- Output matrix eace column to txt file --------------
 FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Swave_Time"
 # num_rows, num_cols = SSideforce_x.shape# SNodeforce_y.shape
-# # # # 建立資料夾
+# # 建立資料夾
 # # ---------- Swave ---------------
-# S_folder_name_x = f"{FilePath}/SideBeam_Time/HZ20_S_Sideforce_{Nele}rowx" # "S_Nodeforce_80rowx"
+# S_folder_name_x = f"{FilePath}/New_SideBeam_Time/HZ80_S_Sideforce_{Nele}rowx" # "S_Nodeforce_80rowx"
 
 # os.makedirs(S_folder_name_x, exist_ok=True)
 # for col in range(num_cols):
@@ -188,7 +195,7 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Swave_Time"
 # # ---- Output matrix eace column to txt file --------------
 # num_rows, num_cols = SSideforce_y.shape# 8001,100
 
-# S_folder_name_y = f"{FilePath}/SideBeam_Time/HZ20_S_Sideforce_{Nele}rowy" # S_Sideforce_y
+# S_folder_name_y = f"{FilePath}/New_SideBeam_Time/HZ80_S_Sideforce_{Nele}rowy" # S_Sideforce_y
 # os.makedirs(S_folder_name_y, exist_ok=True)
 # # 逐一建立txt檔案並放入資料夾
 # for col in range(num_cols):
@@ -201,7 +208,7 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Swave_Time"
 # # ---------- S wave NodalForce Wx---------------
 # num_rows, num_cols = SNodeforce_x.shape# 8001,100
 
-# S_folder_name_y = f"{FilePath}/SideBeam_Time/HZ20_S_Nodeforce_{Nele}rowx" # NodalForce
+# S_folder_name_y = f"{FilePath}/New_SideBeam_Time/HZ80_S_Nodeforce_{Nele}rowx" # NodalForce
 # os.makedirs(S_folder_name_y, exist_ok=True)
 # for col in range(num_cols):
 #     column_values = SNodeforce_x[:, col]
@@ -213,7 +220,7 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Swave_Time"
 # # ---------- S wave NodalForce Wy---------------
 # num_rows, num_cols = SNodeforce_y.shape# 8001,100
 
-# S_folder_name_y = f"{FilePath}/SideBeam_Time/HZ20_S_Nodeforce_{Nele}rowy" # NodalForce
+# S_folder_name_y = f"{FilePath}/New_SideBeam_Time/HZ80_S_Nodeforce_{Nele}rowy" # NodalForce
 # os.makedirs(S_folder_name_y, exist_ok=True)
 # for col in range(num_cols):
 #     column_values = SNodeforce_y[:, col]
@@ -227,10 +234,10 @@ plt.figure(figsize=(8,6))
 # plt.title('Wave Transport',fontsize = 18)   
 
 # plt.title(r'SideForce $\eta_{p}v_x$',fontsize = 18) 
-# plt.title(r'SideForce $\sigma_{xy}$',fontsize = 18)    
+plt.title(r'SideForce $\sigma_{xy}$',fontsize = 18)    
 
 # plt.title(r'NodeForce $\eta_{p}v_x$',fontsize = 18)   
-plt.title(r'NodeForce $\sigma_{xy}$',fontsize = 18) 
+# plt.title(r'NodeForce $\sigma_{xy}$',fontsize = 18) 
 
 plt.xlabel("time t(s)",fontsize=18)
 # # ----- Swave -------------
@@ -238,7 +245,7 @@ plt.xlabel("time t(s)",fontsize=18)
 # plt.plot(total_time,Swave[:,20],label ='Node 5', marker='x', markevery=100)
 # plt.plot(total_time,Swave[:,39],label ='Node 10', marker='d', markevery=100)
 
-# # # ----- Swave eta_p*(Vx) -------------
+# # ----- Swave eta_p*(Vx) -------------
 # plt.plot(total_time,SSideforce_x[:,0],label ='Bot Element', marker='o', markevery=100)
 # plt.plot(total_time,SSideforce_x[:, int(Nele/2)-1],label ='Center Element', marker='x', markevery=100)
 # plt.plot(total_time,SSideforce_x[:, int(Nele-1)],label ='Top Element', marker='d', markevery=100)
@@ -256,7 +263,7 @@ plt.plot(total_time,SNodeforce_y[:,0],label ='Bot node', marker='o', markevery=1
 plt.plot(total_time,SNodeforce_y[:,int(Nele/2)],label ='Center node', marker='x', markevery=100)
 plt.plot(total_time,SNodeforce_y[:,int(Nele)],label ='Top node', marker='d', markevery=100)
 
-plt.legend(loc='upper right',fontsize=18)
+plt.legend(fontsize=18) # loc='upper right',
 plt.xticks(fontsize = 15)
 plt.yticks(fontsize = 15)
 plt.xlim(0.0, 0.20) # 0.40
