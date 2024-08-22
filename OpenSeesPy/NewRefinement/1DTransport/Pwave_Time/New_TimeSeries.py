@@ -16,7 +16,7 @@ Soil_40row= 40 # dt= 1.25e-4    #cpdt = 6.68e-05
 Soil_80row= 80 # dt= 6.25e-05   #cpdt = 3.34e-05
 Soil_100row= 100 # dt= 6.25e-05   #cpdt = 3.34e-05
 
-Nele = Soil_80row # Soil_80row
+Nele = Soil_40row # Soil_80row
 End_Ele = Nele-1
 cs = 200 # m/s
 soilLength = 10 # m(Soil_Depth)
@@ -35,12 +35,19 @@ ws_10HZ =  pi/10 # 0 to 20m = 0 to 2*pi => x = pi/10
 wp_20HZ =  pi/10 # 0 to 20m = 0 to 2*pi => x = pi/10
 wp_10HZ =  pi/20 # 0 to 40m = 0 to 2*pi => x = pi/20
 wp_40HZ =  pi/5 # 0 to 10m = 0 to 2*pi => x = pi/5
+wp_80HZ =  (2*pi)/5 # 0 to 5m = 0 to 2*pi => x = 2*pi/5
 
 fp_20HZ = 20
 fp_10HZ = 10
 fp_40HZ = 40
+fp_80HZ = 80
 # ============================== Consider PWave ======================================
-L = cp/fp_10HZ # ********
+# ----------- Input Different Frequency and wp ------------------------------------
+Pwave_frequency = fp_80HZ 
+Pwave_wp = wp_80HZ
+# ----------- ------------------------------------------------------------
+
+L = cp/Pwave_frequency 
 # calculate eace step time
 tns_cp = soilLength/cp # wave transport time L/cp
 dcell_cp = tns_cp/Nele #each cell time
@@ -49,8 +56,8 @@ print(f"Pwave travel = {tns_cp} ;dcell = {dcell_cp} ;dt = {dt_cp}")
 
 Input_Time = L/cp
 
-time_cp = np.arange(0.0, Input_Time + dt_cp, dt_cp) # 0.0, 0.02503,dt_cp
-timecp_Node = np.arange(0.0, Input_Time + dt_cp, dt_cp) # 0.0, 0.02503,dt_cp
+time_cp = np.arange(0.0, 2*Input_Time + dt_cp, dt_cp) # 0.0, 0.02503,dt_cp
+timecp_Node = np.arange(0.0, 2*Input_Time + dt_cp, dt_cp) # 0.0, 0.02503,dt_cp
 Nt_cp = len(time_cp)
 
 #----------- Soil Coordinate --------------
@@ -66,7 +73,7 @@ End_Node = Nele
 dy = soilLength/Nele # L/Nele
 dx= dy/10 # 0.1, 0.01 each element have 10 step dx
 
-total_Transport_cp = np.arange(0.0,2*L+0.1, dx) # 0.0,20.1, dx
+total_Transport_cp = np.arange(0.0,4*L+0.1, dx) # 0.0,20.1, dx
 
 # ---------- Incoming wave (Beam distributed load)------------------
 XIn = np.zeros((len(total_Transport_cp), Nele))
@@ -77,7 +84,7 @@ for j in range(Nele): #100
     # print(x0,cp*tin)
     for i in range(len(time_cp)):      
         xii = x0 + dx*i 
-        XIn[5+10*j+i,j] = Incoming_wave(wp_10HZ, xii, cp, tin)  #from 0.05m to 9.95m
+        XIn[5+10*j+i,j] = Incoming_wave(Pwave_wp, xii, cp, tin)  #from 0.05m to 9.95m
 
 # ---------- Outcoming wave (Beam distributed load)-------------------
 XOut = np.zeros((len(total_Transport_cp), Nele))
@@ -90,7 +97,7 @@ for j in range(Nele):# 100 Nele
     # print(x0,cp*tout)
     for i in range(len(time_cp)):      
         xoo = x0 + dx*i 
-        XOut[End_disp-10*j+i,End_Ele-j] = Outgoing_wave(wp_10HZ, xoo, cp, tout)  #from 9.95m to 0.05m      
+        XOut[End_disp-10*j+i,End_Ele-j] = Outgoing_wave(Pwave_wp, xoo, cp, tout)  #from 9.95m to 0.05m      
         
 # ---------- Incoming wave (Nodal Load)------------------
 XNodeIn = np.zeros((len(total_Transport_cp),Nnode))
@@ -101,7 +108,7 @@ for j in range(Nnode): #Nele 101
     # print(x0,cp*tNin)
     for i in range(len(timecp_Node)):      
         xii = x0 + dx*i 
-        XNodeIn[0+10*j+i,j] = Incoming_wave(wp_10HZ, xii, cp, tNin)  #from 0.05m to 9.95m
+        XNodeIn[0+10*j+i,j] = Incoming_wave(Pwave_wp, xii, cp, tNin)  #from 0.05m to 9.95m
         # print(xii)
         
 # ---------- Outcoming wave (Nodal load)-------------------
@@ -114,7 +121,7 @@ for j in range(Nnode):# Nnode 101
     # print(x0,cp*tNout)
     for i in range(len(timecp_Node)):      
         xoo = x0 + dx*i 
-        XNodeOut[Endx0-10*j+i,End_Node-j] = Outgoing_wave(wp_10HZ, xoo, cp, tNout)  #from 10.0m to 0.0m   
+        XNodeOut[Endx0-10*j+i,End_Node-j] = Outgoing_wave(Pwave_wp, xoo, cp, tNout)  #from 10.0m to 0.0m   
 
 total_time = np.arange(0.0,0.40003,dt_cp)
 Pwave = np.zeros((len(total_time),Nele))
@@ -171,9 +178,9 @@ for m in range(Nnode): #Nnode 101/ 81
 # # # ---- Output matrix eace column to txt file --------------
 FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Pwave_Time"
 # num_rows, num_cols = PSideforce_x.shape# SNodeforce_y.shape
-# # # # # 建立資料夾
+# # # 建立資料夾
 # # ---------- Swave ---------------
-# S_folder_name_x = f"{FilePath}/SideBeam_Time/HZ40_P_Sideforce_{Nele}rowx" # "S_Nodeforce_80rowx"
+# S_folder_name_x = f"{FilePath}/New_SideBeam_Time/HZ80_P_Sideforce_{Nele}rowx" # "S_Nodeforce_80rowx"
 
 # os.makedirs(S_folder_name_x, exist_ok=True)
 # for col in range(num_cols):
@@ -186,7 +193,7 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Pwave_Time"
 # # ---- Output matrix eace column to txt file --------------
 # num_rows, num_cols = PSideforce_y.shape# 8001,100
 
-# S_folder_name_y = f"{FilePath}/SideBeam_Time/HZ40_P_Sideforce_{Nele}rowy" # S_Sideforce_y
+# S_folder_name_y = f"{FilePath}/New_SideBeam_Time/HZ80_P_Sideforce_{Nele}rowy" # S_Sideforce_y
 # os.makedirs(S_folder_name_y, exist_ok=True)
 # # 逐一建立txt檔案並放入資料夾
 # for col in range(num_cols):
@@ -199,7 +206,7 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Pwave_Time"
 # # ---------- S wave NodalForce Wx---------------
 # num_rows, num_cols = PNodeforce_x.shape# 8001,100
 
-# S_folder_name_y = f"{FilePath}/SideBeam_Time/HZ40_P_Nodeforce_{Nele}rowx" # NodalForce
+# S_folder_name_y = f"{FilePath}/New_SideBeam_Time/HZ80_P_Nodeforce_{Nele}rowx" # NodalForce
 # os.makedirs(S_folder_name_y, exist_ok=True)
 # for col in range(num_cols):
 #     column_values = PNodeforce_x[:, col]
@@ -211,7 +218,7 @@ FilePath = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries/Pwave_Time"
 # # ---------- S wave NodalForce Wy---------------
 # num_rows, num_cols = PNodeforce_y.shape# 8001,100
 
-# S_folder_name_y = f"{FilePath}/SideBeam_Time/HZ40_P_Nodeforce_{Nele}rowy" # NodalForce
+# S_folder_name_y = f"{FilePath}/New_SideBeam_Time/HZ80_P_Nodeforce_{Nele}rowy" # NodalForce
 # os.makedirs(S_folder_name_y, exist_ok=True)
 # for col in range(num_cols):
 #     column_values = PNodeforce_y[:, col]
@@ -225,14 +232,14 @@ plt.figure(figsize=(8,6))
 # plt.title('Wave Transport',fontsize = 18)   
  
 # plt.title(r'SideForce $\nu/(1-\nu)$ $\sigma_{yy}$',fontsize = 18)    
-# plt.title(r'SideForce $\eta_{s}v_y$',fontsize = 18)   
+plt.title(r'SideForce $\eta_{s}v_y$',fontsize = 18)   
 
 # plt.title(r'NodeForce $\sigma_{yy}$',fontsize = 18)      
-plt.title(r'NodeForce $\eta_{s}v_y$',fontsize = 18)   
+# plt.title(r'NodeForce $\eta_{s}v_y$',fontsize = 18)   
 
 plt.xlabel("time t(s)",fontsize=18)
 
-# # ----- Swave sigma_yy -------------
+# ----- Swave sigma_yy -------------
 # plt.plot(total_time,PSideforce_x[:,0],label ='Bot Element', marker='o', markevery=100)
 # plt.plot(total_time,PSideforce_x[:, int(Nele/2)-1],label ='Center Element', marker='x', markevery=100)
 # plt.plot(total_time,PSideforce_x[:, int(Nele-1)],label ='Top Element', marker='d', markevery=100)
@@ -241,7 +248,7 @@ plt.xlabel("time t(s)",fontsize=18)
 # plt.plot(total_time,PNodeforce_x[:,int(Nele/2)],label ='Center node', marker='x', markevery=100)
 # plt.plot(total_time,PNodeforce_x[:,int(Nele)],label ='Top node', marker='d', markevery=100)
 
-# # ----- Swave eta_s*(Vy) -------------
+# ----- Swave eta_s*(Vy) -------------
 # plt.plot(total_time,PSideforce_y[:,0],label ='Bot Element', marker='o', markevery=100)
 # plt.plot(total_time,PSideforce_y[:, int(Nele/2)-1],label ='Center Element', marker='x', markevery=100)
 # plt.plot(total_time,PSideforce_y[:, int(Nele-1)],label ='Top Element', marker='d', markevery=100)
@@ -250,7 +257,7 @@ plt.plot(total_time,PNodeforce_y[:,0],label ='Bot node', marker='o', markevery=1
 plt.plot(total_time,PNodeforce_y[:,int(Nele/2)],label ='Center node', marker='x', markevery=100)
 plt.plot(total_time,PNodeforce_y[:,int(Nele)],label ='Top node', marker='d', markevery=100)
 
-plt.legend(loc='upper right',fontsize=18)
+plt.legend(fontsize=18) # loc='upper right',
 plt.xticks(fontsize = 15)
 plt.yticks(fontsize = 15)
 plt.xlim(0.0, 0.20) # 0.40
