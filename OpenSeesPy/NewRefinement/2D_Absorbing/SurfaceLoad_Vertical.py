@@ -26,7 +26,7 @@ Width = np.array([2.0, 5.0, 10.0, 20.0]) # 1D Transport: 2.0, 10.0, 20.0 ; 2D Ab
 Y_MeshNumber= np.array([40]) # 1D Transport: 80, 40, 20, 10 ; 2D Absorbing: 80, 40, 20
 
 Choose_Wave = f"NewMark_Linear/Vertical" # Pwave ; Vertical / Horizon / Rocking  
-# HZ = 40
+# HZ = 20
 for i in range(len(Width)):
     soilwidth = Width[i]
     print(f"================ Now SoilWidth = {soilwidth} ================")
@@ -467,7 +467,7 @@ for i in range(len(Width)):
             Found_Left = RSideTDash_Start + 2*(ny+1)
             Found_Mid = Found_Left + 1
             Found_Right = Found_Mid + 1
-            
+
             FoundLeft_Ele = RsideTEle_End + 1 
             FoundRight_Ele = FoundLeft_Ele + 1
 
@@ -898,17 +898,20 @@ for i in range(len(Width)):
             print(f'Distributed Load = {Distribute_Force}; Py = {Distribute_Force*(2*Dw)/2}')
 
             pattern('Plain',703, TimeSeries_Num) # TimeSeries_Num
-            # # ------------- Case 1 => Vertical Apply: P wave TimeSeries -----------------------------
+            # ------------- Case 1 => Vertical Apply: P wave TimeSeries -----------------------------
             # load(Found_Left, 0,-0.5*1e5)
             # load(Found_Mid, 0,-1*1e5)
             # load(Found_Right, 0,-0.5*1e5)
 
             eleLoad('-ele', FoundLeft_Ele, '-type','-beamUniform', -Distribute_Force,0) # *1e4
+            eleLoad('-ele', FoundRight_Ele, '-type','-beamUniform', -Distribute_Force,0) # *1e4
 
             # #  ------------- Case 2 => Horizon Apply: S wave TimeSeries -----------------------------
-            # load(Found_Left, 0.5**1e5, 0)
-            # load(CenterN_Center, 1*1e5, 0)
-            # load(Found_Right, 0.5*1e5, 0)
+            # # load(Found_Left, 0.5**1e5, 0)
+            # # load(CenterN_Center, 1*1e5, 0)
+            # # load(Found_Right, 0.5*1e5, 0)
+            # eleLoad('-ele', FoundLeft_Ele, '-type','-beamUniform',0, Distribute_Force,0)
+            # eleLoad('-ele', FoundRight_Ele, '-type','-beamUniform',0, Distribute_Force,0)
 
             # #  ------------- Case 3 => Rocking Apply: P wave TimeSeries -----------------------------
             # Total_ApplyNode = int(0.5/Dw)
