@@ -14,18 +14,18 @@ pi = np.pi
 # ----------- Rayleigh Dashpot Cofficient ------------------
 # Integrator = "Central"
 # ---------- For 1D Transport ------------------
-PtimeNum = np.array([702, 704, 705]) # For P wave TimeSeries 702, 704, 705
-StimeNum = np.array([706, 707, 708]) # For S wave TimeSeries 706, 707, 708
+PtimeNum = np.array([702, 704, 705, 706]) # For P wave TimeSeries 702, 704, 705, 706
+StimeNum = np.array([707, 708, 709, 710]) # For S wave TimeSeries 707, 708, 709, 710
 
 # ---------- For 2D Absorbing ------------------
-Top_Ptime = np.array([709, 710, 711]) # For P wave TimeSeries 709, 710, 711
-Top_Stime = np.array([712, 713, 714]) # For S wave TimeSeries 712, 713, 714
+Top_Ptime = np.array([711, 712, 713, 714]) # For P wave TimeSeries 709, 710, 711
+Top_Stime = np.array([715, 716, 717, 718]) # For S wave TimeSeries 712, 713, 714
 
-Force_HZ = np.array([10, 20, 40]) # 10, 20, 40
+Force_HZ = np.array([10, 20, 40, 80]) # 10, 20, 40, 80
 Width = np.array([2.0, 5.0, 10.0, 20.0]) # 1D Transport: 2.0, 10.0, 20.0 ; 2D Absorbing: 2.0, 5.0, 10.0, 20.0
-Y_MeshNumber= np.array([80, 40, 20]) # 1D Transport: 80, 40, 20, 10 ; 2D Absorbing: 80, 40, 20
+Y_MeshNumber= np.array([40]) # 1D Transport: 80, 40, 20, 10 ; 2D Absorbing: 80, 40, 20
 
-Choose_Wave = f"Central_Differential/Vertical" # Pwave ; Vertical / Horizon / Rocking  
+Choose_Wave = f"NewMark_Linear/Vertical" # Pwave ; Vertical / Horizon / Rocking  
 # HZ = 40
 for i in range(len(Width)):
     soilwidth = Width[i]
@@ -85,7 +85,7 @@ for i in range(len(Width)):
             # ---- Calculate dt -------------------
             Dt_Size = 0.8 # C = 0.1, 0.4, 0.8, 1.0, 2.0
 
-            dt_Mesh = (soilLength/80)
+            dt_Mesh = (soilLength/ny)
             dt = (dt_Mesh/Vp)*Dt_Size # dcell*Dt_Size
             print(f'dt_Mesh = {dt_Mesh}')
 
@@ -447,11 +447,53 @@ for i in range(len(Width)):
                 # print(RsideTEle_Start+w, (RSideTDash_Start+1)+2*w, RSideTDash_Start+2*w)
             # print("Finished creating Side dashpot material and element...")
 
+            # ==================== Surface Middle Beam (W = 1m) ===============================
+            TopLeft_Node = UpperN_Center - int(0.5/Dw)
+            TopMid_Node = UpperN_Center
+            TopRight_Node = UpperN_Center + int(0.5/Dw)
+            print(f"TopLeft_Node = {TopLeft_Node}, TopMid_Node = {TopMid_Node},  TopRight_Node = {TopRight_Node}")
+            # printModel('-node', TopLeft_Node, TopMid_Node, TopRight_Node)
+
+            # --------- Fide Foundation Middle and Left/ Right Node ---------------------
+            # # -======= Tie Condition =======
+            # Found_Left = BotNDash_Start + 2*(nx+1)
+            # Found_Mid = Found_Left + 1
+            # Found_Right = Found_Mid + 1
+
+            # FoundLeft_Ele = BotNEle_End + 1
+            # FoundRight_Ele = FoundLeft_Ele + 1
+
+            # ======= LK Dashpot Condition and BeamType Condition =======
+            Found_Left = RSideTDash_Start + 2*(ny+1)
+            Found_Mid = Found_Left + 1
+            Found_Right = Found_Mid + 1
+            
+            FoundLeft_Ele = RsideTEle_End + 1 
+            FoundRight_Ele = FoundLeft_Ele + 1
+
+            node(Found_Left, (soilwidth/2)-0.5, soilLength)
+            node(Found_Mid, (soilwidth/2), soilLength)
+            node(Found_Right, (soilwidth/2)+0.5, soilLength)
+            print(f'Found_Left = {Found_Left}, Found_Mid = {Found_Mid}, Found_Right = {Found_Right}')
+            # printModel('-node', Found_Left, Found_Mid, Found_Right)
+
+            fix(Found_Left,0,0,1)
+            fix(Found_Mid,0,0,1)
+            fix(Found_Right,0,0,1)
+            # ---------- Top Foundation Beam Element ----------------------
+            element('elasticBeamColumn', FoundLeft_Ele, Found_Left, Found_Mid, A,E1,Iz, 1, '-release', 3)
+            element('elasticBeamColumn', FoundRight_Ele, Found_Mid, Found_Right, A,E1,Iz, 1, '-release', 3)
+
+            # --------- Top Beam and Soil BC -----------------
+            equalDOF(TopLeft_Node, Found_Left, 1,2)
+            equalDOF(TopMid_Node, Found_Mid, 1,2)
+            equalDOF(TopRight_Node, Found_Right, 1,2)
+
             # ================ NewBC: for Case A/B============================
             # ==================== Side Beam node (233~243 / 244~254) ====================
-            LsideNode = RSideTDash_Start + 2*(ny+1)
+            LsideNode = Found_Right +1 # RSideTDash_Start + 2*(ny+1)
             RsideNode = LsideNode + (ny+1)
-            LsideEle = RsideTEle_End + 1 
+            LsideEle =  FoundRight_Ele +1 # RsideTEle_End + 1 
             RsideEle = LsideEle + ny
 
             for i in range(ny+1):
@@ -808,22 +850,24 @@ for i in range(len(Width)):
             # ======================================== Rayleigh Dashpot END ===============================================
 
             #=========================== Load Pattern 1: Shear wave / P wave ============================
-            TimeSeries_Path = f"D:/shiang/opensees/20220330/OpenSeesPy"
-            timeSeries('Path',702, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Dt0.1_HZ10.txt','-dt', 3.125e-05) # HZ = 40
-            timeSeries('Path',704, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Dt0.1_HZ20.txt','-dt', 3.125e-05) # HZ = 20
-            timeSeries('Path',705, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Dt0.1_HZ40.txt','-dt', 3.125e-05) # HZ = 10
+            TimeSeries_Path = f"D:/shiang/opensees/20220330/OpenSeesPy/TimeSeries"
+            #------------- Original TimeSeries dt => Pwave = 3.125e-05 ; Swave = 6.25e-05 ---------------------------------------
+            #------------- New TimeSeries dt (Dy = 40 row) => Pwave = 6.25e-05 ; Swave = 1.25e-04 ------------------------------------
+            Pwave_dt = 6.25e-05
+            Swave_dt = 1.25e-04
 
-            timeSeries('Path',706, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Dt0.1_HZ10.txt','-dt', 6.25e-05) # HZ = 40
-            timeSeries('Path',707, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Dt0.1_HZ20.txt','-dt', 6.25e-05) # HZ = 20
-            timeSeries('Path',708, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Dt0.1_HZ40.txt','-dt', 6.25e-05) # HZ = 10
-            # timeSeries('Path',702, '-filePath', f'TimeSeries/fs200_{ny}row.txt','-dt', dt)
-            # timeSeries('Path',704, '-filePath','TopForce10row.txt','-dt',2.67e-4)
-            # # # # timeSeries('Linear',705)
+            timeSeries('Path',702, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ10.txt','-dt', Pwave_dt) # HZ = 10
+            timeSeries('Path',704, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ20.txt','-dt', Pwave_dt) # HZ = 20
+            timeSeries('Path',705, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ40.txt','-dt', Pwave_dt) # HZ = 40
+            timeSeries('Path',706, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Dt0.1_HZ80.txt','-dt', Pwave_dt) # HZ = 80
 
-            # pattern('Plain',703, 705)
+            timeSeries('Path',707, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ10.txt','-dt', Swave_dt) # HZ = 10
+            timeSeries('Path',708, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ20.txt','-dt', Swave_dt) # HZ = 20
+            timeSeries('Path',709, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ40.txt','-dt', Swave_dt) # HZ = 40
+            timeSeries('Path',710, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Dt0.1_HZ80.txt','-dt', Swave_dt) # HZ = 80
+
+            # pattern('Plain',703, 705) # TimeSeries_Num
             # # ------------- P wave -----------------------------.
-            # Py = 20*1e4*yMesh
-
             # for o in range(nx):
             #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',20*1e4,0) # *1e4
 
@@ -832,25 +876,34 @@ for i in range(len(Width)):
             # #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',0,20*1e4,0)
 
             # ===================== Load Pattern 2: TopForce on the top Middle Foundation (Foundation width = 1m, r = 0.5m)======================
-            timeSeries('Path',709, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Surface_HZ10.txt','-dt', 3.125e-05) # HZ = 10
-            timeSeries('Path',710, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Surface_HZ20.txt','-dt', 3.125e-05) # HZ = 20
-            timeSeries('Path',711, '-filePath', f'{TimeSeries_Path}/TimeSeries/Pwave_Time/fp_Surface_HZ40.txt','-dt', 3.125e-05) # HZ = 40
+            timeSeries('Path',711, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ10.txt','-dt', Pwave_dt) # HZ = 10
+            timeSeries('Path',712, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ20.txt','-dt', Pwave_dt) # HZ = 20
+            timeSeries('Path',713, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ40.txt','-dt', Pwave_dt) # HZ = 40
+            timeSeries('Path',714, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ80.txt','-dt', Pwave_dt) # HZ = 80
 
-            timeSeries('Path',712, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Surface_HZ10.txt','-dt', 6.25e-05) # HZ = 10
-            timeSeries('Path',713, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Surface_HZ20.txt','-dt', 6.25e-05) # HZ = 20
-            timeSeries('Path',714, '-filePath', f'{TimeSeries_Path}/TimeSeries/Swave_Time/fs_Surface_HZ40.txt','-dt', 6.25e-05) # HZ = 40
+            timeSeries('Path',715, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ10.txt','-dt', Swave_dt) # HZ = 10
+            timeSeries('Path',716, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ20.txt','-dt', Swave_dt) # HZ = 20
+            timeSeries('Path',717, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ40.txt','-dt', Swave_dt) # HZ = 40
+            timeSeries('Path',718, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ80.txt','-dt', Swave_dt) # HZ = 80
 
-            # --------- Fide Foundation Middle and Left/ Right Node ---------------------
-            Found_Left = UpperN_Center - int(0.5/Dw)
-            Found_Right = UpperN_Center + int(0.5/Dw)
-            print(f"Found_Left = {Found_Left}, Found_Right = {Found_Right}")
-            # printModel('-node', Found_Left, Found_Right)
+            # # --------- Fide Foundation Middle and Left/ Right Node ---------------------
+            # TopLeft_Node = UpperN_Center - int(0.5/Dw)
+            # TopMid_Node = UpperN_Center
+            # TopRight_Node = UpperN_Center + int(0.5/Dw)
+            # print(f"TopLeft_Node = {TopLeft_Node}, TopMid_Node = {TopMid_Node},  TopRight_Node = {TopRight_Node}")
+            # # printModel('-node', TopLeft_Node, TopMid_Node, TopRight_Node)
+
+            Total_Force = 20*1e4
+            Distribute_Force = Total_Force/(4*Dw)
+            print(f'Distributed Load = {Distribute_Force}; Py = {Distribute_Force*(2*Dw)/2}')
 
             pattern('Plain',703, TimeSeries_Num) # TimeSeries_Num
             # # ------------- Case 1 => Vertical Apply: P wave TimeSeries -----------------------------
-            load(Found_Left, 0,-0.5*1e5)
-            load(UpperN_Center, 0,-1*1e5)
-            load(Found_Right, 0,-0.5*1e5)
+            # load(Found_Left, 0,-0.5*1e5)
+            # load(Found_Mid, 0,-1*1e5)
+            # load(Found_Right, 0,-0.5*1e5)
+
+            eleLoad('-ele', FoundLeft_Ele, '-type','-beamUniform', -Distribute_Force,0) # *1e4
 
             # #  ------------- Case 2 => Horizon Apply: S wave TimeSeries -----------------------------
             # load(Found_Left, 0.5**1e5, 0)
@@ -911,6 +964,7 @@ for i in range(len(Width)):
             Top_CenterLeft = UpperN_Center - int(1.0/Dw)
             Top_CenterRight = UpperN_Center + int(1.0/Dw)
             print(f'Top_CenterLeft Node = {Top_CenterLeft}; Top_CenterRight Node = {Top_CenterRight}')
+            # printModel('-node', Top_CenterLeft, Top_CenterRight)
             recorder('Node', '-file', f'{path1}/node{Top_CenterLeft}.out', '-time', '-node',Top_CenterLeft,'-dof',1,2,3,'vel')
             recorder('Node', '-file', f'{path1}/node{Top_CenterRight}.out', '-time', '-node',Top_CenterRight,'-dof',1,2,3,'vel')
             # printModel('-node', Top_CenterLeft, Top_CenterRight)
@@ -981,9 +1035,9 @@ for i in range(len(Width)):
             numberer("RCM")
             constraints("Transformation")
 
-            # integrator("Newmark", 0.5, 0.25) # NewMark, (Constant), 0.5, 0.25 / (Linear),  0.5, (1/6)
+            integrator("Newmark", 0.5, (1/6)) # NewMark, (Constant), 0.5, 0.25 / (Linear),  0.5, (1/6)
             # integrator("HHT", (2/3)) # unconditionally stable when 2/3 <= alpha <= 1.0(NewMark),
-            integrator("CentralDifference")
+            # integrator("CentralDifference")
 
             algorithm("Linear") # Newton For Intrgeator = "NewMark"/ "HHT"; Linear For Integrator = "CentralDifference"
             test('EnergyIncr',1e-8, 200)
