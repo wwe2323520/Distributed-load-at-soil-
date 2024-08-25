@@ -852,13 +852,13 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     ax.tick_params(axis='x', which='both', labelsize=20)
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
     
-# figsize = (10,10)
+figsize = (10,10)
 # # ----------------- Middle Node Relative Error -------------------------
 # # ----------------- Draw Relative error : td (1/HZ) ------------------- 
 # fig5, (ax13,ax14,ax15) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # fig5.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig5.text(0.43,0.89, "(Middle Node)", color = "red", fontsize=20)
-# # fig5.text(0.15,0.85, r"$\mathrm {Pwave}$ $(t_{d} = 1/40)$", color = "blue", fontsize=22)
+# fig5.text(0.15,0.85, r"$\mathrm {Pwave}$", color = "blue", fontsize=22)
 
 # fig5.text(0.045,0.5, 'Peak Velocity Error: '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=20)
 # fig5.text(0.41,0.060,  f'Critical Time ' + r'$t_d$', va= 'center', fontsize=20)
@@ -916,7 +916,7 @@ def DifferTime_RelativeError2(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
 # fig6, (ax16,ax17,ax18) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # fig6.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig6.text(0.41,0.89, "(Middle Node)", color = "red", fontsize=20)
-# # fig5.text(0.15,0.85, r"$\mathrm {Pwave}$ $(t_{d} = 1/40)$", color = "blue", fontsize=22)
+# fig6.text(0.15,0.85, r"$\mathrm {Pwave}$", color = "blue", fontsize=22)
 
 # fig6.text(0.045,0.5, 'Peak Velocity Error: '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=20)
 # fig6.text(0.50,0.060, r'$\Delta_y/\lambda_p$', va= 'center', fontsize=20)
@@ -1075,32 +1075,33 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
     # ax.yaxis.get_offset_text().set(size=18)
     
-# ----------------- Middle Node L2-Norm Error -------------------------
-figsize = (10, 10)
-fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-fig7.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-fig7.text(0.43,0.89, "(Middle Node)", color = "red", fontsize=20)
+# # ----------------- Middle Node L2-Norm Error -------------------------
+# figsize = (10, 10)
+# fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# fig7.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig7.text(0.43,0.89, "(Middle Node)", color = "red", fontsize=20)
+# fig7.text(0.15,0.80, r"$\mathrm {Pwave}$", color = "blue", fontsize=22)
 
-fig7.text(0.01,0.5, 'L2 normalization: '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig7.text(0.01,0.5, 'L2 normalization: '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
-fig7.text(0.43,0.060,  f'Critical Time ' + r'$t_d$', va= 'center', fontsize=20)
+# fig7.text(0.43,0.060,  f'Critical Time ' + r'$t_d$', va= 'center', fontsize=20)
 
-ax19 = plt.subplot(311)
-DifferTime_L2Error(1, Tie20Err_L2, LK20Err_L2, Type1_W20Err_L2, Type2_W20Err_L2, Type3_W20Err_L2)
-ax19.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.65, y=0.60)
+# ax19 = plt.subplot(311)
+# DifferTime_L2Error(1, Tie20Err_L2, LK20Err_L2, Type1_W20Err_L2, Type2_W20Err_L2, Type3_W20Err_L2)
+# ax19.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.65, y=0.60)
 
-ax20 = plt.subplot(312)
-DifferTime_L2Error(1, Tie10Err_L2, LK10Err_L2, Type1_W10Err_L2, Type2_W10Err_L2, Type3_W10Err_L2)
-ax20.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.65, y=0.60)
+# ax20 = plt.subplot(312)
+# DifferTime_L2Error(1, Tie10Err_L2, LK10Err_L2, Type1_W10Err_L2, Type2_W10Err_L2, Type3_W10Err_L2)
+# ax20.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.65, y=0.60)
 
-ax21 = plt.subplot(313)
-DifferTime_L2Error(1, Tie2Err_L2, LK2Err_L2, Type1_W2Err_L2, Type2_W2Err_L2, Type3_W2Err_L2)
-ax21.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.65, y=0.60)
+# ax21 = plt.subplot(313)
+# DifferTime_L2Error(1, Tie2Err_L2, LK2Err_L2, Type1_W2Err_L2, Type2_W2Err_L2, Type3_W2Err_L2)
+# ax21.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.65, y=0.60)
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
-lines, labels = fig7.axes[-1].get_legend_handles_labels()
-fig7.legend(lines, labels, loc = (0.77,0.80) ,prop=font_props)
+# lines, labels = fig7.axes[-1].get_legend_handles_labels()
+# fig7.legend(lines, labels, loc = (0.77,0.80) ,prop=font_props)
 
 # ==================Draw L2 Norm error : Dy/WaveLength =============================
 def DifferTime_L2Error2(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
@@ -1152,6 +1153,7 @@ def DifferTime_L2Error2(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
 # fig8, (ax22,ax23,ax24) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # fig8.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig8.text(0.43,0.89, "(Middle Node)", color = "red", fontsize=20)
+# fig8.text(0.15,0.85, r"$\mathrm {Pwave}$", color = "blue", fontsize=22)
 
 # fig8.text(0.01,0.5, 'L2 normalization: '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
