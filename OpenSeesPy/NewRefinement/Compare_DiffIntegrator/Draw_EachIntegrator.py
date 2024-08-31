@@ -8,6 +8,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
+
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
 #------------- Read file ---------------------
@@ -129,7 +132,7 @@ row40 = f'node81'
 row20 = f'node41'
 row10 = f'node21'
 
-Integrator = f'Newmark_Constant' # Central_Differential / HHT_Alpha / Newmark_Linear / Newmark_Constant
+Integrator = f'Newmark_Linear' # Central_Differential / HHT_Alpha / Newmark_Linear / Newmark_Constant
 
 Condition1 =  f"Test_Integrator/{Integrator}/Dt_0.2"# 
 file1 = f"D:/shiang/opensees/20220330/OpenSeesPy/{Condition1}/row80/Velocity/{row80}.out"
@@ -683,7 +686,7 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
 # DifferTime_L2NormError(1, Dt02Err_L2, Dt04Err_L2, Dt06Err_L2, Dt08Err_L2, Dt10Err_L2, Dt12Err_L2, Dt14Err_L2, Dt16Err_L2, Dt18Err_L2)
 
 # ================= Consider C data as X-axis ==============================
-C_Data = np.arange(0.2, 2.0, 0.2)# np.arange(0.2,2.0, 0.2)
+C_Data = np.arange(0.2, 1.8, 0.2)# np.arange(0.2,2.0, 0.2)
 Dy80row_err = np.zeros((len(C_Data),2))
 Dy40row_err = np.zeros((len(C_Data),2))
 Dy20row_err = np.zeros((len(C_Data),2))
@@ -700,7 +703,7 @@ def C_Relative(C_Data, Dy80row_err, Mesh_Num):
     Dy80row_err[5,1] = Dt12_err[Mesh_Num, 1]
     Dy80row_err[6,1] = Dt14_err[Mesh_Num, 1]
     Dy80row_err[7,1] = Dt16_err[Mesh_Num, 1]
-    Dy80row_err[8,1] = Dt18_err[Mesh_Num, 1]#  ; 2.62104e+10
+    # Dy80row_err[8,1] = Dt18_err[Mesh_Num, 1]#  ; 2.62104e+10
     return Dy80row_err
 # ---------- Mesh Size = 80, 40, 20, 10 row -------------
 C_Relative(C_Data, Dy80row_err, 0)
@@ -773,7 +776,7 @@ def C_L2Norm(C_Data, Dy80row_errL2, Mesh_Num):
     Dy80row_errL2[5,1] = Dt12Err_L2[Mesh_Num, 1]
     Dy80row_errL2[6,1] = Dt14Err_L2[Mesh_Num, 1]
     Dy80row_errL2[7,1] = Dt16Err_L2[Mesh_Num, 1]
-    Dy80row_errL2[8,1] = Dt18Err_L2[Mesh_Num, 1] 
+    # Dy80row_errL2[8,1] = Dt18Err_L2[Mesh_Num, 1] 
     return Dy80row_err
 
 C_L2Norm(C_Data, Dy80row_errL2, 0)
@@ -790,8 +793,8 @@ Mesh10_Dt = (1.0/cp)*C_Data
 def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row_errL2): 
     plt.figure(figsize=(10,8))
     plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.02, 0.06, r'$C_{cricital}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
-    # plt.text(0.02, 0.06, r'$C_{critical} = 1.73$', fontsize= 25, transform=plt.gca().transAxes) # 0.06 / 0.6
+    # plt.text(0.02, 0.06, r'$C_{cricital}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.06, r'$C_{critical} = 1.73$', fontsize= 25, transform=plt.gca().transAxes) # 0.06 / 0.6
     
     font_props = {'family': 'Arial', 'size': 18}
     plt.plot(Dy80row_errL2[:,0], Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.125m}$', linewidth = 3.0)
@@ -810,8 +813,8 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     plt.ylim(0, 0.6)
     plt.grid(True)
     
-    # # -------------- Draw to show critical Dt ------------------------------------
-    # plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
+    # -------------- Draw to show critical Dt ------------------------------------
+    plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
@@ -834,10 +837,14 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=20)
+    # ------- Miner ticks -----------------
+    ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='minor', length=4, color='gray') # , width=2
     
     # # 使用科学计数法显示y轴刻度标签
     # ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
     # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))  # 使用科学计数法格式化   
     ax.set_ylim(0.0, 0.6)  # 例如从0.1到10
 
-# DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row_errL2)
+DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row_errL2)
