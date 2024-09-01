@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
 #------------- Read file ---------------------
@@ -197,36 +198,36 @@ def CompareDt_DiffVel(titleName,total_time, Pwave, HZ80_80row, HZ80_40row, HZ80_
     # ------------------- Theory ------------------------------
     plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'black',linewidth= 4.0)
         
-    # # # -----------------Differ Mesh Pwave  -------------------------   
-    # plt.plot(HZ80_80row[:,0], HZ80_80row[:, 2], label = r'$\Delta_{y} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
-    # plt.plot(HZ80_40row[:,0], HZ80_40row[:, 2], label = r'$\Delta_{y} = 0.025H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
-    # plt.plot(HZ80_20row[:,0], HZ80_20row[:, 2], label = r'$\Delta_{y} = 0.050H$', color= 'purple', linewidth = 4.0) # , ls = ':'
-    # plt.plot(HZ80_10row[:,0], HZ80_10row[:, 2], label = r'$\Delta_{y} = 0.10H$', color= 'red',  linewidth = 3.0) # , ls = '-.'
+    # # -----------------Differ Mesh Pwave  -------------------------   
+    plt.plot(HZ80_80row[:,0], HZ80_80row[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
+    plt.plot(HZ80_40row[:,0], HZ80_40row[:, 2], label = r'$\Delta_{c} = 0.025H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
+    plt.plot(HZ80_20row[:,0], HZ80_20row[:, 2], label = r'$\Delta_{c} = 0.050H$', color= 'purple', linewidth = 4.0) # , ls = ':'
+    plt.plot(HZ80_10row[:,0], HZ80_10row[:, 2], label = r'$\Delta_{c} = 0.10H$', color= 'red',  linewidth = 3.0) # , ls = '-.'
     
     plt.grid(True)
-    plt.legend(loc='lower right',fontsize=18)
+    plt.legend(loc='lower right',fontsize= 20)
     
-    plt.xlim(0, 0.1)
+    plt.xlim(0, 0.2)
     plt.ylim(-0.75, 0.75)
     
     plt.xlabel(r"$\mathrm {time}$ ${t}$ $\mathrm {(s)}$", fontsize = 25) # r"$G^{'}/G$"
     plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 25)  # r"$m_{x'}/m_{x}$"
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 20)
+    plt.yticks(fontsize = 20)
     
     ax = plt.gca()
     ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+    # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
     ax.yaxis.get_offset_text().set(size=20)
     
     ax.xaxis.set_major_locator(ticker.MultipleLocator(0.025))
     ax.xaxis.get_offset_text().set(size=20)
 
-CompareDt_DiffVel(r'Wave Length$\mathrm{=5m}$ $(\mathrm{80HZ})$',total_time_HZ80, HZ80_Pwave, HZ80_80row, HZ80_40row, HZ80_20row, HZ80_10row)
-CompareDt_DiffVel(r'Wave Length$\mathrm{=2.5m}$ $(\mathrm{160HZ})$',total_time_HZ160, HZ160_Pwave, HZ160_80row, HZ160_40row, HZ160_20row, HZ160_10row)
-CompareDt_DiffVel(r'Wave Length$\mathrm{=1.25m}$ $(\mathrm{320HZ})$',total_time_HZ320, HZ320_Pwave, HZ320_80row, HZ320_40row, HZ320_20row, HZ320_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=5m}$ ($t_d=0.0125$ $\mathrm{s}$)',total_time_HZ80, HZ80_Pwave, HZ80_80row, HZ80_40row, HZ80_20row, HZ80_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=2.5m}$ ($t_d=6.25$ $\times 10^{-3}$ $\mathrm{s}$)',total_time_HZ160, HZ160_Pwave, HZ160_80row, HZ160_40row, HZ160_20row, HZ160_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=1.25m}$ ($t_d=3.125$ $\times 10^{-3}$ $\mathrm{s}$)',total_time_HZ320, HZ320_Pwave, HZ320_80row, HZ320_40row, HZ320_20row, HZ320_10row)
 
-CompareDt_DiffVel(r'Wave Length$\mathrm{=10m}$ $(\mathrm{40HZ})$',total_time_HZ40, HZ40_Pwave, HZ40_80row, HZ40_40row, HZ40_20row, HZ40_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=10m}$ $(\mathrm{40HZ})$',total_time_HZ40, HZ40_Pwave, HZ40_80row, HZ40_40row, HZ40_20row, HZ40_10row)
 # ================================== Prepare Relative Error and Absolute Error ============================
 def process_column(matrix, column_index):
     column = matrix[:, column_index]
@@ -341,22 +342,22 @@ def DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err):
     plt.figure(figsize=(10,8))
     plt.title(f'Different Wave Length Relative Error: ' + f'{Integrator}', fontsize = 25) # Compare / Integrator
     
-    font_props = {'family': 'Arial', 'size': 16}
+    font_props = {'family': 'Arial', 'size': 18}
     # ----------- Compare Original fp = 40 HZ ------------------------------
-    plt.plot(HZ40_err[:,0], HZ40_err[:,1],marker = '*',markersize=14,markerfacecolor = 'white',label = r'$\lambda_{40} = \mathrm{10m}$ $(\mathrm{40HZ})$', linewidth = 3.0)
+    plt.plot(HZ40_err[:,0], HZ40_err[:,1],marker = '*',markersize=14,markerfacecolor = 'white',label = r'$t_d=0.025$ $\mathrm{s}$', linewidth = 3.0)
     
-    plt.plot(HZ80_err[:,0], HZ80_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\lambda_{80} = \mathrm{5m}$ $(\mathrm{80HZ})$', linewidth = 3.0)
-    plt.plot(HZ160_err[:,0], HZ160_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label = r'$\lambda_{160} = \mathrm{2.5m}$ $(\mathrm{160HZ})$', linewidth = 3.0)
-    plt.plot(HZ320_err[:,0], HZ320_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\lambda_{320} = \mathrm{1.25m}$ $(\mathrm{320HZ})$', linewidth = 3.0)
+    plt.plot(HZ80_err[:,0], HZ80_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$t_d=0.0125$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ160_err[:,0], HZ160_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label = r'$t_d=6.25$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ320_err[:,0], HZ320_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$t_d=3.125$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
     
-    plt.legend(ncol=1,prop=font_props) #ncol=2,fontsize=16 frameon=False , loc='upper right'
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.legend(ncol=1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='upper right'
+    plt.xticks(fontsize = 20)
+    plt.yticks(fontsize = 20)
     
-    plt.xlabel(r'$\Delta_y/\lambda_p$', fontsize = 25) # f'Mesh size ' + r'$\Delta_y$ $\mathrm {(m)}$' / r'$\Delta_y/\lambda_p$'
+    plt.xlabel(r'$\Delta_c/\lambda_p$', fontsize = 25) # f'Mesh size ' + r'$\Delta_y$ $\mathrm {(m)}$' / r'$\Delta_c/\lambda_p$'
     plt.ylabel('Peak Velocity Error: '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
 
-    plt.ylim(-80, 20) # -15.0, 15.0 / -80, 20
+    plt.ylim(-100, 20) # -15.0, 15.0 / -80, 20
     plt.grid(True)
     
     ax = plt.gca()
@@ -364,20 +365,18 @@ def DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err):
     ax.set_xscale('log', base=10)
     ax.set_xticks([], minor=False)
     ax.set_xticks([], minor=True)
-    x_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6])  # Dy: [0.125, 0.25, 0.50, 1.0] / Dy/H: [0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]
+    x_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6])  # Dy: [0.125, 0.25, 0.50, 1.0] / Dy/H: [0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6]
     ax.set_xticks(x_ticks_Num)
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12) # Dy: .3f / Dy/H: .1f
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=15)
+    ax.tick_params(axis='x', which='both', labelsize=17)
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
+    # ------- Miner ticks -----------------
+    ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='x', which='minor', length=4, color='gray')
     
-    # ax.set_yscale('log', base=10)
-    # ax.tick_params(axis = 'y', which = 'both', labelsize = 17)
-    
-    # # # ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    # # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-    # # ax.yaxis.get_offset_text().set(size=18)
 
 # ---------- Compare Dy/lambda_p -----------------
 HZ80_err[:,0] = HZ80_err[:,0]/lamb80
@@ -489,17 +488,17 @@ def DifferTime_L2NormError(Peak, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L
     plt.figure(figsize=(10,8))
     plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
     
-    font_props = {'family': 'Arial', 'size': 16}
-    plt.plot(HZ40Err_L2[:,0], HZ40Err_L2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\lambda_{40} = \mathrm{10m}$ $(\mathrm{40HZ})$', linewidth = 3.0)
-    plt.plot(HZ80Err_L2[:,0], HZ80Err_L2[:,Peak],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\lambda_{80} = \mathrm{5m}$ $(\mathrm{80HZ})$', linewidth = 3.0)
-    plt.plot(HZ160Err_L2[:,0], HZ160Err_L2[:,Peak],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\lambda_{160} = \mathrm{2.5m}$ $(\mathrm{160HZ})$', linewidth = 3.0)
-    plt.plot(HZ320Err_L2[:,0], HZ320Err_L2[:,Peak],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\lambda_{320} = \mathrm{1.25m}$ $(\mathrm{320HZ})$', linewidth = 3.0)
+    font_props = {'family': 'Arial', 'size': 18}
+    plt.plot(HZ40Err_L2[:,0], HZ40Err_L2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$t_d=0.025$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ80Err_L2[:,0], HZ80Err_L2[:,Peak],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$t_d=0.0125$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ160Err_L2[:,0], HZ160Err_L2[:,Peak],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$t_d=6.25$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ320Err_L2[:,0], HZ320Err_L2[:,Peak],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$t_d=3.125$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
     
-    plt.legend(ncol=1,prop=font_props) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    plt.legend(ncol=1,prop=font_props, loc='lower right') #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
     
-    plt.xlabel(r'$\Delta_y/\lambda_p$', fontsize = 25) # f'Mesh size ' + r'$\Delta_y$ $\mathrm {(m)}$' / r'$\Delta_y/\lambda_p$'
+    plt.xlabel(r'$\Delta_c/\lambda_p$', fontsize = 25) # f'Mesh size ' + r'$\Delta_c$ $\mathrm {(m)}$' / r'$\Delta_c/\lambda_p$'
     plt.ylabel('L2 normalization: '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
 
     # plt.xlim(0.0, 0.20)
@@ -517,25 +516,20 @@ def DifferTime_L2NormError(Peak, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12) # Dy: .3f / Dy/H: .2f
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=16)
+    ax.tick_params(axis='x', which='both', labelsize= 17)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.02, 0.03, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2])  # [0.1, 0.2, 0.3, 0.4, 0.5]
+    y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4])  # [0.1, 0.2, 0.3, 0.4, 0.5]
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=20)
+    # ------- Miner ticks -----------------
+    ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='minor', length=4, color='gray')
     
-    # # 使用科学计数法显示y轴刻度标签
-    # ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
-    # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))  # 使用科学计数法格式化
-
-    # ax.set_ylim(0.0, 1.0)  # 例如从0.1到10
-    
-    # # ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-    # ax.yaxis.get_offset_text().set(size=18)
 
 # DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy
 
@@ -545,5 +539,5 @@ HZ80Err_L2[:,0] = HZ80Err_L2[:,0]/lamb80
 HZ160Err_L2[:,0] = HZ160Err_L2[:,0]/lamb160
 HZ320Err_L2[:,0] = HZ320Err_L2[:,0]/lamb320
 
-# DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy/H
+DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy/H
 
