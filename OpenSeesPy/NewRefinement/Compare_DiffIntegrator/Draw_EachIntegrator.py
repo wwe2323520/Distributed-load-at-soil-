@@ -241,10 +241,10 @@ def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=7.0)
     
 # -----------------Test Integrator Differ Mesh -------------------------   
-    plt.plot(D80_Dt10[:,0], D80_Dt10[:, 2], label = r'$\Delta_{y} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
-    plt.plot(D80_Dt11[:,0], D80_Dt11[:, 2], label = r'$\Delta_{y} = 0.025H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
-    plt.plot(D80_Dt12[:,0], D80_Dt12[:, 2], label = r'$\Delta_{y} = 0.05H$', color= 'purple', ls = '-.', linewidth = 4.0) # , ls = ':'
-    plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{y} = 0.1H$', color= 'red', linewidth = 3.0) # , ls = ':'
+    plt.plot(D80_Dt10[:,0], D80_Dt10[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
+    plt.plot(D80_Dt11[:,0], D80_Dt11[:, 2], label = r'$\Delta_{c} = 0.025H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
+    plt.plot(D80_Dt12[:,0], D80_Dt12[:, 2], label = r'$\Delta_{c} = 0.05H$', color= 'purple', ls = '-.', linewidth = 4.0) # , ls = ':'
+    plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{c} = 0.1H$', color= 'red', linewidth = 3.0) # , ls = ':'
     
     plt.grid(True)
     plt.legend(fontsize=18) # loc='lower left',
@@ -259,20 +259,20 @@ def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     
     ax = plt.gca()
     ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
+    # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
     ax.yaxis.get_offset_text().set(size=18)
 
 Compare = f'HHT-'+r'$\alpha$'
 # ==== Compare/ Integrator ====
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $(\Delta_{tp})$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.4$ $(\Delta_{tp})$', Dt04_80row, Dt04_40row, Dt04_20row, Dt04_10row)
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.6$ $(\Delta_{tp})$', Dt06_80row, Dt06_40row, Dt06_20row, Dt06_10row)
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.8$ $(\Delta_{tp})$', Dt08_80row, Dt08_40row, Dt08_20row, Dt08_10row)
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.0$ $(\Delta_{tp})$', Dt10_80row, Dt10_40row, Dt10_20row, Dt10_10row)
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.2$ $(\Delta_{tp})$', Dt12_80row, Dt12_40row, Dt12_20row, Dt12_10row)
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.4$ $(\Delta_{tp})$', Dt14_80row, Dt14_40row, Dt14_20row, Dt14_10row)
-CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.6$ $(\Delta_{tp})$', Dt16_80row, Dt16_40row, Dt16_20row, Dt16_10row)
-CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.8$ $(\Delta_{tp})$', Dt18_80row, Dt18_40row, Dt18_20row, Dt18_10row)
+CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.4$ $\Delta_{tp}$', Dt04_80row, Dt04_40row, Dt04_20row, Dt04_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.6$ $\Delta_{tp}$', Dt06_80row, Dt06_40row, Dt06_20row, Dt06_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.8$ $\Delta_{tp}$', Dt08_80row, Dt08_40row, Dt08_20row, Dt08_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.0$ $\Delta_{tp}$', Dt10_80row, Dt10_40row, Dt10_20row, Dt10_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.2$ $\Delta_{tp}$', Dt12_80row, Dt12_40row, Dt12_20row, Dt12_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.4$ $\Delta_{tp}$', Dt14_80row, Dt14_40row, Dt14_20row, Dt14_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.6$ $\Delta_{tp}$', Dt16_80row, Dt16_40row, Dt16_20row, Dt16_10row)
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 1.8$ $\Delta_{tp}$', Dt18_80row, Dt18_40row, Dt18_20row, Dt18_10row)
 
 # ================================== Prepare Relative Error and Absolute Error ============================
 # def process_column(matrix, column_index):
@@ -461,17 +461,17 @@ def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=7,markerfacecolor = 'white',label = r'$C = 1.2$', linewidth = 3.0)
     plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=6,markerfacecolor = 'white',label = r'$C = 1.4$', linewidth = 3.0)
     plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=5,markerfacecolor = 'white',label = r'$C = 1.6$', linewidth = 3.0)
-    # plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
+    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
     
     plt.legend(ncol=3,prop=font_props) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
     
-    plt.xlabel(f'Mesh size ' + r'$\Delta_y$  $\mathrm {(m)}$', fontsize = 25)
+    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 25)
     plt.ylabel('Peak Velocity Error: '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
 
     # plt.xlim(0.0, 0.20)
-    plt.ylim(-15.0, 15.0) # -15.0, 15.0 / -5.0, 5.0
+    plt.ylim(-5.0, 5.0) # -15.0, 15.0 / -5.0, 5.0
     plt.grid(True)
     
     ax = plt.gca()
@@ -643,13 +643,13 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=7,markerfacecolor = 'white',label = r'$C = 1.2$', linewidth = 3.0)
     plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=6,markerfacecolor = 'white',label = r'$C = 1.4$', linewidth = 3.0)
     plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=5,markerfacecolor = 'white',label = r'$C = 1.6$', linewidth = 3.0)
-    # plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
+    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
     
     plt.legend(ncol=3,prop=font_props) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
     
-    plt.xlabel(f'Mesh size ' + r'$\Delta_y$  $\mathrm {(m)}$', fontsize = 25)
+    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 25)
     plt.ylabel('L2 normalization: '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
 
     # plt.xlim(0.0, 0.20)
@@ -672,14 +672,14 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5])  # 0.1, 0.2, 0.3, 0.4, 0.5
+    y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5])  # 0.1, 0.2, 0.3, 0.4, 0.5
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=18)
-    
-    # # 使用科学计数法显示y轴刻度标签
-    # ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
-    # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))  # 使用科学计数法格式化
+    # ------- Miner ticks -----------------
+    ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='minor', length=4, color='gray')   
 
     ax.set_ylim(0.0, 0.5)  # 例如从0.1到10
 
@@ -715,14 +715,14 @@ C_Relative(C_Data, Dy10row_err, 3)
 def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err): 
     plt.figure(figsize=(10,8))
     plt.title(f'{Integrator} Relative Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.02, 0.35, r'$C_{cricital}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
-    # plt.text(0.02, 0.35, r'$C_{critical} = 1.0$', fontsize= 25, transform=plt.gca().transAxes)
+    # plt.text(0.02, 0.35, r'$C_{cricital}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.35, r'$C_{critical} = 1.73$', fontsize= 25, transform=plt.gca().transAxes)
     
     font_props = {'family': 'Arial', 'size': 18}
-    plt.plot(Dy80row_err[:,0], Dy80row_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.125m}$', linewidth = 3.0)
-    plt.plot(Dy40row_err[:,0], Dy40row_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_y = $ $\mathrm {0.25m}$', linewidth = 3.0) # , ls = ':'
-    plt.plot(Dy20row_err[:,0], Dy20row_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_y = $ $\mathrm {0.50m}$', linewidth = 3.0) # , ls= '-.'
-    plt.plot(Dy10row_err[:,0], Dy10row_err[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_y = $ $\mathrm {1.0m}$', linewidth = 3.0)# , ls = '--'
+    plt.plot(Dy80row_err[:,0], Dy80row_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0)
+    plt.plot(Dy40row_err[:,0], Dy40row_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_c = $ $\mathrm {0.25m}$', linewidth = 3.0) # , ls = ':'
+    plt.plot(Dy20row_err[:,0], Dy20row_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_c = $ $\mathrm {0.50m}$', linewidth = 3.0) # , ls= '-.'
+    plt.plot(Dy10row_err[:,0], Dy10row_err[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_c = $ $\mathrm {1.0m}$', linewidth = 3.0)# , ls = '--'
     
     plt.legend(ncol= 1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
@@ -735,8 +735,8 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     plt.ylim(-15.0, 15.0)
     plt.grid(True)
     
-    # # -------------- Draw to show critical Dt ------------------------------------
-    # plt.axvline(x= 1.0, color='black', linestyle='--', linewidth= 3) # Linear = 1.73 ; Central = 1.0
+    # -------------- Draw to show critical Dt ------------------------------------
+    plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3) # Linear = 1.73 ; Central = 1.0
    
     ax = plt.gca()
     ax.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
@@ -797,10 +797,10 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     plt.text(0.02, 0.06, r'$C_{critical} = 1.73$', fontsize= 25, transform=plt.gca().transAxes) # 0.06 / 0.6
     
     font_props = {'family': 'Arial', 'size': 18}
-    plt.plot(Dy80row_errL2[:,0], Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.125m}$', linewidth = 3.0)
-    plt.plot(Dy40row_errL2[:,0], Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_y =  $ $\mathrm {0.25m}$', linewidth = 3.0)
-    plt.plot(Dy20row_errL2[:,0], Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.50m}$', linewidth = 3.0)
-    plt.plot(Dy10row_errL2[:,0], Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {1.0m}$', linewidth = 3.0)
+    plt.plot(Dy80row_errL2[:,0], Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0)
+    plt.plot(Dy40row_errL2[:,0], Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_c =  $ $\mathrm {0.25m}$', linewidth = 3.0)
+    plt.plot(Dy20row_errL2[:,0], Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.50m}$', linewidth = 3.0)
+    plt.plot(Dy10row_errL2[:,0], Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {1.0m}$', linewidth = 3.0)
         
     plt.legend(ncol=1,prop=font_props, loc='upper left') #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
@@ -841,10 +841,7 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
     ax.tick_params(axis='y', which='minor', length=4, color='gray') # , width=2
-    
-    # # 使用科学计数法显示y轴刻度标签
-    # ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
-    # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))  # 使用科学计数法格式化   
+      
     ax.set_ylim(0.0, 0.6)  # 例如从0.1到10
 
-DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row_errL2)
+# DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row_errL2)
