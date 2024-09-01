@@ -13,13 +13,13 @@ from openseespy.opensees import *
 pi = np.pi
 # ----------- Rayleigh Dashpot Cofficient ------------------
 # Integrator = "Central"
-# ---------- For 1D Transport ------------------
+# ---------- For 1D Transport/ 2D Absorbing ------------------
 PtimeNum = np.array([702, 704, 705, 706]) # For P wave TimeSeries 702, 704, 705, 706
 StimeNum = np.array([707, 708, 709, 710]) # For S wave TimeSeries 707, 708, 709, 710
 
-# ---------- For 2D Absorbing ------------------
-Top_Ptime = np.array([711, 712, 713, 714]) # For P wave TimeSeries 709, 710, 711
-Top_Stime = np.array([715, 716, 717, 718]) # For S wave TimeSeries 712, 713, 714
+# # ---------- For 2D Absorbing ------------------
+# Top_Ptime = np.array([711, 712, 713, 714]) # For P wave TimeSeries 709, 710, 711
+# Top_Stime = np.array([715, 716, 717, 718]) # For S wave TimeSeries 712, 713, 714
 
 Force_HZ = np.array([10, 20, 40, 80]) # 10, 20, 40, 80
 Width = np.array([2.0, 5.0, 10.0, 20.0]) # 1D Transport: 2.0, 10.0, 20.0 ; 2D Absorbing: 2.0, 5.0, 10.0, 20.0
@@ -32,7 +32,7 @@ for i in range(len(Width)):
     print(f"================ Now SoilWidth = {soilwidth} ================")
 
     for j in range(len(Force_HZ)):
-        TimeSeries_Num = int(Top_Ptime[j]) # PtimeNum / StimeNum ; Top_Ptime / Top_Stime
+        TimeSeries_Num = int(PtimeNum[j]) # PtimeNum / StimeNum ; Top_Ptime / Top_Stime
         HZ = int(Force_HZ[j])
         print(f"--------------------- Force td = 1/f = {HZ} -------------------")
 
@@ -91,7 +91,7 @@ for i in range(len(Width)):
 
             print(f"Pwave travel yMesh= {yMesh}; each ele = {dcell} ;dt_Size = {Dt_Size}; dt = {dt}")
             # ======= Totla Analysis Time ============================
-            analysisTime = (soilLength/Vp)*8
+            analysisTime = 0.5# (soilLength/Vp)*8
             analystep = analysisTime/dt # int(800*(ny/10))
             print(f"Analysis Total Time = {analysisTime} ;Analysis_step = {analystep}")
 
