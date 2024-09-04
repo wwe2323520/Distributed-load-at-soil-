@@ -144,7 +144,7 @@ lamb320, HZ320_Pwave, total_time_HZ320 = Cal_Theory(fp_320HZ, wp_320HZ)
 
 lamb40, HZ40_Pwave, total_time_HZ40 = Cal_Theory(fp_40HZ, wp_40HZ)
 
-Integrator = f'NewMark_Linear' # NewMark_Constant / NewMark_Linear
+Integrator = f'Newmark Linear' # NewMark_Constant / Newmark Linear
 # --------------- Numerical Data ------------------------------
 Compare = f"Test_Integrator/{Integrator}/Test/Dt_1.0" 
 Condition1 =  f'HZ_80'
@@ -200,9 +200,9 @@ def CompareDt_DiffVel(titleName,total_time, Pwave, HZ80_80row, HZ80_40row, HZ80_
         
     # # -----------------Differ Mesh Pwave  -------------------------   
     plt.plot(HZ80_80row[:,0], HZ80_80row[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
-    plt.plot(HZ80_40row[:,0], HZ80_40row[:, 2], label = r'$\Delta_{c} = 0.025H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
-    plt.plot(HZ80_20row[:,0], HZ80_20row[:, 2], label = r'$\Delta_{c} = 0.050H$', color= 'purple', linewidth = 4.0) # , ls = ':'
-    plt.plot(HZ80_10row[:,0], HZ80_10row[:, 2], label = r'$\Delta_{c} = 0.10H$', color= 'red',  linewidth = 3.0) # , ls = '-.'
+    plt.plot(HZ80_40row[:,0], HZ80_40row[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
+    plt.plot(HZ80_20row[:,0], HZ80_20row[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'purple', linewidth = 4.0) # , ls = ':'
+    plt.plot(HZ80_10row[:,0], HZ80_10row[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'red',  linewidth = 3.0) # , ls = '-.'
     
     plt.grid(True)
     plt.legend(loc='lower right',fontsize= 20)
@@ -223,9 +223,9 @@ def CompareDt_DiffVel(titleName,total_time, Pwave, HZ80_80row, HZ80_40row, HZ80_
     ax.xaxis.set_major_locator(ticker.MultipleLocator(0.025))
     ax.xaxis.get_offset_text().set(size=20)
 
-# CompareDt_DiffVel(r'Wave Length$\mathrm{=5m}$ ($t_d=0.0125$ $\mathrm{s}$)',total_time_HZ80, HZ80_Pwave, HZ80_80row, HZ80_40row, HZ80_20row, HZ80_10row)
-# CompareDt_DiffVel(r'Wave Length$\mathrm{=2.5m}$ ($t_d=6.25$ $\times 10^{-3}$ $\mathrm{s}$)',total_time_HZ160, HZ160_Pwave, HZ160_80row, HZ160_40row, HZ160_20row, HZ160_10row)
-# CompareDt_DiffVel(r'Wave Length$\mathrm{=1.25m}$ ($t_d=3.125$ $\times 10^{-3}$ $\mathrm{s}$)',total_time_HZ320, HZ320_Pwave, HZ320_80row, HZ320_40row, HZ320_20row, HZ320_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=5m}$ ($t_d=0.012500$ $\mathrm{s}$)',total_time_HZ80, HZ80_Pwave, HZ80_80row, HZ80_40row, HZ80_20row, HZ80_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=2.5m}$ ($t_d=0.006250$ $\mathrm{s}$)',total_time_HZ160, HZ160_Pwave, HZ160_80row, HZ160_40row, HZ160_20row, HZ160_10row)
+# CompareDt_DiffVel(r'Wave Length$\mathrm{=1.25m}$ ($t_d=0.003125$ $\mathrm{s}$)',total_time_HZ320, HZ320_Pwave, HZ320_80row, HZ320_40row, HZ320_20row, HZ320_10row)
 
 # CompareDt_DiffVel(r'Wave Length$\mathrm{=10m}$ $(\mathrm{40HZ})$',total_time_HZ40, HZ40_Pwave, HZ40_80row, HZ40_40row, HZ40_20row, HZ40_10row)
 # ================================== Prepare Relative Error and Absolute Error ============================
@@ -340,22 +340,23 @@ Calculate_Error(HZ40_err, HZ40_error, maxAnaly_HZ40)
 # ==================Draw Relative error : Middele point =============================
 def DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err):
     plt.figure(figsize=(10,8))
-    plt.title(f'Different Wave Length Relative Error: ' + f'{Integrator}', fontsize = 25) # Compare / Integrator
+    # plt.title(f'Different Wave Length Relative Error: ' + f'{Integrator}', fontsize = 25) # Compare / Integrator
+    plt.text(0.01, 0.95, f'{Integrator}  '+ r'$\Delta_t= 1.0\Delta_{tp}$' , fontsize = 25, color= 'black', transform=plt.gca().transAxes)
     
     font_props = {'family': 'Arial', 'size': 18}
     # ----------- Compare Original fp = 40 HZ ------------------------------
-    plt.plot(HZ40_err[:,0], HZ40_err[:,1],marker = '*',markersize=14,markerfacecolor = 'white',label = r'$t_d=0.025$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ40_err[:,0], HZ40_err[:,1],marker = '*',markersize=14,markerfacecolor = 'white',label = r'$t_d=0.025000$ $\mathrm{s}$', linewidth = 3.0)
     
-    plt.plot(HZ80_err[:,0], HZ80_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$t_d=0.0125$ $\mathrm{s}$', linewidth = 3.0)
-    plt.plot(HZ160_err[:,0], HZ160_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label = r'$t_d=6.25$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
-    plt.plot(HZ320_err[:,0], HZ320_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$t_d=3.125$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ80_err[:,0], HZ80_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$t_d=0.012500$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ160_err[:,0], HZ160_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label = r'$t_d=0.006250$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ320_err[:,0], HZ320_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$t_d=0.003125$ $\mathrm{s}$', linewidth = 3.0)
     
-    plt.legend(ncol=1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='upper right'
+    plt.legend(ncol=1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='lower right'
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
     
-    plt.xlabel(r'$\Delta_c/\lambda_p$', fontsize = 25) # f'Mesh size ' + r'$\Delta_y$ $\mathrm {(m)}$' / r'$\Delta_c/\lambda_p$'
-    plt.ylabel('Peak Velocity Error: '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
+    plt.xlabel(r'$\Delta_c/\lambda$', fontsize = 25) # f'Mesh size ' + r'$\Delta_c$ $\mathrm {(m)}$' / r'$\Delta_c/\lambda$'
+    plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
 
     plt.ylim(-100, 20) # -15.0, 15.0 / -80, 20
     plt.grid(True)
@@ -486,20 +487,21 @@ Add_Err(1,HZ320Err_L2, HZ320_error, total_time_HZ320, HZ320_Pwave, HZ320_ele80,H
 # ==================Draw L2 Norm error : Middele point =============================
 def DifferTime_L2NormError(Peak, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2):
     plt.figure(figsize=(10,8))
-    plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
+    # plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
+    plt.text(0.01, 0.04, f'{Integrator}  '+ r'$\Delta_t= 1.0\Delta_{tp}$' , fontsize = 25, color= 'black', transform=plt.gca().transAxes)
     
     font_props = {'family': 'Arial', 'size': 18}
-    plt.plot(HZ40Err_L2[:,0], HZ40Err_L2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$t_d=0.025$ $\mathrm{s}$', linewidth = 3.0)
-    plt.plot(HZ80Err_L2[:,0], HZ80Err_L2[:,Peak],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$t_d=0.0125$ $\mathrm{s}$', linewidth = 3.0)
-    plt.plot(HZ160Err_L2[:,0], HZ160Err_L2[:,Peak],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$t_d=6.25$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
-    plt.plot(HZ320Err_L2[:,0], HZ320Err_L2[:,Peak],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$t_d=3.125$ $\times 10^{-3}$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ40Err_L2[:,0], HZ40Err_L2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$t_d=0.025000$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ80Err_L2[:,0], HZ80Err_L2[:,Peak],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$t_d=0.012500$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ160Err_L2[:,0], HZ160Err_L2[:,Peak],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$t_d=0.006250$ $\mathrm{s}$', linewidth = 3.0)
+    plt.plot(HZ320Err_L2[:,0], HZ320Err_L2[:,Peak],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$t_d=0.003125$ $\mathrm{s}$', linewidth = 3.0)
     
     plt.legend(ncol=1,prop=font_props, loc='lower right') #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
     
-    plt.xlabel(r'$\Delta_c/\lambda_p$', fontsize = 25) # f'Mesh size ' + r'$\Delta_c$ $\mathrm {(m)}$' / r'$\Delta_c/\lambda_p$'
-    plt.ylabel('L2 normalization: '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
+    plt.xlabel(r'$\Delta_c/\lambda$', fontsize = 25) # f'Mesh size ' + r'$\Delta_c$ $\mathrm {(m)}$' / r'$\Delta_c/\lambda$'
+    plt.ylabel('L2 Norm '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
 
     # plt.xlim(0.0, 0.20)
     # plt.ylim(-15.0, 15.0)
@@ -539,5 +541,5 @@ HZ80Err_L2[:,0] = HZ80Err_L2[:,0]/lamb80
 HZ160Err_L2[:,0] = HZ160Err_L2[:,0]/lamb160
 HZ320Err_L2[:,0] = HZ320Err_L2[:,0]/lamb320
 
-DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy/H
+# DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy/H
 
