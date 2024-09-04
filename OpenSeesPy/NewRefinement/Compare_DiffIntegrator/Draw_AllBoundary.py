@@ -253,7 +253,7 @@ HHT_Dt18_40 = rdnumpy(file34)
 HHT_Dt18_20 = rdnumpy(file35)
 HHT_Dt18_10 = rdnumpy(file36)
 # =================== Central_Differential =================================
-Integrator2 = f'Test_Integrator/Central_Differential' # Central_Differential / HHT_Alpha / Newmark_Linear / Newmark_Constant
+Integrator2 = f'Test_Integrator/Central Differential' # Central_Differential / HHT_Alpha / Newmark_Linear / Newmark_Constant
 
 Condition10 =  f"{Integrator2}/Dt_0.2"# 
 file37 = f"D:/shiang/opensees/20220330/OpenSeesPy/{Condition10}/row80/Velocity/{row80}.out"
@@ -354,7 +354,7 @@ Cen_Dt18_40 = rdnumpy(file70)
 Cen_Dt18_20 = rdnumpy(file71)
 Cen_Dt18_10 = rdnumpy(file72)
 # =================== Newmark_Linear =================================
-Integrator3 = f'Test_Integrator/Newmark_Linear'
+Integrator3 = f'Test_Integrator/Newmark Linear'
 
 Condition19 =  f"{Integrator3}/Dt_0.2"# 
 file73 = f"D:/shiang/opensees/20220330/OpenSeesPy/{Condition19}/row80/Velocity/{row80}.out"
@@ -455,7 +455,7 @@ Lin_Dt18_40 = rdnumpy(file106)
 Lin_Dt18_20 = rdnumpy(file107)
 Lin_Dt18_10 = rdnumpy(file108)
 # =================== Newmark_Constant =================================
-Integrator4 = f'Test_Integrator/Newmark_Constant'
+Integrator4 = f'Test_Integrator/Newmark Constant'
 
 Condition28 =  f"{Integrator4}/Dt_0.2"# 
 file109 = f"D:/shiang/opensees/20220330/OpenSeesPy/{Condition28}/row80/Velocity/{row80}.out"
@@ -914,7 +914,7 @@ Const_Dy40row_errL2 = np.zeros((len(Const_CData),2))
 Const_Dy20row_errL2 = np.zeros((len(Const_CData),2))
 Const_Dy10row_errL2 = np.zeros((len(Const_CData),2))
 
-Cen_CData = np.arange(0.2, 1.2, 0.2)
+Cen_CData = np.arange(0.2, 1.0, 0.2)
 Cen_Dy80row_errL2 = np.zeros((len(Cen_CData),2))
 Cen_Dy40row_errL2 = np.zeros((len(Cen_CData),2))
 Cen_Dy20row_errL2 = np.zeros((len(Cen_CData),2))
@@ -957,7 +957,7 @@ def Cen_Relative(C_Data, Dy80row_err, Mesh_Num, Dt02_err, Dt04_err, Dt06_err, Dt
     Dy80row_err[1,1] = Dt04_err[Mesh_Num, 1]
     Dy80row_err[2,1] = Dt06_err[Mesh_Num, 1]
     Dy80row_err[3,1] = Dt08_err[Mesh_Num, 1]
-    Dy80row_err[4,1] = Dt10_err[Mesh_Num, 1]
+    # Dy80row_err[4,1] = Dt10_err[Mesh_Num, 1]
     # Dy80row_err[5,1] = Dt12_err[Mesh_Num, 1]
     # Dy80row_err[6,1] = Dt14_err[Mesh_Num, 1]
     # Dy80row_err[7,1] = Dt16_err[Mesh_Num, 1]
@@ -990,50 +990,50 @@ Lin_Relative(Lin_CData, Lin_Dy10row_errL2, 3, Lin_02Err_L2, Lin_04Err_L2, Lin_06
 def DifferBoundary_L2NormError2(HHT_Dy80row_errL2, HHT_Dy40row_errL2, HHT_Dy20row_errL2, HHT_Dy10row_errL2, Const_Dy80row_errL2, Const_Dy40row_errL2, Const_Dy20row_errL2, Const_Dy10row_errL2,
                                 Lin_Dy80row_errL2, Lin_Dy40row_errL2, Lin_Dy20row_errL2, Lin_Dy10row_errL2, Cen_Dy80row_errL2, Cen_Dy40row_errL2, Cen_Dy20row_errL2, Cen_Dy10row_errL2): 
     plt.figure(figsize=(12,10))
-    plt.title(f'Different Integrator L2-Norm Error', fontsize = 25) # Compare / Integrator
+    # plt.title(f'Different Integrator L2-Norm Error', fontsize = 25) # Compare / Integrator
     # plt.text(0.02, 0.06, r'$C_{cricital}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
     
     font_props = {'family': 'Arial', 'size': 18}
 # ================= HHT-Alpha ==============================
     plt.plot(HHT_Dy80row_errL2[:,0], HHT_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.125m}$', color = 'limegreen', linewidth = 3.0)
-    plt.plot(HHT_Dy40row_errL2[:,0], HHT_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_y =  $ $\mathrm {0.25m}$', color= 'limegreen', ls = '-.', linewidth = 3.0)
-    plt.plot(HHT_Dy20row_errL2[:,0], HHT_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.50m}$', color= 'limegreen', ls = ':', linewidth = 3.0)
-    plt.plot(HHT_Dy10row_errL2[:,0], HHT_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {1.0m}$', color= 'limegreen', ls = '--', linewidth = 3.0)
+    plt.plot(HHT_Dy40row_errL2[:,0], HHT_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_y =  $ $\mathrm {0.250m}$', color= 'limegreen', linewidth = 3.0)
+    plt.plot(HHT_Dy20row_errL2[:,0], HHT_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {0.500m}$', color= 'limegreen', linewidth = 3.0)
+    plt.plot(HHT_Dy10row_errL2[:,0], HHT_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_y =  $ $\mathrm {1.000m}$', color= 'limegreen', linewidth = 3.0)
 # ================= Newmark Constant ==============================
-    plt.plot(Const_Dy80row_errL2[:,0], Const_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white', color = 'orange', linewidth = 3.0)
+    plt.plot(Const_Dy80row_errL2[:,0], Const_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white', color = 'orange', ls = '-.', linewidth = 3.0)
     plt.plot(Const_Dy40row_errL2[:,0], Const_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white', color= 'orange', ls = '-.', linewidth = 3.0)
-    plt.plot(Const_Dy20row_errL2[:,0], Const_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white', color= 'orange', ls = ':', linewidth = 3.0)
-    plt.plot(Const_Dy10row_errL2[:,0], Const_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white', color= 'orange', ls = '--', linewidth = 3.0)
+    plt.plot(Const_Dy20row_errL2[:,0], Const_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white', color= 'orange', ls = '-.', linewidth = 3.0)
+    plt.plot(Const_Dy10row_errL2[:,0], Const_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white', color= 'orange', ls = '-.', linewidth = 3.0)
 # ================= Newmark Linear ==============================
-    plt.plot(Lin_Dy80row_errL2[:,0], Lin_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white', color = 'purple', linewidth = 3.0)
-    plt.plot(Lin_Dy40row_errL2[:,0], Lin_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white', color= 'purple', ls = '-.', linewidth = 3.0)
+    plt.plot(Lin_Dy80row_errL2[:,0], Lin_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white', color = 'purple', ls = ':', linewidth = 3.0)
+    plt.plot(Lin_Dy40row_errL2[:,0], Lin_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white', color= 'purple', ls = ':', linewidth = 3.0)
     plt.plot(Lin_Dy20row_errL2[:,0], Lin_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white', color= 'purple', ls = ':', linewidth = 3.0)
-    plt.plot(Lin_Dy10row_errL2[:,0], Lin_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white', color= 'purple', ls = '--', linewidth = 3.0)
+    plt.plot(Lin_Dy10row_errL2[:,0], Lin_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white', color= 'purple', ls = ':', linewidth = 3.0)
 # ================= Central Differential ==============================
-    plt.plot(Cen_Dy80row_errL2[:,0], Cen_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white', color = 'red', linewidth = 3.0)
-    plt.plot(Cen_Dy40row_errL2[:,0], Cen_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white', color= 'red', ls = '-.', linewidth = 3.0)
-    plt.plot(Cen_Dy20row_errL2[:,0], Cen_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white', color= 'red', ls = ':', linewidth = 3.0)
+    plt.plot(Cen_Dy80row_errL2[:,0], Cen_Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white', color = 'red', ls = '--', linewidth = 3.0)
+    plt.plot(Cen_Dy40row_errL2[:,0], Cen_Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white', color= 'red', ls = '--', linewidth = 3.0)
+    plt.plot(Cen_Dy20row_errL2[:,0], Cen_Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white', color= 'red', ls = '--', linewidth = 3.0)
     plt.plot(Cen_Dy10row_errL2[:,0], Cen_Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white', color= 'red', ls = '--', linewidth = 3.0)
     
     legend_elements = [Line2D([0], [0], color='limegreen', lw=2, label= f'HHT-'+r'$\alpha$'),
-                    Line2D([0], [0], color='orange', lw=2, label='Newmark_Constant'),
-                    Line2D([0], [0], color='purple', lw=2, label='Newmark_Linear'),
-                    Line2D([0], [0], color='red', lw=2, label='Central_Differential')]
+                    Line2D([0], [0], color='orange', lw=2, ls = '-.', label='Newmark Constant'),
+                    Line2D([0], [0], color='purple', lw=2, ls = ':', label='Newmark Linear'),
+                    Line2D([0], [0], color='red', lw=2, ls = '--', label='Central Differential')]
     
     legend_elements2 = [Line2D([0], [0], color='black',marker = '^',markersize=12,markerfacecolor = 'white', label= r'$\Delta_{c}=0.125$ $\mathrm{m}$'),
-                   Line2D([0], [0], color='black',marker = 'o',markersize=11,markerfacecolor = 'white', label=r'$\Delta_{c}=0.25$ $\mathrm{m}$'),
-                   Line2D([0], [0], color='black',marker = '<',markersize=10,markerfacecolor = 'white', label=r'$\Delta_{c}=0.50$ $\mathrm{m}$'),
-                   Line2D([0], [0], color='black',marker = 's',markersize=9,markerfacecolor = 'white', label=r'$\Delta_{c}=1.0$ $\mathrm{m}$')]
+                   Line2D([0], [0], color='black',marker = 'o',markersize=11,markerfacecolor = 'white', label=r'$\Delta_{c}=0.250$ $\mathrm{m}$'),
+                   Line2D([0], [0], color='black',marker = '<',markersize=10,markerfacecolor = 'white', label=r'$\Delta_{c}=0.500$ $\mathrm{m}$'),
+                   Line2D([0], [0], color='black',marker = 's',markersize=9,markerfacecolor = 'white', label=r'$\Delta_{c}=1.000$ $\mathrm{m}$')]
     
-    legend1 = plt.legend(ncol=1, handles=legend_elements, prop=font_props, loc=(0.80, 0.005)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1 = plt.legend(ncol=1, handles=legend_elements, prop=font_props, loc=(0.01, 0.95)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.gca().add_artist(legend1)
     
-    plt.legend(ncol=1, handles=legend_elements2, prop=font_props, loc=(0.85, 0.95)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    plt.legend(ncol=1, handles=legend_elements2, prop=font_props, loc=(0.35, 0.95)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
     
     plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 25)
-    plt.ylabel('L2 Norm Error: '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
+    plt.ylabel('L2 Norm '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
 
     plt.xlim(0.2, 1.8)
     plt.ylim(0, 0.6)
@@ -1070,8 +1070,8 @@ def DifferBoundary_L2NormError2(HHT_Dy80row_errL2, HHT_Dy40row_errL2, HHT_Dy20ro
     # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))  # 使用科学计数法格式化   
     ax.set_ylim(0.0, 0.6)  # 例如从0.1到10
     
-# DifferBoundary_L2NormError2(HHT_Dy80row_errL2, HHT_Dy40row_errL2, HHT_Dy20row_errL2, HHT_Dy10row_errL2, Const_Dy80row_errL2, Const_Dy40row_errL2, Const_Dy20row_errL2, Const_Dy10row_errL2,
-#                                 Lin_Dy80row_errL2, Lin_Dy40row_errL2, Lin_Dy20row_errL2, Lin_Dy10row_errL2, Cen_Dy80row_errL2, Cen_Dy40row_errL2, Cen_Dy20row_errL2, Cen_Dy10row_errL2)
+DifferBoundary_L2NormError2(HHT_Dy80row_errL2, HHT_Dy40row_errL2, HHT_Dy20row_errL2, HHT_Dy10row_errL2, Const_Dy80row_errL2, Const_Dy40row_errL2, Const_Dy20row_errL2, Const_Dy10row_errL2,
+                                Lin_Dy80row_errL2, Lin_Dy40row_errL2, Lin_Dy20row_errL2, Lin_Dy10row_errL2, Cen_Dy80row_errL2, Cen_Dy40row_errL2, Cen_Dy20row_errL2, Cen_Dy10row_errL2)
 
 def DifferMesh_L2NormError2(titleName, HHT_Dy80row_errL2, Const_Dy80row_errL2, Lin_Dy80row_errL2, Cen_Dy80row_errL2): 
     plt.figure(figsize=(10, 8))
@@ -1133,6 +1133,6 @@ def DifferMesh_L2NormError2(titleName, HHT_Dy80row_errL2, Const_Dy80row_errL2, L
     ax.set_ylim(0.0, 0.6)  # 例如从0.1到10
     
 # DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {0.125m}$', HHT_Dy80row_errL2, Const_Dy80row_errL2, Lin_Dy80row_errL2, Cen_Dy80row_errL2)
-# DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {0.25m}$', HHT_Dy40row_errL2, Const_Dy40row_errL2, Lin_Dy40row_errL2, Cen_Dy40row_errL2)
-# DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {0.50m}$', HHT_Dy20row_errL2, Const_Dy20row_errL2, Lin_Dy20row_errL2, Cen_Dy20row_errL2)
-# DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {1.0m}$', HHT_Dy10row_errL2, Const_Dy10row_errL2, Lin_Dy10row_errL2, Cen_Dy10row_errL2)
+# DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {0.250m}$', HHT_Dy40row_errL2, Const_Dy40row_errL2, Lin_Dy40row_errL2, Cen_Dy40row_errL2)
+# DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {0.500m}$', HHT_Dy20row_errL2, Const_Dy20row_errL2, Lin_Dy20row_errL2, Cen_Dy20row_errL2)
+# DifferMesh_L2NormError2(f'Boundary Compare: '+r'$\Delta_c =  $ $\mathrm {1.000m}$', HHT_Dy10row_errL2, Const_Dy10row_errL2, Lin_Dy10row_errL2, Cen_Dy10row_errL2)
