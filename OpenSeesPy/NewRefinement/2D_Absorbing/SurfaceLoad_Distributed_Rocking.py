@@ -96,7 +96,7 @@ for i in range(len(Width)):
             print(f"Analysis Total Time = {analysisTime} ;Analysis_step = {analystep}")
 
             # ================= Build Boundary File =====================
-            Boundary = f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/BeamType1_Surface_{ny}row" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
+            Boundary = f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/LKDash_Surface_{ny}row" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
             path1 = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/{Boundary}/Velocity' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Velocity'
             path2 = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/{Boundary}/Stress' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Stress'
             # path3 =  # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/SurfaceVelocity'
@@ -489,32 +489,32 @@ for i in range(len(Width)):
             equalDOF(TopMid_Node, Found_Mid, 1,2)
             equalDOF(TopRight_Node, Found_Right, 1,2)
 
-            # ================ NewBC: for Case A/B============================
-            # ==================== Side Beam node (233~243 / 244~254) ====================
-            LsideNode = Found_Right +1 # RSideTDash_Start + 2*(ny+1)
-            RsideNode = LsideNode + (ny+1)
-            LsideEle =  FoundRight_Ele +1 # RsideTEle_End + 1 
-            RsideEle = LsideEle + ny
+            # # ================ NewBC: for Case A/B============================
+            # # ==================== Side Beam node (233~243 / 244~254) ====================
+            # LsideNode = Found_Right +1 # RSideTDash_Start + 2*(ny+1)
+            # RsideNode = LsideNode + (ny+1)
+            # LsideEle =  FoundRight_Ele +1 # RsideTEle_End + 1 
+            # RsideEle = LsideEle + ny
 
-            for i in range(ny+1):
-            # ----- Left Side: 233~243 -----------------
-                node(LsideNode+i, 0.0, yMesh*i)
-                fix(LsideNode+i,0,0,1)
-            # ----- Right Side: 244~254 -----------------
-                node(RsideNode+i, soilwidth ,yMesh*i)
-                fix(RsideNode+i,0,0,1)
+            # for i in range(ny+1):
+            # # ----- Left Side: 233~243 -----------------
+            #     node(LsideNode+i, 0.0, yMesh*i)
+            #     fix(LsideNode+i,0,0,1)
+            # # ----- Right Side: 244~254 -----------------
+            #     node(RsideNode+i, soilwidth ,yMesh*i)
+            #     fix(RsideNode+i,0,0,1)
 
-            # ------------  Beam Element: 151 ~ 160 / 161 ~ 170 ------------------
-            for j in range(ny):
-            # ----- Left Side Beam:151 ~ 160 -----------------
-                element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
-            # ----- Right Side Beam:161 ~ 170 -----------------
-                element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+            # # ------------  Beam Element: 151 ~ 160 / 161 ~ 170 ------------------
+            # for j in range(ny):
+            # # ----- Left Side Beam:151 ~ 160 -----------------
+            #     element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+            # # ----- Right Side Beam:161 ~ 170 -----------------
+            #     element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
 
-            # --------- Side Beam and Soil BC -----------------
-            for j in range(ny+1):
-                equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
-                equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
+            # # --------- Side Beam and Soil BC -----------------
+            # for j in range(ny+1):
+            #     equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
+            #     equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
 
             # ============================== S wave ======================================
             # ========================= "CaseA": SideLoad Pattern ===================================
@@ -876,16 +876,6 @@ for i in range(len(Width)):
             # #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',0,20*1e4,0)
 
             # ===================== Load Pattern 2: TopForce on the top Middle Foundation (Foundation width = 1m, r = 0.5m)======================
-            timeSeries('Path',711, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ10.txt','-dt', Pwave_dt) # HZ = 10
-            timeSeries('Path',712, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ20.txt','-dt', Pwave_dt) # HZ = 20
-            timeSeries('Path',713, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ40.txt','-dt', Pwave_dt) # HZ = 40
-            timeSeries('Path',714, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ80.txt','-dt', Pwave_dt) # HZ = 80
-
-            timeSeries('Path',715, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ10.txt','-dt', Swave_dt) # HZ = 10
-            timeSeries('Path',716, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ20.txt','-dt', Swave_dt) # HZ = 20
-            timeSeries('Path',717, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ40.txt','-dt', Swave_dt) # HZ = 40
-            timeSeries('Path',718, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ80.txt','-dt', Swave_dt) # HZ = 80
-
             # # --------- Fide Foundation Middle and Left/ Right Node ---------------------
             # TopLeft_Node = UpperN_Center - int(0.5/Dw)
             # TopMid_Node = UpperN_Center
@@ -893,7 +883,7 @@ for i in range(len(Width)):
             # print(f"TopLeft_Node = {TopLeft_Node}, TopMid_Node = {TopMid_Node},  TopRight_Node = {TopRight_Node}")
             # # printModel('-node', TopLeft_Node, TopMid_Node, TopRight_Node)
 
-            Total_Force = 20*1e4
+            Total_Force = 20*1e5 # Vertical/ Horizon= 20*1e4 ; Rocking= 20*1e5
             Distribute_Force = Total_Force/(4*Dw)
             print(f'Distributed Load = {Distribute_Force}; Py = {Distribute_Force*(2*Dw)/2}')
 
