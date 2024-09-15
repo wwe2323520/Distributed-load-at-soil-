@@ -883,7 +883,7 @@ for i in range(len(Width)):
             # print(f"TopLeft_Node = {TopLeft_Node}, TopMid_Node = {TopMid_Node},  TopRight_Node = {TopRight_Node}")
             # # printModel('-node', TopLeft_Node, TopMid_Node, TopRight_Node)
 
-            Total_Force = 20*1e5 # Vertical/ Horizon= 20*1e4 ; Rocking= 20*1e5
+            Total_Force = 20*1e4*3.35 # Vertical/ Horizon= 20*1e4 ; Rocking= 20*1e4*3.35
             Distribute_Force = Total_Force/(4*Dw)
             print(f'Distributed Load = {Distribute_Force}; Py = {Distribute_Force*(2*Dw)/2}')
 
