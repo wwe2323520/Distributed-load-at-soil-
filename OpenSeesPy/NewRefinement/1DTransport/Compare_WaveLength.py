@@ -1132,11 +1132,11 @@ def DifferTime_RelativeError2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr,
     plt.plot(Dy_lamb_Pwave[:], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node-based', color = 'red', linewidth = 3.0)
     
  # ----------------S wave------------------------------
-    plt.plot(Dy_lamb_Swave[:], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'purple', linewidth = 3.0)
+    plt.plot(Dy_lamb_Swave[:], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
     # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'purple', linewidth = 3.0) # , ls = '--'
-    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'purple', linewidth = 3.0) # , ls =':'
-    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'purple', linewidth = 3.0) # , ls = '-.'
+    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
  
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
@@ -1149,47 +1149,116 @@ def DifferTime_RelativeError2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr,
     ax.set_xscale('log', base=10)
     ax.set_xticks([], minor=False)
     ax.set_xticks([], minor=True)
-    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])  # td = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1] ; Dy/lamb = []
+    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])  # td = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1] ; Dy/lamb = [0.01, 0.02, 0.04, 0.06, 0.08, 0.1]
     ax.set_xticks(x_ticks_Num)
     
-    ax.set_xticklabels([f'{tick:.3f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
     ax.tick_params(axis='x', which='both', labelsize=17)
     
-figsize = (10,10)   
-fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-# fig1.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-fig1.text(0.15,0.85, "Middle Node", color = "red", fontsize=20)
+# figsize = (10,10)   
+# fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# # fig1.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig1.text(0.13,0.85, "Middle Node", color = "black", fontsize=25)
 
-fig1.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
-fig1.text(0.45,0.060, r'$\Delta_c/\lambda$', va= 'center', fontsize=25)
+# fig1.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig1.text(0.45,0.060, r'$\Delta_c/\lambda$', va= 'center', fontsize=25)
 
-ax1 = plt.subplot(311)
-DifferTime_RelativeError2(Tie20_Perr, Type1_W20_Perr, Type2_W20_Perr, Type3_W20_Perr, Tie20_Serr, Type1_W20_Serr, Type2_W20_Serr, Type3_W20_Serr)
-ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.50, y=0.65)
+# ax1 = plt.subplot(311)
+# DifferTime_RelativeError2(Tie20_Perr, Type1_W20_Perr, Type2_W20_Perr, Type3_W20_Perr, Tie20_Serr, Type1_W20_Serr, Type2_W20_Serr, Type3_W20_Serr)
+# ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.12, y=0.65)
 
-ax2 = plt.subplot(312)
-DifferTime_RelativeError2(Tie10_Perr, Type1_W10_Perr, Type2_W10_Perr, Type3_W10_Perr, Tie10_Serr, Type1_W10_Serr, Type2_W10_Serr, Type3_W10_Serr)
-ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.50, y=0.65)
+# ax2 = plt.subplot(312)
+# DifferTime_RelativeError2(Tie10_Perr, Type1_W10_Perr, Type2_W10_Perr, Type3_W10_Perr, Tie10_Serr, Type1_W10_Serr, Type2_W10_Serr, Type3_W10_Serr)
+# ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.12, y=0.80)
 
-ax3 = plt.subplot(313)
-DifferTime_RelativeError2(Tie2_Perr, Type1_W2_Perr, Type2_W2_Perr, Type3_W2_Perr, Tie2_Serr, Type1_W2_Serr, Type2_W2_Serr, Type3_W2_Serr)
-ax3.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.50, y=0.65)
+# ax3 = plt.subplot(313)
+# DifferTime_RelativeError2(Tie2_Perr, Type1_W2_Perr, Type2_W2_Perr, Type3_W2_Perr, Tie2_Serr, Type1_W2_Serr, Type2_W2_Serr, Type3_W2_Serr)
+# ax3.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.12, y=0.80)
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
-legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
-                Line2D([0], [0], color='purple', lw=2, label='S wave'),]
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
+#                 Line2D([0], [0], color='darkgrey', lw=2, label='S wave'),]
 
-legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
-                    Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
-                    Line2D([0], [0], color='black',marker = '<',markersize=8,markerfacecolor = 'white', label= 'Hybrid'),
-                    Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
+# legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
+#                     Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
+#                     Line2D([0], [0], color='black',marker = '<',markersize=8,markerfacecolor = 'white', label= 'Hybrid'),
+#                     Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
 
-lines, labels = fig1.axes[-1].get_legend_handles_labels()
-legend1 = fig1.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
-fig1.add_artist(legend1)
+# lines, labels = fig1.axes[-1].get_legend_handles_labels()
+# legend1 = fig1.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# fig1.add_artist(legend1)
 
-legend2 = fig1.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+# legend2 = fig1.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+
+# ==================Draw Relative error : td =============================
+def DifferTime_RelativeError(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
+    # ------------ P wave --------------------------
+    plt.plot(TiePErr[:,0], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
+    # plt.plot(LKErr[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1PErr[:,0], Type1PErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'red', linewidth = 3.0)
+    plt.plot(Type2PErr[:,0], Type2PErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
+    plt.plot(Type3PErr[:,0], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node-based', color = 'red', linewidth = 3.0)
+    
+ # ----------------S wave------------------------------
+    plt.plot(TieSErr[:,0], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
+    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1SErr[:,0], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Type2SErr[:,0], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Type3SErr[:,0], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
+ 
+    plt.xticks(fontsize = 20)
+    plt.yticks(fontsize = 20)
+
+    # plt.ylim(0, 5.0) 
+    plt.grid(True)
+    
+    ax = plt.gca()
+    # -------------- Consider X-axis  -----------------------
+    ax.set_xscale('log', base=10)
+    ax.set_xticks([], minor=False)
+    ax.set_xticks([], minor=True)
+    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])  # td = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1] ; Dy/lamb = [0.01, 0.02, 0.04, 0.06, 0.08, 0.1]
+    ax.set_xticks(x_ticks_Num)
+    
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    # 设置x轴的刻度大小
+    ax.tick_params(axis='x', which='both', labelsize=17)
+
+# figsize = (10,10)   
+# fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# # fig1.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig2.text(0.70,0.82, "Middle Node", color = "black", fontsize=25)
+
+# fig2.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig2.text(0.45,0.060, f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
+
+# ax4 = plt.subplot(311)
+# DifferTime_RelativeError(Tie20_Perr, Type1_W20_Perr, Type2_W20_Perr, Type3_W20_Perr, Tie20_Serr, Type1_W20_Serr, Type2_W20_Serr, Type3_W20_Serr)
+# ax4.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.85, y=0.55)
+
+# ax5 = plt.subplot(312)
+# DifferTime_RelativeError(Tie10_Perr, Type1_W10_Perr, Type2_W10_Perr, Type3_W10_Perr, Tie10_Serr, Type1_W10_Serr, Type2_W10_Serr, Type3_W10_Serr)
+# ax5.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.85, y=0.80)
+
+# ax6 = plt.subplot(313)
+# DifferTime_RelativeError(Tie2_Perr, Type1_W2_Perr, Type2_W2_Perr, Type3_W2_Perr, Tie2_Serr, Type1_W2_Serr, Type2_W2_Serr, Type3_W2_Serr)
+# ax6.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.85, y=0.80)
+
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
+#                 Line2D([0], [0], color='darkgrey', lw=2, label='S wave'),]
+
+# legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
+#                     Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
+#                     Line2D([0], [0], color='black',marker = '<',markersize=8,markerfacecolor = 'white', label= 'Hybrid'),
+#                     Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
+
+# lines, labels = fig2.axes[-1].get_legend_handles_labels()
+# legend1 = fig2.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# fig2.add_artist(legend1)
+
+# legend2 = fig2.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
 
 # ================= Calculate_2NormError Normalization ===============================
 Theory_PTime = total_Ptime_HZ80
@@ -1341,7 +1410,7 @@ Add_SErr(Type2_W2Err_SL2, Type2_S2error, Type2_W2_HZ10_S, Type2_W2_HZ20_S, Type2
 Type3_W2Err_SL2 = np.zeros((4,3))
 Add_SErr(Type3_W2Err_SL2, Type3_S2error, Type3_W2_HZ10_S, Type3_W2_HZ20_S, Type3_W2_HZ40_S, Type3_W2_HZ80_S)
 
-# ==================Draw L2 Norm error : Middele point =============================
+# ==================Draw L2 Norm error : Middele point (WaveLength = Dy/Lamb) =============================
 def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
  # ------------ P wave --------------------------
     plt.plot(Dy_lamb_Pwave[:], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
@@ -1351,11 +1420,11 @@ def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1S
     plt.plot(Dy_lamb_Pwave[:], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node_Base', color = 'red', linewidth = 3.0)
        
     # ----------------S wave------------------------------
-    plt.plot(Dy_lamb_Swave[:], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'purple', linewidth = 3.0)
+    plt.plot(Dy_lamb_Swave[:], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
     # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'purple', linewidth = 3.0) # , ls = '--'
-    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'purple', linewidth = 3.0) # , ls =':'
-    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'purple', linewidth = 3.0) # , ls = '-.'
+    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
 
     plt.xticks(fontsize = 18)
     plt.yticks(fontsize = 18)
@@ -1392,37 +1461,123 @@ def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1S
     ax.yaxis.set_minor_formatter(NullFormatter())
     ax.tick_params(axis='y', which='minor', length=4, color='gray')
     
-figsize = (10,10)   
-fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-# fig2.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-fig2.text(0.15,0.85, "Middle Node", color = "red", fontsize=23)
+# figsize = (10,10)   
+# fig3, (ax7,ax8,ax9) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# # fig3.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig3.text(0.13,0.85, "Middle Node", color = "black", fontsize=25)
 
-fig2.text(0.01,0.5, 'L2 Norm '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
-fig2.text(0.45,0.060, r'$\Delta_c/\lambda$', va= 'center', fontsize=22)
+# fig3.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig3.text(0.45,0.060, r'$\Delta_c/\lambda$', va= 'center', fontsize=22)
 
-ax4 = plt.subplot(311)
-DifferTime_L2Error(Tie20Err_PL2, Type1_W20Err_PL2, Type2_W20Err_PL2, Type3_W20Err_PL2, Tie20Err_SL2, Type1_W20Err_SL2, Type2_W20Err_SL2, Type3_W20Err_SL2)
-ax4.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.85, y=0.15)
+# ax7 = plt.subplot(311)
+# DifferTime_L2Error(Tie20Err_PL2, Type1_W20Err_PL2, Type2_W20Err_PL2, Type3_W20Err_PL2, Tie20Err_SL2, Type1_W20Err_SL2, Type2_W20Err_SL2, Type3_W20Err_SL2)
+# ax7.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.12, y=0.70)
 
-ax5 = plt.subplot(312)
-DifferTime_L2Error(Tie10Err_PL2, Type1_W10Err_PL2, Type2_W10Err_PL2, Type3_W10Err_PL2, Tie10Err_SL2, Type1_W10Err_SL2, Type2_W10Err_SL2, Type3_W10Err_SL2)
-ax5.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.85, y=0.15)
+# ax8 = plt.subplot(312)
+# DifferTime_L2Error(Tie10Err_PL2, Type1_W10Err_PL2, Type2_W10Err_PL2, Type3_W10Err_PL2, Tie10Err_SL2, Type1_W10Err_SL2, Type2_W10Err_SL2, Type3_W10Err_SL2)
+# ax8.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.12, y=0.80)
 
-ax6 = plt.subplot(313)
-DifferTime_L2Error(Tie2Err_PL2, Type1_W2Err_PL2, Type2_W2Err_PL2, Type3_W2Err_PL2, Tie2Err_SL2, Type1_W2Err_SL2, Type2_W2Err_SL2, Type3_W2Err_SL2)
-ax6.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.85, y=0.15)
+# ax9 = plt.subplot(313)
+# DifferTime_L2Error(Tie2Err_PL2, Type1_W2Err_PL2, Type2_W2Err_PL2, Type3_W2Err_PL2, Tie2Err_SL2, Type1_W2Err_SL2, Type2_W2Err_SL2, Type3_W2Err_SL2)
+# ax9.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.12, y=0.80)
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
-legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
-                Line2D([0], [0], color='purple', lw=2, label='S wave'),]
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
+#                 Line2D([0], [0], color='darkgrey', lw=2, label='S wave'),]
 
-legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
-                    Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
-                    Line2D([0], [0], color='black',marker = '<',markersize=18,markerfacecolor = 'white', label= 'Hybrid'),
-                    Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
+# legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
+#                     Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
+#                     Line2D([0], [0], color='black',marker = '<',markersize=8,markerfacecolor = 'white', label= 'Hybrid'),
+#                     Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
 
-lines, labels = fig2.axes[-1].get_legend_handles_labels()
-legend1 = fig2.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
-fig2.add_artist(legend1)
+# lines, labels = fig3.axes[-1].get_legend_handles_labels()
+# legend1 = fig3.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# fig3.add_artist(legend1)
 
-legend2 = fig2.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+# legend2 = fig3.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+
+# ==================Draw L2 Norm error : Middele point (td) =============================
+def DifferTime_L2Error2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
+ # ------------ P wave --------------------------
+    plt.plot(TiePErr[:,0], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
+    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1PErr[:,0], Type1PErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam_Base', color = 'red', linewidth = 3.0)
+    plt.plot(Type2PErr[:,0], Type2PErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
+    plt.plot(Type3PErr[:,0], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node_Base', color = 'red', linewidth = 3.0)
+       
+    # ----------------S wave------------------------------
+    plt.plot(TieSErr[:,0], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
+    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1SErr[:,0], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Type2SErr[:,0], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Type3SErr[:,0], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
+
+    plt.xticks(fontsize = 18)
+    plt.yticks(fontsize = 18)
+
+    # plt.xlim(0.0, 0.20)
+    plt.grid(True)
+    
+    ax = plt.gca()
+    # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
+    # -------------- Consider X-axis  -----------------------
+    ax.set_xscale('log', base=10)
+    ax.set_xticks([], minor=False)
+    ax.set_xticks([], minor=True)
+    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])
+    ax.set_xticks(x_ticks_Num)
+    # ------- Miner ticks -----------------
+    ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    # 设置x轴的刻度大小
+    ax.tick_params(axis='x', which='both', labelsize= 17)
+    # -------------- Consider Y-axis  -----------------------
+    ax.set_yscale('log', base=10)
+    ax.set_yticks([], minor=False)
+    ax.set_yticks([], minor=True)
+    y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.20, 0.40, 0.60])
+    ax.set_yticks(y_ticks_Num)
+    ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
+    ax.tick_params(axis='y', which='both', labelsize=17)
+    # ------- Miner ticks -----------------
+    ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    
+# figsize = (10,10)   
+# fig4, (ax10,ax11,ax12) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# # fig4.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig4.text(0.70,0.82, "Middle Node", color = "black", fontsize=25)
+
+# fig4.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig4.text(0.45,0.060, f'Duration ' + r'$t_d$', va= 'center', fontsize=22)
+
+# ax10 = plt.subplot(311)
+# DifferTime_L2Error2(Tie20Err_PL2, Type1_W20Err_PL2, Type2_W20Err_PL2, Type3_W20Err_PL2, Tie20Err_SL2, Type1_W20Err_SL2, Type2_W20Err_SL2, Type3_W20Err_SL2)
+# ax10.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.85, y=0.55)
+
+# ax11 = plt.subplot(312)
+# DifferTime_L2Error2(Tie10Err_PL2, Type1_W10Err_PL2, Type2_W10Err_PL2, Type3_W10Err_PL2, Tie10Err_SL2, Type1_W10Err_SL2, Type2_W10Err_SL2, Type3_W10Err_SL2)
+# ax11.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.85, y=0.80)
+
+# ax12 = plt.subplot(313)
+# DifferTime_L2Error2(Tie2Err_PL2, Type1_W2Err_PL2, Type2_W2Err_PL2, Type3_W2Err_PL2, Tie2Err_SL2, Type1_W2Err_SL2, Type2_W2Err_SL2, Type3_W2Err_SL2)
+# ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.85, y=0.80)
+
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
+#                 Line2D([0], [0], color='darkgrey', lw=2, label='S wave'),]
+
+# legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
+#                     Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
+#                     Line2D([0], [0], color='black',marker = '<',markersize=8,markerfacecolor = 'white', label= 'Hybrid'),
+#                     Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
+
+# lines, labels = fig4.axes[-1].get_legend_handles_labels()
+# legend1 = fig4.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# fig4.add_artist(legend1)
+
+# legend2 = fig4.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
