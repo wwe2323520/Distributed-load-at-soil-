@@ -98,8 +98,8 @@ W20_Mid40row = Find_Middle(int(20.0), YMesh)
 
 # ============== Read Middle Node Analysis Data ==========================================
 # HZ = 40
-Wave_Vel = 200 # Vertical; Rocking => cp = 400 m/s ; Horizon => cs = 200 m/s
-Force_Condition = f'2D_Absorb/Newmark_Linear_Test/Horizon' # Vertical; Horizon; Rocking
+Wave_Vel = 400 # Vertical; Rocking => cp = 400 m/s ; Horizon => cs = 200 m/s
+Force_Condition = f'2D_Absorb/Newmark_Linear_Test/Rocking' # Vertical; Horizon; Rocking
 
 Dy = 0.25 # m
 # --------------------- Choose which WaveLength ---------------------------------
@@ -851,7 +851,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig1, (ax1,ax2,ax3,ax4) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig1.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig1.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig1.text(0.54,0.85, r"$\mathrm {Horizon}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig1.text(0.54,0.85, r"$\mathrm {Rocking}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -884,7 +884,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig2, (ax5,ax6,ax7,ax8) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig2.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig2.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig2.text(0.50,0.85, r"$\mathrm {Horizon}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig2.text(0.50,0.85, r"$\mathrm {Rocking}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig2.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -917,7 +917,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig3, (ax9,ax10,aX11,ax12) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig3.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig3.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig3.text(0.48,0.85, r"$\mathrm {Horizon}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig3.text(0.48,0.85, r"$\mathrm {Rocking}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig3.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -950,7 +950,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig4, (ax13,ax14,aX15,ax16) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig4.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig4.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig4.text(0.46,0.85, r"$\mathrm {Horizon}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig4.text(0.46,0.85, r"$\mathrm {Rocking}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig4.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -984,7 +984,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig5, (ax17,ax18,ax19,ax20) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig5.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig5.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig5.text(0.52,0.85, r"$\mathrm {Horizon}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig5.text(0.52,0.85, r"$\mathrm {Rocking}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig5.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig5.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -1017,7 +1017,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig6, (ax21,ax22,ax23,ax24) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig6.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig6.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig6.text(0.50,0.85, r"$\mathrm {Horizon}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig6.text(0.50,0.85, r"$\mathrm {Rocking}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig6.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig6.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -1050,7 +1050,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig7, (ax25,ax26,ax27,ax28) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig7.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig7.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig7.text(0.46,0.85, r"$\mathrm {Horizon}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig7.text(0.46,0.85, r"$\mathrm {Rocking}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig7.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig7.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -1083,7 +1083,7 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # fig8, (ax29,ax30,ax31,ax32) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig8.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # fig8.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig8.text(0.44,0.85, r"$\mathrm {Horizon}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig8.text(0.44,0.85, r"$\mathrm {Rocking}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22)
 # fig8.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_m$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig8.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -1441,7 +1441,7 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
 # --- Horizon= Mid(-25, 25)/ Away=(-25,100); Vertical = Mid(-5, 5)/ Away=(-30,10); Rocking: -110, 50(with Tie) / -30, 30/110 (no Tie)
-    # plt.ylim(-30, 110)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.ylim(-30, 80)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
     
     ax = plt.gca()
@@ -1479,7 +1479,7 @@ figsize = (10, 10)
 # fig9, (ax33,ax34,ax35,ax36) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=22)
-# fig9.text(0.16,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=22)
+# fig9.text(0.16,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
 
 # fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0~0.2s}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
@@ -1508,7 +1508,7 @@ figsize = (10, 10)
 # fig10, (ax37,ax38,ax39,ax40) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig10.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig10.text(0.14,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=22)
-# fig10.text(0.27,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=23)
+# fig10.text(0.27,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=23)
 
 # fig10.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0~0.2s}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig10.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize= 25)
@@ -1523,7 +1523,7 @@ figsize = (10, 10)
 
 # ax39 = plt.subplot(413)
 # DifferTime_RelativeError(1, Tie5_err_Away, LK5_err_Away, BeamType_5err_Away)
-# ax39.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.85, y=0.10)
+# ax39.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.85, y=0.80)
 
 # ax40 = plt.subplot(414)
 # DifferTime_RelativeError(1, Tie2_err_Away, LK2_err_Away, BeamType_2err_Away)
@@ -1537,8 +1537,8 @@ figsize = (10, 10)
 def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.02, 0.90,'Horizon', color='black', fontsize = 28, transform=plt.gca().transAxes)
-    plt.text(0.05, 0.82,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.10,'Rocking', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.text(0.05, 0.04,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E^{0~0.2s}_{Max}$" + r" (%)", fontsize = 25)
 
@@ -1551,7 +1551,7 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
 # --- Horizon= Mid(-25, 100)/ Away=(-30,220); Vertical = Mid(-30, 15)/ Away=(-30,110); Rocking: -110, 60(with Tie) / -30, 30 (no Tie)
-    plt.ylim(-30, 220)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.ylim(-30, 60)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
     
     ax = plt.gca()
@@ -1613,92 +1613,92 @@ def Calculate_RelativeL2norm(TheoryTime,TheoryData, Analysis_Time,Tie_W20_HZ40_M
 def Add_Err(Index, MidTieErr20,Tie20_error, Tie_W20_HZ10_Mid, Tie_W20_HZ20_Mid, Tie_W20_HZ40_Mid, Tie_W20_HZ80_Mid):
     MidTieErr20[:,0] = Tie20_error[:,0] 
 # ===================================== Calculate_L2NormError Normalization : Middle Node============================================================
-    MidTieErr20[0,Index], MidTieErr20[0,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ10_Mid, Analysis_Time,Tie_W20_HZ10_Mid, time_range=(0, 0.20))
-    MidTieErr20[1,Index], MidTieErr20[1,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ20_Mid, Analysis_Time,Tie_W20_HZ20_Mid, time_range=(0, 0.20))
-    MidTieErr20[2,Index], MidTieErr20[2,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ40_Mid, Analysis_Time,Tie_W20_HZ40_Mid, time_range=(0, 0.20))
-    MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ80_Mid, Analysis_Time,Tie_W20_HZ80_Mid, time_range=(0, 0.20))
+    MidTieErr20[0,Index], MidTieErr20[0,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ10_Vm, Analysis_Time,Tie_W20_HZ10_Mid, time_range=(0, 0.20))
+    MidTieErr20[1,Index], MidTieErr20[1,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ20_Vm, Analysis_Time,Tie_W20_HZ20_Mid, time_range=(0, 0.20))
+    MidTieErr20[2,Index], MidTieErr20[2,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ40_Vm, Analysis_Time,Tie_W20_HZ40_Mid, time_range=(0, 0.20))
+    MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ80_Vm, Analysis_Time,Tie_W20_HZ80_Mid, time_range=(0, 0.20))
 
 # -------------- W = 20m-------------------------------
 Tie20Err_L2 = np.zeros((4,3))
-Add_Err(1, Tie20Err_L2,Tie20_error, Tie_W20_HZ10_Mid, Tie_W20_HZ20_Mid, Tie_W20_HZ40_Mid, Tie_W20_HZ80_Mid)
+Add_Err(1, Tie20Err_L2,Tie20_error, Tie_W20_HZ10_Vm, Tie_W20_HZ20_Vm, Tie_W20_HZ40_Vm, Tie_W20_HZ80_Vm)
 
 LK20Err_L2 = np.zeros((4,3))
-Add_Err(1, LK20Err_L2,LK20_error, LK_W20_HZ10_Mid, LK_W20_HZ20_Mid, LK_W20_HZ40_Mid, LK_W20_HZ80_Mid)
+Add_Err(1, LK20Err_L2,LK20_error, LK_W20_HZ10_Vm, LK_W20_HZ20_Vm, LK_W20_HZ40_Vm, LK_W20_HZ80_Vm)
 
 BeamType_W20Err_L2 = np.zeros((4,3))
-Add_Err(1, BeamType_W20Err_L2, BeamType_20error, BeamType_W20_HZ10_Mid, BeamType_W20_HZ20_Mid, BeamType_W20_HZ40_Mid, BeamType_W20_HZ80_Mid)
+Add_Err(1, BeamType_W20Err_L2, BeamType_20error, BeamType_W20_HZ10_Vm, BeamType_W20_HZ20_Vm, BeamType_W20_HZ40_Vm, BeamType_W20_HZ80_Vm)
 # -------------- W = 10m-------------------------------
 Tie10Err_L2 = np.zeros((4,3))
-Add_Err(1, Tie10Err_L2,Tie10_error, Tie_W10_HZ10_Mid, Tie_W10_HZ20_Mid, Tie_W10_HZ40_Mid, Tie_W10_HZ80_Mid)
+Add_Err(1, Tie10Err_L2,Tie10_error, Tie_W10_HZ10_Vm, Tie_W10_HZ20_Vm, Tie_W10_HZ40_Vm, Tie_W10_HZ80_Vm)
 
 LK10Err_L2 = np.zeros((4,3))
-Add_Err(1, LK10Err_L2,LK10_error, LK_W10_HZ10_Mid, LK_W10_HZ20_Mid, LK_W10_HZ40_Mid, LK_W10_HZ80_Mid)
+Add_Err(1, LK10Err_L2,LK10_error, LK_W10_HZ10_Vm, LK_W10_HZ20_Vm, LK_W10_HZ40_Vm, LK_W10_HZ80_Vm)
 
 BeamType_W10Err_L2 = np.zeros((4,3))
-Add_Err(1, BeamType_W10Err_L2, BeamType_10error, BeamType_W10_HZ10_Mid, BeamType_W10_HZ20_Mid, BeamType_W10_HZ40_Mid, BeamType_W10_HZ80_Mid)
+Add_Err(1, BeamType_W10Err_L2, BeamType_10error, BeamType_W10_HZ10_Vm, BeamType_W10_HZ20_Vm, BeamType_W10_HZ40_Vm, BeamType_W10_HZ80_Vm)
 # -------------- W = 5m-------------------------------
 Tie5Err_L2 = np.zeros((4,3))
-Add_Err(1, Tie5Err_L2,Tie5_error, Tie_W5_HZ10_Mid, Tie_W5_HZ20_Mid, Tie_W5_HZ40_Mid, Tie_W5_HZ80_Mid)
+Add_Err(1, Tie5Err_L2,Tie5_error, Tie_W5_HZ10_Vm, Tie_W5_HZ20_Vm, Tie_W5_HZ40_Vm, Tie_W5_HZ80_Vm)
 
 LK5Err_L2 = np.zeros((4,3))
-Add_Err(1, LK5Err_L2,LK5_error, LK_W5_HZ10_Mid, LK_W5_HZ20_Mid, LK_W5_HZ40_Mid, LK_W5_HZ80_Mid)
+Add_Err(1, LK5Err_L2,LK5_error, LK_W5_HZ10_Vm, LK_W5_HZ20_Vm, LK_W5_HZ40_Vm, LK_W5_HZ80_Vm)
 
 BeamType_W5Err_L2 = np.zeros((4,3))
-Add_Err(1, BeamType_W5Err_L2, BeamType_5error, BeamType_W5_HZ10_Mid, BeamType_W5_HZ20_Mid, BeamType_W5_HZ40_Mid, BeamType_W5_HZ80_Mid)
+Add_Err(1, BeamType_W5Err_L2, BeamType_5error, BeamType_W5_HZ10_Vm, BeamType_W5_HZ20_Vm, BeamType_W5_HZ40_Vm, BeamType_W5_HZ80_Vm)
 # -------------- W = 2m-------------------------------
 Tie2Err_L2 = np.zeros((4,3))
-Add_Err(1, Tie2Err_L2,Tie2_error, Tie_W2_HZ10_Mid, Tie_W2_HZ20_Mid, Tie_W2_HZ40_Mid, Tie_W2_HZ80_Mid)
+Add_Err(1, Tie2Err_L2,Tie2_error, Tie_W2_HZ10_Vm, Tie_W2_HZ20_Vm, Tie_W2_HZ40_Vm, Tie_W2_HZ80_Vm)
 
 LK2Err_L2 = np.zeros((4,3))
-Add_Err(1, LK2Err_L2,LK2_error, LK_W2_HZ10_Mid, LK_W2_HZ20_Mid, LK_W2_HZ40_Mid, LK_W2_HZ80_Mid)
+Add_Err(1, LK2Err_L2,LK2_error, LK_W2_HZ10_Vm, LK_W2_HZ20_Vm, LK_W2_HZ40_Vm, LK_W2_HZ80_Vm)
 
 BeamType_W2Err_L2 = np.zeros((4,3))
-Add_Err(1, BeamType_W2Err_L2, BeamType_2error, BeamType_W2_HZ10_Mid, BeamType_W2_HZ20_Mid, BeamType_W2_HZ40_Mid, BeamType_W2_HZ80_Mid)
+Add_Err(1, BeamType_W2Err_L2, BeamType_2error, BeamType_W2_HZ10_Vm, BeamType_W2_HZ20_Vm, BeamType_W2_HZ40_Vm, BeamType_W2_HZ80_Vm)
 
 def Add_Err2(Index, AwayTieErr20, Tie20_error, Tie_W20_HZ10_Away, Tie_W20_HZ20_Away, Tie_W20_HZ40_Away, Tie_W20_HZ80_Away):
     AwayTieErr20[:,0] = Tie20_error[:,0] 
 # ===================================== Calculate_L2NormError Normalization : 1m away from Middle Node============================================================
-    AwayTieErr20[0,Index], AwayTieErr20[0,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ10_Away, Analysis_Time,Tie_W20_HZ10_Away, time_range=(0, 0.20))
-    AwayTieErr20[1,Index], AwayTieErr20[1,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ20_Away, Analysis_Time,Tie_W20_HZ20_Away, time_range=(0, 0.20))
-    AwayTieErr20[2,Index], AwayTieErr20[2,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ40_Away, Analysis_Time,Tie_W20_HZ40_Away, time_range=(0, 0.20))
-    AwayTieErr20[3,Index], AwayTieErr20[3,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ80_Away, Analysis_Time,Tie_W20_HZ80_Away, time_range=(0, 0.20))
+    AwayTieErr20[0,Index], AwayTieErr20[0,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ10_AwayVm, Analysis_Time,Tie_W20_HZ10_Away, time_range=(0, 0.20))
+    AwayTieErr20[1,Index], AwayTieErr20[1,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ20_AwayVm, Analysis_Time,Tie_W20_HZ20_Away, time_range=(0, 0.20))
+    AwayTieErr20[2,Index], AwayTieErr20[2,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ40_AwayVm, Analysis_Time,Tie_W20_HZ40_Away, time_range=(0, 0.20))
+    AwayTieErr20[3,Index], AwayTieErr20[3,2] = Calculate_RelativeL2norm(Theory_Time,LK_W20_HZ80_AwayVm, Analysis_Time,Tie_W20_HZ80_Away, time_range=(0, 0.20))
 
 # -------------- W = 20m-------------------------------
 Tie20Err_L2Away = np.zeros((4,3))
-Add_Err2(1, Tie20Err_L2Away, Tie20_error_Away, Tie_W20_HZ10_Away, Tie_W20_HZ20_Away, Tie_W20_HZ40_Away, Tie_W20_HZ80_Away)
+Add_Err2(1, Tie20Err_L2Away, Tie20_error_Away, Tie_W20_HZ10_AwayVm, Tie_W20_HZ20_AwayVm, Tie_W20_HZ40_AwayVm, Tie_W20_HZ80_AwayVm)
 
 LK20Err_L2Away = np.zeros((4,3))
-Add_Err2(1, LK20Err_L2Away, LK20_error_Away, LK_W20_HZ10_Away, LK_W20_HZ20_Away, LK_W20_HZ40_Away, LK_W20_HZ80_Away)
+Add_Err2(1, LK20Err_L2Away, LK20_error_Away, LK_W20_HZ10_AwayVm, LK_W20_HZ20_AwayVm, LK_W20_HZ40_AwayVm, LK_W20_HZ80_AwayVm)
 
 BeamType_W20Err_L2Away = np.zeros((4,3))
-Add_Err2(1, BeamType_W20Err_L2Away, BeamType_20error_Away, BeamType_W20_HZ10_Away, BeamType_W20_HZ20_Away, BeamType_W20_HZ40_Away, BeamType_W20_HZ80_Away)
+Add_Err2(1, BeamType_W20Err_L2Away, BeamType_20error_Away, BeamType_W20_HZ10_AwayVm, BeamType_W20_HZ20_AwayVm, BeamType_W20_HZ40_AwayVm, BeamType_W20_HZ80_AwayVm)
 # -------------- W = 10m-------------------------------
 Tie10Err_L2Away = np.zeros((4,3))
-Add_Err2(1, Tie10Err_L2Away, Tie10_error_Away, Tie_W10_HZ10_Away, Tie_W10_HZ20_Away, Tie_W10_HZ40_Away, Tie_W10_HZ80_Away)
+Add_Err2(1, Tie10Err_L2Away, Tie10_error_Away, Tie_W10_HZ10_AwayVm, Tie_W10_HZ20_AwayVm, Tie_W10_HZ40_AwayVm, Tie_W10_HZ80_AwayVm)
 
 LK10Err_L2Away = np.zeros((4,3))
-Add_Err2(1, LK10Err_L2Away, LK10_error_Away, LK_W10_HZ10_Away, LK_W10_HZ20_Away, LK_W10_HZ40_Away, LK_W10_HZ80_Away)
+Add_Err2(1, LK10Err_L2Away, LK10_error_Away, LK_W10_HZ10_AwayVm, LK_W10_HZ20_AwayVm, LK_W10_HZ40_AwayVm, LK_W10_HZ80_AwayVm)
 
 BeamType_W10Err_L2Away = np.zeros((4,3))
-Add_Err2(1, BeamType_W10Err_L2Away, BeamType_10error_Away, BeamType_W10_HZ10_Away, BeamType_W10_HZ20_Away, BeamType_W10_HZ40_Away, BeamType_W10_HZ80_Away)
+Add_Err2(1, BeamType_W10Err_L2Away, BeamType_10error_Away, BeamType_W10_HZ10_AwayVm, BeamType_W10_HZ20_AwayVm, BeamType_W10_HZ40_AwayVm, BeamType_W10_HZ80_AwayVm)
 # -------------- W = 5m-------------------------------
 Tie5Err_L2Away = np.zeros((4,3))
-Add_Err2(1, Tie5Err_L2Away, Tie5_error_Away, Tie_W5_HZ10_Away, Tie_W5_HZ20_Away, Tie_W5_HZ40_Away, Tie_W5_HZ80_Away)
+Add_Err2(1, Tie5Err_L2Away, Tie5_error_Away, Tie_W5_HZ10_AwayVm, Tie_W5_HZ20_AwayVm, Tie_W5_HZ40_AwayVm, Tie_W5_HZ80_AwayVm)
 
 LK5Err_L2Away = np.zeros((4,3))
-Add_Err2(1, LK5Err_L2Away, LK5_error_Away, LK_W5_HZ10_Away, LK_W5_HZ20_Away, LK_W5_HZ40_Away, LK_W5_HZ80_Away)
+Add_Err2(1, LK5Err_L2Away, LK5_error_Away, LK_W5_HZ10_AwayVm, LK_W5_HZ20_AwayVm, LK_W5_HZ40_AwayVm, LK_W5_HZ80_AwayVm)
 
 BeamType_W5Err_L2Away = np.zeros((4,3))
-Add_Err2(1, BeamType_W5Err_L2Away, BeamType_5error_Away, BeamType_W5_HZ10_Away, BeamType_W5_HZ20_Away, BeamType_W5_HZ40_Away, BeamType_W5_HZ80_Away)
+Add_Err2(1, BeamType_W5Err_L2Away, BeamType_5error_Away, BeamType_W5_HZ10_AwayVm, BeamType_W5_HZ20_AwayVm, BeamType_W5_HZ40_AwayVm, BeamType_W5_HZ80_AwayVm)
 # -------------- W = 2m-------------------------------
 Tie2Err_L2Away = np.zeros((4,3))
-Add_Err2(1, Tie2Err_L2Away, Tie2_error_Away, Tie_W2_HZ10_Away, Tie_W2_HZ20_Away, Tie_W2_HZ40_Away, Tie_W2_HZ80_Away)
+Add_Err2(1, Tie2Err_L2Away, Tie2_error_Away, Tie_W2_HZ10_AwayVm, Tie_W2_HZ20_AwayVm, Tie_W2_HZ40_AwayVm, Tie_W2_HZ80_AwayVm)
 
 LK2Err_L2Away = np.zeros((4,3))
-Add_Err2(1, LK2Err_L2Away, LK2_error_Away, LK_W2_HZ10_Away, LK_W2_HZ20_Away, LK_W2_HZ40_Away, LK_W2_HZ80_Away)
+Add_Err2(1, LK2Err_L2Away, LK2_error_Away, LK_W2_HZ10_AwayVm, LK_W2_HZ20_AwayVm, LK_W2_HZ40_AwayVm, LK_W2_HZ80_AwayVm)
 
 BeamType_W2Err_L2Away = np.zeros((4,3))
-Add_Err2(1, BeamType_W2Err_L2Away, BeamType_2error_Away, BeamType_W2_HZ10_Away, BeamType_W2_HZ20_Away, BeamType_W2_HZ40_Away, BeamType_W2_HZ80_Away)
+Add_Err2(1, BeamType_W2Err_L2Away, BeamType_2error_Away, BeamType_W2_HZ10_AwayVm, BeamType_W2_HZ20_AwayVm, BeamType_W2_HZ40_AwayVm, BeamType_W2_HZ80_AwayVm)
 
 # ==================Draw L2 Norm error : Dy =============================
 def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
@@ -1734,7 +1734,7 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.1 ,0.2, 0.4, 0.6, 0.8]) 
+    y_ticks_Num = np.array([0.08, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=14)
@@ -1750,7 +1750,7 @@ figsize = (10, 10)
 # fig13, (ax49,ax50,ax51) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig13.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig13.text(0.14,0.82, "(Middle Node)", color = "black", fontsize=22)
-# fig13.text(0.17,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=22)
+# fig13.text(0.17,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
 
 # fig13.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0~0.2s}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
@@ -1780,7 +1780,7 @@ figsize = (10, 10)
 # fig14, (ax53,ax54,ax55) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig14.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig14.text(0.14,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=22)
-# fig14.text(0.20,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=22)
+# fig14.text(0.20,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
 
 # fig14.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0~0.2s}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
@@ -1810,7 +1810,7 @@ figsize = (10, 10)
 def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.06, 0.10,'Horizon', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.text(0.06, 0.10,'Rocking', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.text(0.10, 0.04,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Normalized L2 Norm Error '+ r"$\ E^{0~0.2s}_{L2}$", fontsize = 25)
@@ -1850,7 +1850,7 @@ def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0]) # , 8.0, 10.0
+    y_ticks_Num = np.array([1.0, 2.0, 4.0, 6.0, 8.0, 10.0]) # , 8.0, 10.0
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=16)
