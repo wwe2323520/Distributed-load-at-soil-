@@ -13,7 +13,7 @@ from openseespy.opensees import *
 pi = np.pi
 # ----------- Rayleigh Dashpot Cofficient ------------------
 # Integrator = "Central"
-# ---------- For 1D Transport/ 2D Absorbing ------------------
+# ---------- For 1D Transport / 2D Absorbing ------------------
 PtimeNum = np.array([702, 704, 705, 706]) # For P wave TimeSeries 702, 704, 705, 706
 StimeNum = np.array([707, 708, 709, 710]) # For S wave TimeSeries 707, 708, 709, 710
 
@@ -26,7 +26,7 @@ Width = np.array([2.0, 5.0, 10.0, 20.0]) # 1D Transport: 2.0, 10.0, 20.0 ; 2D Ab
 Y_MeshNumber= np.array([40]) # 1D Transport: 80, 40, 20, 10 ; 2D Absorbing: 80, 40, 20
 
 Choose_Wave = f"NewMark_Linear/Vertical" # Pwave ; Vertical / Horizon / Rocking  
-# HZ = 20
+# HZ = 40
 for i in range(len(Width)):
     soilwidth = Width[i]
     print(f"================ Now SoilWidth = {soilwidth} ================")
@@ -91,12 +91,12 @@ for i in range(len(Width)):
 
             print(f"Pwave travel yMesh= {yMesh}; each ele = {dcell} ;dt_Size = {Dt_Size}; dt = {dt}")
             # ======= Totla Analysis Time ============================
-            analysisTime = 0.5# (soilLength/Vp)*8
+            analysisTime = 0.8 # (soilLength/Vp)*8
             analystep = analysisTime/dt # int(800*(ny/10))
             print(f"Analysis Total Time = {analysisTime} ;Analysis_step = {analystep}")
 
             # ================= Build Boundary File =====================
-            Boundary = f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/BeamType1_Surface_{ny}row" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
+            Boundary = f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/LKDash_Surface_{ny}row" # f"{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/TieBC_{ny}row"
             path1 = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/{Boundary}/Velocity' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Velocity'
             path2 = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/{Boundary}/Stress' # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/Stress'
             # path3 =  # f'E:/unAnalysisFile/RayleighDashpot/{Boundary}/DepthTest/H{Applt_D}/Ca{akz}_Cb{bkz}/SurfaceVelocity'
@@ -489,32 +489,32 @@ for i in range(len(Width)):
             equalDOF(TopMid_Node, Found_Mid, 1,2)
             equalDOF(TopRight_Node, Found_Right, 1,2)
 
-            # ================ NewBC: for Case A/B============================
-            # ==================== Side Beam node (233~243 / 244~254) ====================
-            LsideNode = Found_Right +1 # RSideTDash_Start + 2*(ny+1)
-            RsideNode = LsideNode + (ny+1)
-            LsideEle =  FoundRight_Ele +1 # RsideTEle_End + 1 
-            RsideEle = LsideEle + ny
+            # # ================ NewBC: for Case A/B============================
+            # # ==================== Side Beam node (233~243 / 244~254) ====================
+            # LsideNode = Found_Right +1 # RSideTDash_Start + 2*(ny+1)
+            # RsideNode = LsideNode + (ny+1)
+            # LsideEle =  FoundRight_Ele +1 # RsideTEle_End + 1 
+            # RsideEle = LsideEle + ny
 
-            for i in range(ny+1):
-            # ----- Left Side: 233~243 -----------------
-                node(LsideNode+i, 0.0, yMesh*i)
-                fix(LsideNode+i,0,0,1)
-            # ----- Right Side: 244~254 -----------------
-                node(RsideNode+i, soilwidth ,yMesh*i)
-                fix(RsideNode+i,0,0,1)
+            # for i in range(ny+1):
+            # # ----- Left Side: 233~243 -----------------
+            #     node(LsideNode+i, 0.0, yMesh*i)
+            #     fix(LsideNode+i,0,0,1)
+            # # ----- Right Side: 244~254 -----------------
+            #     node(RsideNode+i, soilwidth ,yMesh*i)
+            #     fix(RsideNode+i,0,0,1)
 
-            # ------------  Beam Element: 151 ~ 160 / 161 ~ 170 ------------------
-            for j in range(ny):
-            # ----- Left Side Beam:151 ~ 160 -----------------
-                element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
-            # ----- Right Side Beam:161 ~ 170 -----------------
-                element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+            # # ------------  Beam Element: 151 ~ 160 / 161 ~ 170 ------------------
+            # for j in range(ny):
+            # # ----- Left Side Beam:151 ~ 160 -----------------
+            #     element('elasticBeamColumn', LsideEle+j, LsideNode+j, (LsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
+            # # ----- Right Side Beam:161 ~ 170 -----------------
+            #     element('elasticBeamColumn', RsideEle+j, RsideNode+j, (RsideNode+1)+j, A,E1,Iz, 1, '-release', 3)
 
-            # --------- Side Beam and Soil BC -----------------
-            for j in range(ny+1):
-                equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
-                equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
+            # # --------- Side Beam and Soil BC -----------------
+            # for j in range(ny+1):
+            #     equalDOF(1+(nx+1)*j,LsideNode+j,1,2)
+            #     equalDOF((nx+1)+(nx+1)*j,RsideNode+j,1,2)
 
             # ============================== S wave ======================================
             # ========================= "CaseA": SideLoad Pattern ===================================
@@ -876,16 +876,6 @@ for i in range(len(Width)):
             # #     eleLoad('-ele', BeamEle_Start+o, '-type','-beamUniform',0,20*1e4,0)
 
             # ===================== Load Pattern 2: TopForce on the top Middle Foundation (Foundation width = 1m, r = 0.5m)======================
-            timeSeries('Path',711, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ10.txt','-dt', Pwave_dt) # HZ = 10
-            timeSeries('Path',712, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ20.txt','-dt', Pwave_dt) # HZ = 20
-            timeSeries('Path',713, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ40.txt','-dt', Pwave_dt) # HZ = 40
-            timeSeries('Path',714, '-filePath', f'{TimeSeries_Path}/Pwave_Time/New_Time/fp_Surface_HZ80.txt','-dt', Pwave_dt) # HZ = 80
-
-            timeSeries('Path',715, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ10.txt','-dt', Swave_dt) # HZ = 10
-            timeSeries('Path',716, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ20.txt','-dt', Swave_dt) # HZ = 20
-            timeSeries('Path',717, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ40.txt','-dt', Swave_dt) # HZ = 40
-            timeSeries('Path',718, '-filePath', f'{TimeSeries_Path}/Swave_Time/New_Time/fs_Surface_HZ80.txt','-dt', Swave_dt) # HZ = 80
-
             # # --------- Fide Foundation Middle and Left/ Right Node ---------------------
             # TopLeft_Node = UpperN_Center - int(0.5/Dw)
             # TopMid_Node = UpperN_Center
@@ -893,7 +883,7 @@ for i in range(len(Width)):
             # print(f"TopLeft_Node = {TopLeft_Node}, TopMid_Node = {TopMid_Node},  TopRight_Node = {TopRight_Node}")
             # # printModel('-node', TopLeft_Node, TopMid_Node, TopRight_Node)
 
-            Total_Force = 20*1e4
+            Total_Force = 20*1e4 # Vertical/ Horizon= 20*1e4 ; Rocking= 20*1e4*3.35
             Distribute_Force = Total_Force/(4*Dw)
             print(f'Distributed Load = {Distribute_Force}; Py = {Distribute_Force*(2*Dw)/2}')
 
@@ -913,17 +903,29 @@ for i in range(len(Width)):
             # eleLoad('-ele', FoundLeft_Ele, '-type','-beamUniform',0, Distribute_Force,0)
             # eleLoad('-ele', FoundRight_Ele, '-type','-beamUniform',0, Distribute_Force,0)
 
-            # #  ------------- Case 3 => Rocking Apply: P wave TimeSeries -----------------------------
+            #  ------------- Case 3 => Rocking Apply: P wave TimeSeries -----------------------------
+            # # -------------- Rocking point Load ------------------
             # Total_ApplyNode = int(0.5/Dw)
             # # print(Total_ApplyNode)
             # Py = 1e5 # 
-
             # for o in range(1, Total_ApplyNode+1):
             #     # --------- Left Side ----------------
             #     load(UpperN_Center-o, 0, Py*((Dw*o)/0.5))
             #     # --------- Right Side ----------------
             #     load(UpperN_Center+o, 0, -Py*((Dw*o)/0.5))
             #     # print(Py*((Dw*o)/0.5))
+
+            # # -------------- Rocking Distributed Beam Load ------------------
+            # aOverL_Left = 0/(2*Dw)
+            # bOverL_Left = (2*Dw)/(2*Dw)
+            # print(f'Left Beam: aOverL_Left ={aOverL_Left}; bOverL_Left = {bOverL_Left}')
+
+            # aOverL_Right = 0/(2*Dw)
+            # bOverL_Right = (2*Dw)/(2*Dw)
+            # print(f'Left Beam: aOverL_Right ={aOverL_Right}; bOverL_Right = {bOverL_Right}')
+
+            # eleLoad('-ele', FoundLeft_Ele, '-type','-beamUniform', -Distribute_Force, 0, aOverL_Left, bOverL_Left, 0, 0) # i to j end
+            # eleLoad('-ele', FoundRight_Ele, '-type','-beamUniform',0, 0, aOverL_Right, bOverL_Right, +Distribute_Force, 0) # i to j end
 
             print("finish Input Force File:0 ~ 0.1s(+1), Inpu Stress B.C:0.2~0.3s(-1)")
 
