@@ -98,7 +98,7 @@ W20_Mid40row = Find_Middle(int(20.0), YMesh)
 # ============== Read Middle Node Analysis Data ==========================================
 # HZ = 40
 Wave_Vel = 400 # Vertical; Rocking => cp = 400 m/s ; Horizon => cs = 200 m/s
-Force_Condition = f'2D_Absorb/NewMark_Linear/Horizon' # Vertical; Horizon; Rocking
+Force_Condition = f'2D_Absorb/NewMark_Linear/Rocking' # Vertical; Horizon; Rocking
 
 Dy = 0.25 # m
 # --------------------- Choose which WaveLength ---------------------------------
@@ -1589,57 +1589,57 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
 # lines, labels = fig10.axes[-1].get_legend_handles_labels()
 # fig10.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 
-# ############ Compare Both Vx and Vy ##########################
-# figsize2 = (10, 10)
-# # ----------------- Draw Relative error : td (1/HZ) ------------------- 
-# fig9, axes  = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize2) #, sharex=True
-# (ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
-# # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig9.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
-# fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
-# fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
+############ Compare Both Vx and Vy ##########################
+figsize2 = (10, 10)
+# ----------------- Draw Relative error : td (1/HZ) ------------------- 
+fig9, axes  = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize2) #, sharex=True
+(ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
+# fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
+fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
+fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
-# fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
-# fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
+fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
 
-# ax33 = plt.subplot(421)
-# DifferTime_RelativeError(1, Tie20_err, LK20_err, BeamType_20err)
-# # ax33.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.80, y=0.75)
+ax33 = plt.subplot(421)
+DifferTime_RelativeError(1, Tie20_err, LK20_err, BeamType_20err)
+# ax33.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.80, y=0.75)
 
-# ax34 = plt.subplot(423)
-# DifferTime_RelativeError(1, Tie10_err, LK10_err, BeamType_10err)
-# # ax34.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.75)
+ax34 = plt.subplot(423)
+DifferTime_RelativeError(1, Tie10_err, LK10_err, BeamType_10err)
+# ax34.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.75)
 
-# ax35 = plt.subplot(425)
-# DifferTime_RelativeError(1, Tie5_err, LK5_err, BeamType_5err)
-# # ax35.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.75)
+ax35 = plt.subplot(425)
+DifferTime_RelativeError(1, Tie5_err, LK5_err, BeamType_5err)
+# ax35.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.75)
 
-# ax36 = plt.subplot(427)
-# DifferTime_RelativeError(1, Tie2_err, LK2_err, BeamType_2err)
-# # ax36.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.75)
+ax36 = plt.subplot(427)
+DifferTime_RelativeError(1, Tie2_err, LK2_err, BeamType_2err)
+# ax36.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.75)
 
-# ax37 = plt.subplot(422)
-# DifferTime_RelativeError(1, Tie20_err_Vy, LK20_err_Vy, BeamType_20err_Vy)
-# ax37.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.22, y=0.75)
+ax37 = plt.subplot(422)
+DifferTime_RelativeError(1, Tie20_err_Vy, LK20_err_Vy, BeamType_20err_Vy)
+ax37.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.22, y=0.75)
 
-# ax38 = plt.subplot(424)
-# DifferTime_RelativeError(1, Tie10_err_Vy, LK10_err_Vy, BeamType_10err_Vy)
-# ax38.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.22, y=0.75)
+ax38 = plt.subplot(424)
+DifferTime_RelativeError(1, Tie10_err_Vy, LK10_err_Vy, BeamType_10err_Vy)
+ax38.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.22, y=0.75)
 
-# ax39 = plt.subplot(426)
-# DifferTime_RelativeError(1, Tie5_err_Vy, LK5_err_Vy, BeamType_5err_Vy)
-# ax39.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.22, y=0.75)
+ax39 = plt.subplot(426)
+DifferTime_RelativeError(1, Tie5_err_Vy, LK5_err_Vy, BeamType_5err_Vy)
+ax39.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.22, y=0.75)
 
-# ax40 = plt.subplot(428)
-# DifferTime_RelativeError(1, Tie2_err_Vy, LK2_err_Vy, BeamType_2err_Vy)
-# ax40.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.22, y=0.75)
+ax40 = plt.subplot(428)
+DifferTime_RelativeError(1, Tie2_err_Vy, LK2_err_Vy, BeamType_2err_Vy)
+ax40.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.22, y=0.75)
 
-# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
-# plt.subplots_adjust(wspace=0.1, hspace=0.3)
-# lines, labels = fig9.axes[-1].get_legend_handles_labels()
-# fig9.legend(lines, labels, ncol=2, loc = (0.3, 0.92) ,prop=font_props)
+plt.subplots_adjust(wspace=0.1, hspace=0.3)
+lines, labels = fig9.axes[-1].get_legend_handles_labels()
+fig9.legend(lines, labels, ncol=2, loc = (0.3, 0.92) ,prop=font_props)
 
 # fig10, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True , figsize= figsize2) #, sharex=True
 # (ax41,ax42,ax43,ax44, ax45, ax46, ax47, ax48) = axes.ravel()
