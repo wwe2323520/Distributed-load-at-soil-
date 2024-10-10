@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt, ticker as mticker
 import scipy.signal
 from scipy.signal import find_peaks
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
+from matplotlib.lines import Line2D
 
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
@@ -1496,7 +1497,7 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
 # --- Horizon= Mid(-25, 25)/ Away=(-25,100); Vertical = Mid(-5, 5)/ Away=(-30,10); Rocking: -110, 50(with Tie) / -30, 30 (no Tie)
-    # plt.ylim(-60, 150)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.ylim(-35, 200)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
     
     ax = plt.gca()
@@ -1591,60 +1592,60 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
 
 ############ Compare Both Vx and Vy ##########################
 figsize2 = (10, 10)
-# ----------------- Draw Relative error : td (1/HZ) ------------------- 
-fig9, axes  = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize2) #, sharex=True
-(ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
-# fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
-fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
-fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
+# # ----------------- Draw Relative error : td (1/HZ) ------------------- 
+# fig9, axes  = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize2) #, sharex=True
+# (ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
+# # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
+# fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
+# fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
-fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
-fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
+# fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
 
-ax33 = plt.subplot(421)
-DifferTime_RelativeError(1, Tie20_err, LK20_err, BeamType_20err)
-# ax33.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.80, y=0.75)
+# ax33 = plt.subplot(421)
+# DifferTime_RelativeError(1, Tie20_err, LK20_err, BeamType_20err)
+# # ax33.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.80, y=0.75)
 
-ax34 = plt.subplot(423)
-DifferTime_RelativeError(1, Tie10_err, LK10_err, BeamType_10err)
-# ax34.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.75)
+# ax34 = plt.subplot(423)
+# DifferTime_RelativeError(1, Tie10_err, LK10_err, BeamType_10err)
+# # ax34.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.75)
 
-ax35 = plt.subplot(425)
-DifferTime_RelativeError(1, Tie5_err, LK5_err, BeamType_5err)
-# ax35.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.75)
+# ax35 = plt.subplot(425)
+# DifferTime_RelativeError(1, Tie5_err, LK5_err, BeamType_5err)
+# # ax35.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.75)
 
-ax36 = plt.subplot(427)
-DifferTime_RelativeError(1, Tie2_err, LK2_err, BeamType_2err)
-# ax36.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.75)
+# ax36 = plt.subplot(427)
+# DifferTime_RelativeError(1, Tie2_err, LK2_err, BeamType_2err)
+# # ax36.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.75)
 
-ax37 = plt.subplot(422)
-DifferTime_RelativeError(1, Tie20_err_Vy, LK20_err_Vy, BeamType_20err_Vy)
-ax37.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.22, y=0.75)
+# ax37 = plt.subplot(422)
+# DifferTime_RelativeError(1, Tie20_err_Vy, LK20_err_Vy, BeamType_20err_Vy)
+# ax37.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.22, y=0.75)
 
-ax38 = plt.subplot(424)
-DifferTime_RelativeError(1, Tie10_err_Vy, LK10_err_Vy, BeamType_10err_Vy)
-ax38.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.22, y=0.75)
+# ax38 = plt.subplot(424)
+# DifferTime_RelativeError(1, Tie10_err_Vy, LK10_err_Vy, BeamType_10err_Vy)
+# ax38.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.22, y=0.75)
 
-ax39 = plt.subplot(426)
-DifferTime_RelativeError(1, Tie5_err_Vy, LK5_err_Vy, BeamType_5err_Vy)
-ax39.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.22, y=0.75)
+# ax39 = plt.subplot(426)
+# DifferTime_RelativeError(1, Tie5_err_Vy, LK5_err_Vy, BeamType_5err_Vy)
+# ax39.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.22, y=0.75)
 
-ax40 = plt.subplot(428)
-DifferTime_RelativeError(1, Tie2_err_Vy, LK2_err_Vy, BeamType_2err_Vy)
-ax40.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.22, y=0.75)
+# ax40 = plt.subplot(428)
+# DifferTime_RelativeError(1, Tie2_err_Vy, LK2_err_Vy, BeamType_2err_Vy)
+# ax40.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.22, y=0.75)
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
-plt.subplots_adjust(wspace=0.1, hspace=0.3)
-lines, labels = fig9.axes[-1].get_legend_handles_labels()
-fig9.legend(lines, labels, ncol=2, loc = (0.3, 0.92) ,prop=font_props)
+# plt.subplots_adjust(wspace=0.1, hspace=0.3)
+# lines, labels = fig9.axes[-1].get_legend_handles_labels()
+# fig9.legend(lines, labels, ncol=2, loc = (0.3, 0.92) ,prop=font_props)
 
 # fig10, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True , figsize= figsize2) #, sharex=True
 # (ax41,ax42,ax43,ax44, ax45, ax46, ax47, ax48) = axes.ravel()
 # fig10.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
-# fig10.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig10.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig10.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig10.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -1726,7 +1727,62 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 
 
 # Tie_RelativeError(Tie2_err, Tie5_err, Tie10_err, Tie20_err)
 # Tie_RelativeError(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away)   
-   
+
+# ===================Peak Error: Compare Both Vx and Vy ============================================
+def Tie_RelativeError_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy): 
+    plt.figure(figsize=(10, 8))
+    font_props = {'family': 'Arial', 'size': 16}
+    plt.text(0.60, 0.94,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
+    plt.text(0.60, 0.87,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
+    plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
+    plt.ylabel('Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", fontsize = 25)
+
+    plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
+    plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='darkgrey',linewidth = 5.0)
+    plt.plot(TieErr10[:,0], TieErr10[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='darkgrey',linewidth = 4.0)
+    plt.plot(TieErr20[:,0], TieErr20[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='darkgrey',linewidth = 3.0)
+    
+    plt.plot(TieErr2_Vy[:,0], TieErr2_Vy[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='red',linewidth = 6.0)
+    plt.plot(TieErr5_Vy[:,0], TieErr5_Vy[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='red',linewidth = 5.0)
+    plt.plot(TieErr10_Vy[:,0], TieErr10_Vy[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='red',linewidth = 4.0)
+    plt.plot(TieErr20_Vy[:,0], TieErr20_Vy[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 3.0)
+
+    legend_elements = [Line2D([0], [0], color='darkgrey', lw=2, label= r'$V_x$'),
+                Line2D([0], [0], color='red', lw=2, label= r'$V_y$'),
+                ] 
+    legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
+                    Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='black',marker = ''<',',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")]
+    
+    legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    plt.gca().add_artist(legend1)
+    
+    plt.xticks(fontsize = 20)
+    plt.yticks(fontsize = 20)
+# --- Horizon= Mid(-25, 100)/ Away=(-30,220); Vertical = Mid(-30, 15)/ Away=(-30,110); Rocking: -110, 60(with Tie) / -30, 30 (no Tie)
+    # plt.ylim(-5, 130)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.grid(True)
+    
+    ax = plt.gca()
+    # -------------- Consider X-axis  -----------------------
+    ax.set_xscale('log', base=10)
+    ax.set_xticks([], minor=False)
+    ax.set_xticks([], minor=True)
+    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])  # td = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1] ; Dy/lamb = []
+    ax.set_xticks(x_ticks_Num)
+    
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    # 设置x轴的刻度大小
+    ax.tick_params(axis='x', which='both', labelsize=20)
+    # ------- Miner ticks -----------------
+    ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+
+# Tie_RelativeError_Both(Tie2_err, Tie5_err, Tie10_err, Tie20_err, Tie2_err_Vy, Tie5_err_Vy, Tie10_err_Vy, Tie20_err_Vy)
+# Tie_RelativeError_Both(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away, Tie2_err_Away_Vy, Tie5_err_Away_Vy, Tie10_err_Away_Vy, Tie20_err_Away_Vy)
 # ================================== Prepare L2-Norm Error ============================
 # ---------- Find Different Data in 40 row Same Time ---------------------
 Analysis_Time = LK_W20_HZ40_Mid[:, 0]
@@ -1996,7 +2052,7 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
 # fig13, (ax49,ax50,ax51) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig13.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig13.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig13.text(0.13,0.85, r"$\mathrm {Vertical\;Loading}$", color = "black", fontsize=18)
+# fig13.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 
 # fig13.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
@@ -2053,12 +2109,12 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
 # lines, labels = fig14.axes[-1].get_legend_handles_labels()
 # fig14.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 
-# ############ Compare Both Vx and Vy ##########################
-# figsize = (10, 10)
+############ Compare Both Vx and Vy ##########################
+figsize = (10, 10)
 # fig13, axes= plt.subplots(nrows= 3, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax49,ax50,ax51, ax52, ax53, ax54) = axes.ravel()
 # fig13.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig13.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig13.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig13.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig13.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -2099,7 +2155,7 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
 # fig14, axes = plt.subplots(nrows= 3, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax55,ax56,ax57, ax58,ax59,ax60) = axes.ravel()
 # fig14.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig14.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig14.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig14.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig14.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -2121,15 +2177,15 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
 
 # ax58 = plt.subplot(322)
 # DifferTime_L2Error(1, Tie10Err_L2Away_Vy, LK10Err_L2Away_Vy, BeamType_W10Err_L2Away_Vy)
-# ax58.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.04)
+# ax58.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.85) #04
 
 # ax59 = plt.subplot(324)
 # DifferTime_L2Error(1, Tie5Err_L2Away_Vy, LK5Err_L2Away_Vy, BeamType_W5Err_L2Away_Vy)
-# ax59.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.04)
+# ax59.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.85)
 
 # ax60 = plt.subplot(326)
 # DifferTime_L2Error(1, Tie2Err_L2Away_Vy, LK2Err_L2Away_Vy, BeamType_W2Err_L2Away_Vy)
-# ax60.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.04)
+# ax60.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.85)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
@@ -2193,6 +2249,78 @@ def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_L2Error(Tie2Err_L2, Tie5Err_L2, Tie10Err_L2, Tie20Err_L2)
 # Tie_L2Error(Tie2Err_L2Away, Tie5Err_L2Away, Tie10Err_L2Away, Tie20Err_L2Away)
 
+# =================== Compare Both Vx and Vy ==========================================
+def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
+    plt.figure(figsize=(10, 8))
+    font_props = {'family': 'Arial', 'size': 16}
+    plt.text(0.63, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes) #0.03,
+    plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$", fontsize = 25)
+
+    plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
+    plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='darkgrey',linewidth = 5.0)
+    plt.plot(TieErr10[:,0], TieErr10[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='darkgrey',linewidth = 4.0)
+    plt.plot(TieErr20[:,0], TieErr20[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='darkgrey',linewidth = 3.0)
+
+    plt.plot(TieErr2_Vy[:,0], TieErr2_Vy[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='red',linewidth = 6.0)
+    plt.plot(TieErr5_Vy[:,0], TieErr5_Vy[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='red',linewidth = 5.0)
+    plt.plot(TieErr10_Vy[:,0], TieErr10_Vy[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='red',linewidth = 4.0)
+    plt.plot(TieErr20_Vy[:,0], TieErr20_Vy[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 3.0)
+    
+    legend_elements = [Line2D([0], [0], color='darkgrey', lw=2, label= r'$V_x$'),
+                Line2D([0], [0], color='red', lw=2, label= r'$V_y$'),
+                ] 
+    legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
+                    Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='black',marker = ''<',',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")]
+    
+    legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    plt.gca().add_artist(legend1)
+    
+    plt.xticks(fontsize = 18)
+    plt.yticks(fontsize = 18)
+
+    # plt.ylim(0.0, 1.5)
+    plt.grid(True)
+    
+    ax = plt.gca()
+    # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
+    # -------------- Consider X-axis  -----------------------
+    ax.set_xscale('log', base=10)
+    ax.set_xticks([], minor=False)
+    ax.set_xticks([], minor=True)
+    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])
+    ax.set_xticks(x_ticks_Num)
+    
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    # ------- Miner ticks -----------------
+    ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    # 设置x轴的刻度大小
+    ax.tick_params(axis='x', which='both', labelsize= 18)
+    
+    # -------------- Consider Y-axis  -----------------------
+# Vertical =1.0, 2.0, 4.0, 6.0, 8.0, 10.0 / Rocking =1.0, 2.0, 4.0, 6.0 / Horizon = 0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0
+    ax.set_yscale('log', base=10)
+    ax.set_yticks([], minor=False)
+    ax.set_yticks([], minor=True)
+    y_ticks_Num = np.array([1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 20.0]) # , 8.0, 10.0
+    ax.set_yticks(y_ticks_Num)
+    ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
+    ax.tick_params(axis='y', which='both', labelsize=16)
+    # ------- Miner ticks -----------------
+    ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+
+    # ax.set_ylim(-0.0, 1.5)  # Vertical = -0.0, 1.5 / Rocking = -0.0, 2.0
+
+# Tie_L2Error_Both(Tie2Err_L2, Tie5Err_L2, Tie10Err_L2, Tie20Err_L2, Tie2Err_L2_Vy, Tie5Err_L2_Vy, Tie10Err_L2_Vy, Tie20Err_L2_Vy)
+# Tie_L2Error_Both(Tie2Err_L2Away, Tie5Err_L2Away, Tie10Err_L2Away, Tie20Err_L2Away, Tie2Err_L2Away_Vy, Tie5Err_L2Away_Vy, Tie10Err_L2Away_Vy, Tie20Err_L2Away_Vy)
 # ================================== Prepare Relative Error: 0.2~0.4s ============================
 start_time = 0.3 # 0.2
 end_time = 0.6# 0.4
@@ -2802,7 +2930,7 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
 
-    plt.ylim(0, 70)  # Vertical: Mid = 0, 8 / 1m away = 0, 15 ; Rocking = 0, 8; Horizon = 0, 5/60
+    plt.ylim(-10, 30)  # Vertical: Mid = 0, 8 / 1m away = 0, 15 ; Rocking = 0, 8; Horizon = 0, 5/60
     plt.grid(True)
     
     ax = plt.gca()
@@ -2880,7 +3008,7 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # lines, labels = fig18.axes[-1].get_legend_handles_labels()
 # fig18.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 
-# # ############ Compare Both Vx and Vy ##########################
+# ############ Compare Both Vx and Vy ##########################
 # figsize =(10, 10)
 # fig17, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax65,ax66,ax67,ax68, ax69,ax70,ax71,ax72) = axes.ravel()
@@ -2931,8 +3059,10 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 
 # fig18, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax73,ax74,ax75,ax76, ax77, ax78, ax79, ax80) = axes.ravel()
-# fig18.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=20)
+# fig18.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
 # fig18.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig18.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
+# fig18.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
 # fig18.text(0.01,0.5, 'Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig18.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
@@ -2974,7 +3104,6 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # lines, labels = fig18.axes[-1].get_legend_handles_labels()
 # fig18.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
 
-
 def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
@@ -3013,7 +3142,63 @@ def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
 
 # Tie_PeakRelative(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err)
 # Tie_PeakRelative(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err)
-   
+
+# =================== Compare Vx and Vy ============================
+def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
+    plt.figure(figsize=(10, 8))
+    font_props = {'family': 'Arial', 'size': 16}
+    plt.text(0.62, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
+    plt.ylabel('Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", fontsize = 25)
+
+    plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
+    plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='darkgrey',linewidth = 5.0)
+    plt.plot(TieErr10[:,0], TieErr10[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='darkgrey',linewidth = 4.0)
+    plt.plot(TieErr20[:,0], TieErr20[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='darkgrey',linewidth = 3.0)
+
+    plt.plot(TieErr2_Vy[:,0], TieErr2_Vy[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='red',linewidth = 6.0)
+    plt.plot(TieErr5_Vy[:,0], TieErr5_Vy[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='red',linewidth = 5.0)
+    plt.plot(TieErr10_Vy[:,0], TieErr10_Vy[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='red',linewidth = 4.0)
+    plt.plot(TieErr20_Vy[:,0], TieErr20_Vy[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 3.0)
+    
+    legend_elements = [Line2D([0], [0], color='darkgrey', lw=2, label= r'$V_x$'),
+                Line2D([0], [0], color='red', lw=2, label= r'$V_y$'),
+                ] 
+    legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
+                    Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='black',marker = ''<',',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")]
+    
+    legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    plt.gca().add_artist(legend1)
+    
+    plt.xticks(fontsize = 20)
+    plt.yticks(fontsize = 20)
+
+    # plt.ylim(-2, 220)  # Vertical: Mid = 0, 70 / 1m away = 0, 210 ; Rocking = -2, 150; Horizon = 0, 25/50
+    plt.grid(True)
+    
+    ax = plt.gca()
+    # -------------- Consider X-axis  -----------------------
+    ax.set_xscale('log', base=10)
+    ax.set_xticks([], minor=False)
+    ax.set_xticks([], minor=True)
+    x_ticks_Num = np.array([0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1])  # td = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1] ; Dy/lamb = []
+    ax.set_xticks(x_ticks_Num)
+    
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    # ------- Miner ticks -----------------
+    ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    # 设置x轴的刻度大小
+    ax.tick_params(axis='x', which='both', labelsize=20)
+    
+# Tie_PeakRelative_Both(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err, PeakTie2_err_Vy, PeakTie5_err_Vy, PeakTie10_err_Vy, PeakTie20_err_Vy)
+# Tie_PeakRelative_Both(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err, PeakAway_Tie2_err_Vy, PeakAway_Tie5_err_Vy, PeakAway_Tie10_err_Vy, PeakAway_Tie20_err_Vy)
+
 Letter_L2_Start = 0.3 # 0.2
 Letter_L2_End = 0.6
 # ===================== Draw L2 Norm in (0.2s to 0.4s) Error ===============================================
@@ -3259,7 +3444,7 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
     ax.xaxis.set_minor_formatter(NullFormatter())
     ax.tick_params(axis='x', which='minor', length=4, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 18)
+    ax.tick_params(axis='x', which='both', labelsize= 15)
     
     # -------------- Consider Y-axis  -----------------------
 # Vertical =0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =0.6, 0.8, 1.0, 2.0 / Horizon = 0.06, 0.08, 1.0, 2.0, 4.0
@@ -3340,7 +3525,7 @@ figsize =(10, 10)
 # fig21, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax81,ax82,ax83,ax84, ax85,ax86,ax87,ax88) = axes.ravel()
 # fig21.text(0.13,0.73, "(Middle Node)", color = "black", fontsize=20)
-# fig21.text(0.13,0.76, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig21.text(0.13,0.76, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig21.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig21.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3387,7 +3572,7 @@ figsize =(10, 10)
 # fig22, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax89,ax90,ax91,ax92, ax93,ax94,ax95,ax96) = axes.ravel()
 # fig22.text(0.13,0.73, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig22.text(0.13,0.76, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig22.text(0.13,0.76, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig22.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig22.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3488,6 +3673,78 @@ def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_Letter_L2Error(LE_Tie2Err_L2, LE_Tie5Err_L2, LE_Tie10Err_L2, LE_Tie20Err_L2)    
 # Tie_Letter_L2Error(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away)
 
+# =================== Compare Vx and Vy ===============================
+def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
+    plt.figure(figsize=(10, 8))
+    font_props = {'family': 'Arial', 'size': 16}
+    plt.text(0.03, 0.08,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.02,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{L2}$", fontsize = 25)
+
+    # plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$")
+    plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='darkgrey',linewidth = 5.0)
+    plt.plot(TieErr10[:,0], TieErr10[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='darkgrey',linewidth = 4.0)
+    plt.plot(TieErr20[:,0], TieErr20[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='darkgrey',linewidth = 3.0)
+    
+    # plt.plot(TieErr2_Vy[:,0], TieErr2_Vy[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='red',linewidth = 4.0)
+    plt.plot(TieErr5_Vy[:,0], TieErr5_Vy[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='red',linewidth = 5.0)
+    plt.plot(TieErr10_Vy[:,0], TieErr10_Vy[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='red',linewidth = 4.0)
+    plt.plot(TieErr20_Vy[:,0], TieErr20_Vy[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 3.0)
+
+
+    legend_elements = [Line2D([0], [0], color='darkgrey', lw=2, label= r'$V_x$'),
+                Line2D([0], [0], color='red', lw=2, label= r'$V_y$'),
+                ] 
+    legend_elements2 =  [
+                    Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='black',marker = ''<',',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")] # Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
+    
+    legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    plt.gca().add_artist(legend1)
+
+    plt.xticks(fontsize = 18)
+    plt.yticks(fontsize = 18)
+
+    # plt.ylim(0.0, 1.5)
+    plt.grid(True)
+    
+    ax = plt.gca()
+    # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
+    # -------------- Consider X-axis  -----------------------
+    ax.set_xscale('log', base=10)
+    ax.set_xticks([], minor=False)
+    ax.set_xticks([], minor=True)
+    x_ticks_Num = np.array([0.01, 0.02, 0.04, 0.06, 0.08, 0.1])
+    ax.set_xticks(x_ticks_Num)
+    
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    # ------- Miner ticks -----------------
+    ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    # 设置x轴的刻度大小
+    ax.tick_params(axis='x', which='both', labelsize= 18)
+    
+    # -------------- Consider Y-axis  -----------------------
+# Vertical =10.0, 20.0 ,40.0, 60, 80 / Rocking =10.0, 20.0 ,40.0, 60.0 / Horizon = 10.0, 20.0 ,40.0, 60.0, 80.0
+    ax.set_yscale('log', base=10)
+    ax.set_yticks([], minor=False)
+    ax.set_yticks([], minor=True)
+    y_ticks_Num = np.array([10.0, 20.0, 40.0, 60.0, 80]) 
+    ax.set_yticks(y_ticks_Num)
+    ax.set_yticklabels([f'{tick:.1f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
+    ax.tick_params(axis='y', which='both', labelsize=16)
+    # ------- Miner ticks -----------------
+    ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=14))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+
+# Tie_Letter_L2Error_Both(LE_Tie2Err_L2, LE_Tie5Err_L2, LE_Tie10Err_L2, LE_Tie20Err_L2, LE_Tie2Err_L2_Vy, LE_Tie5Err_L2_Vy, LE_Tie10Err_L2_Vy, LE_Tie20Err_L2_Vy)
+# Tie_Letter_L2Error_Both(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away, LE_Tie2Err_L2Away_Vy, LE_Tie5Err_L2Away_Vy, LE_Tie10Err_L2Away_Vy, LE_Tie20Err_L2Away_Vy)
+    
 # ========================= Show Stress about Different Direction ============================
 # ============== Read Middle Node Analysis Data ==========================================
 w2m_ele = f'ele317'
