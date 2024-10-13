@@ -98,7 +98,7 @@ W20_Mid40row = Find_Middle(int(20.0), YMesh)
 # ============== Read Middle Node Analysis Data ==========================================
 # HZ = 40
 Wave_Vel = 200 # Vertical; Rocking => cp = 400 m/s ; Horizon => cs = 200 m/s
-Force_Condition = f'2D_Absorb/Newmark_Linear_Test/Horizon' # Vertical; Horizon; Rocking
+Force_Condition = f'2D_Absorb/Newmark_Linear/Horizon' # Vertical; Horizon; Rocking
 
 Dy = 0.25 # m
 # --------------------- Choose which WaveLength ---------------------------------
@@ -549,19 +549,19 @@ LK_W20_HZ80_Away = rdnumpy(file95)
 BeamType_W20_HZ80_Away = rdnumpy(file96)
 
 # =================== Draw Different Boundary Compare ==============================
-plt_axis2 = 2 # Vertical/ Rocking = 2 ; Horizon = 1
+plt_axis2 = 1 # Vertical/ Rocking = 2 ; Horizon = 1
 # # ------- wave put into the timeSeries ---------------
 def Differ_BCVel(Tie, LKDash, BeamType1):
     # font_props = {'family': 'Arial', 'size': 12}
 
-    plt.plot(Tie[:,0], Tie[:,plt_axis2],label ='Tie', ls = '-',color= 'darkorange',linewidth=6.0)
+    # plt.plot(Tie[:,0], Tie[:,plt_axis2],label ='Tie', ls = '-',color= 'darkorange',linewidth=6.0)
     plt.plot(LKDash[:,0], LKDash[:,plt_axis2],label ='LK Dashpot', ls = '--',color= 'blue',linewidth=5.0)
     plt.plot(BeamType1[:,0], BeamType1[:,plt_axis2],label ='Proposed', ls = ':',color= 'red',linewidth=4.0)
 
     plt.xticks(fontsize = 18) # 18 / 15
     plt.yticks(fontsize = 16)
-    plt.xlim(0.0, 0.30)  # 0.0, 0.30 / # Horizon=0.025 / Vertical =0.05
-    plt.ylim(-1.1, 1.1)  # Middle = -1.1, 1.1 / 1m away = -0.5, 0.5 ; Rocking = -0.2, 0.2
+    plt.xlim(0.0, 0.20)  # 0.0, 0.30; 0.20, 0.40 / # Horizon=0.025 / Vertical =0.05
+    plt.ylim(-0.3, 0.3)  # Middle = -1.1, 1.1 / 1m away = -0.5, 0.5 ; Rocking = -0.2, 0.2 / -0.04 , 0.04
     plt.grid(True)
     
     ax = plt.gca()
@@ -572,167 +572,187 @@ def Differ_BCVel(Tie, LKDash, BeamType1):
 
 x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 
-# # =============== Middle Node Velocity ======================r"($t_d=0.1$ $\mathrm {s}$)"
-# row_heights = [3,3,3]
-# fig1, (ax1,ax2,ax3,ax4) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# # fig1.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig1.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig1.text(0.54,0.85, r"$\mathrm {Rocking}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
-# fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
-# fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
+# =============== Middle Node Velocity ======================r"($t_d=0.1$ $\mathrm {s}$)"
+row_heights = [3,3,3]
+fig1, (ax1,ax2,ax3,ax4) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# fig1.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+fig1.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
+fig1.text(0.47,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=18)
+fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
+fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
-# ax1 = plt.subplot(411)
-# Differ_BCVel(Tie_W20_HZ10_Mid, LK_W20_HZ10_Mid, BeamType_W20_HZ10_Mid)
-# ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-# ax1.axvline(x=0.100, color='gray', linestyle='--', linewidth=2) # Vertical = 0.100 / Horizon = 0.0500
+ax1 = plt.subplot(411)
+Differ_BCVel(Tie_W20_HZ10_Mid, LK_W20_HZ10_Mid, BeamType_W20_HZ10_Mid)
+ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
+ax1.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2) # Vertical = 0.100 / Horizon = 0.0500
+ax1.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax1.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax2 = plt.subplot(412)
-# Differ_BCVel(Tie_W10_HZ10_Mid, LK_W10_HZ10_Mid, BeamType_W10_HZ10_Mid)
-# ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-# ax2.axvline(x=0.050, color='gray', linestyle='--', linewidth=2) # Vertical = 0.050 / Horizon = 0.0250
+ax2 = plt.subplot(412)
+Differ_BCVel(Tie_W10_HZ10_Mid, LK_W10_HZ10_Mid, BeamType_W10_HZ10_Mid)
+ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
+ax2.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2) # Vertical = 0.050 / Horizon = 0.0250
+ax2.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax2.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax3 = plt.subplot(413)
-# Differ_BCVel(Tie_W5_HZ10_Mid, LK_W5_HZ10_Mid, BeamType_W5_HZ10_Mid)
-# ax3.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-# ax3.axvline(x=0.025, color='gray', linestyle='--', linewidth=2) # Vertical = 0.025 / Horizon = 0.0125
+ax3 = plt.subplot(413)
+Differ_BCVel(Tie_W5_HZ10_Mid, LK_W5_HZ10_Mid, BeamType_W5_HZ10_Mid)
+ax3.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
+ax3.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2) # Vertical = 0.025 / Horizon = 0.0125
+ax3.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax3.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax4 = plt.subplot(414)
-# Differ_BCVel(Tie_W2_HZ10_Mid, LK_W2_HZ10_Mid, BeamType_W2_HZ10_Mid)
-# ax4.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-# ax4.axvline(x=0.010, color='gray', linestyle='--', linewidth=2) # Vertical = 0.010 / Horizon = 0.0050
+ax4 = plt.subplot(414)
+Differ_BCVel(Tie_W2_HZ10_Mid, LK_W2_HZ10_Mid, BeamType_W2_HZ10_Mid)
+ax4.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
+ax4.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2) # Vertical = 0.010 / Horizon = 0.0050
+ax4.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax4.transAxes, fontsize=18, ha='center', va='top') 
 
-# font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
+font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
-# lines, labels = fig1.axes[-1].get_legend_handles_labels()
-# fig1.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
+lines, labels = fig1.axes[-1].get_legend_handles_labels()
+fig1.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
 
-# row_heights = [3,3,3]
-# fig2, (ax5,ax6,ax7,ax8) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# # fig2.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig2.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig2.text(0.50,0.85, r"$\mathrm {Rocking}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
-# fig2.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
-# fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
+row_heights = [3,3,3]
+fig2, (ax5,ax6,ax7,ax8) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# fig2.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+fig2.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
+fig2.text(0.45,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=18)
+fig2.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
+fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
-# ax5 = plt.subplot(411)
-# Differ_BCVel(Tie_W20_HZ20_Mid, LK_W20_HZ20_Mid, BeamType_W20_HZ20_Mid)
-# ax5.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-# ax5.axvline(x=0.100, color='gray', linestyle='--', linewidth=2)
+ax5 = plt.subplot(411)
+Differ_BCVel(Tie_W20_HZ20_Mid, LK_W20_HZ20_Mid, BeamType_W20_HZ20_Mid)
+ax5.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
+ax5.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2)
+ax5.text(0.18, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax5.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax6 = plt.subplot(412)
-# Differ_BCVel(Tie_W10_HZ20_Mid, LK_W10_HZ20_Mid, BeamType_W20_HZ20_Mid)
-# ax6.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-# ax6.axvline(x=0.050, color='gray', linestyle='--', linewidth=2)
+ax6 = plt.subplot(412)
+Differ_BCVel(Tie_W10_HZ20_Mid, LK_W10_HZ20_Mid, BeamType_W20_HZ20_Mid)
+ax6.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
+ax6.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2)
+ax6.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax6.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax7 = plt.subplot(413)
-# Differ_BCVel(Tie_W5_HZ20_Mid, LK_W5_HZ20_Mid, BeamType_W5_HZ20_Mid)
-# ax7.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-# ax7.axvline(x=0.025, color='gray', linestyle='--', linewidth=2)
+ax7 = plt.subplot(413)
+Differ_BCVel(Tie_W5_HZ20_Mid, LK_W5_HZ20_Mid, BeamType_W5_HZ20_Mid)
+ax7.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
+ax7.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
+ax7.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax7.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax8 = plt.subplot(414)
-# Differ_BCVel(Tie_W2_HZ20_Mid, LK_W2_HZ20_Mid, BeamType_W2_HZ20_Mid)
-# ax8.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-# ax8.axvline(x=0.010, color='gray', linestyle='--', linewidth=2)
+ax8 = plt.subplot(414)
+Differ_BCVel(Tie_W2_HZ20_Mid, LK_W2_HZ20_Mid, BeamType_W2_HZ20_Mid)
+ax8.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
+ax8.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2)
+ax8.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax8.transAxes, fontsize=18, ha='center', va='top') 
 
-# font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
+font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
-# lines, labels = fig2.axes[-1].get_legend_handles_labels()
-# fig2.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
+lines, labels = fig2.axes[-1].get_legend_handles_labels()
+fig2.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
 
-# row_heights = [3,3,3]
-# fig3, (ax9,ax10,aX11,ax12) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# # fig3.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig3.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig3.text(0.48,0.85, r"$\mathrm {Rocking}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
-# fig3.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
-# fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
+row_heights = [3,3,3]
+fig3, (ax9,ax10,aX11,ax12) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# fig3.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+fig3.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
+fig3.text(0.43,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=18)
+fig3.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
+fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
-# ax9 = plt.subplot(411)
-# Differ_BCVel(Tie_W20_HZ40_Mid, LK_W20_HZ40_Mid, BeamType_W20_HZ40_Mid)
-# ax9.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-# ax9.axvline(x=0.100, color='gray', linestyle='--', linewidth=2)
+ax9 = plt.subplot(411)
+Differ_BCVel(Tie_W20_HZ40_Mid, LK_W20_HZ40_Mid, BeamType_W20_HZ40_Mid)
+ax9.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
+ax9.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2)
+ax9.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax9.transAxes, fontsize=18, ha='center', va='top')
 
-# ax10 = plt.subplot(412)
-# Differ_BCVel(Tie_W10_HZ40_Mid, LK_W10_HZ40_Mid, BeamType_W20_HZ40_Mid)
-# ax10.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-# ax10.axvline(x=0.050, color='gray', linestyle='--', linewidth=2)
+ax10 = plt.subplot(412)
+Differ_BCVel(Tie_W10_HZ40_Mid, LK_W10_HZ40_Mid, BeamType_W20_HZ40_Mid)
+ax10.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
+ax10.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2)
+ax10.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax10.transAxes, fontsize=18, ha='center', va='top') 
 
-# aX11 = plt.subplot(413)
-# Differ_BCVel(Tie_W5_HZ40_Mid, LK_W5_HZ40_Mid, BeamType_W5_HZ40_Mid)
-# aX11.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-# aX11.axvline(x=0.025, color='gray', linestyle='--', linewidth=2)
+ax11 = plt.subplot(413)
+Differ_BCVel(Tie_W5_HZ40_Mid, LK_W5_HZ40_Mid, BeamType_W5_HZ40_Mid)
+ax11.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
+ax11.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
+ax11.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax11.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax12 = plt.subplot(414)
-# Differ_BCVel(Tie_W2_HZ40_Mid, LK_W2_HZ40_Mid, BeamType_W2_HZ40_Mid)
-# ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-# ax12.axvline(x=0.010, color='gray', linestyle='--', linewidth=2)
+ax12 = plt.subplot(414)
+Differ_BCVel(Tie_W2_HZ40_Mid, LK_W2_HZ40_Mid, BeamType_W2_HZ40_Mid)
+ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
+ax12.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2)
+ax12.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax12.transAxes, fontsize=18, ha='center', va='top') 
 
-# font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
+font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
-# lines, labels = fig3.axes[-1].get_legend_handles_labels()
-# fig3.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
+lines, labels = fig3.axes[-1].get_legend_handles_labels()
+fig3.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
 
-# row_heights = [3,3,3]
-# fig4, (ax13,ax14,aX15,ax16) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# # fig4.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig4.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig4.text(0.46,0.85, r"$\mathrm {Rocking}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22)
-# fig4.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
-# fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
+row_heights = [3,3,3]
+fig4, (ax13,ax14,aX15,ax16) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# fig4.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+fig4.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
+fig4.text(0.41,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=18)
+fig4.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
+fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
-# ax13 = plt.subplot(411)
-# Differ_BCVel(Tie_W20_HZ80_Mid, LK_W20_HZ80_Mid, BeamType_W20_HZ80_Mid)
-# ax13.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-# ax13.axvline(x=0.100, color='gray', linestyle='--', linewidth=2)
+ax13 = plt.subplot(411)
+Differ_BCVel(Tie_W20_HZ80_Mid, LK_W20_HZ80_Mid, BeamType_W20_HZ80_Mid)
+ax13.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
+ax13.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2)
+ax13.text(0.18, 0.97, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax13.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax14 = plt.subplot(412)
-# Differ_BCVel(Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, BeamType_W20_HZ80_Mid)
-# ax14.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-# ax14.axvline(x=0.050, color='gray', linestyle='--', linewidth=2)
+ax14 = plt.subplot(412)
+Differ_BCVel(Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, BeamType_W20_HZ80_Mid)
+ax14.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
+ax14.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2)
+ax14.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax14.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax15 = plt.subplot(413)
-# Differ_BCVel(Tie_W5_HZ80_Mid, LK_W5_HZ80_Mid, BeamType_W5_HZ80_Mid)
-# ax15.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-# ax15.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
+ax15 = plt.subplot(413)
+Differ_BCVel(Tie_W5_HZ80_Mid, LK_W5_HZ80_Mid, BeamType_W5_HZ80_Mid)
+ax15.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
+ax15.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
+ax15.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax15.transAxes, fontsize=18, ha='center', va='top') 
 
-# ax16 = plt.subplot(414)
-# Differ_BCVel(Tie_W2_HZ80_Mid, LK_W2_HZ80_Mid, BeamType_W2_HZ80_Mid)
-# ax16.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-# ax16.axvline(x=0.010, color='gray', linestyle='--', linewidth=2)
+ax16 = plt.subplot(414)
+Differ_BCVel(Tie_W2_HZ80_Mid, LK_W2_HZ80_Mid, BeamType_W2_HZ80_Mid)
+ax16.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
+ax16.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2)
+ax16.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax16.transAxes, fontsize=18, ha='center', va='top') 
 
-# font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
+font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
-# lines, labels = fig4.axes[-1].get_legend_handles_labels()
-# fig4.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
+lines, labels = fig4.axes[-1].get_legend_handles_labels()
+fig4.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
 
 # # =============== Middle 1m Away Node Velocity ======================
 # row_heights = [3,3,3]
 # fig5, (ax17,ax18,ax19,ax20) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig5.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig5.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig5.text(0.52,0.85, r"$\mathrm {Rocking}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig5.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
+# fig5.text(0.47,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=18)
 # fig5.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig5.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
 # ax17 = plt.subplot(411)
 # Differ_BCVel(Tie_W20_HZ10_Away, LK_W20_HZ10_Away, BeamType_W20_HZ10_Away)
 # ax17.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
-# ax17.axvline(x=0.095, color='gray', linestyle='--', linewidth=2) # Vertical = 0.095 / Horizon = 0.0475
+# ax17.axvline(x=0.0475, color='gray', linestyle='--', linewidth=2) # Vertical = 0.095 / Horizon = 0.0475
+# ax17.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0475s}$', transform=ax17.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax18 = plt.subplot(412)
 # Differ_BCVel(Tie_W10_HZ10_Away, LK_W10_HZ10_Away, BeamType_W10_HZ10_Away)
 # ax18.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
-# ax18.axvline(x=0.045, color='gray', linestyle='--', linewidth=2) # Vertical = 0.045 / Horizon = 0.0225
+# ax18.axvline(x=0.0225, color='gray', linestyle='--', linewidth=2) # Vertical = 0.045 / Horizon = 0.0225
+# ax18.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0225s}$', transform=ax18.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax19 = plt.subplot(413)
 # Differ_BCVel(Tie_W5_HZ10_Away, LK_W5_HZ10_Away, BeamType_W5_HZ10_Away)
 # ax19.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
-# ax19.axvline(x=0.020, color='gray', linestyle='--', linewidth=2) # Vertical = 0.020 / Horizon = 0.0100
+# ax19.axvline(x=0.0100, color='gray', linestyle='--', linewidth=2) # Vertical = 0.020 / Horizon = 0.0100
+# ax19.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0100s}$', transform=ax19.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax20 = plt.subplot(414)
 # Differ_BCVel(Tie_W2_HZ10_Away, LK_W2_HZ10_Away, BeamType_W2_HZ10_Away)
 # ax20.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
-# ax20.axvline(x=0.005, color='gray', linestyle='--', linewidth=2) # Vertical = 0.005 / Horizon = 0.0025
+# ax20.axvline(x=0.0025, color='gray', linestyle='--', linewidth=2) # Vertical = 0.005 / Horizon = 0.0025
+# ax20.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0025s}$', transform=ax20.transAxes, fontsize=18, ha='center', va='top') 
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -742,30 +762,34 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # row_heights = [3,3,3]
 # fig6, (ax21,ax22,ax23,ax24) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig6.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig6.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig6.text(0.50,0.85, r"$\mathrm {Rocking}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig6.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
+# fig6.text(0.45,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=18)
 # fig6.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig6.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
 # ax21 = plt.subplot(411)
 # Differ_BCVel(Tie_W20_HZ20_Away, LK_W20_HZ20_Away, BeamType_W20_HZ20_Away)
 # ax21.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
-# ax21.axvline(x=0.095, color='gray', linestyle='--', linewidth=2)
+# ax21.axvline(x=0.0475, color='gray', linestyle='--', linewidth=2)
+# ax21.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0475s}$', transform=ax21.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax22 = plt.subplot(412)
 # Differ_BCVel(Tie_W10_HZ20_Away, LK_W10_HZ20_Away, BeamType_W10_HZ20_Away)
 # ax22.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
-# ax22.axvline(x=0.045, color='gray', linestyle='--', linewidth=2)
+# ax22.axvline(x=0.0225, color='gray', linestyle='--', linewidth=2)
+# ax22.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0225s}$', transform=ax22.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax23 = plt.subplot(413)
 # Differ_BCVel(Tie_W5_HZ20_Away, LK_W5_HZ20_Away, BeamType_W5_HZ20_Away)
 # ax23.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
-# ax23.axvline(x=0.020, color='gray', linestyle='--', linewidth=2)
+# ax23.axvline(x=0.0100, color='gray', linestyle='--', linewidth=2)
+# ax23.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0100s}$', transform=ax23.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax24 = plt.subplot(414)
 # Differ_BCVel(Tie_W2_HZ20_Away, LK_W2_HZ20_Away, BeamType_W2_HZ20_Away)
 # ax24.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
-# ax24.axvline(x=0.005, color='gray', linestyle='--', linewidth=2)
+# ax24.axvline(x=0.0025, color='gray', linestyle='--', linewidth=2)
+# ax24.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0025s}$', transform=ax24.transAxes, fontsize=18, ha='center', va='top') 
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -775,30 +799,34 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # row_heights = [3,3,3]
 # fig7, (ax25,ax26,ax27,ax28) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig7.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig7.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig7.text(0.46,0.85, r"$\mathrm {Rocking}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig7.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
+# fig7.text(0.43,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=18)
 # fig7.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig7.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
 # ax25 = plt.subplot(411)
 # Differ_BCVel(Tie_W20_HZ40_Away, LK_W20_HZ40_Away, BeamType_W20_HZ40_Away)
 # ax25.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
-# ax25.axvline(x=0.095, color='gray', linestyle='--', linewidth=2)
+# ax25.axvline(x=0.0475, color='gray', linestyle='--', linewidth=2)
+# ax25.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0475s}$', transform=ax25.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax26 = plt.subplot(412)
 # Differ_BCVel(Tie_W10_HZ40_Away, LK_W10_HZ40_Away, BeamType_W10_HZ40_Away)
 # ax26.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
-# ax26.axvline(x=0.045, color='gray', linestyle='--', linewidth=2)
+# ax26.axvline(x=0.0225, color='gray', linestyle='--', linewidth=2)
+# ax26.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0225s}$', transform=ax26.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax27 = plt.subplot(413)
 # Differ_BCVel(Tie_W5_HZ40_Away, LK_W5_HZ40_Away, BeamType_W5_HZ40_Away)
 # ax27.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
-# ax27.axvline(x=0.020, color='gray', linestyle='--', linewidth=2)
+# ax27.axvline(x=0.0100, color='gray', linestyle='--', linewidth=2)
+# ax27.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0100s}$', transform=ax27.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax28 = plt.subplot(414)
 # Differ_BCVel(Tie_W2_HZ40_Away, LK_W2_HZ40_Away, BeamType_W2_HZ40_Away)
 # ax28.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
-# ax28.axvline(x=0.005, color='gray', linestyle='--', linewidth=2)
+# ax28.axvline(x=0.0025, color='gray', linestyle='--', linewidth=2)
+# ax28.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0025s}$', transform=ax28.transAxes, fontsize=18, ha='center', va='top') 
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -808,30 +836,34 @@ x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
 # row_heights = [3,3,3]
 # fig8, (ax29,ax30,ax31,ax32) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig8.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig8.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=23)
-# fig8.text(0.44,0.85, r"$\mathrm {Rocking}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig8.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
+# fig8.text(0.41,0.85, r"$\mathrm {Horizon\;Loading}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=18)
 # fig8.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_x$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig8.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
 # ax29 = plt.subplot(411)
 # Differ_BCVel(Tie_W20_HZ80_Away, LK_W20_HZ80_Away, BeamType_W20_HZ80_Away)
 # ax29.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
-# ax29.axvline(x=0.095, color='gray', linestyle='--', linewidth=2)
+# ax29.axvline(x=0.0475, color='gray', linestyle='--', linewidth=2)
+# ax29.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0475s}$', transform=ax29.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax30 = plt.subplot(412)
 # Differ_BCVel(Tie_W10_HZ80_Away, LK_W10_HZ80_Away, BeamType_W10_HZ80_Away)
 # ax30.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
-# ax30.axvline(x=0.045, color='gray', linestyle='--', linewidth=2)
+# ax30.axvline(x=0.0225, color='gray', linestyle='--', linewidth=2)
+# ax30.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0225s}$', transform=ax30.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax31 = plt.subplot(413)
 # Differ_BCVel(Tie_W5_HZ80_Away, LK_W5_HZ80_Away, BeamType_W5_HZ80_Away)
 # ax31.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
-# ax31.axvline(x=0.020, color='gray', linestyle='--', linewidth=2)
+# ax31.axvline(x=0.0100, color='gray', linestyle='--', linewidth=2)
+# ax31.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0100s}$', transform=ax31.transAxes, fontsize=18, ha='center', va='top')
 
 # ax32 = plt.subplot(414)
 # Differ_BCVel(Tie_W2_HZ80_Away, LK_W2_HZ80_Away, BeamType_W2_HZ80_Away)
 # ax32.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
-# ax32.axvline(x=0.005, color='gray', linestyle='--', linewidth=2)
+# ax32.axvline(x=0.0025, color='gray', linestyle='--', linewidth=2)
+# ax32.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0025s}$', transform=ax32.transAxes, fontsize=18, ha='center', va='top') 
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -1204,10 +1236,10 @@ figsize = (10, 10)
 # # ----------------- Draw Relative error : td (1/HZ) ------------------- 
 # fig9, (ax33,ax34,ax35,ax36) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=22)
-# fig9.text(0.16,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
+# fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
+# fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 
-# fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0~0.2s}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
 
 # ax33 = plt.subplot(411)
@@ -1233,10 +1265,10 @@ figsize = (10, 10)
 
 # fig10, (ax37,ax38,ax39,ax40) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig10.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig10.text(0.14,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=22)
-# fig10.text(0.27,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=23)
+# fig10.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=20)
+# fig10.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=23)
 
-# fig10.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0~0.2s}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig10.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig10.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize= 25)
 
 # ax37 = plt.subplot(411)
@@ -1263,10 +1295,10 @@ figsize = (10, 10)
 def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.02, 0.90,'Rocking', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.90,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
     plt.text(0.05, 0.82,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
-    plt.ylabel('Peak Velocity Error '+ r"$\ E^{0~0.2s}_{Max}$" + r" (%)", fontsize = 25)
+    plt.ylabel('Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", fontsize = 25)
 
     plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
     plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='blue',linewidth = 5.0)
@@ -1609,10 +1641,10 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
 figsize = (10, 10)
 # fig13, (ax49,ax50,ax51) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig13.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig13.text(0.14,0.82, "(Middle Node)", color = "black", fontsize=22)
-# fig13.text(0.17,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=22)
+# fig13.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
+# fig13.text(0.17,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=22)
 
-# fig13.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0~0.2s}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig13.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
 # fig13.text(0.39,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
 
@@ -1639,10 +1671,10 @@ figsize = (10, 10)
 
 # fig14, (ax53,ax54,ax55) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig14.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig14.text(0.14,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=22)
-# fig14.text(0.20,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
+# fig14.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=20)
+# fig14.text(0.20,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 
-# fig14.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0~0.2s}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig14.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
 # fig14.text(0.39,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
 
@@ -1670,10 +1702,10 @@ figsize = (10, 10)
 def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.06, 0.92,'Rocking', color='black', fontsize = 28, transform=plt.gca().transAxes)
-    plt.text(0.10, 0.86,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.92,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.86,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
-    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E^{0~0.2s}_{L2}$", fontsize = 25)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$", fontsize = 25)
 
     plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
     plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='blue',linewidth = 5.0)
@@ -1891,8 +1923,8 @@ def Tie_L2Error2(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_L2Error2(Tie2Err_L2Away, Tie5Err_L2Away, Tie10Err_L2Away, Tie20Err_L2Away)
 
 # ================================== Prepare Relative Error: 0.2~0.4s ============================
-start_time = 0.2
-end_time = 0.4
+start_time = 0.3 # 0.2
+end_time = 0.6   # 0.4
 def Control_column(matrix, start_time, end_time):
     # 选择在指定时间范围内的数据
     time_column = matrix[:, 0]
@@ -2232,10 +2264,10 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # # ----------------- Draw Relative error : td (1/HZ) ------------------- 
 # fig17, (ax65,ax66,ax67,ax68) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig17.suptitle(f'Ground Surface Different Boundary Compare' ,x=0.50,y =0.94,fontsize = 20)
-# fig17.text(0.15,0.82, "(Middle Node)", color = "black", fontsize=22)
-# fig17.text(0.17,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=22)
+# fig17.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
+# fig17.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 
-# fig17.text(0.045,0.5, 'Peak Velocity Error (0.2 ~ 0.4 s) '+ r"$\ E^{0.2~0.4s}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig17.text(0.045,0.5, 'Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig17.text(0.45,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
 
 # ax65 = plt.subplot(411)
@@ -2261,10 +2293,10 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 
 # fig18, (ax69,ax70,ax71,ax72) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig18.suptitle(f'Ground Surface Different Boundary Compare' ,x=0.50,y =0.94,fontsize = 20)
-# fig18.text(0.13,0.72, "(Node 1 m away from the midpoint)", color = "black", fontsize=22)
-# fig18.text(0.20,0.75, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
+# fig18.text(0.13,0.72, "(Node 1 m away from the midpoint)", color = "black", fontsize=20)
+# fig18.text(0.13,0.75, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 
-# fig18.text(0.01,0.5, 'Peak Velocity Error (0.2 ~ 0.4 s) '+ r"$\ E^{0.2~0.4s}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
+# fig18.text(0.01,0.5, 'Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig18.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
 
 # ax69 = plt.subplot(411)
@@ -2291,10 +2323,10 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.04, 0.92,'Rocking', color='black', fontsize = 28, transform=plt.gca().transAxes)
-    plt.text(0.08, 0.86,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.92,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.86,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
-    plt.ylabel('Peak Velocity Error (0.2 ~ 0.4 s) '+ r"$\ E^{0.2~0.4s}_{Max}$" + r" (%)", fontsize = 25)
+    plt.ylabel('Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", fontsize = 25)
 
     plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
     plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='blue',linewidth = 5.0)
@@ -2452,8 +2484,10 @@ def Tie_PeakRelative2(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_PeakRelative2(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err)
 # Tie_PeakRelative2(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err)
 
+Letter_L2_Start = 0.3 # 0.2
+Letter_L2_End = 0.6
 # ===================== Draw L2 Norm in (0.2s to 0.4s) Error ===============================================
-def Calculate_RelativeL2norm_Letter(TheoryTime,TheoryData, Analysis_Time,Tie_W20_HZ40_Mid, time_range=(0.2, 0.40)):
+def Calculate_RelativeL2norm_Letter(TheoryTime,TheoryData, Analysis_Time,Tie_W20_HZ40_Mid, time_range=(Letter_L2_Start, Letter_L2_End)):
 # ------------------------- L-2 Norm Error ------------------------
     common80 = set(TheoryTime) & set(Analysis_Time)
     filtered_common80 = [value for value in common80 if time_range[0] <= value <= time_range[1]]
@@ -2487,10 +2521,10 @@ def Calculate_RelativeL2norm_Letter(TheoryTime,TheoryData, Analysis_Time,Tie_W20
 def Add_Err_Letter(Index, MidTieErr20,Tie20_error, Tie_W20_HZ10_Mid, Tie_W20_HZ20_Mid, Tie_W20_HZ40_Mid, Tie_W20_HZ80_Mid):
     MidTieErr20[:,0] = Tie20_error[:,0] 
 # ===================================== Calculate_L2NormError Normalization : Middle Node============================================================
-    MidTieErr20[0,Index], MidTieErr20[0,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ10_Mid, Analysis_Time,Tie_W20_HZ10_Mid, time_range=(0.2, 0.40))
-    MidTieErr20[1,Index], MidTieErr20[1,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ20_Mid, Analysis_Time,Tie_W20_HZ20_Mid, time_range=(0.2, 0.40))
-    MidTieErr20[2,Index], MidTieErr20[2,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ40_Mid, Analysis_Time,Tie_W20_HZ40_Mid, time_range=(0.2, 0.40))
-    MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ80_Mid, Analysis_Time,Tie_W20_HZ80_Mid, time_range=(0.2, 0.40))
+    MidTieErr20[0,Index], MidTieErr20[0,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ10_Mid, Analysis_Time,Tie_W20_HZ10_Mid, time_range=(Letter_L2_Start, Letter_L2_End))
+    MidTieErr20[1,Index], MidTieErr20[1,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ20_Mid, Analysis_Time,Tie_W20_HZ20_Mid, time_range=(Letter_L2_Start, Letter_L2_End))
+    MidTieErr20[2,Index], MidTieErr20[2,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ40_Mid, Analysis_Time,Tie_W20_HZ40_Mid, time_range=(Letter_L2_Start, Letter_L2_End))
+    MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ80_Mid, Analysis_Time,Tie_W20_HZ80_Mid, time_range=(Letter_L2_Start, Letter_L2_End))
 
 # --------------------- Middle Node -------------------------------
 # -------------- W = 20m-------------------------------
@@ -2533,10 +2567,10 @@ Add_Err_Letter(1, LE_BeamType_W2Err_L2, BeamType_2error, BeamType_W2_HZ10_Mid, B
 def Add_Err2_Letter(Index, AwayTieErr20, Tie20_error, Tie_W20_HZ10_Away, Tie_W20_HZ20_Away, Tie_W20_HZ40_Away, Tie_W20_HZ80_Away):
     AwayTieErr20[:,0] = Tie20_error[:,0] 
 # ===================================== Calculate_L2NormError Normalization : 1m away from Middle Node============================================================
-    AwayTieErr20[0,Index], AwayTieErr20[0,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ10_Away, Analysis_Time,Tie_W20_HZ10_Away, time_range=(0.20, 0.40))
-    AwayTieErr20[1,Index], AwayTieErr20[1,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ20_Away, Analysis_Time,Tie_W20_HZ20_Away, time_range=(0.20, 0.40))
-    AwayTieErr20[2,Index], AwayTieErr20[2,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ40_Away, Analysis_Time,Tie_W20_HZ40_Away, time_range=(0.20, 0.40))
-    AwayTieErr20[3,Index], AwayTieErr20[3,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ80_Away, Analysis_Time,Tie_W20_HZ80_Away, time_range=(0.20, 0.40))
+    AwayTieErr20[0,Index], AwayTieErr20[0,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ10_Away, Analysis_Time,Tie_W20_HZ10_Away, time_range=(Letter_L2_Start, Letter_L2_End))
+    AwayTieErr20[1,Index], AwayTieErr20[1,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ20_Away, Analysis_Time,Tie_W20_HZ20_Away, time_range=(Letter_L2_Start, Letter_L2_End))
+    AwayTieErr20[2,Index], AwayTieErr20[2,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ40_Away, Analysis_Time,Tie_W20_HZ40_Away, time_range=(Letter_L2_Start, Letter_L2_End))
+    AwayTieErr20[3,Index], AwayTieErr20[3,2] = Calculate_RelativeL2norm_Letter(Theory_Time,LK_W20_HZ80_Away, Analysis_Time,Tie_W20_HZ80_Away, time_range=(Letter_L2_Start, Letter_L2_End))
 
 # -------------- W = 20m-------------------------------
 LE_Tie20Err_L2Away = np.zeros((4,3))
@@ -2605,11 +2639,11 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
     ax.tick_params(axis='x', which='both', labelsize= 18)
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =0.6, 0.8, 1.0, 2.0 / Rocking =0.6, 0.8, 1.0, 2.0 / Horizon = 1.0, 2.0, 3.0
+# Vertical =0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =0.6, 0.8, 1.0, 2.0 / Horizon = 0.06, 0.08, 1.0, 2.0, 4.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.08, 0.2, 0.4, 0.6, 0.8, 1.0, 2.0]) 
+    y_ticks_Num = np.array([0.06, 0.08, 1.0, 2.0, 4.0]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=14)
@@ -2622,10 +2656,10 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
     
 # fig21, (ax81,ax82,ax83,ax84) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig20.suptitle(f'Ground Surface Different Boundary Compare' ,x=0.50,y =0.94,fontsize = 20)
-# fig21.text(0.15,0.82, "(Middle Node)", color = "black", fontsize=22)
-# fig21.text(0.17,0.85, r"$\mathrm {Horizon}$", color = "black", fontsize=22)
+# fig21.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
+# fig21.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 
-# fig21.text(0.02,0.5, 'Normalized L2 Norm Error (0.2 ~ 0.4 s) '+ r"$\ E^{0.2~0.4s}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig21.text(0.02,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig21.text(0.45,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
 
 # ax81 = plt.subplot(411)
@@ -2651,10 +2685,10 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 
 # fig22, (ax85,ax86,ax87,ax88) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig20.suptitle(f'Ground Surface Different Boundary Compare' ,x=0.50,y =0.94,fontsize = 20)
-# fig22.text(0.14,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=22)
-# fig22.text(0.20,0.85, r"$\mathrm {Rocking}$", color = "black", fontsize=22)
+# fig22.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=20)
+# fig22.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 
-# fig22.text(0.02,0.5, 'Normalized L2 Norm Error (0.2 ~ 0.4 s) '+ r"$\ E^{0.2~0.4s}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig22.text(0.02,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 # fig22.text(0.45,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
 
 # ax85 = plt.subplot(411)
@@ -2681,10 +2715,10 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.06, 0.08,'Rocking', color='black', fontsize = 28, transform=plt.gca().transAxes)
-    plt.text(0.10, 0.02,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.08,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.02,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
-    plt.ylabel('Normalized L2 Norm Error (0.2 ~ 0.4 s) '+ r"$\ E^{0.2~0.4s}_{L2}$", fontsize = 25)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{L2}$", fontsize = 25)
 
     # plt.plot(TieErr2[:,0], TieErr2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$")
     plt.plot(TieErr5[:,0], TieErr5[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{5m}$", color='blue',linewidth = 4.0)
@@ -2717,11 +2751,11 @@ def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     ax.tick_params(axis='x', which='both', labelsize= 18)
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =2.0, 4.0, 6.0 / Horizon = 0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 1.5
+# Vertical =10.0, 20.0 ,40.0, 60, 80 / Rocking =10.0, 20.0 ,40.0, 60.0 / Horizon = 10.0, 20.0 ,40.0, 60.0, 80.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([10.0, 20.0 ,40.0, 60]) 
+    y_ticks_Num = np.array([10.0, 20.0, 40.0, 60.0, 80]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.1f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='both', labelsize=16)
@@ -2995,4 +3029,4 @@ Change_Scale(LK_W10_HZ20_Mid_Stress, 1e5) # LK_W10_HZ40_Mid_Stress
 Change_Scale(LK_W10_HZ20_Away_Stress, 1e5) # LK_W10_HZ40_Away_Stress
 
 # Diff_Stress(LK_W10_HZ20_Mid_Stress)
-Diff_Stress(LK_W10_HZ20_Away_Stress)
+# Diff_Stress(LK_W10_HZ20_Away_Stress)
