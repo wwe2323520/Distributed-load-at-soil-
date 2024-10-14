@@ -1033,7 +1033,7 @@ def DifferBoundary_L2NormError2(HHT_Dy80row_errL2, HHT_Dy40row_errL2, HHT_Dy20ro
     plt.yticks(fontsize = 20)
     
     plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 25)
-    plt.ylabel('L2 Norm '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$"  , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
 
     plt.xlim(0.2, 1.8)
     plt.ylim(0, 0.6)
