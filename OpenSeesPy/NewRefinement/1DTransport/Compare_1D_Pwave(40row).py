@@ -9,6 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
+from matplotlib.ticker import MultipleLocator
+
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
 #------------- Read file ---------------------
@@ -496,124 +498,144 @@ plt_axis2 = 2
 # # ------- wave put into the timeSeries ---------------
 def Differ_BCVel(total_time, Pwave, Tie, LKDash, BeamType1, BeamType2, BeamType3):
     # font_props = {'family': 'Arial', 'size': 12}
-    plt.plot(total_time, Pwave[:, Nele-1],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=6.0)
-    plt.plot(Tie[:,0], Tie[:,plt_axis2],label ='Tie', ls = '-',color= 'limegreen',linewidth=6.0)
-    plt.plot(LKDash[:,0], LKDash[:,plt_axis2],label ='LK Dashpot', ls = '-.',color= 'orange',linewidth=5.0)
-    plt.plot(BeamType1[:,0], BeamType1[:,plt_axis2],label ='Beam-based ', ls = ':',color= 'purple',linewidth=4.0)
-    plt.plot(BeamType2[:,0], BeamType2[:,plt_axis2],label ='Hybrid', ls = '--',color= 'blue',linewidth=3.0)
-    plt.plot(BeamType3[:,0], BeamType3[:,plt_axis2],label ='Node-based',color= 'red',linewidth= 2.0)
+    plt.plot(total_time, Pwave[:, Nele-1],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=8.0)
+    plt.plot(Tie[:,0], Tie[:,plt_axis2],label ='Tie', ls = '-',color= 'darkorange',linewidth=7.0)
+    plt.plot(LKDash[:,0], LKDash[:,plt_axis2],label ='LK Dashpot', ls = '--',color= 'darkgrey',linewidth=5.0)
+    plt.plot(BeamType1[:,0], BeamType1[:,plt_axis2],label ='Beam-based ',color= 'blue',linewidth=6.0)
+    plt.plot(BeamType2[:,0], BeamType2[:,plt_axis2],label ='Hybrid', ls = ':' ,color= 'darkgreen',linewidth=5.0)
+    plt.plot(BeamType3[:,0], BeamType3[:,plt_axis2],label ='Node-based', ls = '-.' ,color= 'red',linewidth= 4.0)
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 17)
-    plt.xlim(0.0, 0.20) 
-    plt.ylim(-0.75, 0.75)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 17, fontweight='bold', color='black')
+    plt.xlim(0.0, 0.2) # 0.0, 0.20
+    plt.ylim(-1.1, 1.1) # -1.1, 1.1 / -0.75, 0.75
     plt.grid(True)
     
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+
     ax = plt.gca()
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    # ax.yaxis.get_offset_text().set(size=17)
+    # -------------- Consider x-axis  -----------------------
+    ax.xaxis.set_major_locator(MultipleLocator(0.025)) # 0.25
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    # -------------- Consider y-axis  -----------------------
+    ax.yaxis.set_major_locator(MultipleLocator(0.25)) # 0.25
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=4, width=2)
 
 x_axis = 0.25
 
 # row_heights = [3,3,3]
 # fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig1.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig1.text(0.40,0.84, "Middle Node", color = "red", fontsize=23)
-# fig1.text(0.58,0.68, f'P wave '+ r"($t_d=0.1$ $\mathrm {s}$)", color = "blue", fontsize=22)
-# fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=20) # $(10^{-1}\,s)$
+# fig1.text(0.65,0.81, "Middle Node", color = "black", fontsize=23)
+# fig1.text(0.58,0.85, f'P wave '+ r"($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=22)
+# fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=22) # $(10^{-1}\,s)$
 
 # ax1 = plt.subplot(311)
 # Differ_BCVel(total_time_HZ10, HZ10_Pwave, Tie_W20_HZ10_Mid, LK_W20_HZ10_Mid, Type1_W20_HZ10_Mid, Type2_W20_HZ10_Mid, Type3_W20_HZ10_Mid)
-# ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.80, y=0.78)
+# ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax2 = plt.subplot(312)
 # Differ_BCVel(total_time_HZ10, HZ10_Pwave, Tie_W10_HZ10_Mid, LK_W10_HZ10_Mid, Type1_W10_HZ10_Mid, Type2_W10_HZ10_Mid, Type3_W10_HZ10_Mid)
-# ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.80, y=0.78)
+# ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax3 = plt.subplot(313)
 # Differ_BCVel(total_time_HZ10, HZ10_Pwave, Tie_W2_HZ10_Mid, LK_W2_HZ10_Mid, Type1_W2_HZ10_Mid, Type2_W2_HZ10_Mid, Type3_W2_HZ10_Mid)
-# ax3.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.80, y=0.78)
+# ax3.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.84, y=0.08)
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig1.axes[-1].get_legend_handles_labels()
-# fig1.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
+# legend = fig1.legend(lines, labels, ncol=3, loc = (0.14, 0.89), prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # row_heights = [3,3,3]
 # fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig2.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig2.text(0.40,0.84, "Middle Node", color = "red", fontsize=23)
-# fig2.text(0.54,0.68, f'P wave '+ r"($t_d=0.05$ $\mathrm {s}$)", color = "blue", fontsize=22)
-# fig2.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=20) # $(10^{-1}\,s)$
+# fig2.text(0.65,0.81, "Middle Node", color = "black", fontsize=23)
+# fig2.text(0.55,0.85, f'P wave '+ r"($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig2.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=22)
+# fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=22) # $(10^{-1}\,s)$
 
 # ax4 = plt.subplot(311)
 # Differ_BCVel(total_time_HZ20, HZ20_Pwave, Tie_W20_HZ20_Mid, LK_W20_HZ20_Mid, Type1_W20_HZ20_Mid, Type2_W20_HZ20_Mid, Type3_W20_HZ20_Mid)
-# ax4.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.80, y=0.78)
+# ax4.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax5 = plt.subplot(312)
 # Differ_BCVel(total_time_HZ20, HZ20_Pwave, Tie_W10_HZ20_Mid, LK_W10_HZ20_Mid, Type1_W10_HZ20_Mid, Type2_W10_HZ20_Mid, Type3_W10_HZ20_Mid)
-# ax5.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.80, y=0.78)
+# ax5.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax6 = plt.subplot(313)
 # Differ_BCVel(total_time_HZ20, HZ20_Pwave, Tie_W2_HZ20_Mid, LK_W2_HZ20_Mid, Type1_W2_HZ20_Mid, Type2_W2_HZ20_Mid, Type3_W2_HZ20_Mid)
-# ax6.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.80, y=0.78)
+# ax6.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.84, y=0.08)
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig2.axes[-1].get_legend_handles_labels()
-# fig2.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
+# legend = fig2.legend(lines, labels, ncol=3, loc = (0.14, 0.89), prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # row_heights = [3,3,3]
 # fig3, (ax7,ax8,ax9) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig3.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig3.text(0.40,0.84, "Middle Node", color = "red", fontsize=23)
-# fig3.text(0.53,0.68, f'P wave '+ r"($t_d=0.025$ $\mathrm {s}$)", color = "blue", fontsize=22)
-# fig3.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=20) # $(10^{-1}\,s)$
+# fig3.text(0.65,0.81, "Middle Node", color = "black", fontsize=23)
+# fig3.text(0.53,0.85, f'P wave '+ r"($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=22)
+# fig3.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=22)
+# fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=22) # $(10^{-1}\,s)$
 
 # ax7 = plt.subplot(311)
 # Differ_BCVel(total_time_HZ40, HZ40_Pwave, Tie_W20_HZ40_Mid, LK_W20_HZ40_Mid, Type1_W20_HZ40_Mid, Type2_W20_HZ40_Mid, Type3_W20_HZ40_Mid)
-# ax7.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.80, y=0.78)
+# ax7.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax8 = plt.subplot(312)
 # Differ_BCVel(total_time_HZ40, HZ40_Pwave, Tie_W10_HZ40_Mid, LK_W10_HZ40_Mid, Type1_W10_HZ40_Mid, Type2_W10_HZ40_Mid, Type3_W10_HZ40_Mid)
-# ax8.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.80, y=0.78)
+# ax8.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax9 = plt.subplot(313)
 # Differ_BCVel(total_time_HZ40, HZ40_Pwave, Tie_W2_HZ40_Mid, LK_W2_HZ40_Mid, Type1_W2_HZ40_Mid, Type2_W2_HZ40_Mid, Type3_W2_HZ40_Mid)
-# ax9.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.80, y=0.78)
+# ax9.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.84, y=0.08)
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig3.axes[-1].get_legend_handles_labels()
-# fig3.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
+# legend= fig3.legend(lines, labels, ncol=3, loc = (0.14, 0.89), prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # row_heights = [3,3,3]
 # fig4, (ax10,ax11,ax12) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig4.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig4.text(0.40,0.84, "Middle Node", color = "red", fontsize=23)
-# fig4.text(0.50,0.68, f'P wave '+ r"($t_d=0.0125$ $\mathrm {s}$)", color = "blue", fontsize=22)
-# fig4.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=20) # $(10^{-1}\,s)$
+# fig4.text(0.65,0.81, "Middle Node", color = "black", fontsize=23) # 0.65, 0.81
+# fig4.text(0.49,0.85, f'P wave '+ r"($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22) # 0.50, 0.85
+# fig4.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=22)
+# fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=22) # $(10^{-1}\,s)$
 
 # ax10 = plt.subplot(311)
 # Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W20_HZ80_Mid, LK_W20_HZ80_Mid, Type1_W20_HZ80_Mid, Type2_W20_HZ80_Mid, Type3_W20_HZ80_Mid)
-# ax10.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.80, y=0.78)
+# ax10.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax11 = plt.subplot(312)
 # Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, Type1_W10_HZ80_Mid, Type2_W10_HZ80_Mid, Type3_W10_HZ80_Mid)
-# ax11.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.80, y=0.78)
+# ax11.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.84, y=0.08)
 
 # ax12 = plt.subplot(313)
 # Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W2_HZ80_Mid, LK_W2_HZ80_Mid, Type1_W2_HZ80_Mid, Type2_W2_HZ80_Mid, Type3_W2_HZ80_Mid)
-# ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.80, y=0.78)
+# ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.84, y=0.08)
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig4.axes[-1].get_legend_handles_labels()
-# fig4.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
+# legend = fig4.legend(lines, labels, ncol=3, loc = (0.14, 0.89), prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # ================================== Prepare Relative Error and Absolute Error ============================
 def Find_ColMaxValue(column_index, ele80_Mid):
@@ -626,6 +648,7 @@ def Find_ColMaxValue(column_index, ele80_Mid):
 
     print(f'max_value= {max_value}; max_index= {max_index}; min_value= {min_value}; min_index= {min_index}')
     return(max_value)
+
 # ---------- Find Analysis data Peak Value -----------------
 maxAnaly_HZ10 = Find_ColMaxValue(Analysis_Column, HZ10_Pwave)
 maxAnaly_HZ20 = Find_ColMaxValue(Analysis_Column, HZ20_Pwave)
@@ -827,18 +850,25 @@ Calculate_Error(Type3_W2_err, Type3_2error)
 # ==================Draw Relative error : Middele point =============================
 def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     # font_props = {'family': 'Arial', 'size': 14}
-    plt.plot(TieErr[:,0], TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie')
+    plt.plot(TieErr[:,0], TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie', color = 'darkgrey',linewidth = 6.0)
     # plt.plot(LKErr[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Type1Err[:,0], Type1Err[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Beam-based')
-    plt.plot(Type2Err[:,0], Type2Err[:,Peak],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Hybrid')
-    plt.plot(Type3Err[:,0], Type3Err[:,Peak],marker = 'p',markersize=4,markerfacecolor = 'white',label = 'Node-based')
+    plt.plot(Type1Err[:,0], Type1Err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'blue',linewidth = 5.0)
+    plt.plot(Type2Err[:,0], Type2Err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'white',label = 'Hybrid', color = 'darkgreen',linewidth = 4.0)
+    plt.plot(Type3Err[:,0], Type3Err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'white',label = 'Node-based', color = 'red',linewidth = 4.0)
 
     # plt.legend(loc='center left',prop=font_props) #ncol=2,fontsize=16 frameon=False
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
     plt.ylim(0, 12.0)  # 0,12
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -850,58 +880,74 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    # -------------- Consider y-axis  -----------------------
+    ax.yaxis.set_major_locator(MultipleLocator(2))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
 
 figsize = (10,10)
 # # ----------------- Middle Node Relative Error -------------------------
 # # ----------------- Draw Relative error : td (1/HZ) ------------------- 
 # fig5, (ax13,ax14,ax15) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig5.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig5.text(0.4,0.81, "(Middle Node)", color = "red", fontsize=23)
-# fig5.text(0.44,0.85, f'P wave', color = "blue", fontsize=28)
+# fig5.text(0.14,0.81, "(Middle Node)", color = "black", fontsize=23)
+# fig5.text(0.16,0.85, f'P wave', color = "black", fontsize=28)
 
 # fig5.text(0.045,0.5, 'Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
-# fig5.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
+# fig5.text(0.41,0.060,  f'Duration ' + r'$t_d$ ', va= 'center', fontsize=25)
 
 # ax13 = plt.subplot(311)
 # DifferTime_RelativeError(1, Tie20_err, LK20_err, Type1_W20_err, Type2_W20_err, Type3_W20_err)
-# ax13.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.80, y=0.78)
+# ax13.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.85, y=0.78)
 
 # ax14 = plt.subplot(312)
 # DifferTime_RelativeError(1, Tie10_err, LK10_err, Type1_W10_err, Type2_W10_err, Type3_W10_err)
-# ax14.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.80, y=0.78)
+# ax14.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.85, y=0.78)
 
 # ax15 = plt.subplot(313)
 # DifferTime_RelativeError(1, Tie2_err, LK2_err, Type1_W2_err, Type2_W2_err, Type3_W2_err)
-# ax15.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.80, y=0.78)
+# ax15.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.85, y=0.78)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
 # lines, labels = fig5.axes[-1].get_legend_handles_labels()
-# fig5.legend(lines, labels, ncol=2, loc = (0.3, 0.89) ,prop=font_props)
+# legend = fig5.legend(lines, labels, ncol=2, loc = (0.3, 0.89) ,prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
 
 def LK_RelativeError(Peak,LK2, LK10, LK20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 18}
     # plt.title('LK Dashpot Different Soilwidth Error Compare', fontsize = 20)
-    plt.text(0.1, 0.52,'LK Dashpot', color='black', fontsize = 25, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.12,'LK Dashpot', color='black', fontsize = 25, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
     
-    plt.plot(LK2[:,0], LK2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$")
-    plt.plot(LK10[:,0], LK10[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$")
-    plt.plot(LK20[:,0], LK20[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$")
+    plt.plot(LK2[:,0], LK2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
+    plt.plot(LK10[:,0], LK10[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='blue',linewidth = 5.0)
+    plt.plot(LK20[:,0], LK20[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 4.0)
 
-    plt.legend(ncol= 3,loc= (0.1, 1.0),prop=font_props) #ncol=2,fontsize=16 frameon=False
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    legend = plt.legend(ncol= 3,loc= (0.1, 1.0),prop=font_props) #ncol=2,fontsize=16 frameon=False
+    legend.get_frame().set_edgecolor('grey')     # 設置外框顏色
+    legend.get_frame().set_linewidth(2)          # 設置外框粗細
+
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
     plt.ylim(-100, 20.0)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -913,12 +959,15 @@ def LK_RelativeError(Peak,LK2, LK10, LK20):
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
-
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    # -------------- Consider y-axis  -----------------------
+    # ax.yaxis.set_major_locator(MultipleLocator(2))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    
 # LK_RelativeError(1, LK2_err, LK10_err, LK20_err)
     
 Dy = 0.25 # m
@@ -929,9 +978,9 @@ def DifferTime_RelativeError2(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     # font_props = {'family': 'Arial', 'size': 14}
     plt.plot(Dy_lamb[:], TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie BC')
     # plt.plot(Dy_lamb[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb[:], Type1Err[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Beam_Base')
-    plt.plot(Dy_lamb[:], Type2Err[:,Peak],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Hybrid')
-    plt.plot(Dy_lamb[:], Type3Err[:,Peak],marker = 'p',markersize=4,markerfacecolor = 'white',label = 'Node_Base')
+    plt.plot(Dy_lamb[:], Type1Err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam_Base')
+    plt.plot(Dy_lamb[:], Type2Err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'white',label = 'Hybrid')
+    plt.plot(Dy_lamb[:], Type3Err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'white',label = 'Node_Base')
 
     # plt.legend(loc='center left',prop=font_props) #ncol=2,fontsize=16 frameon=False
     plt.xticks(fontsize = 20)
@@ -955,9 +1004,9 @@ def DifferTime_RelativeError2(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
 
 # figsize = (10,10)   
 # fig6, (ax16,ax17,ax18) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-# fig6.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig6.text(0.41,0.89, "(Middle Node)", color = "red", fontsize=20)
-# fig6.text(0.15,0.85, r"$\mathrm {Pwave}$", color = "blue", fontsize=22)
+# # fig6.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig6.text(0.41,0.89, "(Middle Node)", color = "black", fontsize=20)
+# fig6.text(0.15,0.85, r"$\mathrm {Pwave}$", color = "black", fontsize=22)
 
 # fig6.text(0.045,0.5, 'Peak Velocity Error: '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=20)
 # fig6.text(0.50,0.060, r'$\Delta_y/\lambda_p$', va= 'center', fontsize=20)
@@ -1073,17 +1122,24 @@ Add_Err(1, Type3_W2Err_L2, Type3_2error, Type3_W2_HZ10_Mid, Type3_W2_HZ20_Mid, T
 
 # ==================Draw L2 Norm error : Middele point =============================
 def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
-    plt.plot(TieErr[:,0],TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie')
+    plt.plot(TieErr[:,0],TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie', color = 'darkgrey',linewidth = 6.0)
     # plt.plot(LKErr[:,0],LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Type1Err[:,0],Type1Err[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Beam-based')
-    plt.plot(Type2Err[:,0],Type2Err[:,Peak],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Hybrid')
-    plt.plot(Type3Err[:,0],Type3Err[:,Peak],marker = 'p',markersize=4,markerfacecolor = 'white',label = 'Node-based')
+    plt.plot(Type1Err[:,0],Type1Err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'blue',linewidth = 5.0)
+    plt.plot(Type2Err[:,0],Type2Err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'white',label = 'Hybrid', color = 'darkgreen',linewidth = 4.0)
+    plt.plot(Type3Err[:,0],Type3Err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'white',label = 'Node-based', color = 'red',linewidth = 4.0)
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.xlim(0.0, 0.20)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -1096,11 +1152,11 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 18)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
@@ -1108,59 +1164,69 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
     y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.20])
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=18)
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
-    
-# ----------------- Middle Node L2-Norm Error -------------------------
-figsize = (10, 10)
-fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-# fig7.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-fig7.text(0.17,0.75, f'P wave', color = "blue", fontsize=28)
-fig7.text(0.15,0.71, "(Middle Node)", color = "red", fontsize=23)
+# # ----------------- Middle Node L2-Norm Error -------------------------
+# figsize = (10, 10)
+# fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# # fig7.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+# fig7.text(0.17,0.70, f'P wave', color = "black", fontsize=28)
+# fig7.text(0.13,0.66, "(Middle Node)", color = "black", fontsize=23)
 
-fig7.text(0.01,0.5, 'L2 Norm '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
+# fig7.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
 
-fig7.text(0.43,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
+# fig7.text(0.43,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
 
-ax19 = plt.subplot(311)
-DifferTime_L2Error(1, Tie20Err_L2, LK20Err_L2, Type1_W20Err_L2, Type2_W20Err_L2, Type3_W20Err_L2)
-ax19.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.80, y=0.78)
+# ax19 = plt.subplot(311)
+# DifferTime_L2Error(1, Tie20Err_L2, LK20Err_L2, Type1_W20Err_L2, Type2_W20Err_L2, Type3_W20Err_L2)
+# ax19.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.87, y=0.78)
 
-ax20 = plt.subplot(312)
-DifferTime_L2Error(1, Tie10Err_L2, LK10Err_L2, Type1_W10Err_L2, Type2_W10Err_L2, Type3_W10Err_L2)
-ax20.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.80, y=0.78)
+# ax20 = plt.subplot(312)
+# DifferTime_L2Error(1, Tie10Err_L2, LK10Err_L2, Type1_W10Err_L2, Type2_W10Err_L2, Type3_W10Err_L2)
+# ax20.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.87, y=0.78)
 
-ax21 = plt.subplot(313)
-DifferTime_L2Error(1, Tie2Err_L2, LK2Err_L2, Type1_W2Err_L2, Type2_W2Err_L2, Type3_W2Err_L2)
-ax21.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.80, y=0.78)
+# ax21 = plt.subplot(313)
+# DifferTime_L2Error(1, Tie2Err_L2, LK2Err_L2, Type1_W2Err_L2, Type2_W2Err_L2, Type3_W2Err_L2)
+# ax21.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.87, y=0.78)
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
-lines, labels = fig7.axes[-1].get_legend_handles_labels()
-fig7.legend(lines, labels, ncol=2, loc = (0.3, 0.89) ,prop=font_props)
+# lines, labels = fig7.axes[-1].get_legend_handles_labels()
+# legend = fig7.legend(lines, labels, ncol=2, loc = (0.3, 0.89) ,prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
 
 def LK_L2Error(Peak, LK2, LK10, LK20):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 18}
     # plt.title('LK Dashpot Different Soilwidth Error Compare', fontsize = 20)
-    plt.text(0.1, 0.20,'LK Dashpot', color='black', fontsize = 25, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.06,'LK Dashpot', color='black', fontsize = 25, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
-    plt.ylabel('L2 Norm '+ r"$\ E_{L2}$", fontsize = 25)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$", fontsize = 25)
     
-    plt.plot(LK2[:,0], LK2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$")
-    plt.plot(LK10[:,0], LK10[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$")
-    plt.plot(LK20[:,0], LK20[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$")
+    plt.plot(LK2[:,0], LK2[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{2m}$", color='darkgrey',linewidth = 6.0)
+    plt.plot(LK10[:,0], LK10[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{10m}$", color='blue',linewidth = 5.0)
+    plt.plot(LK20[:,0], LK20[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 4.0)
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.xlim(0.0, 0.20)
     plt.grid(True)
-    plt.legend(ncol= 3, loc= (0.1, 1.0), prop=font_props) #ncol=2,fontsize=16 frameon=False
+    legend = plt.legend(ncol= 3, loc= (0.1, 1.0), prop=font_props) #ncol=2,fontsize=16 frameon=False
+    legend.get_frame().set_edgecolor('grey')     # 設置外框顏色
+    legend.get_frame().set_linewidth(2)          # 設置外框粗細
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -1173,11 +1239,11 @@ def LK_L2Error(Peak, LK2, LK10, LK20):
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 18)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
@@ -1185,83 +1251,11 @@ def LK_L2Error(Peak, LK2, LK10, LK20):
     y_ticks_Num = np.array([0.10, 0.20, 0.40, 0.60, 0.80, 1.0])
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=18)
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
 # LK_L2Error(1, LK2Err_L2, LK10Err_L2, LK20Err_L2)
 
-# ==================Draw L2 Norm error : Dy/WaveLength =============================
-def DifferTime_L2Error2(Peak,TieErr, LKErr, Type1Err, Type2Err, Type3Err):
-    plt.plot(Dy_lamb[:],TieErr[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = 'Tie BC')
-    # plt.plot(Dy_lamb[:],LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb[:],Type1Err[:,Peak],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Type1 Beam')
-    plt.plot(Dy_lamb[:],Type2Err[:,Peak],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Type2 Beam')
-    plt.plot(Dy_lamb[:],Type3Err[:,Peak],marker = 'p',markersize=4,markerfacecolor = 'white',label = 'Type3 Node')
-
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
-
-    # plt.xlim(0.0, 0.20)
-    plt.grid(True)
-    
-    ax = plt.gca()
-    # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
-    # -------------- Consider X-axis  -----------------------
-    ax.set_xscale('log', base=10)
-    ax.set_xticks([], minor=False)
-    ax.set_xticks([], minor=True)
-    x_ticks_Num = np.array([0.006,0.01, 0.02, 0.03, 0.04, 0.05])
-    ax.set_xticks(x_ticks_Num)
-    
-    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
-    # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 18)
-    # -------------- Consider Y-axis  -----------------------
-    ax.set_yscale('log', base=10)
-    ax.set_yticks([], minor=False)
-    ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.20])
-    ax.set_yticks(y_ticks_Num)
-    ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=18)
-    
-    # # 使用科学计数法显示y轴刻度标签
-    # ax.yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
-    # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))  # 使用科学计数法格式化
-
-    # ax.set_ylim(0.0, 1.0)  # 例如从0.1到10
-    
-    # ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-    # ax.yaxis.get_offset_text().set(size=18)
-
-# # ----------------- Middle Node L2-Norm Error -------------------------
-# figsize = (10, 10)
-# fig8, (ax22,ax23,ax24) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-# fig8.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig8.text(0.43,0.89, "(Middle Node)", color = "red", fontsize=20)
-# fig8.text(0.15,0.85, r"$\mathrm {Pwave}$", color = "blue", fontsize=22)
-
-# fig8.text(0.01,0.5, 'L2 normalization: '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=25)
-
-# fig8.text(0.45,0.060, r'$\Delta_y/\lambda_p$', va= 'center', fontsize=20)
-
-# ax22 = plt.subplot(311)
-# DifferTime_L2Error2(1, Tie20Err_L2, LK20Err_L2, Type1_W20Err_L2, Type2_W20Err_L2, Type3_W20Err_L2)
-# ax22.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.15, y=0.60)
-
-# ax23 = plt.subplot(312)
-# DifferTime_L2Error2(1, Tie10Err_L2, LK10Err_L2, Type1_W10Err_L2, Type2_W10Err_L2, Type3_W10Err_L2)
-# ax23.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.15, y=0.60)
-
-# ax24 = plt.subplot(313)
-# DifferTime_L2Error2(1, Tie2Err_L2, LK2Err_L2, Type1_W2Err_L2, Type2_W2Err_L2, Type3_W2Err_L2)
-# ax24.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.15, y=0.60)
-
-# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
-
-# lines, labels = fig8.axes[-1].get_legend_handles_labels()
-# fig8.legend(lines, labels, loc = (0.77,0.65) ,prop=font_props)
