@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
 from matplotlib.lines import Line2D
+from matplotlib.ticker import MultipleLocator
+
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
 #------------- Read file ---------------------
@@ -1126,23 +1128,30 @@ Dy_lamb_Swave = np.array([Dy/Slamb10, Dy/Slamb20, Dy/Slamb40, Dy/Slamb80])
 def DifferTime_RelativeError2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
     # ------------ P wave --------------------------
     plt.plot(Dy_lamb_Pwave[:], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb_Pwave[:], Type1PErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'red', linewidth = 3.0)
-    plt.plot(Dy_lamb_Pwave[:], Type2PErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
-    plt.plot(Dy_lamb_Pwave[:], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node-based', color = 'red', linewidth = 3.0)
+    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Dy_lamb_Pwave[:], Type1PErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'red', linewidth = 3.0)
+    plt.plot(Dy_lamb_Pwave[:], Type2PErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
+    plt.plot(Dy_lamb_Pwave[:], Type3PErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Node-based', color = 'red', linewidth = 3.0)
     
  # ----------------S wave------------------------------
     plt.plot(Dy_lamb_Swave[:], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
-    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
-    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
+    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
  
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
     # plt.ylim(0, 5.0) 
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -1154,7 +1163,12 @@ def DifferTime_RelativeError2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr,
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=17)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    
+    # -------------- Consider y-axis  -----------------------
+    ax.yaxis.set_major_locator(MultipleLocator(2.5))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    
     
 # figsize = (10,10)   
 # fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
@@ -1187,25 +1201,29 @@ def DifferTime_RelativeError2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr,
 
 # lines, labels = fig1.axes[-1].get_legend_handles_labels()
 # legend1 = fig1.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 # fig1.add_artist(legend1)
 
 # legend2 = fig1.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+# legend2.get_frame().set_edgecolor('grey')
+# legend2.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # ==================Draw Relative error : td =============================
 def DifferTime_RelativeError(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
     # ------------ P wave --------------------------
     plt.plot(TiePErr[:,0], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
-    # plt.plot(LKErr[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Type1PErr[:,0], Type1PErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'red', linewidth = 3.0)
-    plt.plot(Type2PErr[:,0], Type2PErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
-    plt.plot(Type3PErr[:,0], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node-based', color = 'red', linewidth = 3.0)
+    # plt.plot(LKErr[:,0], LKErr[:,Peak],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1PErr[:,0], Type1PErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = 'Beam-based', color = 'red', linewidth = 3.0)
+    plt.plot(Type2PErr[:,0], Type2PErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
+    plt.plot(Type3PErr[:,0], Type3PErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Node-based', color = 'red', linewidth = 3.0)
     
  # ----------------S wave------------------------------
     plt.plot(TieSErr[:,0], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Type1SErr[:,0], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
-    plt.plot(Type2SErr[:,0], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
-    plt.plot(Type3SErr[:,0], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
+    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1SErr[:,0], Type1SErr[:,1],marker = 'p',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Type2SErr[:,0], Type2SErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Type3SErr[:,0], Type3SErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
  
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
@@ -1414,23 +1432,30 @@ Add_SErr(Type3_W2Err_SL2, Type3_S2error, Type3_W2_HZ10_S, Type3_W2_HZ20_S, Type3
 def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
  # ------------ P wave --------------------------
     plt.plot(Dy_lamb_Pwave[:], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb_Pwave[:], Type1PErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam_Base', color = 'red', linewidth = 3.0)
-    plt.plot(Dy_lamb_Pwave[:], Type2PErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
-    plt.plot(Dy_lamb_Pwave[:], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node_Base', color = 'red', linewidth = 3.0)
+    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Dy_lamb_Pwave[:], Type1PErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = 'Beam_Base', color = 'red', linewidth = 3.0)
+    plt.plot(Dy_lamb_Pwave[:], Type2PErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
+    plt.plot(Dy_lamb_Pwave[:], Type3PErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Node_Base', color = 'red', linewidth = 3.0)
        
     # ----------------S wave------------------------------
     plt.plot(Dy_lamb_Swave[:], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
-    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
-    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
+    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Dy_lamb_Swave[:], Type1SErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Dy_lamb_Swave[:], Type2SErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Dy_lamb_Swave[:], Type3SErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.xlim(0.0, 0.20)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -1443,11 +1468,11 @@ def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1S
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     
-    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
+    ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=5)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 17)
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
@@ -1455,11 +1480,11 @@ def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1S
     y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.20, 0.40, 0.60])
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=17)
+    ax.tick_params(axis='y', which='major', labelsize= 15, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # figsize = (10,10)   
 # fig3, (ax7,ax8,ax9) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
@@ -1492,25 +1517,29 @@ def DifferTime_L2Error(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1S
 
 # lines, labels = fig3.axes[-1].get_legend_handles_labels()
 # legend1 = fig3.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 # fig3.add_artist(legend1)
 
 # legend2 = fig3.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+# legend2.get_frame().set_edgecolor('grey')
+# legend2.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # ==================Draw L2 Norm error : Middele point (td) =============================
 def DifferTime_L2Error2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
  # ------------ P wave --------------------------
     plt.plot(TiePErr[:,0], TiePErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white',label = 'Tie', color = 'red', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Type1PErr[:,0], Type1PErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Beam_Base', color = 'red', linewidth = 3.0)
-    plt.plot(Type2PErr[:,0], Type2PErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
-    plt.plot(Type3PErr[:,0], Type3PErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white',label = 'Node_Base', color = 'red', linewidth = 3.0)
+    # plt.plot(Dy_lamb_Pwave[:,0], LKErr[:,Peak],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1PErr[:,0], Type1PErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = 'Beam_Base', color = 'red', linewidth = 3.0)
+    plt.plot(Type2PErr[:,0], Type2PErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white',label = 'Hybrid', color = 'red', linewidth = 3.0)
+    plt.plot(Type3PErr[:,0], Type3PErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white',label = 'Node_Base', color = 'red', linewidth = 3.0)
        
     # ----------------S wave------------------------------
     plt.plot(TieSErr[:,0], TieSErr[:,1],marker = '^',markersize=16,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0)
-    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'o',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
-    plt.plot(Type1SErr[:,0], Type1SErr[:,1],marker = '<',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
-    plt.plot(Type2SErr[:,0], Type2SErr[:,1],marker = 's',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
-    plt.plot(Type3SErr[:,0], Type3SErr[:,1],marker = 'p',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
+    # plt.plot(Dy_lamb_Swave[:,0], LKErr[:,1],marker = 'p',markersize=10,markerfacecolor = 'white',label = 'LK Dashpot')
+    plt.plot(Type1SErr[:,0], Type1SErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '--'
+    plt.plot(Type2SErr[:,0], Type2SErr[:,1],marker = '<',markersize=8,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls =':'
+    plt.plot(Type3SErr[:,0], Type3SErr[:,1],marker = 's',markersize=6,markerfacecolor = 'white', color = 'darkgrey', linewidth = 3.0) # , ls = '-.'
 
     plt.xticks(fontsize = 18)
     plt.yticks(fontsize = 18)
