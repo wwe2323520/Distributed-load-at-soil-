@@ -247,24 +247,37 @@ def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'red', linewidth = 3.0) # , ls = ':'
     
     plt.grid(True)
-    plt.legend(fontsize=18) # loc='lower left',
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
+    legend1 = plt.legend(fontsize=18) # loc='lower left',
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xlim(0, 0.2)
     plt.ylim(-0.75, 0.75)
     
     plt.xlabel(r"$\mathrm {time}$ ${t}$ $\mathrm {(s)}$", fontsize = 25) # r"$G^{'}/G$"
     plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 25)  # r"$m_{x'}/m_{x}$"
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
     
     ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    
     ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
+    ax.tick_params(axis='y', which='major', labelsize= 18, length=8, width=2)
     # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
-    ax.yaxis.get_offset_text().set(size=18)
+    # ax.yaxis.get_offset_text().set(size=18)
 
 Compare = f'HHT-'+r'$\alpha$'
-# ==== Compare/ Integrator ====
-CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
+# # ==== Compare/ Integrator ====
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.4$ $\Delta_{tp}$', Dt04_80row, Dt04_40row, Dt04_20row, Dt04_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.6$ $\Delta_{tp}$', Dt06_80row, Dt06_40row, Dt06_20row, Dt06_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.8$ $\Delta_{tp}$', Dt08_80row, Dt08_40row, Dt08_20row, Dt08_10row)
@@ -464,9 +477,12 @@ def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=5,markerfacecolor = 'white',label = r'$C = 1.6$', linewidth = 3.0)
     plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
     
-    plt.legend(ncol=3,prop=font_props, loc= (0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
-    plt.xticks(fontsize = 22)
-    plt.yticks(fontsize = 22)
+    legend1 = plt.legend(ncol=3,prop=font_props, loc= (0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
+    plt.xticks(fontsize = 22, fontweight='bold', color='black')
+    plt.yticks(fontsize = 22, fontweight='bold', color='black')
     
     plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
@@ -474,6 +490,13 @@ def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     # plt.xlim(0.0, 0.20)
     plt.ylim(-15.0, 15.0) # -15.0, 15.0 / -5.0, 5.0
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -485,12 +508,12 @@ def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     
     ax.set_xticklabels([f'{tick:.3f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
     
     
     # ax.set_yscale('log', base=10)
-    # ax.tick_params(axis = 'y', which = 'both', labelsize = 17)
+    ax.tick_params(axis = 'y', which='major', labelsize= 20, length=8, width=2)
     
     # # ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
     # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
@@ -582,10 +605,10 @@ def Add_Err(Index,MidTieErr20,MidTie20_error, Element80, Tie_W20_Mid80row, Eleme
 #     MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_2NormError(TheoryTime,Pwave, Element10,Tie_W20_Mid10row)
     
 # ===================================== Calculate_L2NormError Normalization ============================================================
-    MidTieErr20[0,Index], MidTieErr20[0,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element80,Tie_W20_Mid80row)
-    MidTieErr20[1,Index], MidTieErr20[1,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element40,Tie_W20_Mid40row)
-    MidTieErr20[2,Index], MidTieErr20[2,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element20,Tie_W20_Mid20row)
-    MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element10,Tie_W20_Mid10row)
+    MidTieErr20[0,Index], MidTieErr20[0,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element80,Tie_W20_Mid80row, time_range=(0, 0.20))
+    MidTieErr20[1,Index], MidTieErr20[1,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element40,Tie_W20_Mid40row, time_range=(0, 0.20))
+    MidTieErr20[2,Index], MidTieErr20[2,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element20,Tie_W20_Mid20row, time_range=(0, 0.20))
+    MidTieErr20[3,Index], MidTieErr20[3,2] = Calculate_RelativeL2norm(TheoryTime,Pwave, Element10,Tie_W20_Mid10row, time_range=(0, 0.20))
     
 Dt02Err_L2 = np.zeros((4,3))
 Dt04Err_L2 = np.zeros((4,3))
@@ -626,16 +649,26 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=5,markerfacecolor = 'white',label = r'$C = 1.6$', linewidth = 3.0)
     plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
     
-    plt.legend(ncol=3,prop=font_props, loc=(0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    legend1 = plt.legend(ncol=3,prop=font_props, loc=(0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
     
     plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 25)
-    plt.ylabel('L2 Norm '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
 
     # plt.xlim(0.0, 0.20)
     # plt.ylim(-15.0, 15.0)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -648,19 +681,19 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     
     ax.set_xticklabels([f'{tick:.3f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6])  # 0.1, 0.2, 0.3, 0.4, 0.5
+    y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4])  # 0.1, 0.2, 0.3, 0.4, 0.5, 0.6
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=18)
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')   
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')   
 
     ax.set_ylim(0.0, 0.5)  # 例如从0.1到10
 
@@ -707,9 +740,12 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     plt.plot(Dy20row_err[:,0], Dy20row_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_c = $ $\mathrm {0.500m}$', linewidth = 3.0) # , ls= '-.'
     plt.plot(Dy10row_err[:,0], Dy10row_err[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_c = $ $\mathrm {1.000m}$', linewidth = 3.0)# , ls = '--'
     
-    plt.legend(ncol= 1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='upper left'
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 22)
+    legend1 = plt.legend(ncol= 1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 22, fontweight='bold', color='black')
     
     plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
@@ -717,6 +753,13 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     plt.xlim(0.2, 1.8)
     plt.ylim(-15.0, 15.0)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     # # -------------- Draw to show critical Dt ------------------------------------
     # plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3) # Linear = 1.73 ; Central = 1.0
@@ -732,10 +775,10 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     
     ax.set_xticklabels([f'{tick:.1f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 22)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     
     # ax.set_yscale('log', base=10)
-    # ax.tick_params(axis = 'y', which = 'both', labelsize = 17)
+    ax.tick_params(axis = 'y', which='major', labelsize= 20, length=8, width=2)
     
 # DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err)
 
@@ -783,16 +826,26 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     plt.plot(Dy20row_errL2[:,0], Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.500m}$', linewidth = 3.0)
     plt.plot(Dy10row_errL2[:,0], Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {1.000m}$', linewidth = 3.0)
         
-    plt.legend(ncol=1,prop=font_props, loc= (0.03, 0.72)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    legend1 = plt.legend(ncol=1,prop=font_props, loc= (0.03, 0.72)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
     
     plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 25)
-    plt.ylabel('L2 Norm '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
 
     plt.xlim(0.2, 1.8)
     plt.ylim(0, 0.6)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     # # -------------- Draw to show critical Dt ------------------------------------
     # plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
@@ -808,7 +861,7 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     
     ax.set_xticklabels([f'{tick:.1f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=22)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
@@ -817,11 +870,11 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6])  # 设置线性刻度间距为0.1  np.arange(0.1, 10.1, 0.1)
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=20)
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray') # , width=2
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray') # , width=2
       
     ax.set_ylim(0.0, 0.6)  # 例如从0.1到10
 
