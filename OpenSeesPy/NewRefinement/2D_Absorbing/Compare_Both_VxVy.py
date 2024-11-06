@@ -14,6 +14,7 @@ import scipy.signal
 from scipy.signal import find_peaks
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
 from matplotlib.lines import Line2D
+from matplotlib.ticker import MultipleLocator
 
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
@@ -99,7 +100,7 @@ W20_Mid40row = Find_Middle(int(20.0), YMesh)
 # ============== Read Middle Node Analysis Data ==========================================
 # HZ = 40
 Wave_Vel = 400 # Vertical; Rocking => cp = 400 m/s ; Horizon => cs = 200 m/s
-Force_Condition = f'2D_Absorb/NewMark_Linear/Rocking' # Vertical; Horizon; Rocking
+Force_Condition = f'2D_Absorb/NewMark_Linear/Horizon' # Vertical; Horizon; Rocking
 
 Dy = 0.25 # m
 # --------------------- Choose which WaveLength ---------------------------------
@@ -1494,11 +1495,18 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     plt.plot(Type1Err[:,0], Type1Err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Proposed', color='red',linewidth = 2.0)
 
     # plt.legend(loc='center left',prop=font_props) #ncol=2,fontsize=16 frameon=False
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 # --- Horizon= Mid(-25, 25)/ Away=(-25,100); Vertical = Mid(-5, 5)/ Away=(-30,10); Rocking: -110, 50(with Tie) / -30, 30 (no Tie)
-    plt.ylim(-35, 200)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.ylim(-50, 410)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -1510,11 +1518,11 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=16)# 20
+    ax.tick_params(axis='x', which='major', labelsize= 16, length=8, width=2)# 20
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     
     # # -------------- Consider Y-axis  -----------------------
     # ax.set_yscale('log', base=10)
@@ -1523,11 +1531,12 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     # y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.20, 0.40, 0.60])
     # ax.set_yticks(y_ticks_Num)
     # ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    # ax.tick_params(axis='y', which='both', labelsize=17)
+    ax.tick_params(axis='y', which='major', labelsize= 16, length=8, width=2)
     # # ------- Miner ticks -----------------
     # ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     # ax.yaxis.set_minor_formatter(NullFormatter())
-    # ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.yaxis.set_major_locator(MultipleLocator(100.0))
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # # ----------------- Middle Node Relative Error -------------------------
 # figsize = (10, 10)
@@ -1597,7 +1606,7 @@ figsize2 = (10, 10)
 # (ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
 # # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig9.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -1645,7 +1654,7 @@ figsize2 = (10, 10)
 # fig10, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True , figsize= figsize2) #, sharex=True
 # (ax41,ax42,ax43,ax44, ax45, ax46, ax47, ax48) = axes.ravel()
 # fig10.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
-# fig10.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig10.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig10.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig10.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -1687,7 +1696,9 @@ figsize2 = (10, 10)
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig10.axes[-1].get_legend_handles_labels()
-# fig10.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1 = fig10.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 0.02
     plt.figure(figsize=(10, 8))
@@ -1703,10 +1714,10 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 
     plt.plot(TieErr20[:,0], TieErr20[:,1],marker = '*',markersize=12,markerfacecolor = 'white',label = r"$w=$ $\mathrm{20m}$", color='red',linewidth = 3.0)
 
     plt.legend(ncol= 4, bbox_to_anchor= (0.02, 1.09), loc='upper left', prop=font_props) 
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 # --- Horizon= Mid(-25, 100)/ Away=(-30,220); Vertical = Mid(-30, 15)/ Away=(-30,110); Rocking: -110, 60(with Tie) / -30, 30 (no Tie)
-    plt.ylim(-5, 130)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.ylim(-130, 230)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
     
     ax = plt.gca()
@@ -1719,12 +1730,16 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
 
+    # -------------- Consider y-axis  -----------------------
+    # ax.yaxis.set_major_locator(MultipleLocator(2.5))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    
 # Tie_RelativeError(Tie2_err, Tie5_err, Tie10_err, Tie20_err)
 # Tie_RelativeError(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away)   
 
@@ -1732,8 +1747,8 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 
 def Tie_RelativeError_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy): 
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.60, 0.94,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
-    plt.text(0.60, 0.87,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.94,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
+    plt.text(0.02, 0.87,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", fontsize = 25)
 
@@ -1756,14 +1771,27 @@ def Tie_RelativeError_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Tie
                     Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")]
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    legend2.get_frame().set_edgecolor('grey')
+    legend2.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     plt.gca().add_artist(legend1)
     
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 # --- Horizon= Mid(-25, 100)/ Away=(-30,220); Vertical = Mid(-30, 15)/ Away=(-30,110); Rocking: -110, 60(with Tie) / -30, 30 (no Tie)
     # plt.ylim(-5, 130)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -1775,11 +1803,15 @@ def Tie_RelativeError_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Tie
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    # -------------- Consider y-axis  -----------------------
+    # ax.yaxis.set_major_locator(MultipleLocator(2.5))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
 
 # Tie_RelativeError_Both(Tie2_err, Tie5_err, Tie10_err, Tie20_err, Tie2_err_Vy, Tie5_err_Vy, Tie10_err_Vy, Tie20_err_Vy)
 # Tie_RelativeError_Both(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away, Tie2_err_Away_Vy, Tie5_err_Away_Vy, Tie10_err_Away_Vy, Tie20_err_Away_Vy)
@@ -2008,11 +2040,18 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
     plt.plot(LKErr[:,0],LKErr[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'white',label = 'LK Dashpot', color='blue',linewidth = 4.0)
     plt.plot(Type1Err[:,0],Type1Err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Proposed', color='red',linewidth = 2.0)
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.ylim(0.0, 1.5)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -2027,23 +2066,23 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 15) #Compare only Velocity= 18
+    ax.tick_params(axis='x', which='major', labelsize= 16, length=8, width=2) #Compare only Velocity= 18
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6 / Rocking =0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0 / Horizon = 0.08, 0.1, 0.2, 0.4, 0.6, 0.8
+# Vertical =0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6 / Rocking =0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0 / Horizon = 0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0, 6.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0]) 
+    y_ticks_Num = np.array([0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0, 6.0]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=14)
+    ax.tick_params(axis='y', which='major', labelsize= 14, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
     # ax.set_ylim(-0.0, 1.5)  # Vertical = -0.0, 1.5 / Rocking = -0.0, 2.0
     
@@ -2154,8 +2193,8 @@ figsize = (10, 10)
 
 # fig14, axes = plt.subplots(nrows= 3, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax55,ax56,ax57, ax58,ax59,ax60) = axes.ravel()
-# fig14.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig14.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig14.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
+# fig14.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig14.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig14.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -2185,12 +2224,14 @@ figsize = (10, 10)
 
 # ax60 = plt.subplot(326)
 # DifferTime_L2Error(1, Tie2Err_L2Away_Vy, LK2Err_L2Away_Vy, BeamType_W2Err_L2Away_Vy)
-# ax60.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.85)
+# ax60.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.10)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig14.axes[-1].get_legend_handles_labels()
-# fig14.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1 = fig14.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -2253,7 +2294,7 @@ def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.63, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes) #0.03,
+    plt.text(0.63, 0.95,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes) #0.03,
     plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$", fontsize = 25)
@@ -2277,14 +2318,27 @@ def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_V
                     Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")]
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    legend2.get_frame().set_edgecolor('grey')
+    legend2.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     plt.gca().add_artist(legend1)
     
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.ylim(0.0, 1.5)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -2299,9 +2353,9 @@ def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_V
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 18)
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
 # Vertical =1.0, 2.0, 4.0, 6.0, 8.0, 10.0 / Rocking =1.0, 2.0, 4.0, 6.0 / Horizon = 0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0
@@ -2311,11 +2365,11 @@ def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_V
     y_ticks_Num = np.array([1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 20.0]) # , 8.0, 10.0
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=16)
+    ax.tick_params(axis='y', which='major', labelsize= 16, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
     # ax.set_ylim(-0.0, 1.5)  # Vertical = -0.0, 1.5 / Rocking = -0.0, 2.0
 
@@ -2927,11 +2981,18 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
     plt.plot(Type1Err[:,0], Type1Err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'white', color='red',linewidth = 2.0, label = 'Proposed')
 
     # plt.legend(loc='center left',prop=font_props) #ncol=2,fontsize=16 frameon=False
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
     plt.ylim(-10, 30)  # Vertical: Mid = 0, 8 / 1m away = 0, 15 ; Rocking = 0, 8; Horizon = 0, 5/60
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -2945,9 +3006,13 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=15) # 20
+    ax.tick_params(axis='x', which='major', labelsize= 16, length=8, width=2) # 20
+    
+    # -------------- Consider y-axis  -----------------------
+    ax.yaxis.set_major_locator(MultipleLocator(10.0))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     
 # # ----------------- Draw Relative error : td (1/HZ) ------------------- 
 # fig17, (ax65,ax66,ax67,ax68) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
@@ -3009,7 +3074,7 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # fig18.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 
 # ############ Compare Both Vx and Vy ##########################
-# figsize =(10, 10)
+figsize =(10, 10)
 # fig17, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax65,ax66,ax67,ax68, ax69,ax70,ax71,ax72) = axes.ravel()
 # fig17.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
@@ -3060,7 +3125,7 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # fig18, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax73,ax74,ax75,ax76, ax77, ax78, ax79, ax80) = axes.ravel()
 # fig18.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig18.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig18.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig18.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig18.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3102,7 +3167,9 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig18.axes[-1].get_legend_handles_labels()
-# fig18.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1 = fig18.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -3147,7 +3214,7 @@ def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
 def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.62, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.62, 0.95,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
     plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", fontsize = 25)
@@ -3171,14 +3238,27 @@ def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieE
                     Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")]
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    legend2.get_frame().set_edgecolor('grey')
+    legend2.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     plt.gca().add_artist(legend1)
     
-    plt.xticks(fontsize = 20)
-    plt.yticks(fontsize = 20)
+    plt.xticks(fontsize = 20, fontweight='bold', color='black')
+    plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
     # plt.ylim(-2, 220)  # Vertical: Mid = 0, 70 / 1m away = 0, 210 ; Rocking = -2, 150; Horizon = 0, 25/50
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # -------------- Consider X-axis  -----------------------
@@ -3192,9 +3272,13 @@ def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieE
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize=20)
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    
+    # -------------- Consider y-axis  -----------------------
+    # ax.yaxis.set_major_locator(MultipleLocator(2.5))
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     
 # Tie_PeakRelative_Both(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err, PeakTie2_err_Vy, PeakTie5_err_Vy, PeakTie10_err_Vy, PeakTie20_err_Vy)
 # Tie_PeakRelative_Both(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err, PeakAway_Tie2_err_Vy, PeakAway_Tie5_err_Vy, PeakAway_Tie10_err_Vy, PeakAway_Tie20_err_Vy)
@@ -3423,11 +3507,18 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
     plt.plot(LKErr[:,0],LKErr[:,1],marker = 'o',markersize=12,markerfacecolor = 'white',label = 'LK Dashpot', color='blue',linewidth = 4.0)
     plt.plot(Type1Err[:,0],Type1Err[:,1],marker = '<',markersize=12,markerfacecolor = 'white',label = 'Proposed', color='red',linewidth = 2.0)
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.ylim(0.0, 1.5)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -3444,21 +3535,21 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
     ax.xaxis.set_minor_formatter(NullFormatter())
     ax.tick_params(axis='x', which='minor', length=4, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 15)
+    ax.tick_params(axis='x', which='major', labelsize= 16, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =0.6, 0.8, 1.0, 2.0 / Horizon = 0.06, 0.08, 1.0, 2.0, 4.0
+# Vertical =0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =0.6, 0.8, 1.0, 2.0 / Horizon = 0.08, 1.0, 2.0, 4.0, 6.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.06, 0.08, 1.0, 2.0, 4.0]) 
+    y_ticks_Num = np.array([0.08, 1.0, 2.0, 4.0, 6.0]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=14)
+    ax.tick_params(axis='y', which='major', labelsize= 16, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
     # ax.set_ylim(-0.0, 1.5)  # Vertical = -0.0, 1.5 / Rocking = -0.0, 2.0
     
@@ -3572,7 +3663,7 @@ figsize =(10, 10)
 # fig22, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax89,ax90,ax91,ax92, ax93,ax94,ax95,ax96) = axes.ravel()
 # fig22.text(0.13,0.73, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig22.text(0.13,0.76, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig22.text(0.13,0.76, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig22.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig22.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3597,24 +3688,26 @@ figsize =(10, 10)
 
 # ax93 = plt.subplot(422)
 # Letter_L2Error(LE_Tie20Err_L2Away_Vy, LE_LK20Err_L2Away_Vy, LE_BeamType_W20Err_L2Away_Vy)
-# ax93.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.20, y=0.80)
+# ax93.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.20, y=0.10)
 
 # ax94 = plt.subplot(424)
 # Letter_L2Error(LE_Tie10Err_L2Away_Vy, LE_LK10Err_L2Away_Vy, LE_BeamType_W10Err_L2Away_Vy)
-# ax94.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.20, y=0.80)
+# ax94.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.20, y=0.10)
 
 # ax95 = plt.subplot(426)
 # Letter_L2Error(LE_Tie5Err_L2Away_Vy, LE_LK5Err_L2Away_Vy, LE_BeamType_W5Err_L2Away_Vy)
-# ax95.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.20, y=0.80)
+# ax95.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.20, y=0.10)
 
 # ax96 = plt.subplot(428)
 # Letter_L2Error(LE_Tie2Err_L2Away_Vy, LE_LK2Err_L2Away_Vy, LE_BeamType_W2Err_L2Away_Vy)
-# ax96.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.80)
+# ax96.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.10)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig22.axes[-1].get_legend_handles_labels()
-# fig22.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1 = fig22.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -3677,7 +3770,7 @@ def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.03, 0.08,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.08,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
     plt.text(0.03, 0.02,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{L2}$", fontsize = 25)
@@ -3702,14 +3795,27 @@ def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Ti
                     Line2D([0], [0], color='black',marker = '*',markersize=12,markerfacecolor = 'white', label= r"$w=$ $\mathrm{20m}$")] # Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     legend2 = plt.legend(handles=legend_elements2, ncol = 2 , loc=(0.40, 1.0), prop= font_props)
+    legend2.get_frame().set_edgecolor('grey')
+    legend2.get_frame().set_linewidth(2)  # 設置外框寬度
+    
     plt.gca().add_artist(legend1)
 
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
 
     # plt.ylim(0.0, 1.5)
     plt.grid(True)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
@@ -3724,23 +3830,23 @@ def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Ti
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='x', which='minor', length=4, color='gray')
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='both', labelsize= 18)
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
 # Vertical =10.0, 20.0 ,40.0, 60, 80 / Rocking =10.0, 20.0 ,40.0, 60.0 / Horizon = 10.0, 20.0 ,40.0, 60.0, 80.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([10.0, 20.0, 40.0, 60.0, 80]) 
+    y_ticks_Num = np.array([10.0, 20.0, 40.0, 60.0, 80, 100, 200, 400]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.1f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='both', labelsize=16)
+    ax.tick_params(axis='y', which='major', labelsize= 16, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=14))
     ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.tick_params(axis='y', which='minor', length=4, color='gray')
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
 # Tie_Letter_L2Error_Both(LE_Tie2Err_L2, LE_Tie5Err_L2, LE_Tie10Err_L2, LE_Tie20Err_L2, LE_Tie2Err_L2_Vy, LE_Tie5Err_L2_Vy, LE_Tie10Err_L2_Vy, LE_Tie20Err_L2_Vy)
 # Tie_Letter_L2Error_Both(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away, LE_Tie2Err_L2Away_Vy, LE_Tie5Err_L2Away_Vy, LE_Tie10Err_L2Away_Vy, LE_Tie20Err_L2Away_Vy)
