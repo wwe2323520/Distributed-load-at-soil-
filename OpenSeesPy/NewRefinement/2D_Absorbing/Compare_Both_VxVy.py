@@ -100,7 +100,7 @@ W20_Mid40row = Find_Middle(int(20.0), YMesh)
 # ============== Read Middle Node Analysis Data ==========================================
 # HZ = 40
 Wave_Vel = 400 # Vertical; Rocking => cp = 400 m/s ; Horizon => cs = 200 m/s
-Force_Condition = f'2D_Absorb/NewMark_Linear/Horizon' # Vertical; Horizon; Rocking
+Force_Condition = f'2D_Absorb/NewMark_Linear/Rocking' # Vertical; Horizon; Rocking
 
 Dy = 0.25 # m
 # --------------------- Choose which WaveLength ---------------------------------
@@ -1497,8 +1497,8 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     # plt.legend(loc='center left',prop=font_props) #ncol=2,fontsize=16 frameon=False
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
-# --- Horizon= Mid(-25, 25)/ Away=(-25,100); Vertical = Mid(-5, 5)/ Away=(-30,10); Rocking: -110, 50(with Tie) / -30, 30 (no Tie)
-    plt.ylim(-50, 410)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+# --- Horizon= Mid(-25, 25)/ Away=(-50, 410); Vertical = Mid(-5, 5)/ Away=(-30,10); Rocking: -80, 80 / -20, 200
+    plt.ylim(-80, 80)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
     plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
@@ -1535,7 +1535,7 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
     # # ------- Miner ticks -----------------
     # ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     # ax.yaxis.set_minor_formatter(NullFormatter())
-    ax.yaxis.set_major_locator(MultipleLocator(100.0))
+    ax.yaxis.set_major_locator(MultipleLocator(20.0))
     ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # # ----------------- Middle Node Relative Error -------------------------
@@ -1544,7 +1544,7 @@ def DifferTime_RelativeError(Peak,TieErr, LKErr, Type1Err):
 # fig9, (ax33,ax34,ax35,ax36) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig9.text(0.13,0.85, r"$\mathrm {Vertical\;Loading}$", color = "black", fontsize=18)
+# fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 
 # fig9.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig9.text(0.41,0.060,  f'Duration ' + r'$t_d$', va= 'center', fontsize=20)
@@ -1606,7 +1606,7 @@ figsize2 = (10, 10)
 # (ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
 # # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig9.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -1649,12 +1649,14 @@ figsize2 = (10, 10)
 
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig9.axes[-1].get_legend_handles_labels()
-# fig9.legend(lines, labels, ncol=2, loc = (0.3, 0.92) ,prop=font_props)
+# legend1 = fig9.legend(lines, labels, ncol=2, loc = (0.3, 0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # fig10, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True , figsize= figsize2) #, sharex=True
 # (ax41,ax42,ax43,ax44, ax45, ax46, ax47, ax48) = axes.ravel()
 # fig10.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
-# fig10.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig10.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig10.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig10.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -1747,8 +1749,8 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 
 def Tie_RelativeError_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy): 
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.02, 0.94,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
-    plt.text(0.02, 0.87,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
+    plt.text(0.63, 0.94,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
+    plt.text(0.63, 0.87,'Tie', color='black', fontsize = 30, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E^{0\,\mathrm{to}\,0.2}_{Max}$" + r" (%)", fontsize = 25)
 
@@ -2071,11 +2073,11 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
     ax.tick_params(axis='x', which='major', labelsize= 16, length=8, width=2) #Compare only Velocity= 18
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6 / Rocking =0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0 / Horizon = 0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0, 6.0
+# Vertical =0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6 / Rocking =0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Horizon = 0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0, 6.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0, 6.0]) 
+    y_ticks_Num = np.array([0.1 ,0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='major', labelsize= 14, length=8, width=2)
@@ -2189,12 +2191,14 @@ figsize = (10, 10)
 
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig13.axes[-1].get_legend_handles_labels()
-# fig13.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1 = fig13.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # fig14, axes = plt.subplots(nrows= 3, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax55,ax56,ax57, ax58,ax59,ax60) = axes.ravel()
 # fig14.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
-# fig14.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig14.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig14.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig14.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -2294,7 +2298,7 @@ def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.63, 0.95,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes) #0.03,
+    plt.text(0.63, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes) #0.03,
     plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$", fontsize = 25)
@@ -3078,7 +3082,7 @@ figsize =(10, 10)
 # fig17, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax65,ax66,ax67,ax68, ax69,ax70,ax71,ax72) = axes.ravel()
 # fig17.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig17.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig17.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig17.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig17.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3120,12 +3124,14 @@ figsize =(10, 10)
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
 # lines, labels = fig17.axes[-1].get_legend_handles_labels()
-# fig17.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1 = fig17.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # fig18, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax73,ax74,ax75,ax76, ax77, ax78, ax79, ax80) = axes.ravel()
 # fig18.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig18.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig18.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig18.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig18.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3214,7 +3220,7 @@ def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
 def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.62, 0.95,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.62, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
     plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{Max}$" + r" (%)", fontsize = 25)
@@ -3538,11 +3544,11 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
     ax.tick_params(axis='x', which='major', labelsize= 16, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =0.6, 0.8, 1.0, 2.0 / Horizon = 0.08, 1.0, 2.0, 4.0, 6.0
+# Vertical =0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 4.0 / Rocking =0.08, 1.0, 2.0, 4.0 / Horizon = 0.08, 1.0, 2.0, 4.0, 6.0
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([0.08, 1.0, 2.0, 4.0, 6.0]) 
+    y_ticks_Num = np.array([0.06, 0.08, 1.0, 2.0, 4.0]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='major', labelsize= 16, length=8, width=2)
@@ -3663,7 +3669,7 @@ figsize =(10, 10)
 # fig22, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax89,ax90,ax91,ax92, ax93,ax94,ax95,ax96) = axes.ravel()
 # fig22.text(0.13,0.73, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig22.text(0.13,0.76, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
+# fig22.text(0.13,0.76, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
 # fig22.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig22.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -3700,7 +3706,7 @@ figsize =(10, 10)
 
 # ax96 = plt.subplot(428)
 # Letter_L2Error(LE_Tie2Err_L2Away_Vy, LE_LK2Err_L2Away_Vy, LE_BeamType_W2Err_L2Away_Vy)
-# ax96.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.10)
+# ax96.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.80)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
@@ -3770,7 +3776,7 @@ def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 16}
-    plt.text(0.03, 0.08,r"$\mathrm {Horizon\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
+    plt.text(0.03, 0.08,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
     plt.text(0.03, 0.02,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
     plt.ylabel('Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{to}\,0.4}_{L2}$", fontsize = 25)
@@ -3835,11 +3841,11 @@ def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Ti
     ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
-# Vertical =10.0, 20.0 ,40.0, 60, 80 / Rocking =10.0, 20.0 ,40.0, 60.0 / Horizon = 10.0, 20.0 ,40.0, 60.0, 80.0
+# Vertical =10.0, 20.0 ,40.0, 60, 80 / Rocking =10.0, 20.0, 40.0, 60.0, 80, 100 / Horizon = 10.0, 20.0, 40.0, 60.0, 80, 100, 200, 400
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
     ax.set_yticks([], minor=True)
-    y_ticks_Num = np.array([10.0, 20.0, 40.0, 60.0, 80, 100, 200, 400]) 
+    y_ticks_Num = np.array([10.0, 20.0, 40.0, 60.0, 80, 100]) 
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.1f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
     ax.tick_params(axis='y', which='major', labelsize= 16, length=8, width=2)
