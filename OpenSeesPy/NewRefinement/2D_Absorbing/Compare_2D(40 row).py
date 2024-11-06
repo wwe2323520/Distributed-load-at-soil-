@@ -584,26 +584,26 @@ fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25)
 ax1 = plt.subplot(411)
 Differ_BCVel(Tie_W20_HZ10_Mid, LK_W20_HZ10_Mid, BeamType_W20_HZ10_Mid)
 ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-ax1.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2) # Vertical = 0.100 / Horizon = 0.0500
-ax1.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax1.transAxes, fontsize=18, ha='center', va='top') 
+ax1.axvline(x=0.107, color='gray', linestyle='--', linewidth=2) # Vertical = 0.1072 / Horizon = 0.0500
+ax1.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax1.transAxes, fontsize=18, ha='center', va='top') 
 
 ax2 = plt.subplot(412)
 Differ_BCVel(Tie_W10_HZ10_Mid, LK_W10_HZ10_Mid, BeamType_W10_HZ10_Mid)
 ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-ax2.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2) # Vertical = 0.050 / Horizon = 0.0250
-ax2.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax2.transAxes, fontsize=18, ha='center', va='top') 
+ax2.axvline(x=0.0536, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0536 / Horizon = 0.0250
+ax2.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.054s}$', transform=ax2.transAxes, fontsize=18, ha='center', va='top') 
 
 ax3 = plt.subplot(413)
 Differ_BCVel(Tie_W5_HZ10_Mid, LK_W5_HZ10_Mid, BeamType_W5_HZ10_Mid)
 ax3.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-ax3.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2) # Vertical = 0.025 / Horizon = 0.0125
-ax3.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax3.transAxes, fontsize=18, ha='center', va='top') 
+ax3.axvline(x=0.0268, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0268 / Horizon = 0.0125
+ax3.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.027s}$', transform=ax3.transAxes, fontsize=18, ha='center', va='top') 
 
 ax4 = plt.subplot(414)
 Differ_BCVel(Tie_W2_HZ10_Mid, LK_W2_HZ10_Mid, BeamType_W2_HZ10_Mid)
 ax4.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-ax4.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2) # Vertical = 0.010 / Horizon = 0.0050
-ax4.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax4.transAxes, fontsize=18, ha='center', va='top') 
+ax4.axvline(x=0.0107, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0107 / Horizon = 0.0050
+ax4.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.011s}$', transform=ax4.transAxes, fontsize=18, ha='center', va='top') 
 
 font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -621,26 +621,26 @@ fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25)
 ax5 = plt.subplot(411)
 Differ_BCVel(Tie_W20_HZ20_Mid, LK_W20_HZ20_Mid, BeamType_W20_HZ20_Mid)
 ax5.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-ax5.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2)
-ax5.text(0.18, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax5.transAxes, fontsize=18, ha='center', va='top') 
+ax5.axvline(x=0.1072, color='gray', linestyle='--', linewidth=2)
+ax5.text(0.18, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax5.transAxes, fontsize=18, ha='center', va='top') 
 
 ax6 = plt.subplot(412)
 Differ_BCVel(Tie_W10_HZ20_Mid, LK_W10_HZ20_Mid, BeamType_W20_HZ20_Mid)
 ax6.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-ax6.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2)
-ax6.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax6.transAxes, fontsize=18, ha='center', va='top') 
+ax6.axvline(x=0.0536, color='gray', linestyle='--', linewidth=2)
+ax6.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.054s}$', transform=ax6.transAxes, fontsize=18, ha='center', va='top') 
 
 ax7 = plt.subplot(413)
 Differ_BCVel(Tie_W5_HZ20_Mid, LK_W5_HZ20_Mid, BeamType_W5_HZ20_Mid)
 ax7.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-ax7.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
-ax7.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax7.transAxes, fontsize=18, ha='center', va='top') 
+ax7.axvline(x=0.0268, color='gray', linestyle='--', linewidth=2)
+ax7.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.027s}$', transform=ax7.transAxes, fontsize=18, ha='center', va='top') 
 
 ax8 = plt.subplot(414)
 Differ_BCVel(Tie_W2_HZ20_Mid, LK_W2_HZ20_Mid, BeamType_W2_HZ20_Mid)
 ax8.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-ax8.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2)
-ax8.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax8.transAxes, fontsize=18, ha='center', va='top') 
+ax8.axvline(x=0.0107, color='gray', linestyle='--', linewidth=2)
+ax8.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.011s}$', transform=ax8.transAxes, fontsize=18, ha='center', va='top') 
 
 font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -658,26 +658,26 @@ fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25)
 ax9 = plt.subplot(411)
 Differ_BCVel(Tie_W20_HZ40_Mid, LK_W20_HZ40_Mid, BeamType_W20_HZ40_Mid)
 ax9.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-ax9.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2)
-ax9.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax9.transAxes, fontsize=18, ha='center', va='top')
+ax9.axvline(x=0.1072, color='gray', linestyle='--', linewidth=2)
+ax9.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax9.transAxes, fontsize=18, ha='center', va='top')
 
 ax10 = plt.subplot(412)
 Differ_BCVel(Tie_W10_HZ40_Mid, LK_W10_HZ40_Mid, BeamType_W20_HZ40_Mid)
 ax10.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-ax10.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2)
-ax10.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax10.transAxes, fontsize=18, ha='center', va='top') 
+ax10.axvline(x=0.0536, color='gray', linestyle='--', linewidth=2)
+ax10.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.054s}$', transform=ax10.transAxes, fontsize=18, ha='center', va='top') 
 
 ax11 = plt.subplot(413)
 Differ_BCVel(Tie_W5_HZ40_Mid, LK_W5_HZ40_Mid, BeamType_W5_HZ40_Mid)
 ax11.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-ax11.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
-ax11.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax11.transAxes, fontsize=18, ha='center', va='top') 
+ax11.axvline(x=0.0268, color='gray', linestyle='--', linewidth=2)
+ax11.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.027s}$', transform=ax11.transAxes, fontsize=18, ha='center', va='top') 
 
 ax12 = plt.subplot(414)
 Differ_BCVel(Tie_W2_HZ40_Mid, LK_W2_HZ40_Mid, BeamType_W2_HZ40_Mid)
 ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-ax12.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2)
-ax12.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax12.transAxes, fontsize=18, ha='center', va='top') 
+ax12.axvline(x=0.0107, color='gray', linestyle='--', linewidth=2)
+ax12.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.011s}$', transform=ax12.transAxes, fontsize=18, ha='center', va='top') 
 
 font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -695,26 +695,26 @@ fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25)
 ax13 = plt.subplot(411)
 Differ_BCVel(Tie_W20_HZ80_Mid, LK_W20_HZ80_Mid, BeamType_W20_HZ80_Mid)
 ax13.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-ax13.axvline(x=0.0500, color='gray', linestyle='--', linewidth=2)
-ax13.text(0.18, 0.97, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0500s}$', transform=ax13.transAxes, fontsize=18, ha='center', va='top') 
+ax13.axvline(x=0.1072, color='gray', linestyle='--', linewidth=2)
+ax13.text(0.18, 0.97, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax13.transAxes, fontsize=18, ha='center', va='top') 
 
 ax14 = plt.subplot(412)
 Differ_BCVel(Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, BeamType_W20_HZ80_Mid)
 ax14.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-ax14.axvline(x=0.0250, color='gray', linestyle='--', linewidth=2)
-ax14.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0250s}$', transform=ax14.transAxes, fontsize=18, ha='center', va='top') 
+ax14.axvline(x=0.0536, color='gray', linestyle='--', linewidth=2)
+ax14.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.054s}$', transform=ax14.transAxes, fontsize=18, ha='center', va='top') 
 
 ax15 = plt.subplot(413)
 Differ_BCVel(Tie_W5_HZ80_Mid, LK_W5_HZ80_Mid, BeamType_W5_HZ80_Mid)
 ax15.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-ax15.axvline(x=0.0125, color='gray', linestyle='--', linewidth=2)
-ax15.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0125s}$', transform=ax15.transAxes, fontsize=18, ha='center', va='top') 
+ax15.axvline(x=0.0268, color='gray', linestyle='--', linewidth=2)
+ax15.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.027s}$', transform=ax15.transAxes, fontsize=18, ha='center', va='top') 
 
 ax16 = plt.subplot(414)
 Differ_BCVel(Tie_W2_HZ80_Mid, LK_W2_HZ80_Mid, BeamType_W2_HZ80_Mid)
 ax16.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-ax16.axvline(x=0.0050, color='gray', linestyle='--', linewidth=2)
-ax16.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0050s}$', transform=ax16.transAxes, fontsize=18, ha='center', va='top') 
+ax16.axvline(x=0.0107, color='gray', linestyle='--', linewidth=2)
+ax16.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.011s}$', transform=ax16.transAxes, fontsize=18, ha='center', va='top') 
 
 font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
@@ -733,25 +733,25 @@ fig4.legend(lines, labels, ncol=3, loc = (0.2, 0.89),prop=font_props)
 # ax17 = plt.subplot(411)
 # Differ_BCVel(Tie_W20_HZ10_Away, LK_W20_HZ10_Away, BeamType_W20_HZ10_Away)
 # ax17.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
-# ax17.axvline(x=0.0475, color='gray', linestyle='--', linewidth=2) # Vertical = 0.095 / Horizon = 0.0475
+# ax17.axvline(x=0.0475, color='gray', linestyle='--', linewidth=2) # Vertical = 0.1019 / Horizon = 0.0475
 # ax17.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0475s}$', transform=ax17.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax18 = plt.subplot(412)
 # Differ_BCVel(Tie_W10_HZ10_Away, LK_W10_HZ10_Away, BeamType_W10_HZ10_Away)
 # ax18.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
-# ax18.axvline(x=0.0225, color='gray', linestyle='--', linewidth=2) # Vertical = 0.045 / Horizon = 0.0225
+# ax18.axvline(x=0.0225, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0483 / Horizon = 0.0225
 # ax18.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0225s}$', transform=ax18.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax19 = plt.subplot(413)
 # Differ_BCVel(Tie_W5_HZ10_Away, LK_W5_HZ10_Away, BeamType_W5_HZ10_Away)
 # ax19.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
-# ax19.axvline(x=0.0100, color='gray', linestyle='--', linewidth=2) # Vertical = 0.020 / Horizon = 0.0100
+# ax19.axvline(x=0.0100, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0214 / Horizon = 0.0100
 # ax19.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0100s}$', transform=ax19.transAxes, fontsize=18, ha='center', va='top') 
 
 # ax20 = plt.subplot(414)
 # Differ_BCVel(Tie_W2_HZ10_Away, LK_W2_HZ10_Away, BeamType_W2_HZ10_Away)
 # ax20.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
-# ax20.axvline(x=0.0025, color='gray', linestyle='--', linewidth=2) # Vertical = 0.005 / Horizon = 0.0025
+# ax20.axvline(x=0.0025, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0054 / Horizon = 0.0025
 # ax20.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.0025s}$', transform=ax20.transAxes, fontsize=18, ha='center', va='top') 
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
