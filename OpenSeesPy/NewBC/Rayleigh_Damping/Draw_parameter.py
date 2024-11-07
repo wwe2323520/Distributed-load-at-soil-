@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from matplotlib.ticker import MultipleLocator
+
 plt.rc('font', family= 'Times New Roman')
 
 pi = np.pi
@@ -79,21 +81,38 @@ for i in range(len(Dy_cofficient)):
 def plot_Test1(titleName, G_cofficient, kx_Kx, xlabel, ylabel):
     plt.figure(figsize=(10,8))
     # plt.title(titleName, fontsize = 20)
-    plt.plot(G_cofficient[:], kx_Kx[:, 1], label = r"$\Delta_{y'}/\Delta_{y} = 0.5$", color= 'darkorange', linewidth = 6.0) # , ls = '--'
-    plt.plot(G_cofficient[:], kx_Kx[:, 2], label = r"$\Delta_{y'}/\Delta_{y} = 1.0$", color= 'blue',  linewidth = 4.0) # , ls = '-.'
-    plt.plot(G_cofficient[:], kx_Kx[:, 3], label = r"$\Delta_{y'}/\Delta_{y} = 2.0$", color= 'red',  linewidth = 2.0) # , ls = ':'
+    plt.plot(G_cofficient[:], kx_Kx[:, 1], label = r"$\Delta_{y}'/\Delta_{y} = 0.5$", color= 'darkorange', linewidth = 6.0) # , ls = '--'
+    plt.plot(G_cofficient[:], kx_Kx[:, 2], label = r"$\Delta_{y}'/\Delta_{y} = 1.0$", color= 'blue',  linewidth = 4.0) # , ls = '-.'
+    plt.plot(G_cofficient[:], kx_Kx[:, 3], label = r"$\Delta_{y}'/\Delta_{y} = 2.0$", color= 'red',  linewidth = 2.0) # , ls = ':'
 
     plt.xscale("log") # ,base = 10
     plt.yscale("log",base = 10) # ,base = 10
     plt.grid(True)
-    plt.legend(loc='upper left',fontsize=18)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
+    legend1 = plt.legend(loc='upper left',fontsize=18)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xlim(1e-4, 100)
     plt.xlabel(xlabel, fontsize = 20) # r"$G^{'}/G$"
     plt.ylabel(ylabel, fontsize = 20)  # r"$m_{x'}/m_{x}$"
     # plt.gca().invert_xaxis() # invert the xais to make bigger value to the left
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+    ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # plot_Test1("Compare Ghost element Stiffness matrix ratio with LK Dashpot", G_cofficient, kx_Kx, r"$E_{i}'/E_{i}$", r"$k_{i}'/k_{i}$")
 # # plot_Test1("Compare Ghost element Stiffness matrix ratio with LK Dashpot", M_cofficient, ky_Ky, r"$E_{i}/E_{i}$", r"$k_{i}'/k_{i}$")
@@ -187,10 +206,25 @@ def plot_Test2(rho_cofficient2, Dy5_xix_Xix):
     # plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 3], label = r"$\Delta_{y}'/\Delta_{y} = 2.0$", color= 'red',  linewidth = 4.0) # , ls = ':'
 
     plt.grid(True)  
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
     plt.xlim(1e-4, 100)
     # plt.gca().invert_xaxis() # invert the xais to make bigger value to the left
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+    ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
 # # ------------- (Xlabel = rho_cofficient2 -----------------------------
 # row_heights = [3,3,3]
@@ -198,58 +232,62 @@ def plot_Test2(rho_cofficient2, Dy5_xix_Xix):
 # # fig1.suptitle(f'Compare Ghost element Damping Ratio with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
 # fig1.text(0.14,0.71, r"$E_{i}'$ $\mathrm {Control}$", color = "black", fontsize=20) 
 # fig1.text(0.025, 0.5, r"$\xi_{i}'/\xi_{i}$", va= 'center', rotation= 'vertical', fontsize=22)
-# fig1.text(0.46,0.05, r"$\rho'/\rho$", va= 'center', fontsize=20)
+# fig1.text(0.46,0.04, r"$\rho'/\rho$", va= 'center', fontsize=20)
 
 # ax1 = plt.subplot(311)
 # plot_Test2(rho_cofficient2, Dy5_xix_Xix)
-# ax1.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.02)
+# ax1.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.02)
 # ax1.set_xscale('log') # , base=10
 # ax1.set_yscale('log') # , base=10
  
 # ax2 = plt.subplot(312)
 # plot_Test2(rho_cofficient2, Dy10_xix_Xix)
-# ax2.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.02)
+# ax2.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.02)
 # ax2.set_xscale('log') # , base=10
 # ax2.set_yscale('log') # , base=10
 
 # ax3 = plt.subplot(313)
 # plot_Test2(rho_cofficient2, Dy20_xix_Xix)
-# ax3.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.02)
+# ax3.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.02)
 # ax3.set_xscale('log') # , base=10
 # ax3.set_yscale('log') # , base=10
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 # lines, labels = fig1.axes[-1].get_legend_handles_labels()
-# fig1.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend1 = fig1.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # row_heights = [3,3,3]
 # fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig2.suptitle(f'Compare Ghost element natrue frequency with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
 # fig2.text(0.14,0.71, r"$E_{i}'$ $\mathrm {Control}$", color = "black", fontsize=20) 
 # fig2.text(0.025, 0.5, r"$\omega_{i}'/\omega_{i}$", va= 'center', rotation= 'vertical', fontsize=22)
-# fig2.text(0.46,0.05, r"$\rho'/\rho$", va= 'center', fontsize=20)
+# fig2.text(0.46,0.04, r"$\rho'/\rho$", va= 'center', fontsize=20)
 
 # ax4 = plt.subplot(311)
 # plot_Test2(rho_cofficient2, Dy5_wx_Wx)
-# ax4.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.02)
+# ax4.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.02)
 # ax4.set_xscale('log') # , base=10
 # ax4.set_yscale('log') # , base=10
 
 # ax5 = plt.subplot(312)
 # plot_Test2(rho_cofficient2, Dy10_wx_Wx)
-# ax5.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.02)
+# ax5.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.02)
 # ax5.set_xscale('log') # , base=10
 # ax5.set_yscale('log') # , base=10
 
 # ax6 = plt.subplot(313)
 # plot_Test2(rho_cofficient2, Dy20_wx_Wx)
-# ax6.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.02)
+# ax6.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.02)
 # ax6.set_xscale('log') # , base=10
 # ax6.set_yscale('log') # , base=10
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 # lines, labels = fig2.axes[-1].get_legend_handles_labels()
-# fig2.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend2 = fig2.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend2.get_frame().set_edgecolor('grey')
+# legend2.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # #  -----------------(Xlabel = M,G_cofficient) -------------------------   
 # row_heights = [3,3,3]
@@ -257,60 +295,64 @@ def plot_Test2(rho_cofficient2, Dy5_xix_Xix):
 # # fig3.suptitle(f'Compare Ghost element Damping Ratio with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
 # fig3.text(0.14,0.71, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
 # fig3.text(0.015,0.5, r"$\xi_{i'}/\xi_{i}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig3.text(0.47,0.04, r"$E_{i'}/E_{i}$", va= 'center', fontsize=20)
+# fig3.text(0.47,0.04, r"$E_{i}'/E_{i}$", va= 'center', fontsize=20)
 
 # ax7 = plt.subplot(311)
 # plot_Test2(G_cofficient3, Dy5_xix_Xix2)
-# ax7.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.02)
+# ax7.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.02)
 # ax7.set_xscale('log') # , base=10
 # ax7.set_yscale('log') # , base=10
 
 # ax8 = plt.subplot(312)
 # plot_Test2(G_cofficient3, Dy10_xix_Xix2)
-# ax8.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.02)
+# ax8.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.02)
 # ax8.set_xscale('log') # , base=10
 # ax8.set_yscale('log') # , base=10
 
 # ax9 = plt.subplot(313)
 # plot_Test2(G_cofficient3, Dy20_xix_Xix2)
-# ax9.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.02)
+# ax9.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.02)
 # ax9.set_xscale('log') # , base=10
 # ax9.set_yscale('log') # , base=10
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig3.axes[-1].get_legend_handles_labels()
-# fig3.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend1 = fig3.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # row_heights = [3,3,3]
 # fig4, (ax10,ax11,ax12) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig4.suptitle(f'Compare Ghost element natrue frequency with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
-# fig4.text(0.14,0.80, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
+# fig4.text(0.14,0.78, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
 # fig4.text(0.015,0.5, r"$\omega_{i}'/\omega_{i}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig4.text(0.47,0.04, r"$E_{i'}/E_{i}$", va= 'center', fontsize=20)
+# fig4.text(0.47,0.04, r"$E_{i}'/E_{i}$", va= 'center', fontsize=20)
 
 # ax10 = plt.subplot(311)
 # plot_Test2(G_cofficient3, Dy5_wx_Wx2)
-# ax10.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.79)
+# ax10.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =23, x=0.16, y=0.79)
 # ax10.set_xscale('log') # , base=10
 # ax10.set_yscale('log') # , base=10
 
 # ax11 = plt.subplot(312)
 # plot_Test2(G_cofficient3, Dy10_wx_Wx2)
-# ax11.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.79)
+# ax11.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =23, x=0.16, y=0.79)
 # ax11.set_xscale('log') # , base=10
 # ax11.set_yscale('log') # , base=10
 
 # ax12 = plt.subplot(313)
 # plot_Test2(G_cofficient3, Dy20_wx_Wx2)
-# ax12.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.79)
+# ax12.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =23, x=0.16, y=0.79)
 # ax12.set_xscale('log') # , base=10
 # ax12.set_yscale('log') # , base=10
 
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig4.axes[-1].get_legend_handles_labels()
-# fig4.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend2 = fig4.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# legend2.get_frame().set_edgecolor('grey')
+# legend2.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # ===========Test 2-3: Parameter compare (Dy_Ghost/Dy Compare) (Xlabel = Ei'/Ei and rho2/rho)==========================
 # Dy_cofficient2 = np.array([0.5, 1.0, 2.0]) # Dy_Ghost/Dy *
@@ -339,14 +381,32 @@ def plot_Test2_3(titleName, rho_cofficient2, Dy5_xix_Xix, xlabel, ylabel):
     plt.xscale("log") # ,base = 10
     plt.yscale("log",base = 10) # ,base = 10
     plt.grid(True)
-    plt.legend(loc='lower left',fontsize=18)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
+    legend1 = plt.legend(loc='lower left',fontsize=18)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xlim(1e-4, 100)
     
     plt.xlabel(xlabel, fontsize = 20) # r"$G^{'}/G$"
     plt.ylabel(ylabel, fontsize = 20)  # r"$m_{x'}/m_{x}$"
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+    ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
+
 
 # plot_Test2_3(f'Compare Ghost element Damping Ratio with LK Dashpot', G_rho_cofficient9, Dy_xix_Xix3, r"$E_{i}'/E_{i}$ $,$ $\rho'/\rho$", r"$\xi_{i}'/\xi_{i}$")
 
@@ -383,21 +443,38 @@ for i in range(len(Dy_cofficient)):
 def plot_Test3(titleName, G_cofficient, kx_Kx, xlabel, ylabel):
     plt.figure(figsize=(10,8))
     # plt.title(titleName, fontsize = 20)
-    plt.plot(G_cofficient[:], kx_Kx[:, 1], label = r"$\Delta_{y'}/\Delta_{y} = 0.5$", color= 'darkorange', linewidth = 5.0) # , ls = '--'
-    plt.plot(G_cofficient[:], kx_Kx[:, 2], label = r"$\Delta_{y'}/\Delta_{y} = 1.0$", color= 'blue',  linewidth = 3.0) # , ls = '-.'
-    plt.plot(G_cofficient[:], kx_Kx[:, 3], label = r"$\Delta_{y'}/\Delta_{y} = 2.0$", color= 'red',  linewidth = 2.0) # , ls = ':'
+    plt.plot(G_cofficient[:], kx_Kx[:, 1], label = r"$\Delta_{y}'/\Delta_{y} = 0.5$", color= 'darkorange', linewidth = 5.0) # , ls = '--'
+    plt.plot(G_cofficient[:], kx_Kx[:, 2], label = r"$\Delta_{y}'/\Delta_{y} = 1.0$", color= 'blue',  linewidth = 3.0) # , ls = '-.'
+    plt.plot(G_cofficient[:], kx_Kx[:, 3], label = r"$\Delta_{y}'/\Delta_{y} = 2.0$", color= 'red',  linewidth = 2.0) # , ls = ':'
 
     plt.xscale("log") # ,base = 10
     plt.yscale("log") # ,base = 10
     plt.grid(True)
-    plt.legend(loc='upper left',fontsize=18)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
+    legend1 = plt.legend(loc='upper left',fontsize=18)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xlim(1e-4, 10)
     plt.xlabel(xlabel, fontsize = 20) # r"$G^{'}/G$"
     plt.ylabel(ylabel, fontsize = 20)  # r"$m_{x'}/m_{x}$"
     # plt.gca().invert_xaxis() # invert the xais to make bigger value to the left
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+    ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # plot_Test3("Error Compare with LK Dashpot: Stiffness ratio", G_cofficient4, kx_Kx_Err, r"$E_{i}'/E_{i}$", r"$(k_{i}'-k_{i})/k_{i}$")
 # # plot_Test3("Error Compare with LK Dashpot: Stiffness ratio", M_cofficient4, ky_Ky_Err, r"$M'/M$", r"$(k_{y'}-k_{y})/k_{y}$" + r" (%)" )
@@ -497,32 +574,48 @@ def plot_Test3(titleName, G_cofficient, kx_Kx, xlabel, ylabel):
 
 # print(rho_cofficient5[Dy5_wx_Wx_Err_zero[4]], Dy5_wx_Wx_Err[Dy5_wx_Wx_Err_zero[4], 4])
 
-# def plot_Test4(rho_cofficient2, Dy5_xix_Xix): # , Dy5_wx_Wx_Err_zero (when frequency Compare)
-# # ------------- (Xlabel = rho_cofficient2 -----------------------------
-#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 1], label = r"$E_{i'}/E_{i} = 1.0$", color= 'darkgrey', linewidth = 6.0) # , ls = '--'
-#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 2], label = r"$E_{i'}/E_{i} = 1/10$", color= 'blue',  linewidth = 5.0) # , ls = '-.'
-#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 3], label = r"$E_{i'}/E_{i} = 1/100$", color= 'darkorange',  linewidth = 4.0) # , ls = ':'
-#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 4], label = r"$E_{i'}/E_{i} = 1/10000$", ls = '--', color= 'red',  linewidth = 2.0) # , ls = '-'
+# def plot_Test4(rho_cofficient2, Dy5_xix_Xix, Dy5_wx_Wx_Err_zero): # , Dy5_wx_Wx_Err_zero (when frequency Compare)
+# # # ------------- (Xlabel = rho_cofficient2 -----------------------------
+# #     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 1], label = r"$E_{i}'/E_{i} = 1.0$", color= 'darkgrey', linewidth = 6.0) # , ls = '--'
+# #     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 2], label = r"$E_{i}'/E_{i} = 1/10$", color= 'blue',  linewidth = 5.0) # , ls = '-.'
+# #     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 3], label = r"$E_{i}'/E_{i} = 1/100$", color= 'darkorange',  linewidth = 4.0) # , ls = ':'
+# #     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 4], label = r"$E_{i}'/E_{i} = 1/10000$", ls = '--', color= 'red',  linewidth = 2.0) # , ls = '-'
 
-#     # # -----------------(Xlabel = M,G_cofficient) -------------------------   
-#     # plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 1], label = r"$\rho'/\rho = 1.0$", color= 'darkgrey', linewidth = 6.0)
-#     # plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 2], label = r"$\rho'/\rho= 1/10$", color= 'blue',  linewidth = 5.0)
-#     # plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 3], label = r"$\rho'/\rho = 1/100$", color= 'darkorange',  linewidth = 4.0)
-#     # plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 4], label = r"$\rho'/\rho = 1/10000$", ls = '--', color= 'red',  linewidth = 2.0)
+#     # -----------------(Xlabel = M,G_cofficient) -------------------------   
+#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 1], label = r"$\rho'/\rho = 1.0$", color= 'darkgrey', linewidth = 6.0)
+#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 2], label = r"$\rho'/\rho= 1/10$", color= 'blue',  linewidth = 5.0)
+#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 3], label = r"$\rho'/\rho = 1/100$", color= 'darkorange',  linewidth = 4.0)
+#     plt.plot(rho_cofficient2[:], Dy5_xix_Xix[:, 4], label = r"$\rho'/\rho = 1/10000$", ls = '--', color= 'red',  linewidth = 2.0)
 
-# # # ------ Marker each line approach zero point (Just For Frequency Compare)----------use (rho_cofficient2, Dy5_xix_Xix, Dy5_wx_Wx_Err_zero)
-# #     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[1]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[1], 1],'o', color= 'black')
-# #     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[2]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[2], 2],'o', color= 'black')
-# #     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[3]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[3], 3],'o', color= 'black')
-# #     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[4]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[4], 4],'o', color= 'black')
+# # ------ Marker each line approach zero point (Just For Frequency Compare)----------use (rho_cofficient2, Dy5_xix_Xix, Dy5_wx_Wx_Err_zero)
+#     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[1]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[1], 1],'o', color= 'black')
+#     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[2]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[2], 2],'o', color= 'black')
+#     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[3]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[3], 3],'o', color= 'black')
+#     plt.plot(rho_cofficient2[Dy5_wx_Wx_Err_zero[4]], Dy5_xix_Xix[Dy5_wx_Wx_Err_zero[4], 4],'o', color= 'black')
     
 #     plt.grid(True)  
+#     # ========== set up figure thick ============================
+#     bwidth = 2
+#     TK = plt.gca()
+#     TK.spines['bottom'].set_linewidth(bwidth)
+#     TK.spines['left'].set_linewidth(bwidth)
+#     TK.spines['top'].set_linewidth(bwidth)
+#     TK.spines['right'].set_linewidth(bwidth)
+    
 #     plt.xlim(1E-8, 1) # 1E-4, 100
 #     # plt.ylim() # 0,2 *******************
 #     # plt.gca().invert_xaxis() # invert the xais to make bigger value to the left
-#     plt.xticks(fontsize = 18)
-#     plt.yticks(fontsize = 18)
+#     plt.xticks(fontsize = 18, fontweight='bold', color='black')
+#     plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+#     ax = plt.gca()
+#     ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
+#     ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
 
+#     # ax.yaxis.set_major_locator(MultipleLocator(10**(-1)))
+#     # ax.tick_params(axis='y', which='major', labelsize=16, length=8, width=2)
+#     # ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
+    
 # # # -----(Xlabel = rho Cofficient) Test 4-1 ------------------------------\mid
 # # row_heights = [3,3,3]
 # # fig5, (ax13,ax14,ax15) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
@@ -533,26 +626,28 @@ def plot_Test3(titleName, G_cofficient, kx_Kx, xlabel, ylabel):
 
 # # ax13 = plt.subplot(311)
 # # plot_Test4(rho_cofficient5, Dy5_xix_Xix_Err)
-# # ax13.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =20, x=0.86, y=0.04)
+# # ax13.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =20, x=0.86, y=0.04)
 # # ax13.set_xscale('log', base=10) # , base=10
 # # ax13.set_yscale('log', base=10) # , base=10
 
 # # ax14 = plt.subplot(312)
 # # plot_Test4(rho_cofficient5, Dy10_xix_Xix_Err)
-# # ax14.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =20, x=0.86, y=0.04)
+# # ax14.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =20, x=0.86, y=0.04)
 # # ax14.set_xscale('log') # , base=10
 # # ax14.set_yscale('log') # , base=10
 
 # # ax15 = plt.subplot(313)
 # # plot_Test4(rho_cofficient5, Dy20_xix_Xix_Err)
-# # ax15.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =20, x=0.86, y=0.04)
+# # ax15.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =20, x=0.86, y=0.04)
 # # ax15.set_xscale('log') # , base=10
 # # ax15.set_yscale('log') # , base=10
 
 # # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # # lines, labels = fig5.axes[-1].get_legend_handles_labels()
-# # fig5.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# # legend1 = fig5.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# # legend1.get_frame().set_edgecolor('grey')
+# # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
 # # row_heights = [3,3,3]
 # # fig6, (ax16,ax17,ax18) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
@@ -563,86 +658,92 @@ def plot_Test3(titleName, G_cofficient, kx_Kx, xlabel, ylabel):
 
 # # ax16 = plt.subplot(311)
 # # plot_Test4(rho_cofficient5, Dy5_wx_Wx_Err, Dy5_wx_Wx_Err_zero)
-# # ax16.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =20, x=0.14, y=0.04)
+# # ax16.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =20, x=0.14, y=0.04)
 # # ax16.set_xscale('log') # , base=10
 # # ax16.set_yscale('log') # , base=10
 
 # # ax17 = plt.subplot(312)
 # # plot_Test4(rho_cofficient5, Dy10_wx_Wx_Err, Dy10_wx_Wx_Err_zero)
-# # ax17.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =20, x=0.14, y=0.04)
+# # ax17.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =20, x=0.14, y=0.04)
 # # ax17.set_xscale('log') # , base=10
 # # ax17.set_yscale('log', base=10) # 
 
 # # ax18 = plt.subplot(313)
 # # plot_Test4(rho_cofficient5, Dy20_wx_Wx_Err, Dy20_wx_Wx_Err_zero)
-# # ax18.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =20, x=0.14, y=0.04)
+# # ax18.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =20, x=0.14, y=0.04)
 # # ax18.set_xscale('log') # , base=10
 # # ax18.set_yscale('log') # , base=10
 
 # # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # # lines, labels = fig6.axes[-1].get_legend_handles_labels()
-# # fig6.legend(lines, labels, ncol=2, loc = (0.25, 0.88), prop=font_props) # 'center right'
+# # legend1 = fig6.legend(lines, labels, ncol=2, loc = (0.25, 0.88), prop=font_props) # 'center right'
+# # legend1.get_frame().set_edgecolor('grey')
+# # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
-# # -----(Xlabel = G,M Cofficient)Test 4-2 -------------------------------------------
-# row_heights = [3,3,3]
-# fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# # fig7.suptitle(f'Error Compare Ghost element Damping Ratio with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
-# fig7.text(0.73,0.71, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
-# fig7.text(0.015,0.5, r"$\mid(\xi_{i}'-\xi{i})/\xi{i}\mid$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig7.text(0.47,0.04, r"$E_{i}'/E_{i}$", va= 'center', fontsize=20)
+# # # -----(Xlabel = G,M Cofficient)Test 4-2 -------------------------------------------
+# # row_heights = [3,3,3]
+# # fig7, (ax19,ax20,ax21) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# # # fig7.suptitle(f'Error Compare Ghost element Damping Ratio with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
+# # fig7.text(0.73,0.71, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
+# # fig7.text(0.015,0.5, r"$\mid(\xi_{i}'-\xi{i})/\xi{i}\mid$", va= 'center', rotation= 'vertical', fontsize=20)
+# # fig7.text(0.47,0.04, r"$E_{i}'/E_{i}$", va= 'center', fontsize=20)
 
-# ax19 = plt.subplot(311)
-# plot_Test4(G_cofficient6, Dy5_xix_Xix_Err2)
-# ax19.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =20, x=0.86, y=0.04)
-# ax19.set_xscale('log') # , base=10
-# ax19.set_yscale('log') # , base=10
+# # ax19 = plt.subplot(311)
+# # plot_Test4(G_cofficient6, Dy5_xix_Xix_Err2)
+# # ax19.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =20, x=0.86, y=0.04)
+# # ax19.set_xscale('log') # , base=10
+# # ax19.set_yscale('log') # , base=10
 
-# ax20 = plt.subplot(312)
-# plot_Test4(G_cofficient6, Dy10_xix_Xix_Err2)
-# ax20.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =20, x=0.86, y=0.04)
-# ax20.set_xscale('log') # , base=10
-# ax20.set_yscale('log') # , base=10
+# # ax20 = plt.subplot(312)
+# # plot_Test4(G_cofficient6, Dy10_xix_Xix_Err2)
+# # ax20.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =20, x=0.86, y=0.04)
+# # ax20.set_xscale('log') # , base=10
+# # ax20.set_yscale('log') # , base=10
 
-# ax21 = plt.subplot(313)
-# plot_Test4(G_cofficient6, Dy20_xix_Xix_Err2)
-# ax21.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =20, x=0.86, y=0.04)
-# ax21.set_xscale('log') # , base=10
-# ax21.set_yscale('log') # , base=10
+# # ax21 = plt.subplot(313)
+# # plot_Test4(G_cofficient6, Dy20_xix_Xix_Err2)
+# # ax21.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =20, x=0.86, y=0.04)
+# # ax21.set_xscale('log') # , base=10
+# # ax21.set_yscale('log') # , base=10
 
-# font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
-# lines, labels = fig7.axes[-1].get_legend_handles_labels()
-# fig7.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
+# # lines, labels = fig7.axes[-1].get_legend_handles_labels()
+# # legend1 = fig7.legend(lines, labels, ncol=2, loc = (0.25, 0.88),prop=font_props) # 'center right'
+# # legend1.get_frame().set_edgecolor('grey')
+# # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
-# row_heights = [3,3,3]
-# fig8, (ax22,ax23,ax24) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# # fig8.suptitle(f'Error Compare Ghost element Nature Frequency with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
-# fig8.text(0.14,0.71, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
-# fig8.text(0.015,0.5, r"$\mid(\omega_{i}'-\omega_{i})/\omega_{i}\mid$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig8.text(0.47,0.04, r"$E_{i}'/E_{i}$", va= 'center', fontsize=20)
+# # row_heights = [3,3,3]
+# # fig8, (ax22,ax23,ax24) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# # # fig8.suptitle(f'Error Compare Ghost element Nature Frequency with LK Dashpot ',x=0.50,y =0.95,fontsize = 20)
+# # fig8.text(0.14,0.71, r"$\rho'$ $\mathrm {Control}$", color = "black", fontsize=20) 
+# # fig8.text(0.015,0.5, r"$\mid(\omega_{i}'-\omega_{i})/\omega_{i}\mid$", va= 'center', rotation= 'vertical', fontsize=20)
+# # fig8.text(0.47,0.04, r"$E_{i}'/E_{i}$", va= 'center', fontsize=20)
 
-# ax22 = plt.subplot(311)
-# plot_Test4(G_cofficient6, Dy5_wx_Wx_Err2, Dy5_wx_Wx_Err2_zero)
-# ax22.set_title(r"$\Delta_{y'}/\Delta_{y} = 0.5$",fontsize =20, x=0.14, y=0.04)
-# ax22.set_xscale('log') # , base=10
-# ax22.set_yscale('log') # , base=10
+# # ax22 = plt.subplot(311)
+# # plot_Test4(G_cofficient6, Dy5_wx_Wx_Err2, Dy5_wx_Wx_Err2_zero)
+# # ax22.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =20, x=0.14, y=0.04)
+# # ax22.set_xscale('log') # , base=10
+# # ax22.set_yscale('log') # , base=10
 
-# ax23 = plt.subplot(312)
-# plot_Test4(G_cofficient6, Dy10_wx_Wx_Err2, Dy10_wx_Wx_Err2_zero)
-# ax23.set_title(r"$\Delta_{y'}/\Delta_{y} = 1.0$",fontsize =20, x=0.14, y=0.04)
-# ax23.set_xscale('log') # , base=10
-# ax23.set_yscale('log') # , base=10
+# # ax23 = plt.subplot(312)
+# # plot_Test4(G_cofficient6, Dy10_wx_Wx_Err2, Dy10_wx_Wx_Err2_zero)
+# # ax23.set_title(r"$\Delta_{y}'/\Delta_{y} = 1.0$",fontsize =20, x=0.14, y=0.04)
+# # ax23.set_xscale('log') # , base=10
+# # ax23.set_yscale('log') # , base=10
 
-# ax24 = plt.subplot(313)
-# plot_Test4(G_cofficient6, Dy20_wx_Wx_Err2, Dy20_wx_Wx_Err2_zero)
-# ax24.set_title(r"$\Delta_{y'}/\Delta_{y} = 2.0$",fontsize =20, x=0.14, y=0.04)
-# ax24.set_xscale('log') # , base=10
-# ax24.set_yscale('log') # , base=10
+# # ax24 = plt.subplot(313)
+# # plot_Test4(G_cofficient6, Dy20_wx_Wx_Err2, Dy20_wx_Wx_Err2_zero)
+# # ax24.set_title(r"$\Delta_{y}'/\Delta_{y} = 2.0$",fontsize =20, x=0.14, y=0.04)
+# # ax24.set_xscale('log') # , base=10
+# # ax24.set_yscale('log') # , base=10
 
-# font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
+# # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
-# lines, labels = fig8.axes[-1].get_legend_handles_labels()
-# fig8.legend(lines, labels, ncol=2, loc = (0.25, 0.88), prop=font_props) # 'center right'
+# # lines, labels = fig8.axes[-1].get_legend_handles_labels()
+# # legend1 = fig8.legend(lines, labels, ncol=2, loc = (0.25, 0.88), prop=font_props) # 'center right'
+# # legend1.get_frame().set_edgecolor('grey')
+# # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # ===========Test 4-3: Parameter compare (Dy_Ghost/Dy Compare) (Xlabel = Ei'/Ei and rho2/rho)==========================
 # Dy_cofficient2 = np.array([0.5, 1.0, 2.0]) # Dy_Ghost/Dy *
@@ -670,14 +771,31 @@ def plot_Test4_3(titleName, rho_cofficient2, Dy5_xix_Xix, xlabel, ylabel):
     plt.xscale("log") # ,base = 10
     plt.yscale("log") # ,base = 10
     plt.grid(True)
-    plt.legend(loc='lower right',fontsize=18)
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
+    legend1 = plt.legend(loc='lower right',fontsize=18)
+    legend1.get_frame().set_edgecolor('grey')
+    legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xlim(1.25e-8, 1.0)
     plt.ylim(1e-8, 0.0)
     plt.xlabel(xlabel, fontsize = 20) # r"$G^{'}/G$"
     plt.ylabel(ylabel, fontsize = 20)  # r"$m_{x'}/m_{x}$"
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+    ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # plot_Test4_3(f'Error Compare Ghost element Damping Ratio with LK Dashpot ', G_rho_cofficient10, Dy_xix_Xix3_Err, r"$E_{i}'/E_{i}$ $,$ $\rho'/\rho$", r"$\mid(\xi_{i}'-\xi_{i})/\xi_{i}\mid$")
 # plot_Test4_3(f'Error Compare Ghost element Nature Frequency with LK Dashpot ', G_rho_cofficient10, Dy_wx_Wx3_Err, r"$E_{i}'/E_{i}$ $,$ $\rho'/\rho$", r"$\mid(\omega_{i}'-\omega_{i})/\omega_{i}\mid$")
@@ -736,11 +854,26 @@ def plot_Test5(G_cofficient6, Dy5_dt_Dt):
     plt.plot(G_cofficient6[:], Dy5_dt_Dt[:, 5], label = r"$\Delta_{y}'/\Delta_{y} = 4.0$", color= 'darkgreen',  linewidth = 3.0) # ,
     
     plt.grid(True)  
-    plt.xlim(1e-2, 100) # 1e-2, 10 for sqrt;  1e-4, 100 for squre
+    # ========== set up figure thick ============================
+    bwidth = 2
+    TK = plt.gca()
+    TK.spines['bottom'].set_linewidth(bwidth)
+    TK.spines['left'].set_linewidth(bwidth)
+    TK.spines['top'].set_linewidth(bwidth)
+    TK.spines['right'].set_linewidth(bwidth)
+    
+    plt.xlim(1e-2, 1e2) # 1e-2, 10 for sqrt;  1e-4, 100 for squre
     plt.ylim(1e-1,1e1)
     # plt.gca().invert_xaxis() # invert the xais to make bigger value to the left
-    plt.xticks(fontsize = 18)
-    plt.yticks(fontsize = 18)
+    plt.xticks(fontsize = 18, fontweight='bold', color='black')
+    plt.yticks(fontsize = 18, fontweight='bold', color='black')
+    
+    ax = plt.gca()
+    ax.tick_params(axis='x', which='major', labelsize= 18, length=8, width=2)
+    ax.tick_params(axis='x', which='minor', length=4, width=2, color='gray')
+    
+    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 # # ------------- (Test5-1: Xlabel = rho_cofficient2)-----------------------------
 # row_heights = [3,3,3]
@@ -771,8 +904,9 @@ def plot_Test5(G_cofficient6, Dy5_dt_Dt):
 # font_props = {'family': 'Arial', 'size': 15}  #Legend Setting
 
 # lines, labels = fig9.axes[-1].get_legend_handles_labels()
-# fig9.legend(lines, labels, ncol=3, loc = (0.10, 0.88), prop=font_props) # 'center right'
-
+# legend1 = fig9.legend(lines, labels, ncol=2, loc = (0.25, 0.88), prop=font_props) # 'center right'
+# legend1.get_frame().set_edgecolor('grey')
+# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 
 dt = 2e-5 #2e-5
 time = np.arange(0.0, 1.0+dt, dt)
@@ -783,7 +917,7 @@ time = np.arange(0.0, 1.0+dt, dt)
 # # fig10.suptitle(f'Compare Ghost element and Real Element Critial TimeStep',x=0.50,y =0.95,fontsize = 20)
 # # fig10.text(0.42,0.89, r"$\rho'$ $\mathrm {Control}$", color = "red", fontsize=20) 
 # fig10.text(0.015,0.5, r"$\Delta_{t}'/\Delta_{t}$", va= 'center', rotation= 'vertical', fontsize=20)
-# fig10.text(0.40,0.04, r"$\sqrt{\rho'/\rho}$/$\sqrt{E_{i}/E_{i'}}$", va= 'center', fontsize=20)
+# fig10.text(0.40,0.04, r"$\sqrt{\rho'/\rho}$/$\sqrt{E_{i}/E_{i}'}$", va= 'center', fontsize=20)
 
 # ax28 = plt.subplot(111)
 # plot_Test5(rho_G_cofficient8, rho_G_dt_Dt2)
@@ -792,19 +926,19 @@ time = np.arange(0.0, 1.0+dt, dt)
 # ax28.set_yscale('log') # , base=10
 # ax28.legend(loc='upper left',fontsize=18)
 
-row_heights = [2,4,2]
-fig11, (ax29) = plt.subplots(nrows= 1, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# fig11.suptitle(f'Compare Ghost element and Real Element Critial TimeStep',x=0.50,y =0.95,fontsize = 20)
-# fig10.text(0.42,0.89, r"$\rho'$ $\mathrm {Control}$", color = "red", fontsize=20) 
-fig11.text(0.015,0.5, r"$\Delta_{t}'/\Delta_{t}$", va= 'center', rotation= 'vertical', fontsize=20)
-fig11.text(0.40,0.04, r"$(\rho'/\rho)/$ $(E_{i}/E_{i'})$", va= 'center', fontsize=20)
+# row_heights = [2,4,2]
+# fig11, (ax29) = plt.subplots(nrows= 1, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# # fig11.suptitle(f'Compare Ghost element and Real Element Critial TimeStep',x=0.50,y =0.95,fontsize = 20)
+# # fig10.text(0.42,0.89, r"$\rho'$ $\mathrm {Control}$", color = "red", fontsize=20) 
+# fig11.text(0.015,0.5, r"$\Delta_{t}'/\Delta_{t}$", va= 'center', rotation= 'vertical', fontsize=20)
+# fig11.text(0.40,0.03, r"$(\rho'/\rho)/$ $(E_{i}/E_{i}')$", va= 'center', fontsize=20)
 
-ax29 = plt.subplot(111)
-plot_Test5(rho_G_cofficient8, rho_G_dt_Dt3)
-# ax28.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =23, x=0.80, y=0.80)
-ax29.set_xscale('log') # , base=10
-ax29.set_yscale('log') # , base=10
-ax29.legend(loc='upper left',fontsize=16)
+# ax29 = plt.subplot(111)
+# plot_Test5(rho_G_cofficient8, rho_G_dt_Dt3)
+# # ax28.set_title(r"$\Delta_{y}'/\Delta_{y} = 0.5$",fontsize =23, x=0.80, y=0.80)
+# ax29.set_xscale('log') # , base=10
+# ax29.set_yscale('log') # , base=10
+# ax29.legend(loc='upper left',fontsize=16)
 
 
     
