@@ -132,7 +132,7 @@ row40 = f'node81'
 row20 = f'node41'
 row10 = f'node21'
 
-Integrator = f'Newmark Constant' # Central Differential / HHT_Alpha / Newmark Linear / Newmark Constant
+Integrator = f'Newmark Linear' # Central Differential / HHT_Alpha / Newmark Linear / Newmark Constant
 
 Condition1 =  f"Test_Integrator/{Integrator}/Dt_0.2"# 
 file1 = f"D:/shiang/opensees/20220330/OpenSeesPy/{Condition1}/row80/Velocity/{row80}.out"
@@ -236,15 +236,15 @@ Dt18_10row = rdnumpy(file36)
 
 def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     plt.figure(figsize=(10,8))
-    plt.title(titleName, fontsize = 25)
+    plt.title(titleName, fontsize = 28)
 # ------------------- Theory ------------------------------
-    plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=7.0)
+    plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=15.0)
     
 # -----------------Test Integrator Differ Mesh -------------------------   
-    plt.plot(D80_Dt10[:,0], D80_Dt10[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
-    plt.plot(D80_Dt11[:,0], D80_Dt11[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'orange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
-    plt.plot(D80_Dt12[:,0], D80_Dt12[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'purple', ls = '-.', linewidth = 4.0) # , ls = ':'
-    plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'red', linewidth = 3.0) # , ls = ':'
+    plt.plot(D80_Dt10[:,0], D80_Dt10[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 10.0) # , ls = '--' 
+    plt.plot(D80_Dt11[:,0], D80_Dt11[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'darkorange',ls='--',  linewidth = 8.0) # , ls = '-.'
+    plt.plot(D80_Dt12[:,0], D80_Dt12[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'mediumblue', ls = '-.', linewidth = 5.0) # , ls = ':'
+    plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'crimson', linewidth = 3.0) # , ls = ':'
     
     plt.grid(True)
     # ========== set up figure thick ============================
@@ -255,29 +255,29 @@ def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     TK.spines['top'].set_linewidth(bwidth)
     TK.spines['right'].set_linewidth(bwidth)
     
-    legend1 = plt.legend(fontsize=18) # loc='lower left',
+    legend1 = plt.legend(fontsize=22) # loc='lower left',
     legend1.get_frame().set_edgecolor('grey')
     legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xlim(0, 0.2)
     plt.ylim(-0.75, 0.75)
     
-    plt.xlabel(r"$\mathrm {time}$ ${t}$ $\mathrm {(s)}$", fontsize = 25) # r"$G^{'}/G$"
-    plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 25)  # r"$m_{x'}/m_{x}$"
+    plt.xlabel(r"$\mathrm {time}$ ${t}$ $\mathrm {(s)}$", fontsize = 28) # r"$G^{'}/G$"
+    plt.ylabel(r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", fontsize = 28)  # r"$m_{x'}/m_{x}$"
     plt.xticks(fontsize = 18, fontweight='bold', color='black')
     plt.yticks(fontsize = 18, fontweight='bold', color='black')
     
     ax = plt.gca()
-    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 23, length=8, width=2)
     
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
-    ax.tick_params(axis='y', which='major', labelsize= 18, length=8, width=2)
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.50)) # 0.25
+    ax.tick_params(axis='y', which='major', labelsize= 23, length=8, width=2)
     # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
     # ax.yaxis.get_offset_text().set(size=18)
 
 Compare = f'HHT-'+r'$\alpha$'
 # # ==== Compare/ Integrator ====
-# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
+CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.4$ $\Delta_{tp}$', Dt04_80row, Dt04_40row, Dt04_20row, Dt04_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.6$ $\Delta_{tp}$', Dt06_80row, Dt06_40row, Dt06_20row, Dt06_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.8$ $\Delta_{tp}$', Dt08_80row, Dt08_40row, Dt08_20row, Dt08_10row)
@@ -464,18 +464,18 @@ Calculate_Error(Dt18_err, Dt18_error)
 def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_err, Dt12_err, Dt14_err, Dt16_err, Dt18_err): # , Dt12_err, Dt14_err, Dt16_err, Dt18_err
     plt.figure(figsize=(10,8))
     # plt.title(f'{Integrator} Relative Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.01, 0.9, f'{Integrator}', fontsize = 25, color= 'black', transform=plt.gca().transAxes)
+    plt.text(0.01, 0.08, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes) # 0.9 / 0.08
     
     font_props = {'family': 'Arial', 'size': 16}
-    plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$C = 0.2$', linewidth = 3.0)
-    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$C = 0.4$', linewidth = 3.0)
-    plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$C = 0.6$', linewidth = 3.0)
-    plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$C = 0.8$', linewidth = 3.0)
-    plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=8,markerfacecolor = 'white',label = r'$C = 1.0$', linewidth = 3.0)
-    plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=7,markerfacecolor = 'white',label = r'$C = 1.2$', linewidth = 3.0)
-    plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=6,markerfacecolor = 'white',label = r'$C = 1.4$', linewidth = 3.0)
-    plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=5,markerfacecolor = 'white',label = r'$C = 1.6$', linewidth = 3.0)
-    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
+    plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$C = 0.2$', linewidth = 3.0, color = 'dimgray')
+    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'none',label =  r'$C = 0.4$', linewidth = 3.0, color = 'darkorange')
+    plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$C = 0.6$', linewidth = 3.0, color = 'limegreen')
+    plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$C = 0.8$', linewidth = 3.0, color = 'mediumblue')
+    plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'none',label = r'$C = 1.0$', linewidth = 3.0, color = 'crimson')
+    plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=12,markerfacecolor = 'none',label = r'$C = 1.2$', linewidth = 3.0, color = 'tab:brown')
+    plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=12,markerfacecolor = 'none',label = r'$C = 1.4$', linewidth = 3.0, color = 'darkviolet')
+    plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=12,markerfacecolor = 'none',label = r'$C = 1.6$', linewidth = 3.0, color = 'goldenrod')
+    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=12,markerfacecolor = 'none',label = r'$C = 1.8$', linewidth = 3.0, color = 'magenta')
     
     legend1 = plt.legend(ncol=3,prop=font_props, loc= (0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     legend1.get_frame().set_edgecolor('grey')
@@ -484,8 +484,8 @@ def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.xticks(fontsize = 22, fontweight='bold', color='black')
     plt.yticks(fontsize = 22, fontweight='bold', color='black')
     
-    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 25)
-    plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
+    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 28)
+    plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 28)
 
     # plt.xlim(0.0, 0.20)
     plt.ylim(-15.0, 15.0) # -15.0, 15.0 / -5.0, 5.0
@@ -508,12 +508,12 @@ def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     
     ax.set_xticklabels([f'{tick:.3f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 25, length=8, width=2)
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
     
     
     # ax.set_yscale('log', base=10)
-    ax.tick_params(axis = 'y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis = 'y', which='major', labelsize= 25, length=8, width=2)
     
     # # ax.yaxis.set_major_locator(ticker.MultipleLocator(0.25))
     # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
@@ -636,18 +636,18 @@ Add_Err(1,Dt18Err_L2, Dt18_error, Dt18_ele80, Dt18_80row, Dt18_ele40,Dt18_40row,
 def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_err, Dt12_err, Dt14_err, Dt16_err, Dt18_err): # , Dt12_err, Dt14_err, Dt16_err, Dt18_err
     plt.figure(figsize=(10,8))
     # plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.01, 0.9, f'{Integrator}', fontsize = 25, color= 'black', transform=plt.gca().transAxes)
+    plt.text(0.01, 0.9, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
     
     font_props = {'family': 'Arial', 'size': 16}
-    plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$C = 0.2$', linewidth = 3.0)
-    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$C = 0.4$', linewidth = 3.0)
-    plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$C = 0.6$', linewidth = 3.0)
-    plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$C = 0.8$', linewidth = 3.0)
-    plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=8,markerfacecolor = 'white',label = r'$C = 1.0$', linewidth = 3.0)
-    plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=7,markerfacecolor = 'white',label = r'$C = 1.2$', linewidth = 3.0)
-    plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=6,markerfacecolor = 'white',label = r'$C = 1.4$', linewidth = 3.0)
-    plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=5,markerfacecolor = 'white',label = r'$C = 1.6$', linewidth = 3.0)
-    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=4,markerfacecolor = 'white',label = r'$C = 1.8$', linewidth = 3.0)
+    plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$C = 0.2$', linewidth = 3.0 ,color = 'dimgray')
+    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'none',label =  r'$C = 0.4$', linewidth = 3.0 ,color = 'darkorange')
+    plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$C = 0.6$', linewidth = 3.0 ,color = 'limegreen')
+    plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$C = 0.8$', linewidth = 3.0 ,color = 'mediumblue')
+    plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'none',label = r'$C = 1.0$', linewidth = 3.0 ,color = 'crimson')
+    plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=12,markerfacecolor = 'none',label = r'$C = 1.2$', linewidth = 3.0, color = 'tab:brown')
+    plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=12,markerfacecolor = 'none',label = r'$C = 1.4$', linewidth = 3.0, color = 'darkviolet')
+    plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=12,markerfacecolor = 'none',label = r'$C = 1.6$', linewidth = 3.0,color = 'goldenrod')
+    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=12,markerfacecolor = 'none',label = r'$C = 1.8$', linewidth = 3.0,color = 'magenta')
     
     legend1 = plt.legend(ncol=3,prop=font_props, loc=(0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     legend1.get_frame().set_edgecolor('grey')
@@ -656,8 +656,8 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
     
-    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 25)
-    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
+    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 28)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 28) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
 
     # plt.xlim(0.0, 0.20)
     # plt.ylim(-15.0, 15.0)
@@ -681,7 +681,7 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     
     ax.set_xticklabels([f'{tick:.3f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 25, length=8, width=2)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
@@ -689,7 +689,7 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4])  # 0.1, 0.2, 0.3, 0.4, 0.5, 0.6
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='major', labelsize= 25, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
@@ -700,7 +700,7 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
 # DifferTime_L2NormError(1, Dt02Err_L2, Dt04Err_L2, Dt06Err_L2, Dt08Err_L2, Dt10Err_L2, Dt12Err_L2, Dt14Err_L2, Dt16Err_L2, Dt18Err_L2)
 
 # ================= Consider C data as X-axis ==============================
-C_Data = np.arange(0.2, 2.0, 0.2)# np.arange(0.2,2.0, 0.2)
+C_Data = np.arange(0.2, 1.8, 0.2)# np.arange(0.2,2.0, 0.2)
 Dy80row_err = np.zeros((len(C_Data),2))
 Dy40row_err = np.zeros((len(C_Data),2))
 Dy20row_err = np.zeros((len(C_Data),2))
@@ -717,7 +717,7 @@ def C_Relative(C_Data, Dy80row_err, Mesh_Num):
     Dy80row_err[5,1] = Dt12_err[Mesh_Num, 1]
     Dy80row_err[6,1] = Dt14_err[Mesh_Num, 1]
     Dy80row_err[7,1] = Dt16_err[Mesh_Num, 1]
-    Dy80row_err[8,1] = Dt18_err[Mesh_Num, 1]#  ; 2.62104e+10
+    # Dy80row_err[8,1] = Dt18_err[Mesh_Num, 1]#  ; 2.62104e+10
     return Dy80row_err
 # ---------- Mesh Size = 80, 40, 20, 10 row -------------
 C_Relative(C_Data, Dy80row_err, 0)
@@ -729,16 +729,16 @@ C_Relative(C_Data, Dy10row_err, 3)
 def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err): 
     plt.figure(figsize=(10,8))
     # plt.title(f'{Integrator} Relative Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.01, 0.95, f'{Integrator}', fontsize = 26, color= 'black', transform=plt.gca().transAxes)
+    plt.text(0.01, 0.95, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
     
-    plt.text(0.04, 0.86, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
-    # plt.text(0.04, 0.86, r'$C_{cr} = 1.73$', fontsize= 25, transform=plt.gca().transAxes)
+    plt.text(0.04, 0.86, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=28, transform=plt.gca().transAxes)
+    # plt.text(0.04, 0.86, r'$C_{cr} = 1.73$', fontsize= 28, transform=plt.gca().transAxes)
     
-    font_props = {'family': 'Arial', 'size': 18}
-    plt.plot(Dy80row_err[:,0], Dy80row_err[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0)
-    plt.plot(Dy40row_err[:,0], Dy40row_err[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_c = $ $\mathrm {0.250m}$', linewidth = 3.0) # , ls = ':'
-    plt.plot(Dy20row_err[:,0], Dy20row_err[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_c = $ $\mathrm {0.500m}$', linewidth = 3.0) # , ls= '-.'
-    plt.plot(Dy10row_err[:,0], Dy10row_err[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_c = $ $\mathrm {1.000m}$', linewidth = 3.0)# , ls = '--'
+    font_props = {'family': 'Arial', 'size': 20}
+    plt.plot(Dy80row_err[:,0], Dy80row_err[:,1],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0, color = 'limegreen')
+    plt.plot(Dy40row_err[:,0], Dy40row_err[:,1],marker = 'o',markersize=12,markerfacecolor = 'none',label =  r'$\Delta_c = $ $\mathrm {0.250m}$', linewidth = 3.0, color = 'darkorange') # , ls = ':'
+    plt.plot(Dy20row_err[:,0], Dy20row_err[:,1],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c = $ $\mathrm {0.500m}$', linewidth = 3.0, color = 'mediumblue') # , ls= '-.'
+    plt.plot(Dy10row_err[:,0], Dy10row_err[:,1],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c = $ $\mathrm {1.000m}$', linewidth = 3.0, color = 'crimson')# , ls = '--'
     
     legend1 = plt.legend(ncol= 1,prop=font_props, loc='lower left') #ncol=2,fontsize=16 frameon=False , loc='upper left'
     legend1.get_frame().set_edgecolor('grey')
@@ -747,8 +747,8 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 22, fontweight='bold', color='black')
     
-    plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 25)
-    plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 25)
+    plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 28)
+    plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 28)
 
     plt.xlim(0.2, 1.8)
     plt.ylim(-15.0, 15.0)
@@ -775,10 +775,10 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     
     ax.set_xticklabels([f'{tick:.1f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 24, length=8, width=2)
     
     # ax.set_yscale('log', base=10)
-    ax.tick_params(axis = 'y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis = 'y', which='major', labelsize= 25, length=8, width=2)
     
 # DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err)
 
@@ -798,7 +798,7 @@ def C_L2Norm(C_Data, Dy80row_errL2, Mesh_Num):
     Dy80row_errL2[5,1] = Dt12Err_L2[Mesh_Num, 1]
     Dy80row_errL2[6,1] = Dt14Err_L2[Mesh_Num, 1]
     Dy80row_errL2[7,1] = Dt16Err_L2[Mesh_Num, 1]
-    Dy80row_errL2[8,1] = Dt18Err_L2[Mesh_Num, 1] 
+    # Dy80row_errL2[8,1] = Dt18Err_L2[Mesh_Num, 1] 
     return Dy80row_err
 
 C_L2Norm(C_Data, Dy80row_errL2, 0)
@@ -815,16 +815,16 @@ Mesh10_Dt = (1.0/cp)*C_Data
 def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row_errL2): 
     plt.figure(figsize=(10,8))
     # plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.01, 0.15, f'{Integrator}', fontsize = 26, color= 'black', transform=plt.gca().transAxes)
+    plt.text(0.01, 0.15, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
     
-    plt.text(0.04, 0.07, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=25, transform=plt.gca().transAxes)
-    # plt.text(0.04, 0.06, r'$C_{cr} = 1.73$', fontsize= 25, transform=plt.gca().transAxes) # 0.06 / 0.6
+    # plt.text(0.04, 0.07, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=28, transform=plt.gca().transAxes)
+    plt.text(0.04, 0.06, r'$C_{cr} = 1.73$', fontsize= 28, transform=plt.gca().transAxes) # 0.06 / 0.6
     
     font_props = {'family': 'Arial', 'size': 18}
-    plt.plot(Dy80row_errL2[:,0], Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0)
-    plt.plot(Dy40row_errL2[:,0], Dy40row_errL2[:,1],marker = 'o',markersize=11,markerfacecolor = 'white',label =  r'$\Delta_c =  $ $\mathrm {0.250m}$', linewidth = 3.0)
-    plt.plot(Dy20row_errL2[:,0], Dy20row_errL2[:,1],marker = '<',markersize=10,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {0.500m}$', linewidth = 3.0)
-    plt.plot(Dy10row_errL2[:,0], Dy10row_errL2[:,1],marker = 's',markersize=9,markerfacecolor = 'white',label = r'$\Delta_c =  $ $\mathrm {1.000m}$', linewidth = 3.0)
+    plt.plot(Dy80row_errL2[:,0], Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0, color = 'limegreen')
+    plt.plot(Dy40row_errL2[:,0], Dy40row_errL2[:,1],marker = 'o',markersize=12,markerfacecolor = 'none',label =  r'$\Delta_c =  $ $\mathrm {0.250m}$', linewidth = 3.0, color = 'darkorange')
+    plt.plot(Dy20row_errL2[:,0], Dy20row_errL2[:,1],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c =  $ $\mathrm {0.500m}$', linewidth = 3.0, color = 'mediumblue')
+    plt.plot(Dy10row_errL2[:,0], Dy10row_errL2[:,1],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c =  $ $\mathrm {1.000m}$', linewidth = 3.0, color = 'crimson')
         
     legend1 = plt.legend(ncol=1,prop=font_props, loc= (0.03, 0.72)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     legend1.get_frame().set_edgecolor('grey')
@@ -833,8 +833,8 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
     
-    plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 25)
-    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 25) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
+    plt.xlabel(f'Time Increment Ratio ' +r'$C$', fontsize = 28)
+    plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 28) # 'L2 Norm Error: '+ r"$\ E_{L2}$" / 'L2 normalization'+ r"$\ E_{L2N}$"
 
     plt.xlim(0.2, 1.8)
     plt.ylim(0, 0.6)
@@ -847,8 +847,8 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     TK.spines['top'].set_linewidth(bwidth)
     TK.spines['right'].set_linewidth(bwidth)
     
-    # # -------------- Draw to show critical Dt ------------------------------------
-    # plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
+    # -------------- Draw to show critical Dt ------------------------------------
+    plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
@@ -861,7 +861,7 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     
     ax.set_xticklabels([f'{tick:.1f}' for tick in x_ticks_Num], rotation=0, fontsize=12)
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 24, length=8, width=2)
     
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
@@ -870,7 +870,7 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     y_ticks_Num = np.array([0.02, 0.04, 0.06, 0.08, 0.1, 0.2, 0.4, 0.6])  # 设置线性刻度间距为0.1  np.arange(0.1, 10.1, 0.1)
     ax.set_yticks(y_ticks_Num)
     ax.set_yticklabels([f'{tick:.2f}' for tick in y_ticks_Num], rotation=0, fontsize=12)
-    ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
+    ax.tick_params(axis='y', which='major', labelsize= 25, length=8, width=2)
     # ------- Miner ticks -----------------
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
