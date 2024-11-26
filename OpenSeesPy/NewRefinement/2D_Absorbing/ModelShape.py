@@ -9,7 +9,9 @@ import time
 import os 
 import numpy as np
 from openseespy.opensees import *
-import vfo.vfo as vfo
+# import vfo.vfo as vfo
+import opstool as opst
+import opstool.vis.plotly as opsvis
 
 pi = np.pi
 # ----------- Rayleigh Dashpot Cofficient ------------------
@@ -1051,18 +1053,20 @@ analyze(int(analystep),dt)
 # analyze(int(analystep),cpdt)
 print("finish analyze:0 ~ 0.8s")
 
-#  ================ Make Find Stiffnes and Mass Matrix =============================
-Path = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/LKDash_Surface_{ny}row'  #/{Scale}{Compare_For}
+# #  ================ Make Find Stiffnes and Mass Matrix (VFO_Version) =============================
+# # Path = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/{Choose_Wave}/W_{int(soilwidth)}m/HZ_{HZ}/LKDash_Surface_{ny}row'  #/{Scale}{Compare_For}
+Path = f'D:/shiang/opensees/20220330/OpenSeesPy/2D_Absorb/Newmark_Linear/Vertical/W_5m/HZ_80/LKDash_Surface_40row'
+# Nmodes = 20 
+# lam = eigen(Nmodes) 
 
-Nmodes = 20 
-lam = eigen(Nmodes) 
+# mode = 1
+# Scale = 10
+# vfo.plot_modeshape(modenumber=mode, scale=Scale, filename=f'{Path}/ModeShape_{mode}_scale{Scale}2', line_width= 10, contour='x')
 
-mode = 1
-Scale = 10
-vfo.plot_modeshape(modenumber=mode, scale=Scale, filename=f'{Path}/ModeShape_{mode}_scale{Scale}2', line_width= 10)
-
-# modalProperties('-print', '-file', f'{Path}/ModalReport3.txt', '-unorm')
-
+#  ================ Make Find Stiffnes and Mass Matrix (Opstool_Version) =============================
+opsvis.set_plot_props(point_size=0, line_width=5, cmap="rainbow_r",  mesh_edge_width=5.0) # plasma
+fig = opsvis.plot_eigen(mode_tags=[7,7], subplots=True, show_outline=False, style='surface')
+fig.show()
 
 # --------- end to calculate time -------------
 end = time.time()
