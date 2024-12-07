@@ -922,7 +922,7 @@ pattern('Plain',703, 706) # TimeSeries_Num
 # -------------- Rocking point Load ------------------
 Total_ApplyNode = int(0.5/Dw)
 # print(Total_ApplyNode)
-Py = 1e6 # 1e5 
+Py = 1e5*3.35*2 # 1e5*3.35 / 1e6 
 # for o in range(1, Total_ApplyNode+1):
 #     # --------- Left Side ----------------
 #     load(UpperN_Center-o, 0, Py*((Dw*o)/0.5))
