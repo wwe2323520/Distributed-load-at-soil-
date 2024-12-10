@@ -196,15 +196,15 @@ def CompareDt_DiffVel(titleName,total_time, Pwave, HZ80_80row, HZ80_40row, HZ80_
     plt.figure(figsize=(10,8))
     plt.title(titleName, fontsize = 28)
     # ------------------- Theory ------------------------------
-    plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'black',linewidth= 8.0)
+    plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'dimgray',linewidth= 4)
         
     # # -----------------Differ Mesh Pwave  -------------------------   
-    plt.plot(HZ80_80row[:,0], HZ80_80row[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 6.0) # , ls = '--' 
-    plt.plot(HZ80_40row[:,0], HZ80_40row[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'darkorange', ls = '-.',  linewidth = 5.0) # , ls = '-.'
-    plt.plot(HZ80_20row[:,0], HZ80_20row[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'mediumblue', linewidth = 4.0) # , ls = ':'
-    plt.plot(HZ80_10row[:,0], HZ80_10row[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'crimson',  linewidth = 3.0) # , ls = '-.'
+    plt.plot(HZ80_80row[:,0], HZ80_80row[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth=2.0) # , ls = '--' 
+    plt.plot(HZ80_40row[:,0], HZ80_40row[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'darkorange', linewidth=2.0) # , ls = '-.'
+    plt.plot(HZ80_20row[:,0], HZ80_20row[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'mediumblue',ls='--', linewidth=2.0) # , ls = ':'
+    plt.plot(HZ80_10row[:,0], HZ80_10row[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'crimson', ls ='-.', linewidth= 2.0) # , ls = '-.'
     
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -374,7 +374,7 @@ def DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err):
     plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 28)
 
     plt.ylim(-100, 20) # -15.0, 15.0 / -80, 20
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -393,7 +393,7 @@ def DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err):
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12) # Dy: .3f / Dy/H: .1f
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='major', labelsize= 25, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 23, length=8, width=2)
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.125))
     # ------- Miner ticks -----------------
     ax.xaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
@@ -411,7 +411,7 @@ def DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err):
 
 # HZ40_err[:,0] = HZ40_err[:,0]/lamb40
 
-# DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err)
+DifferTime_elemetError(HZ40_err, HZ80_err, HZ160_err, HZ320_err)
 
 # ================================== Prepare L2-Norm Error ============================
 # # ---------- Find Different Dt in 80, 40, 20, 10 row Same Time ---------------------
@@ -533,7 +533,7 @@ def DifferTime_L2NormError(Peak, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L
 
     # plt.xlim(0.0, 0.20)
     # plt.ylim(-15.0, 15.0)
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -553,7 +553,7 @@ def DifferTime_L2NormError(Peak, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L
     
     ax.set_xticklabels([f'{tick:.2f}' for tick in x_ticks_Num], rotation=0, fontsize=12) # Dy: .3f / Dy/H: .2f
     # 设置x轴的刻度大小
-    ax.tick_params(axis='x', which='major', labelsize= 25, length=8, width=2)
+    ax.tick_params(axis='x', which='major', labelsize= 23, length=8, width=2)
     # -------------- Consider Y-axis  -----------------------
     ax.set_yscale('log', base=10)
     ax.set_yticks([], minor=False)
@@ -568,7 +568,7 @@ def DifferTime_L2NormError(Peak, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L
     ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
 
-DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy
+# DifferTime_L2NormError(1, HZ40Err_L2, HZ80Err_L2, HZ160Err_L2, HZ320Err_L2) # Dy
 
 # ---------- Compare Dy/lambda_p -----------------
 HZ40Err_L2[:,0] = HZ40Err_L2[:,0]/lamb40
