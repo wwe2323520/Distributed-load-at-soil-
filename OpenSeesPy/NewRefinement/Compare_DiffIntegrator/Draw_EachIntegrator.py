@@ -132,7 +132,7 @@ row40 = f'node81'
 row20 = f'node41'
 row10 = f'node21'
 
-Integrator = f'Newmark Linear' # Central Differential / HHT_Alpha / Newmark Linear / Newmark Constant
+Integrator = f'Newmark Constant' # Central Differential / HHT_Alpha / Newmark Linear / Newmark Constant
 
 Condition1 =  f"Test_Integrator/{Integrator}/Dt_0.2"# 
 file1 = f"D:/shiang/opensees/20220330/OpenSeesPy/{Condition1}/row80/Velocity/{row80}.out"
@@ -238,15 +238,15 @@ def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     plt.figure(figsize=(10,8))
     plt.title(titleName, fontsize = 28)
 # ------------------- Theory ------------------------------
-    plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'black',linewidth=15.0)
+    plt.plot(total_time, Pwave[:,79],label =r'$\mathrm{Analytical}$',color= 'dimgray',linewidth=3.5)
     
 # -----------------Test Integrator Differ Mesh -------------------------   
-    plt.plot(D80_Dt10[:,0], D80_Dt10[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen', linewidth = 10.0) # , ls = '--' 
-    plt.plot(D80_Dt11[:,0], D80_Dt11[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'darkorange',ls='--',  linewidth = 8.0) # , ls = '-.'
-    plt.plot(D80_Dt12[:,0], D80_Dt12[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'mediumblue', ls = '-.', linewidth = 5.0) # , ls = ':'
-    plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'crimson', linewidth = 3.0) # , ls = ':'
+    plt.plot(D80_Dt10[:,0], D80_Dt10[:, 2], label = r'$\Delta_{c} = 0.0125H$', color= 'limegreen',marker = 'o',markersize=12, markerfacecolor = 'none' , markevery=50, mew=2.0, linewidth=2.0) # , ls = '--' 
+    plt.plot(D80_Dt11[:,0], D80_Dt11[:, 2], label = r'$\Delta_{c} = 0.0250H$', color= 'darkorange',marker = '^',markersize=12,markerfacecolor = 'none' , markevery=50, mew=2.0, linewidth=2.0) # , ls = '-.', mediumorchid
+    plt.plot(D80_Dt12[:,0], D80_Dt12[:, 2], label = r'$\Delta_{c} = 0.0500H$', color= 'mediumblue',marker = 's',markersize=12,markerfacecolor = 'none' , markevery=52, mew=2.0, linewidth=2.0) # , ls = ':'
+    plt.plot(D80_Dt14[:,0], D80_Dt14[:, 2], label = r'$\Delta_{c} = 0.1000H$', color= 'crimson',marker = '<',markersize=12,markerfacecolor = 'none' , markevery=55, mew=2.0, linewidth= 2.0) # , ls = ':'
     
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -276,8 +276,8 @@ def CompareDt_DiffVel(titleName, D80_Dt10, D80_Dt11, D80_Dt12, D80_Dt14):
     # ax.yaxis.get_offset_text().set(size=18)
 
 Compare = f'HHT-'+r'$\alpha$'
-# # ==== Compare/ Integrator ====
-CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
+# # ================ Compare/ Integrator ====
+# CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.2$ $\Delta_{tp}$', Dt02_80row, Dt02_40row, Dt02_20row, Dt02_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.4$ $\Delta_{tp}$', Dt04_80row, Dt04_40row, Dt04_20row, Dt04_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.6$ $\Delta_{tp}$', Dt06_80row, Dt06_40row, Dt06_20row, Dt06_10row)
 # CompareDt_DiffVel(f'{Integrator} ' + r'$\Delta_{t} = 0.8$ $\Delta_{tp}$', Dt08_80row, Dt08_40row, Dt08_20row, Dt08_10row)
@@ -464,32 +464,32 @@ Calculate_Error(Dt18_err, Dt18_error)
 def DifferTime_elemetError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_err, Dt12_err, Dt14_err, Dt16_err, Dt18_err): # , Dt12_err, Dt14_err, Dt16_err, Dt18_err
     plt.figure(figsize=(10,8))
     # plt.title(f'{Integrator} Relative Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.01, 0.08, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes) # 0.9 / 0.08
+    plt.text(0.01, 0.94, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes) # 0.9 / 0.08
     
-    font_props = {'family': 'Arial', 'size': 16}
-    plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$C = 0.2$', linewidth = 3.0, color = 'dimgray')
-    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'none',label =  r'$C = 0.4$', linewidth = 3.0, color = 'darkorange')
-    plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$C = 0.6$', linewidth = 3.0, color = 'limegreen')
-    plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$C = 0.8$', linewidth = 3.0, color = 'mediumblue')
-    plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'none',label = r'$C = 1.0$', linewidth = 3.0, color = 'crimson')
-    plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=12,markerfacecolor = 'none',label = r'$C = 1.2$', linewidth = 3.0, color = 'tab:brown')
-    plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=12,markerfacecolor = 'none',label = r'$C = 1.4$', linewidth = 3.0, color = 'darkviolet')
-    plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=12,markerfacecolor = 'none',label = r'$C = 1.6$', linewidth = 3.0, color = 'goldenrod')
-    plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=12,markerfacecolor = 'none',label = r'$C = 1.8$', linewidth = 3.0, color = 'magenta')
+    font_props = {'family': 'Arial', 'size': 20}
+    plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$C = 0.2$', linewidth = 2.0, color = 'dimgray')
+    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'none',label = r'$C = 0.4$', linewidth = 2.0, color = 'darkorange')
+    plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$C = 0.6$', linewidth = 2.0, color = 'limegreen')
+    plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$C = 0.8$', linewidth = 2.0, color = 'mediumblue')
+    plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'none',label = r'$C = 1.0$', linewidth = 2.0, color = 'crimson')
+    plt.plot(Dt12_err[:,0], Dt12_err[:,Peak],marker = '*',markersize=12,markerfacecolor = 'none',label = r'$C = 1.2$', linewidth = 2.0, color = 'tab:brown')
+    plt.plot(Dt14_err[:,0], Dt14_err[:,Peak],marker = '+',markersize=12,markerfacecolor = 'none',label = r'$C = 1.4$', linewidth = 2.0, color = 'darkviolet')
+    plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=12,markerfacecolor = 'none',label = r'$C = 1.6$', linewidth = 2.0, color = 'goldenrod')
+    # plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=12,markerfacecolor = 'none',label = r'$C = 1.8$', linewidth = 2.0, color = 'magenta')
     
-    legend1 = plt.legend(ncol=3,prop=font_props, loc= (0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1 = plt.legend(ncol=2,prop=font_props, loc= (0.02, 0.02)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     legend1.get_frame().set_edgecolor('grey')
     legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xticks(fontsize = 22, fontweight='bold', color='black')
     plt.yticks(fontsize = 22, fontweight='bold', color='black')
     
-    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 28)
+    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 26)
     plt.ylabel('Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", fontsize = 28)
 
     # plt.xlim(0.0, 0.20)
     plt.ylim(-15.0, 15.0) # -15.0, 15.0 / -5.0, 5.0
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -636,11 +636,11 @@ Add_Err(1,Dt18Err_L2, Dt18_error, Dt18_ele80, Dt18_80row, Dt18_ele40,Dt18_40row,
 def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_err, Dt12_err, Dt14_err, Dt16_err, Dt18_err): # , Dt12_err, Dt14_err, Dt16_err, Dt18_err
     plt.figure(figsize=(10,8))
     # plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
-    plt.text(0.01, 0.9, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
+    plt.text(0.01, 0.94, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
     
-    font_props = {'family': 'Arial', 'size': 16}
+    font_props = {'family': 'Arial', 'size': 20}
     plt.plot(Dt02_err[:,0], Dt02_err[:,Peak],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$C = 0.2$', linewidth = 3.0 ,color = 'dimgray')
-    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'none',label =  r'$C = 0.4$', linewidth = 3.0 ,color = 'darkorange')
+    plt.plot(Dt04_err[:,0], Dt04_err[:,Peak],marker = 'o',markersize=12,markerfacecolor = 'none',label = r'$C = 0.4$', linewidth = 3.0 ,color = 'darkorange')
     plt.plot(Dt06_err[:,0], Dt06_err[:,Peak],marker = '<',markersize=12,markerfacecolor = 'none',label = r'$C = 0.6$', linewidth = 3.0 ,color = 'limegreen')
     plt.plot(Dt08_err[:,0], Dt08_err[:,Peak],marker = 's',markersize=12,markerfacecolor = 'none',label = r'$C = 0.8$', linewidth = 3.0 ,color = 'mediumblue')
     plt.plot(Dt10_err[:,0], Dt10_err[:,Peak],marker = 'p',markersize=12,markerfacecolor = 'none',label = r'$C = 1.0$', linewidth = 3.0 ,color = 'crimson')
@@ -649,19 +649,19 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
     plt.plot(Dt16_err[:,0], Dt16_err[:,Peak],marker = 'x',markersize=12,markerfacecolor = 'none',label = r'$C = 1.6$', linewidth = 3.0,color = 'goldenrod')
     plt.plot(Dt18_err[:,0], Dt18_err[:,Peak],marker = 'D',markersize=12,markerfacecolor = 'none',label = r'$C = 1.8$', linewidth = 3.0,color = 'magenta')
     
-    legend1 = plt.legend(ncol=3,prop=font_props, loc=(0.2, 1.0)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
+    legend1 = plt.legend(ncol=2,prop=font_props, loc=(0.43, 0.01)) #ncol=2,fontsize=16 frameon=False , loc='upper left'
     legend1.get_frame().set_edgecolor('grey')
     legend1.get_frame().set_linewidth(2)  # 設置外框寬度
     
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
     
-    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 28)
+    plt.xlabel(f'Mesh size ' + r'$\Delta_c$  $\mathrm {(m)}$', fontsize = 26)
     plt.ylabel('Normalized L2 Norm Error '+ r"$\ E_{L2}$" , fontsize = 28) # 'L2 Norm Error: '+ r"$\ E_{L2}$"  / 'L2 normalization: '+ r"$\ E_{L2N}$" 
 
     # plt.xlim(0.0, 0.20)
     # plt.ylim(-15.0, 15.0)
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -700,7 +700,7 @@ def DifferTime_L2NormError(Peak, Dt02_err, Dt04_err, Dt06_err, Dt08_err, Dt10_er
 # DifferTime_L2NormError(1, Dt02Err_L2, Dt04Err_L2, Dt06Err_L2, Dt08Err_L2, Dt10Err_L2, Dt12Err_L2, Dt14Err_L2, Dt16Err_L2, Dt18Err_L2)
 
 # ================= Consider C data as X-axis ==============================
-C_Data = np.arange(0.2, 1.8, 0.2)# np.arange(0.2,2.0, 0.2)
+C_Data = np.arange(0.2, 1.8, 0.2)# np.arange(0.2, 2.0, 0.2) / Central (0.2, 1.2, 0.2) / Linear (0.2, 1.8, 0.2)
 Dy80row_err = np.zeros((len(C_Data),2))
 Dy40row_err = np.zeros((len(C_Data),2))
 Dy20row_err = np.zeros((len(C_Data),2))
@@ -731,8 +731,8 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     # plt.title(f'{Integrator} Relative Error', fontsize = 25) # Compare / Integrator
     plt.text(0.01, 0.95, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
     
-    plt.text(0.04, 0.86, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=28, transform=plt.gca().transAxes)
-    # plt.text(0.04, 0.86, r'$C_{cr} = 1.73$', fontsize= 28, transform=plt.gca().transAxes)
+    # plt.text(0.04, 0.86, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=28, transform=plt.gca().transAxes)
+    plt.text(0.92, 0.15, r'$C_{cr} = 1.73$', fontsize= 28, transform=plt.gca().transAxes, rotation=270) # 0.75, 0.25, r'$C_{cr} = 1.0$' / 0.92, 0.15, r'$C_{cr} = 1.73$'
     
     font_props = {'family': 'Arial', 'size': 20}
     plt.plot(Dy80row_err[:,0], Dy80row_err[:,1],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0, color = 'limegreen')
@@ -752,7 +752,7 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
 
     plt.xlim(0.2, 1.8)
     plt.ylim(-15.0, 15.0)
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -761,8 +761,8 @@ def DifferTime_elemetError2(Dy80row_err, Dy40row_err, Dy20row_err, Dy10row_err):
     TK.spines['top'].set_linewidth(bwidth)
     TK.spines['right'].set_linewidth(bwidth)
     
-    # # -------------- Draw to show critical Dt ------------------------------------
-    # plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3) # Linear = 1.73 ; Central = 1.0
+    # -------------- Draw to show critical Dt ------------------------------------
+    plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3) # Linear = 1.73 ; Central = 1.0
    
     ax = plt.gca()
     ax.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
@@ -798,7 +798,7 @@ def C_L2Norm(C_Data, Dy80row_errL2, Mesh_Num):
     Dy80row_errL2[5,1] = Dt12Err_L2[Mesh_Num, 1]
     Dy80row_errL2[6,1] = Dt14Err_L2[Mesh_Num, 1]
     Dy80row_errL2[7,1] = Dt16Err_L2[Mesh_Num, 1]
-    # Dy80row_errL2[8,1] = Dt18Err_L2[Mesh_Num, 1] 
+    Dy80row_errL2[8,1] = Dt18Err_L2[Mesh_Num, 1] 
     return Dy80row_err
 
 C_L2Norm(C_Data, Dy80row_errL2, 0)
@@ -817,8 +817,8 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     # plt.title(f'{Integrator} L2-Norm Error', fontsize = 25) # Compare / Integrator
     plt.text(0.01, 0.15, f'{Integrator}', fontsize = 28, color= 'black', transform=plt.gca().transAxes)
     
-    # plt.text(0.04, 0.07, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=28, transform=plt.gca().transAxes)
-    plt.text(0.04, 0.06, r'$C_{cr} = 1.73$', fontsize= 28, transform=plt.gca().transAxes) # 0.06 / 0.6
+    plt.text(0.04, 0.07, r'$C_{cr}=$ $\mathrm{infinite}$', fontsize=28, transform=plt.gca().transAxes)
+    # plt.text(0.04, 0.06, r'$C_{cr} = 1.73$', fontsize= 28, transform=plt.gca().transAxes) # 0.06 / 0.6
     
     font_props = {'family': 'Arial', 'size': 18}
     plt.plot(Dy80row_errL2[:,0], Dy80row_errL2[:,1],marker = '^',markersize=12,markerfacecolor = 'none',label = r'$\Delta_c =  $ $\mathrm {0.125m}$', linewidth = 3.0, color = 'limegreen')
@@ -838,7 +838,7 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
 
     plt.xlim(0.2, 1.8)
     plt.ylim(0, 0.6)
-    plt.grid(True)
+    # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
     TK = plt.gca()
@@ -847,8 +847,8 @@ def DifferTime_L2NormError2(Dy80row_errL2, Dy40row_errL2, Dy20row_errL2, Dy10row
     TK.spines['top'].set_linewidth(bwidth)
     TK.spines['right'].set_linewidth(bwidth)
     
-    # -------------- Draw to show critical Dt ------------------------------------
-    plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
+    # # -------------- Draw to show critical Dt ------------------------------------
+    # plt.axvline(x= 1.73, color='black', linestyle='--', linewidth= 3)  # Linear = 1.73 ; Central = 1.0
     
     ax = plt.gca()
     # ax.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
