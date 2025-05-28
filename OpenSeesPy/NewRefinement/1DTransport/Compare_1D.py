@@ -1171,44 +1171,44 @@ def DifferTime_RelativeError2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr,
     ax.tick_params(axis='y', which='major', labelsize= 20, length=8, width=2)
     
     
-# figsize = (10,10)   
-# fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
-# # fig1.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
-# fig1.text(0.13,0.85, "Middle Node", color = "black", fontsize=25)
+figsize = (10,10)   
+fig1, (ax1,ax2,ax3) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize= figsize) #, sharex=True
+# fig1.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
+fig1.text(0.13,0.85, "Middle Node", color = "black", fontsize=25)
 
-# fig1.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=28)
-# fig1.text(0.45,0.040, r'$\Delta_c/\lambda$', va= 'center', fontsize=25)
+fig1.text(0.02,0.5, 'Peak Velocity Error '+ r"$\ E_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=28)
+fig1.text(0.45,0.040, r'$\Delta_c/\lambda$', va= 'center', fontsize=25)
 
-# ax1 = plt.subplot(311)
-# DifferTime_RelativeError2(Tie20_Perr, Type1_W20_Perr, Type2_W20_Perr, Type3_W20_Perr, Tie20_Serr, Type1_W20_Serr, Type2_W20_Serr, Type3_W20_Serr)
-# ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.12, y=0.65)
+ax1 = plt.subplot(311)
+DifferTime_RelativeError2(Tie20_Perr, Type1_W20_Perr, Type2_W20_Perr, Type3_W20_Perr, Tie20_Serr, Type1_W20_Serr, Type2_W20_Serr, Type3_W20_Serr)
+ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.12, y=0.65)
 
-# ax2 = plt.subplot(312)
-# DifferTime_RelativeError2(Tie10_Perr, Type1_W10_Perr, Type2_W10_Perr, Type3_W10_Perr, Tie10_Serr, Type1_W10_Serr, Type2_W10_Serr, Type3_W10_Serr)
-# ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.12, y=0.80)
+ax2 = plt.subplot(312)
+DifferTime_RelativeError2(Tie10_Perr, Type1_W10_Perr, Type2_W10_Perr, Type3_W10_Perr, Tie10_Serr, Type1_W10_Serr, Type2_W10_Serr, Type3_W10_Serr)
+ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.12, y=0.80)
 
-# ax3 = plt.subplot(313)
-# DifferTime_RelativeError2(Tie2_Perr, Type1_W2_Perr, Type2_W2_Perr, Type3_W2_Perr, Tie2_Serr, Type1_W2_Serr, Type2_W2_Serr, Type3_W2_Serr)
-# ax3.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.12, y=0.80)
+ax3 = plt.subplot(313)
+DifferTime_RelativeError2(Tie2_Perr, Type1_W2_Perr, Type2_W2_Perr, Type3_W2_Perr, Tie2_Serr, Type1_W2_Serr, Type2_W2_Serr, Type3_W2_Serr)
+ax3.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.12, y=0.80)
 
-# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
-# legend_elements = [Line2D([0], [0], color='crimson', lw=2, label= f'P wave'),
-#                 Line2D([0], [0], color='dimgrey', lw=2, label='S wave'),]
+font_props = {'family': 'Arial', 'size': 18}  #Legend Setting
+legend_elements = [Line2D([0], [0], color='crimson', lw=2, label= f'P wave'),
+                Line2D([0], [0], color='dimgrey', lw=2, label='S wave'),]
 
-# legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=marksize,markerfacecolor = 'none', label= 'Tie'),
-#                     Line2D([0], [0], color='black',marker = 'o',markersize=marksize,markerfacecolor = 'none', label= 'Beam-based'),
-#                     Line2D([0], [0], color='black',marker = '<',markersize=marksize,markerfacecolor = 'none', label= 'Hybrid'),
-#                     Line2D([0], [0], color='black',marker = 's',markersize=marksize,markerfacecolor = 'none', label= 'Node-based')]
+legend_elements2 =  [Line2D([0], [0], color='none',marker = '^',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Tie'),
+                    Line2D([0], [0], color='none',marker = 'o',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Beam-based'),
+                    Line2D([0], [0], color='none',marker = '<',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Hybrid'),
+                    Line2D([0], [0], color='none',marker = 's',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Node-based')]
 
-# lines, labels = fig1.axes[-1].get_legend_handles_labels()
-# legend1 = fig1.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
-# legend1.get_frame().set_edgecolor('grey')
-# legend1.get_frame().set_linewidth(2)  # 設置外框寬度
-# fig1.add_artist(legend1)
+lines, labels = fig1.axes[-1].get_legend_handles_labels()
+legend1 = fig1.legend(handles=legend_elements, loc=(0.20, 0.90) ,prop=font_props) # , title="Legend 1"
+legend1.get_frame().set_edgecolor('grey')
+legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+fig1.add_artist(legend1)
 
-# legend2 = fig1.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
-# legend2.get_frame().set_edgecolor('grey')
-# legend2.get_frame().set_linewidth(2)  # 設置外框寬度
+legend2 = fig1.legend(ncol=2, handles=legend_elements2, loc=(0.40, 0.90) ,prop=font_props)
+legend2.get_frame().set_edgecolor('grey')
+legend2.get_frame().set_linewidth(2)  # 設置外框寬度
 
 # ==================Draw Relative error : td =============================
 def DifferTime_RelativeError(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
@@ -1264,20 +1264,20 @@ def DifferTime_RelativeError(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, 
 # DifferTime_RelativeError(Tie2_Perr, Type1_W2_Perr, Type2_W2_Perr, Type3_W2_Perr, Tie2_Serr, Type1_W2_Serr, Type2_W2_Serr, Type3_W2_Serr)
 # ax6.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.85, y=0.80)
 
-# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# font_props = {'family': 'Arial', 'size': 18}  #Legend Setting
 # legend_elements = [Line2D([0], [0], color='red', lw=2, label= f'P wave'),
 #                 Line2D([0], [0], color='darkgrey', lw=2, label='S wave'),]
 
-# legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= 'Tie'),
-#                     Line2D([0], [0], color='black',marker = 'o',markersize=12,markerfacecolor = 'white', label= 'Beam-based'),
-#                     Line2D([0], [0], color='black',marker = '<',markersize=8,markerfacecolor = 'white', label= 'Hybrid'),
-#                     Line2D([0], [0], color='black',marker = 's',markersize=6,markerfacecolor = 'white', label= 'Node-based')]
+# legend_elements2 =  [Line2D([0], [0], color='none',marker = '^',markersize=16,markerfacecolor = 'white', markeredgecolor='black', label= 'Tie'),
+#                     Line2D([0], [0], color='none',marker = 'o',markersize=12,markerfacecolor = 'white', markeredgecolor='black', label= 'Beam-based'),
+#                     Line2D([0], [0], color='none',marker = '<',markersize=8,markerfacecolor = 'white', markeredgecolor='black', label= 'Hybrid'),
+#                     Line2D([0], [0], color='none',marker = 's',markersize=6,markerfacecolor = 'white', markeredgecolor='black', label= 'Node-based')]
 
 # lines, labels = fig2.axes[-1].get_legend_handles_labels()
-# legend1 = fig2.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+# legend1 = fig2.legend(handles=legend_elements, loc=(0.20, 0.90) ,prop=font_props) # , title="Legend 1"
 # fig2.add_artist(legend1)
 
-# legend2 = fig2.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+# legend2 = fig2.legend(ncol=2, handles=legend_elements2, loc=(0.40, 0.90) ,prop=font_props)
 
 # ================= Calculate_2NormError Normalization ===============================
 Theory_PTime = total_Ptime_HZ80
@@ -1507,24 +1507,26 @@ ax9 = plt.subplot(313)
 DifferTime_L2Error(Tie2Err_PL2, Type1_W2Err_PL2, Type2_W2Err_PL2, Type3_W2Err_PL2, Tie2Err_SL2, Type1_W2Err_SL2, Type2_W2Err_SL2, Type3_W2Err_SL2)
 ax9.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.12, y=0.80)
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+font_props = {'family': 'Arial', 'size': 18}  #Legend Setting
 legend_elements = [Line2D([0], [0], color='crimson', lw=2, label= f'P wave'),
                 Line2D([0], [0], color='dimgrey', lw=2, label='S wave'),]
 
-legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=marksize,markerfacecolor = 'none', label= 'Tie'),
-                    Line2D([0], [0], color='black',marker = 'o',markersize=marksize,markerfacecolor = 'none', label= 'Beam-based'),
-                    Line2D([0], [0], color='black',marker = '<',markersize=marksize,markerfacecolor = 'none', label= 'Hybrid'),
-                    Line2D([0], [0], color='black',marker = 's',markersize=marksize,markerfacecolor = 'none', label= 'Node-based')]
+legend_elements2 =  [Line2D([0], [0], color='none',marker = '^',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Tie'),
+                    Line2D([0], [0], color='none',marker = 'o',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Beam-based'),
+                    Line2D([0], [0], color='none',marker = '<',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Hybrid'),
+                    Line2D([0], [0], color='none',marker = 's',markersize=marksize,markerfacecolor = 'none', markeredgecolor='black', label= 'Node-based')]
 
 lines, labels = fig3.axes[-1].get_legend_handles_labels()
-legend1 = fig3.legend(handles=legend_elements, loc=(0.30, 0.90) ,prop=font_props) # , title="Legend 1"
+legend1 = fig3.legend(handles=legend_elements, loc=(0.20, 0.90) ,prop=font_props) # , title="Legend 1"
 legend1.get_frame().set_edgecolor('grey')
 legend1.get_frame().set_linewidth(2)  # 設置外框寬度
 fig3.add_artist(legend1)
 
-legend2 = fig3.legend(handles=legend_elements2, loc=(0.50, 0.85) ,prop=font_props)
+legend2 = fig3.legend(ncol=2, handles=legend_elements2, loc=(0.40, 0.90) ,prop=font_props)
 legend2.get_frame().set_edgecolor('grey')
 legend2.get_frame().set_linewidth(2)  # 設置外框寬度
+fig3.savefig("D:/shiang/論文格式/期刊/國內結構期刊投稿/期刊圖片/Python plot/PSwave_CompareL2.png", dpi=600, transparent=True)
+
 
 # ==================Draw L2 Norm error : Middele point (td) =============================
 def DifferTime_L2Error2(TiePErr, Type1PErr, Type2PErr, Type3PErr, TieSErr, Type1SErr, Type2SErr, Type3SErr):
