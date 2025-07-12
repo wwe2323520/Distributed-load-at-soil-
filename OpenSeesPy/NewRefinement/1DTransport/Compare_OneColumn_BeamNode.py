@@ -170,5 +170,5 @@ def CompareDt_DiffBC(Beam, Node):
     ax.tick_params(axis='y', which='major', labelsize= 23, length=8, width=2)
     # ax.ticklabel_format(style='sci', scilimits=(-1,2), axis='y')
     # ax.yaxis.get_offset_text().set(size=18)
-    
+    plt.savefig("D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/1D_Transport/Newmark Linear/Simple/Beam_Node_Test.png")
 CompareDt_DiffBC(Beam_based, Node_based)
