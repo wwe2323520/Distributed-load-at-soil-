@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
 from matplotlib.ticker import MultipleLocator
+plt.rcParams['savefig.dpi'] = 300
 
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
@@ -495,10 +496,13 @@ W10_Qua40roww = Find_Quarter(int(10.0), YMesh)
 W20_Qua40row = Find_Quarter(int(20.0), YMesh)
 
 plt_axis2 = 2
+
+markernum = 7 # 
+save_file = f'1D_Transport/Newmark Linear/Pwave/'
 # # ------- wave put into the timeSeries ---------------
 def Differ_BCVel(total_time, Pwave, Tie, LKDash, BeamType1, BeamType2, BeamType3):
     # font_props = {'family': 'Arial', 'size': 12}
-    plt.plot(total_time, Pwave[:, Nele-1],label =r'$\mathrm{Analytical}$',color= 'dimgray',linewidth=3.5) # 18.0
+    plt.plot(total_time, Pwave[:, Nele-1],label =r'$\mathrm{Theoretical}$',color= 'dimgray',linewidth=3.5) # 18.0
     plt.plot(Tie[:,0], Tie[:,plt_axis2],label ='Tie',color= 'limegreen',marker = 'o',markersize=12, markerfacecolor = 'none' , markevery=48, mew=2.0, linewidth=1.0) # , ls = '-' 12.0
     plt.plot(LKDash[:,0], LKDash[:,plt_axis2],label ='LK Dashpot',color= 'darkorange',linewidth=2.0)# , ls = ':'
     plt.plot(BeamType1[:,0], BeamType1[:,plt_axis2],label ='Beam-based ',marker = '^',markersize=12,markerfacecolor = 'none' , markevery=50,color= 'mediumblue', mew=2.0, linewidth=1.0) # mediumblue
@@ -555,6 +559,8 @@ x_axis = 0.25
 # legend = fig1.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig1.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Diff_MeshBC_Compare/HZ10_40row.png") 
 
 # row_heights = [3,3,3]
 # fig2, (ax4,ax5,ax6) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
@@ -582,6 +588,8 @@ x_axis = 0.25
 # legend = fig2.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig2.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Diff_MeshBC_Compare/HZ20_40row.png") 
 
 # row_heights = [3,3,3]
 # fig3, (ax7,ax8,ax9) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
@@ -609,33 +617,37 @@ x_axis = 0.25
 # legend= fig3.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig3.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Diff_MeshBC_Compare/HZ40_40row.png") 
 
-row_heights = [3,3,3]
-fig4, (ax10,ax11,ax12) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# fig4.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-fig4.text(0.65,0.81, "Middle Node", color = "black", fontsize=23) # 0.65, 0.81
-fig4.text(0.49,0.85, f'P wave '+ r"($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22) # 0.50, 0.85
-fig4.text(0.02,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=24)
-fig4.text(0.42,0.03, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=24) # $(10^{-1}\,s)$
+# row_heights = [3,3,3]
+# fig4, (ax10,ax11,ax12) = plt.subplots(nrows= 3, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# # fig4.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+# fig4.text(0.65,0.81, "Middle Node", color = "black", fontsize=23) # 0.65, 0.81
+# fig4.text(0.49,0.85, f'P wave '+ r"($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=22) # 0.50, 0.85
+# fig4.text(0.02,0.5, r"$\mathrm {Velocity}$  $v_y$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=24)
+# fig4.text(0.42,0.03, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=24) # $(10^{-1}\,s)$
 
-ax10 = plt.subplot(311)
-Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W20_HZ80_Mid, LK_W20_HZ80_Mid, Type1_W20_HZ80_Mid, Type2_W20_HZ80_Mid, Type3_W20_HZ80_Mid)
-ax10.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.84, y=0.08)
+# ax10 = plt.subplot(311)
+# Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W20_HZ80_Mid, LK_W20_HZ80_Mid, Type1_W20_HZ80_Mid, Type2_W20_HZ80_Mid, Type3_W20_HZ80_Mid)
+# ax10.set_title(r"$w=$ $\mathrm{20m}$",fontsize =25, x=0.84, y=0.08)
 
-ax11 = plt.subplot(312)
-Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, Type1_W10_HZ80_Mid, Type2_W10_HZ80_Mid, Type3_W10_HZ80_Mid)
-ax11.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.84, y=0.08)
+# ax11 = plt.subplot(312)
+# Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, Type1_W10_HZ80_Mid, Type2_W10_HZ80_Mid, Type3_W10_HZ80_Mid)
+# ax11.set_title(r"$w=$ $\mathrm{10m}$",fontsize =25, x=0.84, y=0.08)
 
-ax12 = plt.subplot(313)
-Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W2_HZ80_Mid, LK_W2_HZ80_Mid, Type1_W2_HZ80_Mid, Type2_W2_HZ80_Mid, Type3_W2_HZ80_Mid)
-ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.84, y=0.08)
+# ax12 = plt.subplot(313)
+# Differ_BCVel(total_time_HZ80, HZ80_Pwave, Tie_W2_HZ80_Mid, LK_W2_HZ80_Mid, Type1_W2_HZ80_Mid, Type2_W2_HZ80_Mid, Type3_W2_HZ80_Mid)
+# ax12.set_title(r"$w=$ $\mathrm{2m}$",fontsize =25, x=0.84, y=0.08)
 
-font_props = {'family': 'Arial', 'size': 16}  #Legend Setting
+# font_props = {'family': 'Arial', 'size': 16}  #Legend Setting
 
-lines, labels = fig4.axes[-1].get_legend_handles_labels()
-legend = fig4.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
-legend.get_frame().set_edgecolor('grey')
-legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# lines, labels = fig4.axes[-1].get_legend_handles_labels()
+# legend = fig4.legend(lines, labels, ncol=3, loc = (0.12, 0.89), prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig4.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Diff_MeshBC_Compare/HZ80_40row.png") 
 
 # ================================== Prepare Relative Error and Absolute Error ============================
 def Find_ColMaxValue(column_index, ele80_Mid):
@@ -968,6 +980,10 @@ def LK_RelativeError(Peak,LK2, LK10, LK20):
     # ax.yaxis.set_major_locator(MultipleLocator(2))
     ax.tick_params(axis='y', which='major', labelsize= 22, length=8, width=2)
     
+    # # ------------- Save figure in 300 dpi-------------------------------
+    # plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/LKDash_Error.png") #{save_file}/
+    # plt.close()
+    
 # LK_RelativeError(1, LK2_err, LK10_err, LK20_err)
     
 Dy = 0.25 # m
@@ -1256,6 +1272,10 @@ def LK_L2Error(Peak, LK2, LK10, LK20):
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=10))
     ax.yaxis.set_minor_formatter(NullFormatter())
     ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
+    
+    # ------------- Save figure in 300 dpi-------------------------------
+    plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2-Norm/LKDash_L2-Normlization.png") #{save_file}/
+    plt.close()
 
 # LK_L2Error(1, LK2Err_L2, LK10Err_L2, LK20Err_L2)
 
