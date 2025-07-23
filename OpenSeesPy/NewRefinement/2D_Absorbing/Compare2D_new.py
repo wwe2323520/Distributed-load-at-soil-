@@ -14,7 +14,7 @@ import scipy.signal
 from scipy.signal import find_peaks
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
 from matplotlib.ticker import MultipleLocator
-
+plt.rcParams['savefig.dpi'] = 300
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
         
@@ -561,8 +561,8 @@ def Differ_BCVel(Tie, LKDash, BeamType1):
 
     plt.xticks(fontsize = 22, fontweight='bold', color='black') # 22 / 18 / 15
     plt.yticks(fontsize = 25, fontweight='bold', color='black') # 25 / 17
-    plt.xlim(0.00, 0.40)  # 0.0, 0.30; 0.20, 0.40 / # Horizon=0.025 / Vertical =0.05
-    plt.ylim(-1.1, 1.1)  # Middle = -1.1, 1.1 / 1m away = -0.5, 0.5 ; Rocking = -0.2, 0.2 / -0.04 , 0.04
+    plt.xlim(0.00, 0.40)  # 0.00, 0.40; 0.20, 0.60 / # Horizon=0.025 / Vertical =0.05
+    plt.ylim(-1.1 , 1.1)  # Middle = -1.1, 1.1 / 1m away = -0.5, 0.5 ; Rocking = -0.2, 0.2 / -0.04 , 0.04
     # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
@@ -579,56 +579,58 @@ def Differ_BCVel(Tie, LKDash, BeamType1):
     # ax.yaxis.get_offset_text().set(size=16)
 
 x_axis = 0.25 # 0.1 0.05 **** 10 Times the x axis ******
+save_file = f'2D_Absorbing/Newmark_Linear/Vertical'
+# # =============== Middle Node Velocity ======================r"($t_d=0.1$ $\mathrm {s}$)"
+# row_heights = [3,3,3]
+# fig1, (ax1,ax2,ax3,ax4) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# # fig1.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+# # fig1.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
+# fig1.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,Mid}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
+# fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
-# =============== Middle Node Velocity ======================r"($t_d=0.1$ $\mathrm {s}$)"
-row_heights = [3,3,3]
-fig1, (ax1,ax2,ax3,ax4) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# fig1.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig1.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-fig1.text(0.90,0.25, r"$\mathrm {Rocking\ Loading}$ ($t_d=0.1$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
-fig1.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,Mid}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
-fig1.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
+# ax1 = plt.subplot(411)
+# Differ_BCVel(Tie_W20_HZ10_Mid, LK_W20_HZ10_Mid, BeamType_W20_HZ10_Mid)
+# ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
+# ax1.axvline(x=0.107, color='gray', linestyle='--', linewidth=2) # Vertical = 0.1072 / Horizon = 0.0500
+# # ax1.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax1.transAxes, fontsize=18, ha='center', va='top') 
+# ax1.text(0.27, 0.15, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax1 = plt.subplot(411)
-Differ_BCVel(Tie_W20_HZ10_Mid, LK_W20_HZ10_Mid, BeamType_W20_HZ10_Mid)
-ax1.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
-ax1.axvline(x=0.107, color='gray', linestyle='--', linewidth=2) # Vertical = 0.1072 / Horizon = 0.0500
-# ax1.text(0.17, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax1.transAxes, fontsize=18, ha='center', va='top') 
-ax1.text(0.27, 0.15, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax2 = plt.subplot(412)
+# Differ_BCVel(Tie_W10_HZ10_Mid, LK_W10_HZ10_Mid, BeamType_W10_HZ10_Mid)
+# ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
+# ax2.axvline(x=0.0536, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0536 / Horizon = 0.0250
+# # ax2.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.054s}$', transform=ax2.transAxes, fontsize=18, ha='center', va='top') 
+# ax2.text(0.14, 0.15, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax2 = plt.subplot(412)
-Differ_BCVel(Tie_W10_HZ10_Mid, LK_W10_HZ10_Mid, BeamType_W10_HZ10_Mid)
-ax2.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.85, y=0.01)
-ax2.axvline(x=0.0536, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0536 / Horizon = 0.0250
-# ax2.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.054s}$', transform=ax2.transAxes, fontsize=18, ha='center', va='top') 
-ax2.text(0.14, 0.15, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax3 = plt.subplot(413)
+# Differ_BCVel(Tie_W5_HZ10_Mid, LK_W5_HZ10_Mid, BeamType_W5_HZ10_Mid)
+# ax3.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
+# ax3.axvline(x=0.0268, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0268 / Horizon = 0.0125
+# # ax3.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.027s}$', transform=ax3.transAxes, fontsize=18, ha='center', va='top') 
+# ax3.text(0.07, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax3 = plt.subplot(413)
-Differ_BCVel(Tie_W5_HZ10_Mid, LK_W5_HZ10_Mid, BeamType_W5_HZ10_Mid)
-ax3.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.85, y=0.01)
-ax3.axvline(x=0.0268, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0268 / Horizon = 0.0125
-# ax3.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.027s}$', transform=ax3.transAxes, fontsize=18, ha='center', va='top') 
-ax3.text(0.07, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax4 = plt.subplot(414)
+# Differ_BCVel(Tie_W2_HZ10_Mid, LK_W2_HZ10_Mid, BeamType_W2_HZ10_Mid)
+# ax4.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
+# ax4.axvline(x=0.0107, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0107 / Horizon = 0.0050
+# # ax4.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.011s}$', transform=ax4.transAxes, fontsize=18, ha='center', va='top') 
+# ax4.text(0.03, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax4 = plt.subplot(414)
-Differ_BCVel(Tie_W2_HZ10_Mid, LK_W2_HZ10_Mid, BeamType_W2_HZ10_Mid)
-ax4.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.85, y=0.01)
-ax4.axvline(x=0.0107, color='gray', linestyle='--', linewidth=2) # Vertical = 0.0107 / Horizon = 0.0050
-# ax4.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.011s}$', transform=ax4.transAxes, fontsize=18, ha='center', va='top') 
-ax4.text(0.03, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
-
-lines, labels = fig1.axes[-1].get_legend_handles_labels()
-legend = fig1.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
-legend.get_frame().set_edgecolor('grey')
-legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# lines, labels = fig1.axes[-1].get_legend_handles_labels()
+# legend = fig1.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig1.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ10_Mid.png")
 
 # row_heights = [3,3,3]
 # fig2, (ax5,ax6,ax7,ax8) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig2.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # # fig2.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig2.text(0.90,0.25, r"$\mathrm {Rocking\ Loading}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig2.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
 # fig2.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,Mid}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
 # fig2.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -667,12 +669,14 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # legend = fig2.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig2.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ20_Mid.png")
 
 # row_heights = [3,3,3]
 # fig3, (ax9,ax10,aX11,ax12) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig3.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # # fig3.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig3.text(0.90,0.25, r"$\mathrm {Rocking\ Loading}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig3.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
 # fig3.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,Mid}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
 # fig3.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -710,11 +714,13 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # legend = fig3.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig3.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ40_Mid.png")
 
 # row_heights = [3,3,3]
 # fig4, (ax13,ax14,aX15,ax16) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights))) 
 # # fig4.text(0.44,0.72, "Middle Node", color = "black", fontsize=23)
-# fig4.text(0.90,0.25, r"$\mathrm {Rocking\ Loading}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig4.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
 # fig4.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,Mid}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
 # fig4.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
@@ -723,7 +729,7 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # ax13.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.85, y=0.01)
 # ax13.axvline(x=0.1072, color='gray', linestyle='--', linewidth=2)
 # # ax13.text(0.18, 0.97, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.107s}$', transform=ax13.transAxes, fontsize=16, ha='center', va='top') 
-# ax13.text(0.27, 0.15, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax13.text(0.27, 0.15, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) ### Reflection Time
 
 # ax14 = plt.subplot(412)
 # Differ_BCVel(Tie_W10_HZ80_Mid, LK_W10_HZ80_Mid, BeamType_W20_HZ80_Mid)
@@ -749,11 +755,13 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
 # lines, labels = fig4.axes[-1].get_legend_handles_labels()
-# legend = fig4.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
+# legend = fig4.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props) # loc = (0.15, 0.89) / (0.25, 0.89)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # # ------------- Save figure in 300 dpi-------------------------------
+# # fig4.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ80_Mid.png")
 
-# # =============== Middle 1m Away Node Velocity ======================
+# # =============================== Middle 1m Away Node Velocity ======================================================
 # row_heights = [3,3,3]
 # fig5, (ax17,ax18,ax19,ax20) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig5.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
@@ -796,13 +804,15 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # legend = fig5.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig5.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ10_Away.png")
 
 # row_heights = [3,3,3]
 # fig6, (ax21,ax22,ax23,ax24) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig6.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # # fig6.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
-# fig6.text(0.90,0.25, r"$\mathrm {Rocking\ Loading}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
-# fig6.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{x,1m}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
+# fig6.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.05$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig6.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,1m}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
 # fig6.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
 # ax21 = plt.subplot(411)
@@ -839,13 +849,15 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # legend = fig6.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig6.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ20_Away.png")
 
 # row_heights = [3,3,3]
 # fig7, (ax25,ax26,ax27,ax28) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
 # # fig7.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
 # # fig7.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
-# fig7.text(0.90,0.25, r"$\mathrm {Rocking\ Loading}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
-# fig7.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{x,1m}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
+# fig7.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.025$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig7.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,1m}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
 # fig7.text(0.42,0.05, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
 # ax25 = plt.subplot(411)
@@ -882,51 +894,53 @@ legend.get_frame().set_linewidth(2)  # 設置外框寬度
 # legend = fig7.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig7.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ40_Away.png")
 
-row_heights = [3,3,3]
-fig8, (ax29,ax30,ax31,ax32) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
-# fig8.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
-# fig8.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
-fig8.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
-fig8.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,1m}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
-fig8.text(0.42,0.04, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
+# row_heights = [3,3,3]
+# fig8, (ax29,ax30,ax31,ax32) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize=(8, sum(row_heights)))
+# # fig8.suptitle(f'Different Boundary Compare',x=0.50,y =0.95,fontsize = 20)
+# # fig8.text(0.13,0.72, "Node 1 m away from the midpoint", color = "black", fontsize=20)
+# fig8.text(0.90,0.25, r"$\mathrm {Vertical\ Loading}$ ($t_d=0.0125$ $\mathrm {s}$)", color = "black", fontsize=24, rotation = 270)
+# fig8.text(0.01,0.5, r"$\mathrm {Velocity}$  $v_{y,1m}$  $\mathrm {(m/s)}$", va= 'center', rotation= 'vertical', fontsize=27)
+# fig8.text(0.42,0.04, r"$\mathrm {time}$ ${t}$ $(s)$", va= 'center', fontsize=25) # $(10^{-1}\,s)$
 
-ax29 = plt.subplot(411)
-Differ_BCVel(Tie_W20_HZ80_Away, LK_W20_HZ80_Away, BeamType_W20_HZ80_Away)
-ax29.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
-ax29.axvline(x=0.1019, color='gray', linestyle='--', linewidth=2)
-# ax29.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.102s}$', transform=ax29.transAxes, fontsize=18, ha='center', va='top') 
-ax29.text(0.26, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax29 = plt.subplot(411)
+# Differ_BCVel(Tie_W20_HZ80_Away, LK_W20_HZ80_Away, BeamType_W20_HZ80_Away)
+# ax29.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.86, y=0.01)
+# ax29.axvline(x=0.1019, color='gray', linestyle='--', linewidth=2)
+# # ax29.text(0.16, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.102s}$', transform=ax29.transAxes, fontsize=18, ha='center', va='top') 
+# ax29.text(0.26, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax30 = plt.subplot(412)
-Differ_BCVel(Tie_W10_HZ80_Away, LK_W10_HZ80_Away, BeamType_W10_HZ80_Away)
-ax30.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
-ax30.axvline(x=0.0483, color='gray', linestyle='--', linewidth=2)
-# ax30.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.048s}$', transform=ax30.transAxes, fontsize=18, ha='center', va='top') 
-ax30.text(0.13, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax30 = plt.subplot(412)
+# Differ_BCVel(Tie_W10_HZ80_Away, LK_W10_HZ80_Away, BeamType_W10_HZ80_Away)
+# ax30.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.86, y=0.01)
+# ax30.axvline(x=0.0483, color='gray', linestyle='--', linewidth=2)
+# # ax30.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.048s}$', transform=ax30.transAxes, fontsize=18, ha='center', va='top') 
+# ax30.text(0.13, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax31 = plt.subplot(413)
-Differ_BCVel(Tie_W5_HZ80_Away, LK_W5_HZ80_Away, BeamType_W5_HZ80_Away)
-ax31.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
-ax31.axvline(x=0.0214, color='gray', linestyle='--', linewidth=2)
-# ax31.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.021s}$', transform=ax31.transAxes, fontsize=18, ha='center', va='top')
-ax31.text(0.06, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax31 = plt.subplot(413)
+# Differ_BCVel(Tie_W5_HZ80_Away, LK_W5_HZ80_Away, BeamType_W5_HZ80_Away)
+# ax31.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.86, y=0.01)
+# ax31.axvline(x=0.0214, color='gray', linestyle='--', linewidth=2)
+# # ax31.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.021s}$', transform=ax31.transAxes, fontsize=18, ha='center', va='top')
+# ax31.text(0.06, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-ax32 = plt.subplot(414)
-Differ_BCVel(Tie_W2_HZ80_Away, LK_W2_HZ80_Away, BeamType_W2_HZ80_Away)
-ax32.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
-ax32.axvline(x=0.0054, color='gray', linestyle='--', linewidth=2)
-# ax32.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.005s}$', transform=ax32.transAxes, fontsize=18, ha='center', va='top') 
-ax32.text(0.02, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
+# ax32 = plt.subplot(414)
+# Differ_BCVel(Tie_W2_HZ80_Away, LK_W2_HZ80_Away, BeamType_W2_HZ80_Away)
+# ax32.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.86, y=0.01)
+# ax32.axvline(x=0.0054, color='gray', linestyle='--', linewidth=2)
+# # ax32.text(0.84, 0.98, r"$\mathrm {Reflection\, Time}$" +"\n" + r'$\mathrm {0.005s}$', transform=ax32.transAxes, fontsize=18, ha='center', va='top') 
+# ax32.text(0.02, 0.13, r'$t_R$', fontsize= 25, transform=plt.gca().transAxes, rotation=270) # Reflection Time
 
-font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
+# font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 
-lines, labels = fig8.axes[-1].get_legend_handles_labels()
-legend = fig8.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
-legend.get_frame().set_edgecolor('grey')
-legend.get_frame().set_linewidth(2)  # 設置外框寬度
-
-fig8.savefig("D:/shiang/論文格式/期刊/國內結構期刊投稿/期刊圖片/Python plot/Vertical_1m_80row.png", dpi=600, transparent=True)
+# lines, labels = fig8.axes[-1].get_legend_handles_labels()
+# legend = fig8.legend(lines, labels, ncol=3, loc = (0.15, 0.89),prop=font_props)
+# legend.get_frame().set_edgecolor('grey')
+# legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig8.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/HZ80_Away.png")
 
 # ================================== Prepare Relative Error ============================
 Column_Index = 2 # Vertical or Rocking = 2(yaxis) ; Horizon = 1(xaxis)
@@ -1361,8 +1375,10 @@ figsize = (10, 10)
 # legend = fig10.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig10.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/Relative_Away.png")
 
-def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20):
+def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20, file_Name):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 20}
     plt.text(0.02, 0.92,r"$\mathrm {Vertical\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes)
@@ -1382,7 +1398,7 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
 # --- Horizon= Mid(-25, 100)/ Away=(-30,220); Vertical = Mid(-30, 15)/ Away=(-30,110); Rocking: -110, 60(with Tie) / -30, 30 (no Tie)
-    plt.ylim(-30,180)  # Middle = -10, 10 / 1m away = -10, 10 ;Horizon = -30, 30
+    plt.ylim(-30,180)  # Middle = -30, 15  / 1m away = -30, 180 ;Horizon = -30, 30
     # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
@@ -1410,9 +1426,13 @@ def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20):
     
     # -------------- Consider y-axis  -----------------------
     ax.tick_params(axis='y', which='major', labelsize= 18, length=8, width=2)
+    
+    # # ------------- Save figure in 300 dpi-------------------------------
+    # plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/{file_Name}.png")
 
-# Tie_RelativeError(Tie2_err, Tie5_err, Tie10_err, Tie20_err)
-# Tie_RelativeError(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away)   
+
+# Tie_RelativeError(Tie2_err, Tie5_err, Tie10_err, Tie20_err, f'Relative_Middle_TieBC')
+# Tie_RelativeError(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away, f'Relative_Away_TieBC')   
  
 # Dy = 0.25 # m
 # # --------------------- Choose which WaveLength ---------------------------------
@@ -1792,6 +1812,8 @@ def DifferTime_L2Error(Peak,TieErr, LKErr, Type1Err):
 # legend = fig14.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig14.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2-Norm/HZ_Away.png")
 
 def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -2347,7 +2369,7 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
-    plt.ylim(-2, 15)  # Vertical: Mid = 0, 8 / 1m away = 0, 15 ; Rocking = 0, 8; Horizon = 0, 5/60
+    plt.ylim(-2, 15)  # Vertical: Mid = -2, 8 / 1m away = -2, 15 ; Rocking = 0, 8; Horizon = 0, 5/60 
     # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
@@ -2382,7 +2404,7 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # fig17.text(0.90,0.53, "(Middle Node)", color = "black", fontsize=25, rotation = 270)
 # fig17.text(0.93,0.46, r"$\mathrm {Vertical\ Loading}$", color = "black", fontsize=24, rotation = 270)
 
-# fig17.text(0.045,0.5, 'Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{-}\,0.4}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=28)
+# fig17.text(0.030,0.5, 'Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{-}\,0.4}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=28)
 # fig17.text(0.45,0.040,  f'Duration ' + r'$t_d$', va= 'center', fontsize=28)
 
 # ax65 = plt.subplot(411)
@@ -2407,6 +2429,8 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # legend = fig17.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig17.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/Letter/Relative_Middle(0.1s).png")
 
 # fig18, (ax69,ax70,ax71,ax72) = plt.subplots(nrows= 4, ncols=1, sharex=True, figsize= figsize) #, sharex=True
 # # fig18.suptitle(f'Ground Surface Different Boundary Compare' ,x=0.50,y =0.94,fontsize = 20)
@@ -2438,8 +2462,10 @@ def DifferTime_PeakRelative(Peak,TieErr, LKErr, Type1Err):
 # legend = fig18.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig18.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/Letter/Relative_Away(0.1s).png")
 
-def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
+def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20, file_Name):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 20}
     plt.text(0.03, 0.08,r"$\mathrm {Vertical\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
@@ -2459,7 +2485,7 @@ def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.xticks(fontsize = 20, fontweight='bold', color='black')
     plt.yticks(fontsize = 20, fontweight='bold', color='black')
 
-    plt.ylim(0, 210)  # Vertical: Mid = 0, 70 / 1m away = 0, 210 ; Rocking = -2, 150; Horizon = 0, 25/60
+    plt.ylim(0, 210)  # Vertical: Mid = 0, 80 / 1m away = 0, 210 ; Rocking = -2, 150; Horizon = 0, 25/60
     # plt.grid(True)
     # ========== set up figure thick ============================
     bwidth = 2
@@ -2488,9 +2514,11 @@ def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
     # -------------- Consider y-axis  -----------------------
     # ax.yaxis.set_major_locator(MultipleLocator(1))
     ax.tick_params(axis='y', which='major', labelsize= 25, length=4, width=2)
+    # # ------------- Save figure in 300 dpi-------------------------------
+    # plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/Letter/{file_Name}.png")
 
-# Tie_PeakRelative(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err)
-# Tie_PeakRelative(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err)
+# Tie_PeakRelative(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err, f'Relative_Middle(0.1s)_TieBC')
+# Tie_PeakRelative(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err, f'Relative_Away(0.1s)_TieBC')
    
 # ----------------- Draw Relative error : Dy/Lamb ------------------- 
 def DifferTime_PeakRelative2(Peak,TieErr, LKErr, Type1Err):
@@ -2855,8 +2883,10 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 # legend = fig22.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 # legend.get_frame().set_edgecolor('grey')
 # legend.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# fig22.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2-Norm/Letter/HZ_Away(0.2s).png")
 
-def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
+def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20, file_Name):
     plt.figure(figsize=(10, 8))
     font_props = {'family': 'Arial', 'size': 20}
     plt.text(0.03, 0.08,r"$\mathrm {Vertical\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
@@ -2916,9 +2946,11 @@ def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
 
     # ax.set_ylim(-0.0, 1.5)  # Vertical = -0.0, 1.5 / Rocking = -0.0, 2.0
+    # # ------------- Save figure in 300 dpi-------------------------------
+    # plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2-Norm/Letter/{file_Name}.png")
 
-# Tie_Letter_L2Error(LE_Tie2Err_L2, LE_Tie5Err_L2, LE_Tie10Err_L2, LE_Tie20Err_L2)    
-# Tie_Letter_L2Error(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away)
+# Tie_Letter_L2Error(LE_Tie2Err_L2, LE_Tie5Err_L2, LE_Tie10Err_L2, LE_Tie20Err_L2, f'HZ_Middle(0.2s)_TieBC')    
+# Tie_Letter_L2Error(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away, f'HZ_Away(0.2s)_TieBC')
 
 # ==================Draw L2 Norm error : Dy/WaveLength =============================
 def Letter_L2Error2(TieErr, LKErr, Type1Err):
