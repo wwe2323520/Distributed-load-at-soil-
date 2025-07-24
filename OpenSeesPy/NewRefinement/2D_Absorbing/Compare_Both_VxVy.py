@@ -15,7 +15,7 @@ from scipy.signal import find_peaks
 from matplotlib.ticker import LogLocator, NullFormatter, LogFormatter
 from matplotlib.lines import Line2D
 from matplotlib.ticker import MultipleLocator
-
+plt.rcParams['savefig.dpi'] = 300
 plt.rc('font', family= 'Times New Roman')
 pi = np.pi
         
@@ -551,7 +551,7 @@ LK_W20_HZ80_Away = rdnumpy(file95)
 BeamType_W20_HZ80_Away = rdnumpy(file96)
 
 # =================== Draw Different Boundary Compare ==============================
-plt_axis2 = 2 # Vertical/ Rocking = 2 ; Horizon = 1
+plt_axis2 = 1 # Vertical/ Rocking = 2 ; Horizon = 1
 # # ------- wave put into the timeSeries ---------------
 def Differ_BCVel(Tie, LKDash, BeamType1):
     # font_props = {'family': 'Arial', 'size': 12}
@@ -1606,7 +1606,7 @@ figsize2 = (10, 10)
 # (ax33, ax34, ax35, ax36, ax37, ax38, ax39, ax40) = axes.ravel()
 # # fig9.suptitle(f'Ground Surface Different Boundary Compare',x=0.50,y =0.94,fontsize = 20)
 # fig9.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig9.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig9.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig9.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig9.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -1655,10 +1655,10 @@ figsize2 = (10, 10)
 
 # fig10, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True , figsize= figsize2) #, sharex=True
 # (ax41,ax42,ax43,ax44, ax45, ax46, ax47, ax48) = axes.ravel()
-# fig10.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
-# fig10.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
-# fig10.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
-# fig10.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
+# # fig10.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
+# fig10.text(0.91,0.40, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=25, rotation = 270)
+# fig10.text(0.20,0.89, r"$\mathrm {Compare\; V_{x,1m}}$", color = "black", fontsize=25)
+# fig10.text(0.62,0.89, r"$\mathrm {Compare\; V_{y,1m}}$", color = "black", fontsize=25)
 
 # fig10.text(0.01,0.5, 'Peak Velocity Error '+ r"$\ E^{0\,\mathrm{-}\,0.2}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig10.text(0.41,0.040,  f'Duration ' + r'$t_d$', va= 'center', fontsize= 25)
@@ -1681,19 +1681,19 @@ figsize2 = (10, 10)
 
 # ax45 = plt.subplot(422)
 # DifferTime_RelativeError(1, Tie20_err_Away_Vy, LK20_err_Away_Vy, BeamType_20err_Away_Vy)
-# ax45.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.22, y=0.75)
+# ax45.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.22, y=0.75)
 
 # ax46 = plt.subplot(424)
 # DifferTime_RelativeError(1, Tie10_err_Away_Vy, LK10_err_Away_Vy, BeamType_10err_Away_Vy)
-# ax46.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.22, y=0.75)
+# ax46.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.22, y=0.75)
 
 # ax47 = plt.subplot(426)
 # DifferTime_RelativeError(1, Tie5_err_Away_Vy, LK5_err_Away_Vy, BeamType_5err_Away_Vy)
-# ax47.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.20, y=0.75)
+# ax47.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.20, y=0.75)
 
 # ax48 = plt.subplot(428)
 # DifferTime_RelativeError(1, Tie2_err_Away_Vy, LK2_err_Away_Vy, BeamType_2err_Away_Vy)
-# ax48.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.75)
+# ax48.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.20, y=0.75)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
@@ -1701,6 +1701,9 @@ figsize2 = (10, 10)
 # legend1 = fig10.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
 # legend1.get_frame().set_edgecolor('grey')
 # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+# fig10.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/hz_Away.png")
 
 def Tie_RelativeError(TieErr2, TieErr5, TieErr10, TieErr20): #0.94, 0.87/ 0.08, 0.02
     plt.figure(figsize=(10, 8))
@@ -1817,6 +1820,7 @@ def Tie_RelativeError_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Tie
 
 # Tie_RelativeError_Both(Tie2_err, Tie5_err, Tie10_err, Tie20_err, Tie2_err_Vy, Tie5_err_Vy, Tie10_err_Vy, Tie20_err_Vy)
 # Tie_RelativeError_Both(Tie2_err_Away, Tie5_err_Away, Tie10_err_Away, Tie20_err_Away, Tie2_err_Away_Vy, Tie5_err_Away_Vy, Tie10_err_Away_Vy, Tie20_err_Away_Vy)
+
 # ================================== Prepare L2-Norm Error ============================
 # ---------- Find Different Data in 40 row Same Time ---------------------
 Analysis_Time = LK_W20_HZ40_Mid[:, 0]
@@ -1840,7 +1844,7 @@ def Calculate_RelativeL2norm(TheoryTime,TheoryData, Analysis_Time,Tie_W20_HZ40_M
         
         Mother =  TheoryData[index2, Column_Index]
         Mom.append(Mother)
-        
+    # print(len(differences))
 # ------------- numerator and denominator seperate calculate -------------------- 
     compare = np.array(differences)
     Momm = np.array(Mom)
@@ -2155,7 +2159,7 @@ figsize = (10, 10)
 # fig13, axes= plt.subplots(nrows= 3, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax49,ax50,ax51, ax52, ax53, ax54) = axes.ravel()
 # fig13.text(0.13,0.82, "(Middle Node)", color = "black", fontsize=20)
-# fig13.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
+# fig13.text(0.13,0.85, r"$\mathrm {Horizon\;Loading}$", color = "black", fontsize=18)
 # fig13.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
 # fig13.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
 
@@ -2197,10 +2201,10 @@ figsize = (10, 10)
 
 # fig14, axes = plt.subplots(nrows= 3, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax55,ax56,ax57, ax58,ax59,ax60) = axes.ravel()
-# fig14.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=18)
-# fig14.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
-# fig14.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
-# fig14.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
+# # fig14.text(0.90,0.46, "(Node 1 m away from the midpoint)", color = "black", fontsize=24, rotation = 270)
+# fig14.text(0.91,0.40, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=25, rotation = 270)
+# fig14.text(0.20,0.89, r"$\mathrm {Compare\; V_{x,1m}}$", color = "black", fontsize=25)
+# fig14.text(0.62,0.89, r"$\mathrm {Compare\; V_{y,1m}}$", color = "black", fontsize=25)
 
 # fig14.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E_{L2}$", va= 'center', rotation= 'vertical', fontsize=27)
 
@@ -2220,15 +2224,15 @@ figsize = (10, 10)
 
 # ax58 = plt.subplot(322)
 # DifferTime_L2Error(1, Tie10Err_L2Away_Vy, LK10Err_L2Away_Vy, BeamType_W10Err_L2Away_Vy)
-# ax58.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.80, y=0.83) #04
+# ax58.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.79, y=0.81) #04
 
 # ax59 = plt.subplot(324)
 # DifferTime_L2Error(1, Tie5Err_L2Away_Vy, LK5Err_L2Away_Vy, BeamType_W5Err_L2Away_Vy)
-# ax59.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.80, y=0.83)
+# ax59.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.80, y=0.81)
 
 # ax60 = plt.subplot(326)
 # DifferTime_L2Error(1, Tie2Err_L2Away_Vy, LK2Err_L2Away_Vy, BeamType_W2Err_L2Away_Vy)
-# ax60.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.80, y=0.08)
+# ax60.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.80, y=0.08)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
@@ -2236,6 +2240,9 @@ figsize = (10, 10)
 # legend1 = fig14.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
 # legend1.get_frame().set_edgecolor('grey')
 # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+# fig14.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2 Error/hz_Away.png")
 
 def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -2295,9 +2302,9 @@ def Tie_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_L2Error(Tie2Err_L2Away, Tie5Err_L2Away, Tie10Err_L2Away, Tie20Err_L2Away)
 
 # =================== Compare Both Vx and Vy ==========================================
-def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
+def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy, fileName):
     plt.figure(figsize=(10, 8))
-    font_props = {'family': 'Arial', 'size': 16}
+    font_props = {'family': 'Arial', 'size': 19}
     plt.text(0.63, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 25, transform=plt.gca().transAxes) #0.03,
     plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
@@ -2316,10 +2323,10 @@ def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_V
     legend_elements = [Line2D([0], [0], color='dimgrey', lw=2, label= r'$V_x$'),
                 Line2D([0], [0], color='crimson', lw=2, label= r'$V_y$'),
                 ] 
-    legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{2m}$"),
-                    Line2D([0], [0], color='black',marker = 'o',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{5m}$"),
-                    Line2D([0], [0], color='black',marker = '<',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{10m}$"),
-                    Line2D([0], [0], color='black',marker = '*',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{20m}$")]
+    legend_elements2 =  [Line2D([0], [0], color='none',marker = '^',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{2m}$"),
+                    Line2D([0], [0], color='none',marker = 'o',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='none',marker = '<',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='none',marker = '*',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{20m}$")]
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
     legend1.get_frame().set_edgecolor('grey')
@@ -2376,9 +2383,12 @@ def Tie_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_V
     ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
     
     # ax.set_ylim(-0.0, 1.5)  # Vertical = -0.0, 1.5 / Rocking = -0.0, 2.0
+    # # ------------- Save figure in 300 dpi-------------------------------
+    # save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+    # plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2 Error/{fileName}.png")
 
 # Tie_L2Error_Both(Tie2Err_L2, Tie5Err_L2, Tie10Err_L2, Tie20Err_L2, Tie2Err_L2_Vy, Tie5Err_L2_Vy, Tie10Err_L2_Vy, Tie20Err_L2_Vy)
-# Tie_L2Error_Both(Tie2Err_L2Away, Tie5Err_L2Away, Tie10Err_L2Away, Tie20Err_L2Away, Tie2Err_L2Away_Vy, Tie5Err_L2Away_Vy, Tie10Err_L2Away_Vy, Tie20Err_L2Away_Vy)
+# Tie_L2Error_Both(Tie2Err_L2Away, Tie5Err_L2Away, Tie10Err_L2Away, Tie20Err_L2Away, Tie2Err_L2Away_Vy, Tie5Err_L2Away_Vy, Tie10Err_L2Away_Vy, Tie20Err_L2Away_Vy, 'HZ_Away_TieBC')
 # ================================== Prepare Relative Error: 0.2~0.4s ============================
 start_time = 0.3 # 0.2
 end_time = 0.6# 0.4
@@ -3130,10 +3140,10 @@ figsize =(10, 10)
 
 # fig18, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax73,ax74,ax75,ax76, ax77, ax78, ax79, ax80) = axes.ravel()
-# fig18.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig18.text(0.13,0.85, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
-# fig18.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
-# fig18.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
+# # fig18.text(0.13,0.82, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
+# fig18.text(0.91,0.40, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=25, rotation = 270)
+# fig18.text(0.20,0.89, r"$\mathrm {Compare\; V_{x,1m}}$", color = "black", fontsize=25)
+# fig18.text(0.62,0.89, r"$\mathrm {Compare\; V_{y,1m}}$", color = "black", fontsize=25)
 
 # fig18.text(0.01,0.5, 'Peak Velocity Error '+ r"$\ E^{0.2\,\mathrm{-}\,0.4}_{Max}$" + r" (%)", va= 'center', rotation= 'vertical', fontsize=25)
 # fig18.text(0.41,0.040,  f'Duration ' + r'$t_d$', va= 'center', fontsize=25)
@@ -3156,19 +3166,19 @@ figsize =(10, 10)
 
 # ax77 = plt.subplot(422)
 # DifferTime_PeakRelative(1, PeakAway_Tie20_err_Vy, PeakAway_LK20_err_Vy, PeakAway_BeamType20_err_Vy)
-# ax77.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.20, y=0.80)
+# ax77.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.21, y=0.77)
 
 # ax78 = plt.subplot(424)
 # DifferTime_PeakRelative(1, PeakAway_Tie10_err_Vy, PeakAway_LK10_err_Vy, PeakAway_BeamType10_err_Vy)
-# ax78.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.20, y=0.80)
+# ax78.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.21, y=0.77)
 
 # ax79 = plt.subplot(426)
 # DifferTime_PeakRelative(1, PeakAway_Tie5_err_Vy, PeakAway_LK5_err_Vy, PeakAway_BeamType5_err_Vy)
-# ax79.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.20, y=0.80)
+# ax79.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.21, y=0.77)
 
 # ax80 = plt.subplot(428)
 # DifferTime_PeakRelative(1, PeakAway_Tie2_err_Vy, PeakAway_LK2_err_Vy, PeakAway_BeamType2_err_Vy)
-# ax80.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.80)
+# ax80.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.21, y=0.77)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
@@ -3176,6 +3186,9 @@ figsize =(10, 10)
 # legend1 = fig18.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
 # legend1.get_frame().set_edgecolor('grey')
 # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+# fig18.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/hz_Away_0.2s.png")
 
 def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -3217,9 +3230,9 @@ def Tie_PeakRelative(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_PeakRelative(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err)
 
 # =================== Compare Vx and Vy ============================
-def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
+def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy, fileName):
     plt.figure(figsize=(10, 8))
-    font_props = {'family': 'Arial', 'size': 17}
+    font_props = {'family': 'Arial', 'size': 19}
     plt.text(0.62, 0.95,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
     plt.text(0.92, 0.88,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
@@ -3238,10 +3251,10 @@ def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieE
     legend_elements = [Line2D([0], [0], color='dimgrey', lw=2, label= r'$V_x$'),
                 Line2D([0], [0], color='crimson', lw=2, label= r'$V_y$'),
                 ] 
-    legend_elements2 =  [Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{2m}$"),
-                    Line2D([0], [0], color='black',marker = 'o',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{5m}$"),
-                    Line2D([0], [0], color='black',marker = '<',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{10m}$"),
-                    Line2D([0], [0], color='black',marker = '*',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{20m}$")]
+    legend_elements2 =  [Line2D([0], [0], color='none',marker = '^',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{2m}$"),
+                    Line2D([0], [0], color='none',marker = 'o',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='none',marker = '<',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='none',marker = '*',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{20m}$")]
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
     legend1.get_frame().set_edgecolor('grey')
@@ -3285,9 +3298,12 @@ def Tie_PeakRelative_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieE
     # -------------- Consider y-axis  -----------------------
     # ax.yaxis.set_major_locator(MultipleLocator(2.5))
     ax.tick_params(axis='y', which='major', labelsize= 22, length=8, width=2)
+    # # ------------- Save figure in 300 dpi-------------------------------
+    # save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+    # plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/Relative Error/{fileName}.png")
     
 # Tie_PeakRelative_Both(PeakTie2_err, PeakTie5_err, PeakTie10_err, PeakTie20_err, PeakTie2_err_Vy, PeakTie5_err_Vy, PeakTie10_err_Vy, PeakTie20_err_Vy)
-# Tie_PeakRelative_Both(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err, PeakAway_Tie2_err_Vy, PeakAway_Tie5_err_Vy, PeakAway_Tie10_err_Vy, PeakAway_Tie20_err_Vy)
+# Tie_PeakRelative_Both(PeakAway_Tie2_err, PeakAway_Tie5_err, PeakAway_Tie10_err, PeakAway_Tie20_err, PeakAway_Tie2_err_Vy, PeakAway_Tie5_err_Vy, PeakAway_Tie10_err_Vy, PeakAway_Tie20_err_Vy, 'hz_Away_TieBC_0.2s')
 
 Letter_L2_Start = 0.3 # 0.2
 Letter_L2_End = 0.6
@@ -3618,7 +3634,7 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 # fig22.legend(lines, labels, ncol=2, loc = (0.30,0.89) ,prop=font_props)
 
 # # ############ Compare Both Vx and Vy ##########################
-# figsize =(10, 10)
+figsize =(10, 10)
 # fig21, axes= plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax81,ax82,ax83,ax84, ax85,ax86,ax87,ax88) = axes.ravel()
 # fig21.text(0.13,0.73, "(Middle Node)", color = "black", fontsize=20)
@@ -3668,10 +3684,10 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 
 # fig22, axes = plt.subplots(nrows= 4, ncols=2, sharex=True, sharey=True, figsize= figsize) #, sharex=True
 # (ax89,ax90,ax91,ax92, ax93,ax94,ax95,ax96) = axes.ravel()
-# fig22.text(0.13,0.73, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
-# fig22.text(0.13,0.76, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=18)
-# fig22.text(0.20,0.89, r"$\mathrm {Compare\; V_x}$", color = "black", fontsize=25)
-# fig22.text(0.62,0.89, r"$\mathrm {Compare\; V_y}$", color = "black", fontsize=25)
+# # fig22.text(0.13,0.73, "(Node 1 m away from the midpoint)", color = "black", fontsize=16)
+# fig22.text(0.91,0.40, r"$\mathrm {Rocking\;Loading}$", color = "black", fontsize=25, rotation = 270)
+# fig22.text(0.20,0.89, r"$\mathrm {Compare\; V_{x,1m}}$", color = "black", fontsize=25)
+# fig22.text(0.62,0.89, r"$\mathrm {Compare\; V_{y,1m}}$", color = "black", fontsize=25)
 
 # fig22.text(0.01,0.5, 'Normalized L2 Norm Error '+ r"$\ E^{0.2\,\mathrm{-}\,0.4}_{L2}$", va= 'center', rotation= 'vertical', fontsize=27)
 # fig22.text(0.45,0.040,  f'Duration ' + r'$t_d$', va= 'center', fontsize=27)
@@ -3694,19 +3710,19 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 
 # ax93 = plt.subplot(422)
 # Letter_L2Error(LE_Tie20Err_L2Away_Vy, LE_LK20Err_L2Away_Vy, LE_BeamType_W20Err_L2Away_Vy)
-# ax93.set_title(r"$w=$ $\mathrm{20m}$",fontsize =23, x=0.20, y=0.08)
+# ax93.set_title(r"$w=$ $\mathrm{20m}$",fontsize =24, x=0.21, y=0.08)
 
 # ax94 = plt.subplot(424)
 # Letter_L2Error(LE_Tie10Err_L2Away_Vy, LE_LK10Err_L2Away_Vy, LE_BeamType_W10Err_L2Away_Vy)
-# ax94.set_title(r"$w=$ $\mathrm{10m}$",fontsize =23, x=0.20, y=0.08)
+# ax94.set_title(r"$w=$ $\mathrm{10m}$",fontsize =24, x=0.21, y=0.08)
 
 # ax95 = plt.subplot(426)
 # Letter_L2Error(LE_Tie5Err_L2Away_Vy, LE_LK5Err_L2Away_Vy, LE_BeamType_W5Err_L2Away_Vy)
-# ax95.set_title(r"$w=$ $\mathrm{5m}$",fontsize =23, x=0.20, y=0.08)
+# ax95.set_title(r"$w=$ $\mathrm{5m}$",fontsize =24, x=0.20, y=0.08)
 
 # ax96 = plt.subplot(428)
 # Letter_L2Error(LE_Tie2Err_L2Away_Vy, LE_LK2Err_L2Away_Vy, LE_BeamType_W2Err_L2Away_Vy)
-# ax96.set_title(r"$w=$ $\mathrm{2m}$",fontsize =23, x=0.20, y=0.78)
+# ax96.set_title(r"$w=$ $\mathrm{2m}$",fontsize =24, x=0.20, y=0.77)
 
 # font_props = {'family': 'Arial', 'size': 17}  #Legend Setting
 # plt.subplots_adjust(wspace=0.1, hspace=0.3)
@@ -3714,6 +3730,9 @@ def Letter_L2Error(TieErr, LKErr, Type1Err):
 # legend1 = fig22.legend(lines, labels, ncol=2, loc = (0.30,0.92) ,prop=font_props)
 # legend1.get_frame().set_edgecolor('grey')
 # legend1.get_frame().set_linewidth(2)  # 設置外框寬度
+# # ------------- Save figure in 300 dpi-------------------------------
+# save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+# fig22.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2 Error/hz_Away_0.2s.png")
 
 def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
     plt.figure(figsize=(10, 8))
@@ -3773,9 +3792,9 @@ def Tie_Letter_L2Error(TieErr2, TieErr5, TieErr10, TieErr20):
 # Tie_Letter_L2Error(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away)
 
 # =================== Compare Vx and Vy ===============================
-def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy):
+def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, TieErr5_Vy, TieErr10_Vy, TieErr20_Vy, fileName):
     plt.figure(figsize=(10, 8))
-    font_props = {'family': 'Arial', 'size': 16}
+    font_props = {'family': 'Arial', 'size': 19}
     plt.text(0.03, 0.08,r"$\mathrm {Rocking\;Loading}$", color='black', fontsize = 26, transform=plt.gca().transAxes)
     plt.text(0.03, 0.02,'Tie', color='black', fontsize = 28, transform=plt.gca().transAxes)
     plt.xlabel(f'Duration ' + r'$t_d$', fontsize = 25)
@@ -3796,9 +3815,9 @@ def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Ti
                 Line2D([0], [0], color='crimson', lw=2, label= r'$V_y$'),
                 ] 
     legend_elements2 =  [
-                    Line2D([0], [0], color='black',marker = 'o',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{5m}$"),
-                    Line2D([0], [0], color='black',marker = '<',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{10m}$"),
-                    Line2D([0], [0], color='black',marker = '*',markersize=16,markerfacecolor = 'none', label= r"$w=$ $\mathrm{20m}$")] # Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
+                    Line2D([0], [0], color='none',marker = 'o',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{5m}$"),
+                    Line2D([0], [0], color='none',marker = '<',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{10m}$"),
+                    Line2D([0], [0], color='none',marker = '*',markersize=16,markerfacecolor = 'none', markeredgecolor='black', label= r"$w=$ $\mathrm{20m}$")] # Line2D([0], [0], color='black',marker = '^',markersize=16,markerfacecolor = 'white', label= r"$w=$ $\mathrm{2m}$"),
     
     legend1 = plt.legend(handles=legend_elements, loc=(0.2, 1.0), prop= font_props)
     legend1.get_frame().set_edgecolor('grey')
@@ -3853,9 +3872,14 @@ def Tie_Letter_L2Error_Both(TieErr2, TieErr5, TieErr10, TieErr20, TieErr2_Vy, Ti
     ax.yaxis.set_minor_locator(LogLocator(base=10.0, subs='auto', numticks=14))
     ax.yaxis.set_minor_formatter(NullFormatter())
     ax.tick_params(axis='y', which='minor', length=4, width=2, color='gray')
+    
+    # ------------- Save figure in 300 dpi-------------------------------
+    save_file = f'2D_Absorbing/Newmark_Linear/Rocking/Both Velocity'
+    plt.savefig(f"D:/shiang/opensees/20220330/extend_soil/Paper_Image_300DPI/{save_file}/L2 Error/{fileName}.png")
+
 
 # Tie_Letter_L2Error_Both(LE_Tie2Err_L2, LE_Tie5Err_L2, LE_Tie10Err_L2, LE_Tie20Err_L2, LE_Tie2Err_L2_Vy, LE_Tie5Err_L2_Vy, LE_Tie10Err_L2_Vy, LE_Tie20Err_L2_Vy)
-# Tie_Letter_L2Error_Both(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away, LE_Tie2Err_L2Away_Vy, LE_Tie5Err_L2Away_Vy, LE_Tie10Err_L2Away_Vy, LE_Tie20Err_L2Away_Vy)
+# Tie_Letter_L2Error_Both(LE_Tie2Err_L2Away, LE_Tie5Err_L2Away, LE_Tie10Err_L2Away, LE_Tie20Err_L2Away, LE_Tie2Err_L2Away_Vy, LE_Tie5Err_L2Away_Vy, LE_Tie10Err_L2Away_Vy, LE_Tie20Err_L2Away_Vy, 'HZ_Away_TieBC_0.2s')
     
 # ========================= Show Stress about Different Direction ============================
 # ============== Read Middle Node Analysis Data ==========================================
