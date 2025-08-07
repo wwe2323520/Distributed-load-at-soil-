@@ -1,2 +1,2 @@
 # Distributed-load-at-soil-
-針對均佈載重下對於土柱的波傳效應(quad element connect with beam element)
+本篇所含程式碼皆為OpenSeesPy 所用，以及採用Python進行輸出資料繪製。
