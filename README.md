@@ -1,2 +1,4 @@
-# Distributed-load-at-soil-
-本篇所含程式碼皆為OpenSeesPy 所用，以及採用Python進行輸出資料繪製。
+# 矩形土體傳遞邊界二維模擬之實務技術開發
+本篇所含程式碼皆為OpenSeesPy 所用，以及採用Python進行輸出資料繪製。以下將分為各資料夾進行整理。
+## 資料夾說明
+
