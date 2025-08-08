@@ -4,7 +4,9 @@
 - '數值模擬/'：論文第三章數值驗證中所包含一維入射波與二維反彈波的OpenSeesPy程式碼，及外加力加載所使用的歷時反應文件（txt）檔案。第四章中雷力阻尼所進行的分析程式碼。
 - 'data/'：包含數值模擬所輸出之資料。
 - '結果'：繪圖與分析結果（含圖檔）。
-
+## 軟體安裝
+當需要下載最新版本OpenSeespy，需要至The OpenSeesPy官網（https://openseespydoc.readthedocs.io/en/latest/）確認所需Pyhton最新版本。並於Python中安裝OpenSeesPy
+pip install openseespy
 ## 使用方式
 
 ### 數值模擬/數值驗證
