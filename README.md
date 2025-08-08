@@ -7,7 +7,7 @@
 ## 軟體安裝
 當需要下載最新版本OpenSeespy，需要至The OpenSeesPy官網（https://openseespydoc.readthedocs.io/en/latest )
 確認所需Pyhton最新版本。並於Python中安裝OpenSeesPy
-![image]((https://github.com/wwe2323520/Distributed-load-at-soil-/blob/main/Version.png))
+![image](https://github.com/wwe2323520/Distributed-load-at-soil-/blob/main/Version.png)
 pip install openseespy
 ## 使用方式
 
